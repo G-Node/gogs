@@ -11,7 +11,15 @@
 	<meta name="referrer" content="no-referrer" />
 	<meta name="_csrf" content="{{.CSRFToken}}" />
 	<meta name="_suburl" content="{{AppSubURL}}" />
+<<<<<<< feca79c32e342e16fba95c9a66ccbef48e7e5797
 	
+=======
+	{{if .GoGetImport}}
+		<meta name="go-import" content="{{.GoGetImport}} git {{.CloneLink.HTTPS}}">
+		<meta name="go-source" content="{{.GoGetImport}} _ {{.GoDocDirectory}} {{.GoDocFile}}">
+	{{end}}
+
+>>>>>>> [GINR] Templates -> GIN
 	<!-- Open Graph Tags -->
 	{{if .PageIsAdmin}}
 	{{else if .PageIsUserProfile}}
@@ -36,7 +44,6 @@
 	{{end}}
 
 	<link rel="shortcut icon" href="{{AppSubURL}}/img/favicon.png" />
-
 	<script src="{{AppSubURL}}/js/jquery-1.11.3.min.js"></script>
 	<script src="{{AppSubURL}}/js/libs/jquery.are-you-sure.js"></script>
 	<link rel="stylesheet" href="{{AppSubURL}}/assets/font-awesome-4.6.3/css/font-awesome.min.css">
