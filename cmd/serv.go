@@ -88,12 +88,12 @@ func setup(c *cli.Context, logPath string, connectDB bool) {
 	}
 }
 
-func parseSSHCmd(cmd string) (string, string) {
-	ss := strings.SplitN(cmd, " ", 2)
-	if len(ss) != 2 {
-		return "", ""
+func parseSSHCmd(cmd string) (string, string, []string) {
+	ss := strings.Split(cmd, " ")
+	if len(ss) < 2 {
+		return "", "", nil
 	}
-	return ss[0], strings.Replace(ss[1], "'/", "'", 1)
+	return ss[0], strings.Replace(ss[len(ss)-1], "/", "'", 1), ss
 }
 
 func checkDeployKey(key *models.PublicKey, repo *models.Repository) {
@@ -119,6 +119,7 @@ var (
 		"git-upload-pack":    models.ACCESS_MODE_READ,
 		"git-upload-archive": models.ACCESS_MODE_READ,
 		"git-receive-pack":   models.ACCESS_MODE_WRITE,
+		"git-annex-shell":    models.ACCESS_MODE_WRITE,
 	}
 )
 
@@ -134,18 +135,19 @@ func runServ(c *cli.Context) error {
 		fail("Not enough arguments", "Not enough arguments")
 	}
 
-	sshCmd := os.Getenv("SSH_ORIGINAL_COMMAND")
+	sshCmd := strings.Replace(os.Getenv("SSH_ORIGINAL_COMMAND"), "'", "", -1)
+	log.Info("SSH commadn:%s", sshCmd)
 	if len(sshCmd) == 0 {
 		println("Hi there, You've successfully authenticated, but Gogs does not provide shell access.")
 		println("If this is unexpected, please log in with password and setup Gogs under another user.")
 		return nil
 	}
 
-	verb, args := parseSSHCmd(sshCmd)
-	repoFullName := strings.ToLower(strings.Trim(args, "'"))
+	verb, path, args := parseSSHCmd(sshCmd)
+	repoFullName := strings.ToLower(strings.Trim(path, "'"))
 	repoFields := strings.SplitN(repoFullName, "/", 2)
 	if len(repoFields) != 2 {
-		fail("Invalid repository path", "Invalid repository path: %v", args)
+		fail("Invalid repository path", "Invalid repository path: %v", path)
 	}
 	ownerName := strings.ToLower(repoFields[0])
 	repoName := strings.TrimSuffix(strings.ToLower(repoFields[1]), ".git")
@@ -239,17 +241,28 @@ func runServ(c *cli.Context) error {
 	}
 
 	// Special handle for Windows.
+	// Todo will break with annex
 	if setting.IsWindows {
 		verb = strings.Replace(verb, "-", " ", 1)
 	}
-
-	var gitCmd *exec.Cmd
 	verbs := strings.Split(verb, " ")
+	var cmd []string
 	if len(verbs) == 2 {
-		gitCmd = exec.Command(verbs[0], verbs[1], repoFullName)
+		cmd = []string{verbs[0], verbs[1], repoFullName}
+	} else if (verb == "git-annex-shell") {
+		cmd = args
+		cmd[len(cmd)-1] = setting.RepoRootPath + "/" + repoFullName
 	} else {
-		gitCmd = exec.Command(verb, repoFullName)
+		cmd = []string{verb, repoFullName}
 	}
+	return runGit(cmd, requestMode, user, owner, repo)
+
+}
+
+func runGit(cmd [] string, requestMode models.AccessMode, user *models.User, owner *models.User,
+	repo *models.Repository) error {
+	log.Info("will exectute:%s", cmd)
+	gitCmd := exec.Command(cmd[0], cmd[1:]...)
 	if requestMode == models.ACCESS_MODE_WRITE {
 		gitCmd.Env = append(os.Environ(), models.ComposeHookEnvs(models.ComposeHookEnvsOptions{
 			AuthUser:  user,
@@ -264,9 +277,11 @@ func runServ(c *cli.Context) error {
 	gitCmd.Stdout = os.Stdout
 	gitCmd.Stdin = os.Stdin
 	gitCmd.Stderr = os.Stderr
-	if err = gitCmd.Run(); err != nil {
+	log.Info("args:%s", gitCmd.Args)
+	if err := gitCmd.Run(); err != nil {
 		fail("Internal error", "Fail to execute git command: %v", err)
 	}
 
 	return nil
 }
+
