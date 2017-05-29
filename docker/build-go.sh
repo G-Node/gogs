@@ -11,7 +11,6 @@ export GOLANG_SRC_SHA256="406865f587b44be7092f206d73fc1de252600b79b3cacc587b74b5
 
 
 # Install build tools
-apk add --no-cache --no-progress --virtual build-deps-go gcc musl-dev openssl go
 
 export GOROOT_BOOTSTRAP="$(go env GOROOT)"
 
@@ -29,4 +28,3 @@ patch -p2 -i /app/gogs/build/docker/no-pic.patch
 
 # Clean
 rm /app/gogs/build/docker/*.patch
-apk del build-deps-go
