@@ -250,8 +250,13 @@ func runServ(c *cli.Context) error {
 	if len(verbs) == 2 {
 		cmd = []string{verbs[0], verbs[1], repoFullName}
 	} else if (verb == "git-annex-shell") {
+		repoAbsPath := setting.RepoRootPath + "/" + repoFullName
+		if err := secureGitAnnex(repoAbsPath, requestMode); err != nil {
+			fail("Git annex failed", "Git annex failed: %s", err)
+		}
 		cmd = args
-		cmd[len(cmd)-1] = setting.RepoRootPath + "/" + repoFullName
+		// Setting full path to repo as git-annex-shell requires it
+		cmd[len(cmd)-1] = repoAbsPath
 	} else {
 		cmd = []string{verb, repoFullName}
 	}
@@ -285,3 +290,24 @@ func runGit(cmd [] string, requestMode models.AccessMode, user *models.User, own
 	return nil
 }
 
+// Make sure git-annex-shell does not make "bad" changes (refectored from repo)
+func secureGitAnnex(path string, requestMode models.AccessMode) error {
+	// "If set, disallows running git-shell to handle unknown commands."
+	err := os.Setenv("GIT_ANNEX_SHELL_LIMITED", "True")
+	if err != nil {
+		return fmt.Errorf("ERROR: Could set annex shell to be limited.")
+	}
+	// "If set, git-annex-shell will refuse to run commands
+	//  that do not operate on the specified directory."
+	err = os.Setenv("GIT_ANNEX_SHELL_DIRECTORY", path)
+	if err != nil {
+		return fmt.Errorf("ERROR: Could set annex shell directory.")
+	}
+	if ! (requestMode > models.ACCESS_MODE_READ) {
+		err = os.Setenv("GIT_ANNEX_SHELL_READONLY", "True")
+		if err != nil {
+			return fmt.Errorf("ERROR: Could set annex shell to read only.")
+		}
+	}
+	return nil
+}
