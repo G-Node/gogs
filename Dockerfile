@@ -1,28 +1,27 @@
-FROM golang:alpine AS binarybuilder
-# Install build deps
-RUN apk --no-cache --no-progress add --virtual build-deps build-base git linux-pam-dev
-WORKDIR /go/src/github.com/gogs/gogs
-COPY . .
-RUN make build TAGS="sqlite cert pam"
+FROM ubuntu:16.04
 
-FROM alpine:latest
-# Install system utils & Gogs runtime dependencies
-ADD https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64 /usr/sbin/gosu
-RUN chmod +x /usr/sbin/gosu \
-  && echo http://dl-2.alpinelinux.org/alpine/edge/community/ >> /etc/apk/repositories \
-  && apk --no-cache --no-progress add \
-    bash \
-    ca-certificates \
-    curl \
-    git \
-    linux-pam \
-    openssh \
-    s6 \
-    shadow \
-    socat \
-    tzdata
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update &&                                   \
+    apt-get install -y --no-install-recommends          \
+                       gcc g++ libc6-dev make golang    \
+                       git git-annex openssh-server     \
+                       python-pip python-setuptools     \
+                       socat tzdata supervisor patch    \
+                       libpam0g-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN pip install pyyaml
+
 
 ENV GOGS_CUSTOM /data/gogs
+
+COPY . /app/gogs/build
+WORKDIR /app/gogs/build
+
+RUN ./docker/build-go.sh
+RUN ./docker/build.sh
+RUN ./docker/finalize.sh
 
 # Configure LibC Name Service
 COPY docker/nsswitch.conf /etc/nsswitch.conf

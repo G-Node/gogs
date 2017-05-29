@@ -6,9 +6,6 @@ set -e
 export GOPATH=/tmp/go
 export PATH=/usr/local/go/bin:${PATH}:${GOPATH}/bin
 
-# Install build deps
-apk --no-cache --no-progress add --virtual build-deps build-base linux-pam-dev
-
 # Build Gogs
 mkdir -p ${GOPATH}/src/github.com/gogs/
 ln -s /app/gogs/build ${GOPATH}/src/github.com/gogs/gogs
@@ -20,12 +17,7 @@ make build TAGS="sqlite cert pam"
 # Cleanup GOPATH
 rm -r $GOPATH
 
-# Remove build deps
-apk --no-progress del build-deps
 
-# Move to final place
-mv /app/gogs/build/gogs /app/gogs/
-
-# Cleanup go
-rm -rf /tmp/go
-rm -rf /usr/local/go
+# Create git user for Gogs
+adduser git --home /data/git --shell /bin/bash
+echo "export GOGS_CUSTOM=${GOGS_CUSTOM}" >> /etc/profile
