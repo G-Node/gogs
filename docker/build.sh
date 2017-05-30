@@ -19,5 +19,8 @@ rm -r $GOPATH
 
 
 # Create git user for Gogs
-adduser git --home /data/git --shell /bin/bash
+
+addgroup  git
+adduser --home /data/git --shell /bin/sh --ingroup git --disabled-password git
+passwd -d git
 echo "export GOGS_CUSTOM=${GOGS_CUSTOM}" >> /etc/profile

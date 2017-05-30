@@ -7,11 +7,11 @@ RUN apt-get update &&                                   \
                        gcc g++ libc6-dev make golang    \
                        git git-annex openssh-server     \
                        python-pip python-setuptools     \
-                       socat tzdata supervisor patch    \
+                       socat tzdata patch    \
                        libpam0g-dev \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install pyyaml
+RUN pip install supervisor pyyaml
 
 
 ENV GOGS_CUSTOM /data/gogs
@@ -38,4 +38,3 @@ RUN ./docker/finalize.sh
 VOLUME ["/data"]
 EXPOSE 22 3000
 ENTRYPOINT ["/app/gogs/docker/start.sh"]
-CMD ["/bin/s6-svscan", "/app/gogs/docker/s6/"]
