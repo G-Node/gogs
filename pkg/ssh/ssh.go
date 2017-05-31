@@ -20,6 +20,7 @@ import (
 
 	"github.com/gogits/gogs/models"
 	"github.com/gogits/gogs/pkg/setting"
+	"syscall"
 )
 
 func cleanCommand(cmd string) string {
@@ -98,6 +99,15 @@ func handleServerConn(keyID string, chans <-chan ssh.NewChannel) {
 
 					if err = cmd.Wait(); err != nil {
 						log.Error(3, "SSH: Wait: %v", err)
+						// Fix 255 default return value error
+						if t, ok := err.(*exec.ExitError); ok {
+							log.Info("t:%s", t)
+
+							es := t.Sys().(syscall.WaitStatus).ExitStatus()
+							if es == 1 {
+								ch.SendRequest("exit-status", false, []byte{0, 0, 0, 1})
+							}
+						}
 						return
 					}
 
