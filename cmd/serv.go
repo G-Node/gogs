@@ -16,9 +16,11 @@ import (
 	"github.com/urfave/cli"
 	log "gopkg.in/clog.v1"
 
-	"github.com/gogs/gogs/models"
-	"github.com/gogs/gogs/models/errors"
-	"github.com/gogs/gogs/pkg/setting"
+	"github.com/gogits/gogs/models"
+	"github.com/gogits/gogs/models/errors"
+	"github.com/gogits/gogs/pkg/setting"
+	http "github.com/gogits/gogs/routers/repo"
+	"syscall"
 )
 
 const (
@@ -88,12 +90,20 @@ func setup(c *cli.Context, logPath string, connectDB bool) {
 	}
 }
 
+func isAnnexShell(cmd string) bool {
+	return cmd == "git-annex-shell"
+}
+
 func parseSSHCmd(cmd string) (string, string, []string) {
 	ss := strings.Split(cmd, " ")
 	if len(ss) < 2 {
 		return "", "", nil
 	}
-	return ss[0], strings.Replace(ss[len(ss)-1], "/", "'", 1), ss
+	if isAnnexShell(ss[0]) {
+		return ss[0], strings.Replace(ss[2], "/", "'", 1), ss
+	} else {
+		return ss[0], strings.Replace(ss[1], "/", "'", 1), ss
+	}
 }
 
 func checkDeployKey(key *models.PublicKey, repo *models.Repository) {
@@ -249,18 +259,19 @@ func runServ(c *cli.Context) error {
 	var cmd []string
 	if len(verbs) == 2 {
 		cmd = []string{verbs[0], verbs[1], repoFullName}
-	} else if (verb == "git-annex-shell") {
+	} else if isAnnexShell(verb) {
 		repoAbsPath := setting.RepoRootPath + "/" + repoFullName
-		if err := secureGitAnnex(repoAbsPath, requestMode); err != nil {
-			fail("Git annex failed", "Git annex failed: %s", err)
-		}
+		//		if err := secureGitAnnex(repoAbsPath, requestMode); err != nil {
+		//			fail("Git annex failed", "Git annex failed: %s", err)
+		//}
 		cmd = args
 		// Setting full path to repo as git-annex-shell requires it
-		cmd[len(cmd)-1] = repoAbsPath
+		cmd[2] = repoAbsPath
 	} else {
 		cmd = []string{verb, repoFullName}
 	}
-	return runGit(cmd, requestMode, user, owner, repo)
+	runGit(cmd, requestMode, user, owner, repo)
+	return nil
 
 }
 
@@ -283,8 +294,11 @@ func runGit(cmd [] string, requestMode models.AccessMode, user *models.User, own
 	gitCmd.Stdin = os.Stdin
 	gitCmd.Stderr = os.Stderr
 	log.Info("args:%s", gitCmd.Args)
-	if err := gitCmd.Run(); err != nil {
-		fail("Internal error", "Fail to execute git command: %v", err)
+	err := gitCmd.Run()
+	log.Info("err:%s", err)
+	if t, ok := err.(*exec.ExitError); ok {
+		log.Info("t:%s", t)
+		os.Exit(t.Sys().(syscall.WaitStatus).ExitStatus())
 	}
 
 	return nil
