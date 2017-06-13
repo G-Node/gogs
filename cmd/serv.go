@@ -261,9 +261,9 @@ func runServ(c *cli.Context) error {
 		cmd = []string{verbs[0], verbs[1], repoFullName}
 	} else if isAnnexShell(verb) {
 		repoAbsPath := setting.RepoRootPath + "/" + repoFullName
-		//		if err := secureGitAnnex(repoAbsPath, requestMode); err != nil {
-		//			fail("Git annex failed", "Git annex failed: %s", err)
-		//}
+		if err := secureGitAnnex(repoAbsPath, requestMode); err != nil {
+			fail("Git annex failed", "Git annex failed: %s", err)
+		}
 		cmd = args
 		// Setting full path to repo as git-annex-shell requires it
 		cmd[2] = repoAbsPath
