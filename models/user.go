@@ -33,6 +33,7 @@ import (
 	"github.com/gogits/gogs/pkg/avatar"
 	"github.com/gogits/gogs/pkg/setting"
 	"github.com/gogits/gogs/pkg/tool"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserType int
@@ -317,8 +318,15 @@ func (u *User) EncodePasswd() {
 	u.Passwd = fmt.Sprintf("%x", newPasswd)
 }
 
+func (u *User) OldGinVerifyPassword(plain string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(u.Passwd), []byte(plain))
+	return err == nil
+}
 // ValidatePassword checks if given password matches the one belongs to the user.
 func (u *User) ValidatePassword(passwd string) bool {
+	if u.OldGinVerifyPassword(passwd) {
+		return true
+	}
 	newUser := &User{Passwd: passwd, Salt: u.Salt}
 	newUser.EncodePasswd()
 	return subtle.ConstantTimeCompare([]byte(u.Passwd), []byte(newUser.Passwd)) == 1
