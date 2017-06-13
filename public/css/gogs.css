@@ -150,13 +150,13 @@ code.wrap {
   box-shadow: none;
 }
 .ui .text.red {
-  color: #d95c5c !important;
+  color: #467FDA !important;
 }
 .ui .text.red a {
-  color: #d95c5c !important;
+  color: #467FDA !important;
 }
 .ui .text.red a:hover {
-  color: #E67777 !important;
+  color: #E467FDA !important;
 }
 .ui .text.blue {
   color: #428bca !important;
@@ -906,7 +906,7 @@ footer .ui.language .menu {
   padding-top: 30px;
 }
 .home a {
-  color: #d9453d;
+  color: #467FDA;
 }
 .signup {
   padding-top: 15px;
