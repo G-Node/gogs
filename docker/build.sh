@@ -7,6 +7,8 @@ export GOPATH=/tmp/go
 export PATH=/usr/local/go/bin:${PATH}:${GOPATH}/bin
 export GO15VENDOREXPERIMENT=1
 
+#
+go get golang.org/x/crypto/bcrypt
 # Build Gogs
 mkdir -p ${GOPATH}/src/github.com/gogits/
 ln -s /app/gogs/build ${GOPATH}/src/github.com/gogits/gogs
