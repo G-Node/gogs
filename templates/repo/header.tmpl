@@ -38,7 +38,7 @@
 									</a>
 								</div>
 							{{end}}
-							{{if .CanDoified}}
+							{{if and .CanDoified $.IsRepositoryAdmin}}
 							<div class="ui labeled button" tabindex="0">
 								<a class="ui basic button"
 									 href="https://doi.gin.g-node.org/?repo={{.FullName}}&name={{.Owner.Name}}&token={{$.SessionID}}">
