@@ -25,6 +25,7 @@ h5,
 .ui.button:not(.label) {
   font-family: "PingFang SC", 'Hiragino Sans GB', "Helvetica Neue", "Microsoft YaHei", Arial, Helvetica, sans-serif !important;
 }
+
 img {
   border-radius: 3px;
 }
@@ -150,16 +151,16 @@ code.wrap {
   box-shadow: none;
 }
 .ui .text.red {
-  color: #467FDA !important;
+  color: #2854a4 !important;
 }
 .ui .text.red a {
-  color: #467FDA !important;
+  color: #2854a4 !important;
 }
 .ui .text.red a:hover {
-  color: #E467FDA !important;
+  color: #428bca !important;
 }
 .ui .text.blue {
-  color: #428bca !important;
+  color: #2854a4 !important;
 }
 .ui .text.blue a {
   color: #15c !important;
@@ -892,7 +893,7 @@ footer .ui.language .menu {
   font-size: 2em;
 }
 .home .hero .octicon {
-  color: #467fda;
+  color: #2854a4;
   font-size: 40px;
   width: 50px;
 }
@@ -906,7 +907,7 @@ footer .ui.language .menu {
   padding-top: 30px;
 }
 .home a {
-  color: #467FDA;
+  color: #2854a4;
 }
 .signup {
   padding-top: 15px;
