@@ -23,14 +23,6 @@
 									{{.NumWatches}}
 								</a>
 							</div>
-							<div class="ui labeled button" tabindex="0">
-								<a class="ui basic button" href="{{$.RepoLink}}/action/{{if $.IsStaringRepo}}un{{end}}star?redirect_to={{$.Link}}">
-									<i class="icon fa-star{{if not $.IsStaringRepo}}-o{{end}}"></i>{{if $.IsStaringRepo}}{{$.i18n.Tr "repo.unstar"}}{{else}}{{$.i18n.Tr "repo.star"}}{{end}}
-								</a>
-								<a class="ui basic label" href="{{.Link}}/stars">
-									{{.NumStars}}
-								</a>
-							</div>
 							{{if .CanBeForked}}
 								<div class="ui labeled button" tabindex="0">
 									<a class="ui basic button {{if eq .OwnerID $.LoggedUserID}}poping up{{end}}" href="{{AppSubURL}}/repo/fork/{{.ID}}">
