@@ -10,8 +10,17 @@
 						{{.i18n.Tr "repo.quick_guide"}}
 					</h4>
 					<div class="ui attached guide table segment">
+						<div class="ui divider"></div>
 						<div class="item">
-							<h3>{{.i18n.Tr "repo.clone_this_repo"}} <small>{{.i18n.Tr "repo.clone_helper" "http://git-scm.com/book/en/Git-Basics-Getting-a-Git-Repository" | Str2HTML}}</small></h3>
+							<h3>Get this repository with the <a href="https://github.com/G-Node/gin-cli/wiki/Downloads">gin client</a>
+							</h3>
+							<div class="markdown">
+								<pre><code>gin get {{.Repository.FullName}}
+								</code></pre>
+							</div>
+						</div>
+						<div class="item">
+							<h3>Or  {{.i18n.Tr "repo.clone_this_repo"}} <small>{{.i18n.Tr "repo.clone_helper" "http://git-scm.com/book/en/Git-Basics-Getting-a-Git-Repository" | Str2html}}</small></h3>
 							<div class="ui action small input">
 								{{if not $.DisableHTTP}}
 									<button class="ui basic clone button" id="repo-clone-https" data-link="{{.CloneLink.HTTPS}}">
@@ -38,7 +47,8 @@
 git init
 git add README.md
 git commit -m "first commit"
-git remote add origin <span class="clone-url">{{if $.DisableSSH}}{{$.CloneLink.HTTPS}}{{else}}{{$.CloneLink.SSH}}{{end}}</span>
+git remote add origin <span
+										class="clone-url">{{if $.DisableSSH}}{{$.CloneLink.HTTPS}}{{else}}{{$.CloneLink.SSH}}{{end}}</span>
 git push -u origin master</code></pre>
 							</div>
 						</div>
