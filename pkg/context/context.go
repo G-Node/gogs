@@ -328,6 +328,8 @@ func Contexter() macaron.Handler {
 		c.Data["ShowFooterBranding"] = setting.ShowFooterBranding
 		c.Data["ShowFooterVersion"] = setting.ShowFooterVersion
 
+		c.Data["auto_init"] = true
+
 		ctx.Map(c)
 	}
 }
