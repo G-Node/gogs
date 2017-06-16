@@ -334,6 +334,8 @@ func SignUpPost(c *context.Context, cpt *captcha.Captcha, f form.Register) {
 		Name:     f.UserName,
 		Email:    f.Email,
 		Passwd:   f.Password,
+		FullName: f.FullName,
+		Location: f.Affiliation,
 		IsActive: !setting.Service.RegisterEmailConfirm,
 	}
 	if err := models.CreateUser(u); err != nil {

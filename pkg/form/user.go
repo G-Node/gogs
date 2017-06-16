@@ -63,10 +63,12 @@ func (f *Install) Validate(ctx *macaron.Context, errs binding.Errors) binding.Er
 //         \/                         \/
 
 type Register struct {
-	UserName string `binding:"Required;AlphaDashDot;MaxSize(35)"`
-	Email    string `binding:"Required;Email;MaxSize(254)"`
-	Password string `binding:"Required;MaxSize(255)"`
-	Retype   string
+	UserName    string `binding:"Required;AlphaDashDot;MaxSize(35)"`
+	Email       string `binding:"Required;Email;MaxSize(254)"`
+	Password    string `binding:"Required;MaxSize(255)"`
+	Retype      string
+	FullName    string
+	Affiliation string
 }
 
 func (f *Register) Validate(ctx *macaron.Context, errs binding.Errors) binding.Errors {
