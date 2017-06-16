@@ -12,41 +12,58 @@
 					{{if .DisableRegistration}}
 						<p>{{.i18n.Tr "auth.disable_register_prompt"}}</p>
 					{{else}}
-						<div class="required inline field {{if .Err_UserName}}error{{end}}">
-							<label for="user_name">{{.i18n.Tr "username"}}</label>
-							<input id="user_name" name="user_name" value="{{.user_name}}" autofocus required>
-						</div>
-						<div class="required inline field {{if .Err_Email}}error{{end}}">
-							<label for="email">{{.i18n.Tr "email"}}</label>
-							<input id="email" name="email" type="email" value="{{.email}}" required>
-						</div>
-						<div class="required inline field {{if .Err_Password}}error{{end}}">
-							<label for="password">{{.i18n.Tr "password"}}</label>
-							<input id="password" name="password" type="password" value="{{.password}}" required>
-						</div>
-						<div class="required inline field {{if .Err_Password}}error{{end}}">
-							<label for="retype">{{.i18n.Tr "re_type"}}</label>
-							<input id="retype" name="retype" type="password" value="{{.retype}}" required>
-						</div>
-						{{if .EnableCaptcha}}
-							<div class="inline field">
-								<label></label>
-								{{.Captcha.CreateHtml}}
-							</div>
-							<div class="required inline field {{if .Err_Captcha}}error{{end}}">
-								<label for="captcha">{{.i18n.Tr "captcha"}}</label>
-								<input id="captcha" name="captcha" value="{{.captcha}}" autocomplete="off">
-							</div>
-						{{end}}
+					<div class="ui piled yellow segment">
+						<h4 class="ui header">Please note!</h4>
+						For Registration we require only username, password and email. Please use an institutional email to
+						register. Otherwise you will only be able to use a subset of gins functionality and your maximum
+						repository size will be dramatically reduced
+					</div>
+					<div class="ui required inline field {{if .Err_UserName}}error{{end}}"
+							 data-tooltip="Username is used to create and to display your repositories. Choose wisely">
+						<label for="user_name">{{.i18n.Tr "username"}}</label>
+						<input id="user_name" name="user_name" value="{{.user_name}}" autofocus required>
+					</div>
+					<div class="required inline field {{if .Err_Email}}error{{end}}"
+							 data-tooltip="Please register with an institutional email (see above)">
+						<label for="email">{{.i18n.Tr "email"}}</label>
+						<input id="email" name="email" type="email" value="{{.email}}" required>
+					</div>
+					<div class="required inline field {{if .Err_Password}}error{{end}}">
+						<label for="password">{{.i18n.Tr "password"}}</label>
+						<input id="password" name="password" type="password" value="{{.password}}" required>
+					</div>
+					<div class="required inline field {{if .Err_Password}}error{{end}}">
+						<label for="retype">{{.i18n.Tr "re_type"}}</label>
+						<input id="retype" name="retype" type="password" value="{{.retype}}" required>
+					</div>
+					<div class="inline field">
+						<label for="retype">Full Name</label>
+						<input id="full_name" name="full_name" value="{{.full_name}}" required>
+					</div>
+					<div class="inline field">
+						<label for="retype">Affiliation</label>
+						<input id="affiliation" name="affiliation" value="{{.affiliation}}" required>
+					</div>
+					{{if .EnableCaptcha}}
+					<div class="inline field">
+						<label></label>
+						{{.Captcha.CreateHtml}}
+					</div>
+					<div class="required inline field {{if .Err_Captcha}}error{{end}}">
+						<label for="captcha">{{.i18n.Tr "captcha"}}</label>
+						<input id="captcha" name="captcha" value="{{.captcha}}" autocomplete="off">
+					</div>
+					{{end}}
 
-						<div class="inline field">
-							<label></label>
-							<button class="ui green button">{{.i18n.Tr "auth.create_new_account"}}</button>
-						</div>
-						<div class="inline field">
-							<label></label>
-							<a href="{{AppSubURL}}/user/login">{{.i18n.Tr "auth.register_hepler_msg"}}</a>
-						</div>
+					<div class="inline field">
+						<label></label>
+						<button class="ui green button">{{.i18n.Tr "auth.create_new_account"}}</button>
+					</div>
+					<div class="inline field">
+						<label></label>
+						<a href="/G-Node/Info/wiki/Terms+of+Use">By clicking "{{.i18n.Tr "auth.create_new_account"}}", you agree to
+							our Terms of Use.</a>
+					</div>
 					{{end}}
 				</div>
 			</form>
