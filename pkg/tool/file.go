@@ -19,6 +19,15 @@ func IsTextFile(data []byte) bool {
 	return strings.Contains(http.DetectContentType(data), "text/")
 }
 
+func IsAnnexedFile(data []byte) bool {
+	if len(data) == 0 {
+		return true
+	}
+	if strings.Contains(http.DetectContentType(data), "text/") {
+		return strings.Contains(string(data), "annex")
+	}
+	return false
+}
 func IsImageFile(data []byte) bool {
 	return strings.Contains(http.DetectContentType(data), "image/")
 }

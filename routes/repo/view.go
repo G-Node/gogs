@@ -141,7 +141,7 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 	n, _ := dataRc.Read(buf)
 	buf = buf[:n]
 
-	isTextFile := tool.IsTextFile(buf)
+	isTextFile := tool.IsTextFile(buf) && !tool.IsAnnexedFile(buf)
 	c.Data["IsTextFile"] = isTextFile
 
 	// Assume file is not editable first.
@@ -216,6 +216,8 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 		c.Data["IsVideoFile"] = true
 	case tool.IsImageFile(buf):
 		c.Data["IsImageFile"] = true
+	case tool.IsAnnexedFile(buf):
+		c.Data["IsAnnexedFile"] = true
 	}
 
 	if canEnableEditor {
