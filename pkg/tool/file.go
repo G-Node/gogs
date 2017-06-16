@@ -20,8 +20,12 @@ func IsTextFile(data []byte) bool {
 }
 
 func IsAnnexedFile(data []byte) bool {
+	const ANNEXSNIFFSIZE = 5000
 	if len(data) == 0 {
 		return true
+	}
+	if !(len(data) < ANNEXSNIFFSIZE) {
+		data = data[:ANNEXSNIFFSIZE]
 	}
 	if strings.Contains(http.DetectContentType(data), "text/") {
 		return strings.Contains(string(data), "annex")
