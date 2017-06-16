@@ -69,6 +69,12 @@
 				<div class="view-raw ui center">
 					{{if .IsImageFile}}
 						<img src="{{EscapePound $.RawFileLink}}">
+					{{else if .IsAnnexedFile}}
+					<div class="ui piled yellow segment">
+						<b>This is an annexed File.</b> This means its full content currently can not be viewed or downloaded
+						with the
+						web interface.
+						Find more information <a href="/G-Node/Info/wiki/Annexed+Files">here</a></div>
 					{{else if .IsVideoFile}}
 						<video controls src="{{EscapePound $.RawFileLink}}">
 							<strong>{{.i18n.Tr "repo.video_not_supported_in_browser"}}</strong>
