@@ -72,8 +72,25 @@
 					{{else if .IsAnnexedFile}}
 					<div class="ui piled yellow segment">
 						<b>This is an annexed File.</b> This means its full content currently can not be viewed or downloaded
-						with the
-						web interface.
+						with the web interface.
+						{{if not $.DisableSSH}}
+						<div>
+							You can nevertheless download it by first cloning the repository with git and getting trhe file using git
+							annex using:
+						</div>
+						<div class="markdown">
+							<pre><code>git clone {{.CloneLink.SSH}}
+git annex get {{.FileName}}
+							</code></pre>
+						</div>
+						<div>
+							Or by using the gin client:
+						</div>
+						<div class="markdown">
+							<pre><code>gin get {{.Owner.Name}}/{{.Repository.Name}}
+							</code></pre>
+
+							{{end}}
 						Find more information <a href="/G-Node/Info/wiki/Annexed+Files">here</a></div>
 					{{else if .IsVideoFile}}
 						<video controls src="{{EscapePound $.RawFileLink}}">
