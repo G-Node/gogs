@@ -75,12 +75,12 @@
 						with the web interface.
 						{{if not $.DisableSSH}}
 						<div>
-							You can nevertheless download it by first cloning the repository with git and getting trhe file using git
+							You can nevertheless download it by first cloning the repository with git and getting the file using git
 							annex using:
 						</div>
 						<div class="markdown">
 							<pre><code>git clone {{.CloneLink.SSH}}
-git annex get {{.FileName}}
+git annex get {{.TreePath}}
 							</code></pre>
 						</div>
 						<div>
