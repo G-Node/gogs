@@ -129,7 +129,7 @@ var (
 		"git-upload-pack":    models.ACCESS_MODE_READ,
 		"git-upload-archive": models.ACCESS_MODE_READ,
 		"git-receive-pack":   models.ACCESS_MODE_WRITE,
-		"git-annex-shell":    models.ACCESS_MODE_WRITE,
+		"git-annex-shell":    models.ACCESS_MODE_READ,
 	}
 )
 
