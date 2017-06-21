@@ -197,6 +197,12 @@ func runServ(c *cli.Context) error {
 		fail("Invalid key ID", "Invalid key ID '%s': %v", c.Args()[0], err)
 	}
 
+	if us, err := models.GetUserByKeyID(key.ID); err == nil {
+		user = us
+	} else {
+		fail("Key Error", "Cannot find key %v", err)
+	}
+
 	if requestMode == models.ACCESS_MODE_WRITE || repo.IsPrivate {
 		// Check deploy key or user key.
 		if key.IsDeployKey() {
@@ -274,7 +280,7 @@ func runServ(c *cli.Context) error {
 
 }
 
-func runGit(cmd [] string, requestMode models.AccessMode, user *models.User, owner *models.User,
+func runGit(cmd []string, requestMode models.AccessMode, user *models.User, owner *models.User,
 	repo *models.Repository) error {
 	log.Info("will exectute:%s", cmd)
 	gitCmd := exec.Command(cmd[0], cmd[1:]...)
@@ -316,11 +322,13 @@ func secureGitAnnex(path string, user *models.User, repo *models.Repository) err
 	if err != nil {
 		return fmt.Errorf("ERROR: Could set annex shell directory.")
 	}
-	mode, err := models.AccessLevel(user.ID, repo)
-	if err != nil {
-		fail("Internal error", "Fail to check access: %v", err)
+	mode := models.ACCESS_MODE_NONE
+	if user != nil {
+		mode, err = models.AccessLevel(user.ID, repo)
+		if err != nil {
+			fail("Internal error", "Fail to check access: %v", err)
+		}
 	}
-
 	if mode < models.ACCESS_MODE_WRITE {
 		err = os.Setenv("GIT_ANNEX_SHELL_READONLY", "True")
 		if err != nil {
