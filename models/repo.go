@@ -207,10 +207,6 @@ type Repository struct {
 	UpdatedUnix int64
 }
 
-func (repo *Repository) CanDoified() bool {
-	return true
-}
-
 func (repo *Repository) BeforeInsert() {
 	repo.CreatedUnix = time.Now().Unix()
 	repo.UpdatedUnix = repo.CreatedUnix

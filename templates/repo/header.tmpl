@@ -38,13 +38,21 @@
 									</a>
 								</div>
 							{{end}}
-							{{if and .CanDoified $.IsRepositoryAdmin}}
+							{{if and $.DOI $.IsRepositoryAdmin}}
 							<div class="ui labeled button" tabindex="0">
 								<a class="ui basic button"
 									 href="https://doi.gin.g-node.org/?repo={{.FullName}}&user={{.Owner.Name}}&token={{$.SessionID}}">
 									<i class="octicon octicon-squirrel"></i> DOIfy
 								</a>
 							</div>
+							{{else}}
+							<div class="ui labeled button" tabindex="0">
+								<a class="ui basic button"
+									 href="/G-Node/Info/wiki/Doi#how-to-get-a-doi">
+									<i class="octicon octicon-squirrel"></i> DOIfy
+								</a>
+							</div>
+
 							{{end}}
 						</div>
 					{{end}}
