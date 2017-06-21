@@ -52,16 +52,19 @@ func renderDirectory(c *context.Context, treeLink string) {
 		c.ServerError("GetCommitsInfoWithCustomConcurrency", err)
 		return
 	}
-
+	c.Data["DOI"] = false
 	var readmeFile *git.Blob
 	for _, entry := range entries {
-		if entry.IsDir() || !markup.IsReadmeFile(entry.Name()) {
+		if entry.IsDir() || (!markup.IsReadmeFile(entry.Name()) && !(entry.Name() == "cloudberry.yml")) {
 			continue
 		}
 
 		// TODO: collect all possible README files and show with priority.
-		readmeFile = entry.Blob()
-		break
+		if markup.IsReadmeFile(entry.Name()) {
+			readmeFile = entry.Blob()
+		} else if entry.Name() == "cloudberry.yml" {
+			c.Data["DOI"] = true
+		}
 	}
 
 	if readmeFile != nil {
