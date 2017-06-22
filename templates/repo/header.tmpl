@@ -46,13 +46,14 @@
 								</a>
 							</div>
 							{{else}}
+							{{if $.IsRepositoryAdmin}}
 							<div class="ui labeled button" tabindex="0">
 								<a class="ui basic button"
 									 href="/G-Node/Info/wiki/Doi#how-to-get-a-doi">
 									<i class="octicon octicon-squirrel"></i> DOIfy
 								</a>
 							</div>
-
+							{{end}}
 							{{end}}
 						</div>
 					{{end}}
