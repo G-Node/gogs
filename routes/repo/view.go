@@ -24,6 +24,7 @@ import (
 	"github.com/gogits/gogs/pkg/template"
 	"github.com/gogits/gogs/pkg/template/highlight"
 	"github.com/gogits/gogs/pkg/tool"
+	"io"
 )
 
 const (
@@ -124,23 +125,25 @@ func renderDirectory(c *context.Context, treeLink string) {
 
 func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink string) {
 	c.Data["IsViewFile"] = true
-
 	blob := entry.Blob()
-	dataRc, err := blob.Data()
-	if err != nil {
-		c.Handle(500, "Data", err)
-		return
-	}
-
+	log.Trace("Blob size is %s", blob.Size())
 	c.Data["FileSize"] = blob.Size()
 	c.Data["FileName"] = blob.Name()
 	c.Data["HighlightClass"] = highlight.FileNameToHighlightClass(blob.Name())
 	c.Data["RawFileLink"] = rawLink + "/" + c.Repo.TreePath
+	if blob.Size() > 1024*1024*100 {
+		c.Data["IsFileTooLarge"] = true
+		return
+	}
+	r, w := io.Pipe()
+	defer r.Close()
+	defer w.Close()
+	go blob.DataPipeline(w, w)
 
 	buf := make([]byte, 1024)
-	n, _ := dataRc.Read(buf)
+	n, _ := r.Read(buf)
+	log.Trace("I read %s bytes", n)
 	buf = buf[:n]
-
 	isTextFile := tool.IsTextFile(buf) && !tool.IsAnnexedFile(buf)
 	c.Data["IsTextFile"] = isTextFile
 
@@ -158,9 +161,12 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 		}
 
 		c.Data["ReadmeExist"] = markup.IsReadmeFile(blob.Name())
-
-		d, _ := ioutil.ReadAll(dataRc)
-		buf = append(buf, d...)
+		if blob.Size() > 1024 {
+			d := make([]byte, blob.Size()-
+				1024)
+			r.Read(d)
+			buf = append(buf, d...)
+		}
 
 		switch markup.Detect(blob.Name()) {
 		case markup.MARKDOWN:
