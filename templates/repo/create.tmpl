@@ -59,8 +59,11 @@
 
 					<div class="ui divider"></div>
 
-					<div class="inline field">
+					<div class="ui inline field" data-tooltip="In case of data repositories you probably dont need this">
 						<label>.gitignore</label>
+						<a target="_blank"
+							 href="https://git-scm.com/docs/gitignore"><span
+							class="octicon octicon-question"></span></a>
 						<div class="ui multiple search normal selection dropdown">
 							<input type="hidden" name="gitignores" value="{{.gitignores}}">
 							<div class="default text">{{.i18n.Tr "repo.repo_gitignore_helper"}}</div>
@@ -71,8 +74,12 @@
 							</div>
 						</div>
 					</div>
-					<div class="inline field">
+					<div class="ui inline field"
+							 data-tooltip="You can choose a license now, or add a licensefile to the repository later">
 						<label>{{.i18n.Tr "repo.license"}}</label>
+						<a target="_blank"
+							 href="/G-Node/Info/wiki/Licensing"><span
+							class="octicon octicon-question"></span></a>
 						<div class="ui search selection dropdown">
 							<input type="hidden" name="license" value="{{.license}}">
 							<div class="default text">{{.i18n.Tr "repo.license_helper"}}</div>
@@ -85,9 +92,7 @@
 					</div>
 
 					<div class="inline field">
-						<label>{{.i18n.Tr "repo.readme"}} <a target="_blank"
-																								 href="https://github.com/gogits/go-gogs-client/wiki/Repositories#litte-notes-on-readme-template"><span
-							class="octicon octicon-question"></span></a></label>
+						<label>{{.i18n.Tr "repo.readme"}}</label>
 						<div class="ui selection dropdown">
 							<input type="hidden" name="readme" value="{{.readme}}">
 							<div class="default text">{{.i18n.Tr "repo.readme_helper"}}</div>
