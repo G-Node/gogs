@@ -36,12 +36,11 @@ func ServeData(c *context.Context, name string, reader io.Reader) error {
 }
 
 func ServeBlob(c *context.Context, blob *git.Blob) error {
-	dataRc, err := blob.Data()
-	if err != nil {
-		return err
-	}
-
-	return ServeData(c, path.Base(c.Repo.TreePath), dataRc)
+	r, w := io.Pipe()
+	defer r.Close()
+	defer w.Close()
+	go blob.DataPipeline(w, w)
+	return ServeData(c, path.Base(c.Repo.TreePath), io.LimitReader(r, blob.Size()))
 }
 
 func SingleDownload(c *context.Context) {
