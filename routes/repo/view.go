@@ -17,6 +17,8 @@ import (
 
 	"github.com/gogits/git-module"
 
+	"bufio"
+	"github.com/G-Node/go-annex"
 	"github.com/gogits/gogs/models"
 	"github.com/gogits/gogs/pkg/context"
 	"github.com/gogits/gogs/pkg/markup"
@@ -25,6 +27,7 @@ import (
 	"github.com/gogits/gogs/pkg/template/highlight"
 	"github.com/gogits/gogs/pkg/tool"
 	"io"
+	"os"
 )
 
 const (
@@ -147,7 +150,31 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 	n, _ := r.Read(buf)
 	log.Trace("I read %s bytes", n)
 	buf = buf[:n]
-	isTextFile := tool.IsTextFile(buf) && !tool.IsAnnexedFile(buf)
+	isannex := tool.IsAnnexedFile(buf)
+
+	var afpR *bufio.Reader
+	var afp *os.File
+	var annexf *gannex.AFile
+	if isannex == true {
+		af, err := gannex.NewAFile(c.Repo.Repository.RepoPath(), "annex", entry.Name(), buf)
+		if err != nil {
+			c.Data["IsAnnexedFile"] = true
+			log.Trace("Could not get annex file: %v", err)
+			return
+		}
+		afp, err = af.Open()
+		if err != nil {
+			log.Trace("Could not open annex file: %v", err)
+			c.Data["IsAnnexedFile"] = true
+			return
+		}
+		afpR = bufio.NewReader(afp)
+		buf, _ = afpR.Peek(1024)
+		annexf = af
+		c.Data["FileSize"] = af.Info.Size()
+	}
+
+	isTextFile := tool.IsTextFile(buf)
 	c.Data["IsTextFile"] = isTextFile
 
 	// Assume file is not editable first.
@@ -158,17 +185,26 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 	canEnableEditor := c.Repo.CanEnableEditor()
 	switch {
 	case isTextFile:
-		if blob.Size() >= setting.UI.MaxDisplayFileSize {
-			c.Data["IsFileTooLarge"] = true
-			break
-		}
+		if !isannex {
+			if blob.Size() >= setting.UI.MaxDisplayFileSize {
+				c.Data["IsFileTooLarge"] = true
+				break
+			}
 
-		c.Data["ReadmeExist"] = markup.IsReadmeFile(blob.Name())
-		if blob.Size() > 1024 {
-			d := make([]byte, blob.Size()-
-				1024)
-			r.Read(d)
-			buf = append(buf, d...)
+			c.Data["ReadmeExist"] = markup.IsReadmeFile(blob.Name())
+			if blob.Size() > 1024 {
+				d := make([]byte, blob.Size()-
+					1024)
+				r.Read(d)
+				buf = append(buf, d...)
+			}
+		} else {
+			if annexf.Info.Size() >= setting.UI.MaxDisplayFileSize {
+				c.Data["IsFileTooLarge"] = true
+				break
+			}
+			c.Data["ReadmeExist"] = markup.IsReadmeFile(blob.Name())
+			afpR.Read(buf)
 		}
 
 		switch markup.Detect(blob.Name()) {
@@ -237,6 +273,10 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 	} else if !c.Repo.IsWriter() {
 		c.Data["DeleteFileTooltip"] = c.Tr("repo.editor.must_have_write_access")
 	}
+}
+
+func renderAnnexFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink string) {
+
 }
 
 func setEditorconfigIfExists(c *context.Context) {

@@ -10,9 +10,12 @@ import (
 
 	"github.com/gogs/git-module"
 
-	"github.com/gogs/gogs/pkg/context"
-	"github.com/gogs/gogs/pkg/setting"
-	"github.com/gogs/gogs/pkg/tool"
+	"bufio"
+	"github.com/G-Node/go-annex"
+	"github.com/gogits/gogs/pkg/context"
+	"github.com/gogits/gogs/pkg/setting"
+	"github.com/gogits/gogs/pkg/tool"
+	"os"
 )
 
 func ServeData(c *context.Context, name string, reader io.Reader) error {
@@ -20,6 +23,21 @@ func ServeData(c *context.Context, name string, reader io.Reader) error {
 	n, _ := reader.Read(buf)
 	if n >= 0 {
 		buf = buf[:n]
+	}
+	isannex := tool.IsAnnexedFile(buf)
+	var afpR *bufio.Reader
+	var afp *os.File
+	if isannex == true {
+		af, err := gannex.NewAFile(c.Repo.Repository.RepoPath(), "annex", name, buf)
+		if err != nil {
+
+		}
+		afp, err = af.Open()
+		if err != nil {
+
+		}
+		afpR = bufio.NewReader(afp)
+		buf, _ = afpR.Peek(1024)
 	}
 
 	if !tool.IsTextFile(buf) {
@@ -29,6 +47,10 @@ func ServeData(c *context.Context, name string, reader io.Reader) error {
 		}
 	} else if !setting.Repository.EnableRawFileRenderMode || !c.QueryBool("render") {
 		c.Resp.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	}
+	if isannex {
+		_, err := io.Copy(c.Resp, afpR)
+		return err
 	}
 	c.Resp.Write(buf)
 	_, err := io.Copy(c.Resp, reader)
