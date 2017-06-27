@@ -3237,3 +3237,17 @@ footer .ui.language .menu {
   font-family: "Kaushan Script", "Helvetica Neue", Helvetica, Arial, cursive;
   font-size: 16px;
 }
+
+.bmbf {
+  width: 80px;
+}
+
+.supersmall {
+  font-size: 0.8em;
+  text-align: left;
+}
+
+.gogssmall {
+  height: 40px;
+  align-content: center;
+}
