@@ -163,6 +163,7 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			return
 		}
 		afp, err = af.Open()
+		defer afp.Close()
 		if err != nil {
 			log.Trace("Could not open annex file: %v", err)
 			c.Data["IsAnnexedFile"] = true
