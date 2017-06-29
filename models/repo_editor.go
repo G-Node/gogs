@@ -21,10 +21,9 @@ import (
 
 	"github.com/gogs/git-module"
 
-	"github.com/gogs/gogs/models/errors"
-	"github.com/gogs/gogs/pkg/process"
-	"github.com/gogs/gogs/pkg/setting"
-	"github.com/gogs/gogs/pkg/tool"
+	"github.com/gogits/gogs/pkg/process"
+	"github.com/gogits/gogs/pkg/setting"
+	"github.com/G-Node/go-annex"
 )
 
 const (
@@ -476,25 +475,33 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 	localPath := repo.LocalCopyPath()
 	dirPath := path.Join(localPath, opts.TreePath)
 	os.MkdirAll(dirPath, os.ModePerm)
-
-	// Copy uploaded files into repository
+	log.Trace("localpath:%s", localPath)
+	// prepare annex
+	gannex.AInit(localPath, "--version=6")
+	// Copy uploaded files into repository.
 	for _, upload := range uploads {
 		tmpPath := upload.LocalPath()
+		targetPath := path.Join(dirPath, upload.Name)
+		repoFileName := path.Join(opts.TreePath, upload.Name)
 		if !com.IsFile(tmpPath) {
 			continue
 		}
-
-		// Prevent copying files into .git directory, see https://github.com/gogs/gogs/issues/5558.
-		if isRepositoryGitPath(upload.Name) {
-			continue
-		}
-
-		targetPath := path.Join(dirPath, upload.Name)
 		if err = com.Copy(tmpPath, targetPath); err != nil {
 			return fmt.Errorf("copy: %v", err)
 		}
+		log.Trace("Check for annexing: %s,%s", upload.Name)
+		if finfo, err := os.Stat(targetPath); err == nil {
+			log.Trace("Filesize is:%s", finfo.Size())
+			if finfo.Size() > 10*gannex.MEGABYTE {
+				log.Trace("This file should be annexed: %s", upload.Name)
+				if msg, err := gannex.Add(repoFileName, localPath); err != nil {
+					log.Trace("Annex add failed with error: %v,%s,%s", err, msg, repoFileName)
+				}
+			}
+		} else {
+			log.Trace("could nor stat: %s", targetPath)
+		}
 	}
-
 	if err = git.AddChanges(localPath, true); err != nil {
 		return fmt.Errorf("git add --all: %v", err)
 	} else if err = git.CommitChanges(localPath, git.CommitChangesOptions{
@@ -514,5 +521,47 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 		return fmt.Errorf("git push origin %s: %v", opts.NewBranch, err)
 	}
 
+	// Sometimes you need this twice
+	if msg, err := gannex.ASync(localPath, "--content", "--no-pull"); err != nil {
+		log.Trace("Annex sync failed with error: %v,%s", err, msg)
+	} else {
+		log.Trace("Annex sync:%s", msg)
+	}
+	if msg, err := gannex.ASync(localPath, "--content", "--no-pull"); err != nil {
+		log.Trace("Annex sync failed with error: %v,%s", err, msg)
+	} else {
+		log.Trace("Annex sync:%s", msg)
+	}
+
+	gitRepo, err := git.OpenRepository(repo.RepoPath())
+	if err != nil {
+		log.Error(2, "OpenRepository: %v", err)
+		return nil
+	}
+	commit, err := gitRepo.GetBranchCommit(opts.NewBranch)
+	if err != nil {
+		log.Error(2, "GetBranchCommit [branch: %s]: %v", opts.NewBranch, err)
+		return nil
+	}
+
+	// Simulate push event.
+	pushCommits := &PushCommits{
+		Len:     1,
+		Commits: []*PushCommit{CommitToPushCommit(commit)},
+	}
+	if err := CommitRepoAction(CommitRepoActionOptions{
+		PusherName:  doer.Name,
+		RepoOwnerID: repo.MustOwner().ID,
+		RepoName:    repo.Name,
+		RefFullName: git.BRANCH_PREFIX + opts.NewBranch,
+		OldCommitID: opts.LastCommitID,
+		NewCommitID: commit.ID.String(),
+		Commits:     pushCommits,
+	}); err != nil {
+		log.Error(2, "CommitRepoAction: %v", err)
+		return nil
+	}
+
+	go AddTestPullRequestTask(doer, repo.ID, opts.NewBranch, true)
 	return DeleteUploads(uploads...)
 }
