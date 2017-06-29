@@ -492,7 +492,7 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 		log.Trace("Check for annexing: %s,%s", upload.Name)
 		if finfo, err := os.Stat(targetPath); err == nil {
 			log.Trace("Filesize is:%s", finfo.Size())
-			if finfo.Size() > 10*gannex.MEGABYTE {
+			if finfo.Size() > setting.Repository.Upload.AnexFileMinSize*gannex.MEGABYTE {
 				log.Trace("This file should be annexed: %s", upload.Name)
 				if msg, err := gannex.Add(repoFileName, localPath); err != nil {
 					log.Trace("Annex add failed with error: %v,%s,%s", err, msg, repoFileName)
