@@ -23,6 +23,7 @@ import (
 
 	"github.com/gogits/gogs/pkg/process"
 	"github.com/gogits/gogs/pkg/setting"
+	"github.com/G-Node/go-annex"
 )
 
 // ___________    .___.__  __    ___________.__.__
@@ -464,20 +465,33 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 	localPath := repo.LocalCopyPath()
 	dirPath := path.Join(localPath, opts.TreePath)
 	os.MkdirAll(dirPath, os.ModePerm)
-
+	log.Trace("localpath:%s", localPath)
+	// prepare annex
+	gannex.AInit(localPath, "--version=6")
 	// Copy uploaded files into repository.
 	for _, upload := range uploads {
 		tmpPath := upload.LocalPath()
 		targetPath := path.Join(dirPath, upload.Name)
+		repoFileName := path.Join(opts.TreePath, upload.Name)
 		if !com.IsFile(tmpPath) {
 			continue
 		}
-
 		if err = com.Copy(tmpPath, targetPath); err != nil {
 			return fmt.Errorf("Copy: %v", err)
 		}
+		log.Trace("Check for annexing: %s,%s", upload.Name)
+		if finfo, err := os.Stat(targetPath); err == nil {
+			log.Trace("Filesize is:%s", finfo.Size())
+			if finfo.Size() > 10*gannex.MEGABYTE {
+				log.Trace("This file should be annexed: %s", upload.Name)
+				if msg, err := gannex.Add(repoFileName, localPath); err != nil {
+					log.Trace("Annex add failed with error: %v,%s,%s", err, msg, repoFileName)
+				}
+			}
+		} else {
+			log.Trace("could nor stat: %s", targetPath)
+		}
 	}
-
 	if err = git.AddChanges(localPath, true); err != nil {
 		return fmt.Errorf("git add --all: %v", err)
 	} else if err = git.CommitChanges(localPath, git.CommitChangesOptions{
@@ -487,6 +501,18 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 		return fmt.Errorf("CommitChanges: %v", err)
 	} else if err = git.Push(localPath, "origin", opts.NewBranch); err != nil {
 		return fmt.Errorf("git push origin %s: %v", opts.NewBranch, err)
+	}
+
+	// Sometimes you need this twice
+	if msg, err := gannex.ASync(localPath, "--content", "--no-pull"); err != nil {
+		log.Trace("Annex sync failed with error: %v,%s", err, msg)
+	} else {
+		log.Trace("Annex sync:%s", msg)
+	}
+	if msg, err := gannex.ASync(localPath, "--content", "--no-pull"); err != nil {
+		log.Trace("Annex sync failed with error: %v,%s", err, msg)
+	} else {
+		log.Trace("Annex sync:%s", msg)
 	}
 
 	gitRepo, err := git.OpenRepository(repo.RepoPath())
