@@ -477,7 +477,7 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 	os.MkdirAll(dirPath, os.ModePerm)
 	log.Trace("localpath:%s", localPath)
 	// prepare annex
-	gannex.AInit(localPath, "--version=6")
+
 	// Copy uploaded files into repository.
 	for _, upload := range uploads {
 		tmpPath := upload.LocalPath()
@@ -492,14 +492,21 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 		log.Trace("Check for annexing: %s,%s", upload.Name)
 		if finfo, err := os.Stat(targetPath); err == nil {
 			log.Trace("Filesize is:%s", finfo.Size())
+			// Should we annex
 			if finfo.Size() > setting.Repository.Upload.AnexFileMinSize*gannex.MEGABYTE {
 				log.Trace("This file should be annexed: %s", upload.Name)
+				// annex init in case it isnt yet
+				if msg, err := gannex.AInit(localPath, "--version=6"); err != nil {
+					log.Error(1, "Annex init failed with error: %v,%s,%s", err, msg, repoFileName)
+				}
+				// worm for compatibility
+				gannex.Worm(localPath)
 				if msg, err := gannex.Add(repoFileName, localPath); err != nil {
-					log.Trace("Annex add failed with error: %v,%s,%s", err, msg, repoFileName)
+					log.Error(1, "Annex add failed with error: %v,%s,%s", err, msg, repoFileName)
 				}
 			}
 		} else {
-			log.Trace("could nor stat: %s", targetPath)
+			log.Error(1, "could not stat: %s", targetPath)
 		}
 	}
 	if err = git.AddChanges(localPath, true); err != nil {
@@ -523,12 +530,12 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 
 	// Sometimes you need this twice
 	if msg, err := gannex.ASync(localPath, "--content", "--no-pull"); err != nil {
-		log.Trace("Annex sync failed with error: %v,%s", err, msg)
+		log.Error(1, "Annex sync failed with error: %v,%s", err, msg)
 	} else {
 		log.Trace("Annex sync:%s", msg)
 	}
 	if msg, err := gannex.ASync(localPath, "--content", "--no-pull"); err != nil {
-		log.Trace("Annex sync failed with error: %v,%s", err, msg)
+		log.Error(1, "Annex sync failed with error: %v,%s", err, msg)
 	} else {
 		log.Trace("Annex sync:%s", msg)
 	}
@@ -561,7 +568,13 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 		log.Error(2, "CommitRepoAction: %v", err)
 		return nil
 	}
-
 	go AddTestPullRequestTask(doer, repo.ID, opts.NewBranch, true)
+
+	// We better start out cleaning now. No use keeping files around with annex
+	if msg, err := gannex.AUInit(localPath); err != nil {
+		log.Error(1, "Annex uninit failed with error: %v,%s, at: %s/ This repository might fail at "+
+			"subsequent uploads!", err, msg, localPath)
+	}
+	RemoveAllWithNotice("Cleaning out after upload", localPath)
 	return DeleteUploads(uploads...)
 }
