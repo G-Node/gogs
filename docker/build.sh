@@ -8,6 +8,10 @@ export PATH=/usr/local/go/bin:${PATH}:${GOPATH}/bin
 
 #
 go get golang.org/x/crypto/bcrypt
+go get github.com/jteeuwen/go-bindata
+cd ${GOPATH}/src/github.com/jteeuwen/go-bindata/go-bindata
+go install
+
 # Build Gogs
 mkdir -p ${GOPATH}/src/github.com/gogs/
 ln -s /app/gogs/build ${GOPATH}/src/github.com/gogs/gogs
