@@ -7,6 +7,12 @@ export GOPATH=/tmp/go
 export PATH=/usr/local/go/bin:${PATH}:${GOPATH}/bin
 export GO15VENDOREXPERIMENT=1
 
+#
+go get golang.org/x/crypto/bcrypt
+go get github.com/jteeuwen/go-bindata
+cd ${GOPATH}/src/github.com/jteeuwen/go-bindata/go-bindata
+go install
+
 # Build Gogs
 mkdir -p ${GOPATH}/src/github.com/G-Node/
 ln -s /app/gogs/build ${GOPATH}/src/github.com/G-Node/gogs
