@@ -1,58 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head data-suburl="{{AppSubURL}}">
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-	{{if not .PageIsAdmin}}
-		<meta name="author" content="{{if .Repository}}{{.Owner.Name}}{{else}}Gogs{{end}}" />
-		<meta name="description" content="{{if .Repository}}{{.Repository.Name}}{{if .Repository.Description}} - {{.Repository.Description}}{{end}}{{else}}Gogs is a painless self-hosted Git service{{end}}" />
-		<meta name="keywords" content="go, git, self-hosted, gogs">
-	{{end}}
-	<meta name="referrer" content="no-referrer" />
-	<meta name="_csrf" content="{{.CSRFToken}}" />
-	<meta name="_suburl" content="{{AppSubURL}}" />
-	{{if .GoGetImport}}
-	<meta name="go-import" content="{{.GoGetImport}} git {{.CloneLink.HTTPS}}"/>
-	<meta name="go-source" content="{{.GoGetImport}} _ {{.GoDocDirectory}} {{.GoDocFile}}"/>
-	{{end}}
-	<!-- Open Graph Tags -->
-	{{if .PageIsAdmin}}
-	{{else if .PageIsUserProfile}}
+	<head data-suburl="{{AppSubURL}}">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		{{if or .PageIsExploreRepositories (or .PageIsHome .PageIsWiki) }}
+		{{else if .PageIsViewFiles }}
+		<META NAME="ROBOTS" CONTENT="NOFOLLOW"/>
+		{{else}}
+		<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW"/>
+		{{end}}
+		{{if not .PageIsAdmin}}
+		<meta name="author" content="{{if .Repository}}{{.Owner.Name}}{{else}}G-Node{{end}}"/>
+		<meta name="description"
+					content="{{if .Repository}}{{.Repository.Name}}{{if .Repository.Description}} - {{.Repository.Description}}{{end}}{{else}}Gin is a data repository for science{{end}}"/>
+		<meta name="keywords" content="gin, data, sharing, science git">
+		{{end}}
+		<meta name="referrer" content="no-referrer"/>
+		<meta name="_csrf" content="{{.CSRFToken}}"/>
+		<meta name="_suburl" content="{{AppSubURL}}"/>
+		{{if .GoGetImport}}
+		<meta name="go-import" content="{{.GoGetImport}} git {{.CloneLink.HTTPS}}"/>
+		<meta name="go-source" content="{{.GoGetImport}} _ {{.GoDocDirectory}} {{.GoDocFile}}"/>
+		{{end}}
+		<!-- Open Graph Tags -->
+		{{if .PageIsAdmin}}
+		{{else if .PageIsUserProfile}}
 		<meta property="og:url" content="{{.Owner.HTMLURL}}" />
 		<meta property="og:type" content="profile" />
 		<meta property="og:title" content="{{.Owner.Name}}{{if .Owner.FullName}} ({{.Owner.FullName}}){{end}}">
 		<meta property="og:description" content="{{.Owner.Name}} has {{.Owner.NumFollowers}} followers and is following {{.Owner.NumFollowing}} people.">
 		<meta property="og:image" content="{{.Owner.AvatarLink}}" />
-	{{else if .Repository}}
+		{{else if .Repository}}
 		<meta property="og:url" content="{{.Repository.HTMLURL}}" />
 		<meta property="og:type" content="object" />
 		<meta property="og:title" content="{{.Repository.FullName}}">
 		<meta property="og:description" content="{{.Repository.Description}}">
 		<meta property="og:image" content="{{.Repository.Owner.AvatarLink}}" />
-	{{else}}
+		{{else}}
 		<meta property="og:url" content="{{AppURL}}" />
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content="{{AppName}}">
-		<meta property="og:description" content="Gogs is a painless self-hosted Git service.">
+		<meta property="og:description" content="Gin is a data repository for science">
 		<meta property="og:image" content="{{AppURL}}img/gogs-lg.png" />
-		<meta property="og:site_name" content="Gogs">
-	{{end}}
+		<meta property="og:site_name" content="Gin">
+		{{end}}
 
-	<link rel="shortcut icon" href="{{AppSubURL}}/img/favicon.png" />
-	<script src="{{AppSubURL}}/js/jquery-1.11.3.min.js"></script>
-	<script src="{{AppSubURL}}/js/libs/jquery.are-you-sure.js"></script>
-	<link rel="stylesheet" href="{{AppSubURL}}/assets/font-awesome-4.6.3/css/font-awesome.min.css">
-	<link rel="stylesheet" href="{{AppSubURL}}/assets/octicons-4.3.0/octicons.min.css">
+		<link rel="shortcut icon" href="{{AppSubURL}}/img/favicon.png"/>
+		<script src="{{AppSubURL}}/js/jquery-1.11.3.min.js"></script>
+		<script src="{{AppSubURL}}/js/libs/jquery.are-you-sure.js"></script>
+		<link rel="stylesheet" href="{{AppSubURL}}/assets/font-awesome-4.6.3/css/font-awesome.min.css">
+		<link rel="stylesheet" href="{{AppSubURL}}/assets/octicons-4.3.0/octicons.min.css">
 
-	<link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
 
-	<!-- notebook.js for rendering ipython notebooks and marked.js for rendering markdown in notebooks -->
-	{{if .IsIPythonNotebook}}
-		<script src="{{AppSubURL}}/plugins/notebookjs-0.3.0/notebook.min.js"></script>
+		<!-- notebook.js for rendering ipython notebooks and marked.js for rendering markdown in notebooks -->
+		{{if .IsIPythonNotebook}}
+		<script src="{{AppSubURL}}/plugins/notebookjs-0.2.6/notebook.min.js"></script>
 		<script src="{{AppSubURL}}/plugins/marked-0.3.6/marked.min.js"></script>
-	{{end}}
+		{{end}}
 
-	{{if .RequireSimpleMDE}}
+		{{if .RequireSimpleMDE}}
 		<link rel="stylesheet" href="{{AppSubURL}}/plugins/simplemde-1.10.1/simplemde.min.css">
 		<script src="{{AppSubURL}}/plugins/simplemde-1.10.1/simplemde.min.js"></script>
 		<script src="{{AppSubURL}}/plugins/codemirror-5.17.0/addon/mode/loadmode.js"></script>
@@ -60,27 +68,21 @@
 		<script>
 			CodeMirror.modeURL =  "{{AppSubURL}}/plugins/codemirror-5.17.0/mode/%N/%N.js";
 		</script>
-	{{end}}
+		{{end}}
 
-	<!-- Stylesheet -->
-	<link rel="stylesheet" href="{{AppSubURL}}/css/semantic-2.3.1.min.css">
-	<link rel="stylesheet" href="{{AppSubURL}}/css/gogs.css?v={{MD5 AppVer}}">
-	<noscript>
-		<style>
-			.dropdown:hover > .menu { display: block; }
-			.ui.secondary.menu .dropdown.item > .menu { margin-top: 0; }
-		 </style>
-	</noscript>
+		<!-- Stylesheet -->
+		<link rel="stylesheet" href="{{AppSubURL}}/css/semantic-2.2.10.min.css">
+		<link rel="stylesheet" href="{{AppSubURL}}/css/gogs.css?v={{MD5 AppVer}}">
 
-	<!-- JavaScript -->
-	<script src="{{AppSubURL}}/js/semantic-2.3.1.min.js"></script>
-	<script src="{{AppSubURL}}/js/gogs.js?v={{MD5 AppVer}}"></script>
+		<!-- JavaScript -->
+		<script src="{{AppSubURL}}/js/semantic-2.2.10.min.js"></script>
+		<script src="{{AppSubURL}}/js/gogs.js?v={{MD5 AppVer}}"></script>
 
-	<title>{{if .Title}}{{.Title}} - {{end}}{{AppName}}</title>
+		<title>{{if .Title}}{{.Title}} - {{end}}{{AppName}}</title>
 
-	<meta name="theme-color" content="{{ThemeColorMetaTag}}">
+		<meta name="theme-color" content="{{ThemeColorMetaTag}}">
 
-	{{template "inject/head" .}}
+		{{template "inject/head" .}}
 </head>
 <body>
 	<div class="full height">
