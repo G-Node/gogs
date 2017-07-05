@@ -1,5 +1,5 @@
 [target]
-path = github.com/gogits/gogs
+path = github.com/G-Node/gogs
 
 [deps]
 github.com/bradfitz/gomemcache = commit:2fafb84

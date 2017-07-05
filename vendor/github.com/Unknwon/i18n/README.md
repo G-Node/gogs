@@ -19,7 +19,7 @@ First of all, you have to import this package:
 import "github.com/Unknwon/i18n"
 ```
 
-The format of locale files is very like INI format configuration file, which is basically key-value pairs. But this module has some improvements. Every language corresponding to a locale file, for example, under `conf/locale` folder of [gogsweb](https://github.com/gogits/gogsweb/tree/master/conf/locale), there are two files called `locale_en-US.ini` and `locale_zh-CN.ini`.
+The format of locale files is very like INI format configuration file, which is basically key-value pairs. But this module has some improvements. Every language corresponding to a locale file, for example, under `conf/locale` folder of [gogsweb](https://github.com/G-Node/gogsweb/tree/master/conf/locale), there are two files called `locale_en-US.ini` and `locale_zh-CN.ini`.
 
 The name and extensions of locale files can be anything, but we strongly recommend you to follow the style of gogsweb.
 

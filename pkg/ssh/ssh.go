@@ -18,8 +18,8 @@ import (
 	"golang.org/x/crypto/ssh"
 	log "gopkg.in/clog.v1"
 
-	"github.com/gogits/gogs/models"
-	"github.com/gogits/gogs/pkg/setting"
+	"github.com/G-Node/gogs/models"
+	"github.com/G-Node/gogs/pkg/setting"
 	"syscall"
 )
 

@@ -17,7 +17,6 @@ import (
 
 	"github.com/G-Node/gogs/pkg/setting"
 	"github.com/G-Node/gogs/pkg/tool"
-	"github.com/G-Node/go-annex"
 )
 
 type NoticeType int
@@ -79,17 +78,6 @@ func RemoveAllWithNotice(title, path string) {
 	// this bug should be fixed on Go 1.7, so the workaround should be removed when Gogs don't support Go 1.6 anymore:
 	// https://github.com/golang/go/commit/2ffb3e5d905b5622204d199128dec06cefd57790
 	// Note: Windows complains when delete target does not exist, therefore we can skip deletion in such cases.
-
-	if msg, err := gannex.AUInit(path); err != nil {
-		if strings.Contains(msg, "If you don't care about preserving the data") {
-			log.Trace("Annex uninit Repo:%s", msg)
-		} else {
-			log.Error(1, "Could not annex uninit repo. Error: %s,%s", err, msg)
-		}
-	} else {
-		log.Trace("Annex uninit Repo:%s", msg)
-	}
-
 	if setting.IsWindows && com.IsExist(path) {
 		// converting "/" to "\" in path on Windows
 		path = strings.Replace(path, "/", "\\", -1)

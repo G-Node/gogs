@@ -15,9 +15,9 @@ import (
 	"github.com/pquerna/otp/totp"
 	log "gopkg.in/clog.v1"
 
-	"github.com/gogits/gogs/models/errors"
-	"github.com/gogits/gogs/pkg/setting"
-	"github.com/gogits/gogs/pkg/tool"
+	"github.com/G-Node/gogs/models/errors"
+	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/gogs/pkg/tool"
 )
 
 // TwoFactor represents a two-factor authentication token.

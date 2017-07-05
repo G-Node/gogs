@@ -9,9 +9,9 @@ import (
 
 	"gopkg.in/macaron.v1"
 
-	"github.com/gogits/gogs/models"
-	"github.com/gogits/gogs/models/errors"
-	"github.com/gogits/gogs/pkg/setting"
+	"github.com/G-Node/gogs/models"
+	"github.com/G-Node/gogs/models/errors"
+	"github.com/G-Node/gogs/pkg/setting"
 )
 
 type Organization struct {

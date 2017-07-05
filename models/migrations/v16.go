@@ -14,7 +14,7 @@ import (
 
 	"github.com/gogits/git-module"
 
-	"github.com/gogits/gogs/pkg/setting"
+	"github.com/G-Node/gogs/pkg/setting"
 )
 
 func updateRepositorySizes(x *xorm.Engine) (err error) {

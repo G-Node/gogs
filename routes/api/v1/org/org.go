@@ -7,10 +7,10 @@ package org
 import (
 	api "github.com/gogits/go-gogs-client"
 
-	"github.com/gogits/gogs/models"
-	"github.com/gogits/gogs/pkg/context"
-	"github.com/gogits/gogs/routes/api/v1/convert"
-	"github.com/gogits/gogs/routes/api/v1/user"
+	"github.com/G-Node/gogs/models"
+	"github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/routes/api/v1/convert"
+	"github.com/G-Node/gogs/routes/api/v1/user"
 )
 
 func listUserOrgs(c *context.APIContext, u *models.User, all bool) {

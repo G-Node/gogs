@@ -14,8 +14,8 @@ import (
 	"github.com/Unknwon/com"
 	"golang.org/x/net/html"
 
-	"github.com/gogits/gogs/pkg/setting"
-	"github.com/gogits/gogs/pkg/tool"
+	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/gogs/pkg/tool"
 )
 
 // IsReadmeFile reports whether name looks like a README file based on its extension.
