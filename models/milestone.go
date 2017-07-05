@@ -13,7 +13,7 @@ import (
 
 	api "github.com/gogs/go-gogs-client"
 
-	"github.com/gogs/gogs/pkg/setting"
+	"github.com/G-Node/gogs/pkg/setting"
 )
 
 // Milestone represents a milestone of repository.

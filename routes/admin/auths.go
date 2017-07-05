@@ -13,11 +13,11 @@ import (
 	"github.com/go-xorm/core"
 	log "gopkg.in/clog.v1"
 
-	"github.com/gogs/gogs/models"
-	"github.com/gogs/gogs/pkg/auth/ldap"
-	"github.com/gogs/gogs/pkg/context"
-	"github.com/gogs/gogs/pkg/form"
-	"github.com/gogs/gogs/pkg/setting"
+	"github.com/G-Node/gogs/models"
+	"github.com/G-Node/gogs/pkg/auth/ldap"
+	"github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/pkg/form"
+	"github.com/G-Node/gogs/pkg/setting"
 )
 
 const (

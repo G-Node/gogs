@@ -13,9 +13,9 @@ cd ${GOPATH}/src/github.com/jteeuwen/go-bindata/go-bindata
 go install
 
 # Build Gogs
-mkdir -p ${GOPATH}/src/github.com/gogs/
-ln -s /app/gogs/build ${GOPATH}/src/github.com/gogs/gogs
-cd ${GOPATH}/src/github.com/gogs/gogs
+mkdir -p ${GOPATH}/src/github.com/G-Node/
+ln -s /app/gogs/build ${GOPATH}/src/github.com/G-Node/gogs
+cd ${GOPATH}/src/github.com/G-Node/gogs
 # Needed since git 2.9.3 or 2.9.4
 git config --global http.https://gopkg.in.followRedirects true
 make build TAGS="sqlite cert pam"

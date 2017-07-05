@@ -13,10 +13,10 @@ import (
 	log "gopkg.in/clog.v1"
 	"gopkg.in/macaron.v1"
 
-	"github.com/gogs/gogs/models"
-	"github.com/gogs/gogs/models/errors"
-	"github.com/gogs/gogs/pkg/setting"
-	"github.com/gogs/gogs/pkg/tool"
+	"github.com/G-Node/gogs/models"
+	"github.com/G-Node/gogs/models/errors"
+	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/gogs/pkg/tool"
 )
 
 func IsAPIPath(url string) bool {

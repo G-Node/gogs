@@ -8,9 +8,9 @@ import (
 	"github.com/Unknwon/paginater"
 	log "gopkg.in/clog.v1"
 
-	"github.com/gogs/gogs/models"
-	"github.com/gogs/gogs/pkg/context"
-	"github.com/gogs/gogs/pkg/setting"
+	"github.com/G-Node/gogs/models"
+	"github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/pkg/setting"
 )
 
 const (

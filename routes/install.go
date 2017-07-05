@@ -17,19 +17,19 @@ import (
 	"gopkg.in/ini.v1"
 	"gopkg.in/macaron.v1"
 
-	"github.com/gogs/git-module"
+	"github.com/gogits/git-module"
 
-	"github.com/gogs/gogs/models"
-	"github.com/gogs/gogs/pkg/context"
-	"github.com/gogs/gogs/pkg/cron"
-	"github.com/gogs/gogs/pkg/form"
-	"github.com/gogs/gogs/pkg/mailer"
-	"github.com/gogs/gogs/pkg/markup"
-	"github.com/gogs/gogs/pkg/setting"
-	"github.com/gogs/gogs/pkg/ssh"
-	"github.com/gogs/gogs/pkg/template/highlight"
-	"github.com/gogs/gogs/pkg/tool"
-	"github.com/gogs/gogs/pkg/user"
+	"github.com/G-Node/gogs/models"
+	"github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/pkg/cron"
+	"github.com/G-Node/gogs/pkg/form"
+	"github.com/G-Node/gogs/pkg/mailer"
+	"github.com/G-Node/gogs/pkg/markup"
+	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/gogs/pkg/ssh"
+	"github.com/G-Node/gogs/pkg/template/highlight"
+	"github.com/G-Node/gogs/pkg/tool"
+	"github.com/G-Node/gogs/pkg/user"
 )
 
 const (

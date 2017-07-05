@@ -9,7 +9,7 @@ import (
 
 	. "github.com/smartystreets/goconvey/convey"
 
-	. "github.com/gogs/gogs/pkg/markup"
+	. "github.com/G-Node/gogs/pkg/markup"
 )
 
 func Test_Sanitizer(t *testing.T) {

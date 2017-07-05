@@ -7,9 +7,9 @@ package admin
 import (
 	api "github.com/gogs/go-gogs-client"
 
-	"github.com/gogs/gogs/pkg/context"
-	"github.com/gogs/gogs/routes/api/v1/repo"
-	"github.com/gogs/gogs/routes/api/v1/user"
+	"github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/routes/api/v1/repo"
+	"github.com/G-Node/gogs/routes/api/v1/user"
 )
 
 // https://github.com/gogs/go-gogs-client/wiki/Administration-Repositories#create-a-new-repository

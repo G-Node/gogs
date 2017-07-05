@@ -9,10 +9,10 @@ import (
 
 	api "github.com/gogs/go-gogs-client"
 
-	"github.com/gogs/gogs/models"
-	"github.com/gogs/gogs/pkg/context"
-	"github.com/gogs/gogs/pkg/setting"
-	"github.com/gogs/gogs/routes/api/v1/convert"
+	"github.com/G-Node/gogs/models"
+	"github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/gogs/routes/api/v1/convert"
 )
 
 func composeDeployKeysAPILink(repoPath string) string {

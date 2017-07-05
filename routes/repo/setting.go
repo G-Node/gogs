@@ -14,13 +14,14 @@ import (
 	"github.com/gogs/git-module"
 	log "gopkg.in/clog.v1"
 
-	"github.com/gogs/gogs/models"
-	"github.com/gogs/gogs/models/errors"
-	"github.com/gogs/gogs/pkg/context"
-	"github.com/gogs/gogs/pkg/form"
-	"github.com/gogs/gogs/pkg/mailer"
-	"github.com/gogs/gogs/pkg/setting"
-	"github.com/gogs/gogs/pkg/tool"
+	"github.com/gogits/git-module"
+
+	"github.com/G-Node/gogs/models"
+	"github.com/G-Node/gogs/models/errors"
+	"github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/pkg/form"
+	"github.com/G-Node/gogs/pkg/mailer"
+	"github.com/G-Node/gogs/pkg/setting"
 )
 
 const (

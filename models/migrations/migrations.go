@@ -13,7 +13,7 @@ import (
 	"github.com/go-xorm/xorm"
 	log "gopkg.in/clog.v1"
 
-	"github.com/gogs/gogs/pkg/tool"
+	"github.com/G-Node/gogs/pkg/tool"
 )
 
 const _MIN_DB_VER = 10

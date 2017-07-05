@@ -24,8 +24,8 @@ import (
 	_ "github.com/lib/pq"
 	log "gopkg.in/clog.v1"
 
-	"github.com/gogs/gogs/models/migrations"
-	"github.com/gogs/gogs/pkg/setting"
+	"github.com/G-Node/gogs/models/migrations"
+	"github.com/G-Node/gogs/pkg/setting"
 )
 
 // Engine represents a XORM engine or session.

@@ -15,8 +15,8 @@ import (
 
 	api "github.com/gogs/go-gogs-client"
 
-	"github.com/gogs/gogs/models/errors"
-	"github.com/gogs/gogs/pkg/markup"
+	"github.com/G-Node/gogs/models/errors"
+	"github.com/G-Node/gogs/pkg/markup"
 )
 
 // CommentType defines whether a comment is just a simple comment, an action (like close) or a reference.

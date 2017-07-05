@@ -7,9 +7,9 @@ package repo
 import (
 	"github.com/gogs/git-module"
 
-	"github.com/gogs/gogs/models"
-	"github.com/gogs/gogs/pkg/context"
-	"github.com/gogs/gogs/routes/repo"
+	"github.com/G-Node/gogs/models"
+	"github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/routes/repo"
 )
 
 // https://github.com/gogs/go-gogs-client/wiki/Repositories-Contents#download-raw-content

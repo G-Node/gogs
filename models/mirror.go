@@ -18,10 +18,10 @@ import (
 
 	"github.com/gogs/git-module"
 
-	"github.com/gogs/gogs/models/errors"
-	"github.com/gogs/gogs/pkg/process"
-	"github.com/gogs/gogs/pkg/setting"
-	"github.com/gogs/gogs/pkg/sync"
+	"github.com/G-Node/gogs/models/errors"
+	"github.com/G-Node/gogs/pkg/process"
+	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/gogs/pkg/sync"
 )
 
 var MirrorQueue = sync.NewUniqueQueue(setting.Repository.MirrorQueueLength)

@@ -1,9 +1,9 @@
-Gogs [![Build Status](https://travis-ci.org/gogs/gogs.svg?branch=master)](https://travis-ci.org/gogs/gogs) [![Build status](https://ci.appveyor.com/api/projects/status/b9uu5ejl933e2wlt/branch/master?svg=true)](https://ci.appveyor.com/project/Unknwon/gogs/branch/master) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/gogs/localized.svg)](https://crowdin.com/project/gogs) [![Discord](https://img.shields.io/discord/382595433060499458.svg)](https://discord.gg/9aqdHU7)
+Gogs [![Build Status](https://travis-ci.org/G-Node/gogs.svg?branch=master)](https://travis-ci.org/G-Node/gogs) [![Build status](https://ci.appveyor.com/api/projects/status/b9uu5ejl933e2wlt/branch/master?svg=true)](https://ci.appveyor.com/project/Unknwon/gogs/branch/master) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/gogs/localized.svg)](https://crowdin.com/project/gogs) [![Sourcegraph](https://sourcegraph.com/github.com/G-Node/gogs/-/badge.svg)](https://sourcegraph.com/github.com/G-Node/gogs?badge) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/G-Node/gogs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 =====================
 
-![](https://github.com/gogs/gogs/blob/master/public/img/gogs-large-resize.png?raw=true)
+![](https://github.com/G-Node/gogs/blob/master/public/img/gogs-large-resize.png?raw=true)
 
-##### Current tip version: [`.VERSION`](templates/.VERSION) (see [Releases](https://github.com/gogs/gogs/releases) for binary versions)
+##### Current tip version: [`.VERSION`](templates/.VERSION) (see [Releases](https://github.com/G-Node/gogs/releases) for binary versions)
 
 | Web | UI  | Preview  |
 |:-------------:|:-------:|:-------:|
@@ -13,7 +13,7 @@ Gogs [![Build Status](https://travis-ci.org/gogs/gogs.svg?branch=master)](https:
 
 ### Important Notes
 
-1. **YOU MUST READ [Contributing Code](https://github.com/gogs/gogs/wiki/Contributing-Code) BEFORE STARTING TO WORK ON A PULL REQUEST**.
+1. **YOU MUST READ [Contributing Code](https://github.com/G-Node/gogs/wiki/Contributing-Code) BEFORE STARTING TO WORK ON A PULL REQUEST**.
 2. Due to testing purpose, data of [try.gogs.io](https://try.gogs.io) was reset in **Jan 28, 2015** and will reset multiple times after. Please do **NOT** put your important data on the site.
 3. The demo site [try.gogs.io](https://try.gogs.io) is running under `develop` branch.
 4. If you think there are vulnerabilities in the project, please talk privately to **u@gogs.io**, and the name you want to be credited as. Thanks!
@@ -74,7 +74,7 @@ There are 6 ways to install Gogs:
 - [Install from binary](https://gogs.io/docs/installation/install_from_binary.html)
 - [Install from source](https://gogs.io/docs/installation/install_from_source.html)
 - [Install from packages](https://gogs.io/docs/installation/install_from_packages.html)
-- [Ship with Docker](https://github.com/gogs/gogs/tree/master/docker)
+- [Ship with Docker](https://github.com/G-Node/gogs/tree/master/docker)
 - [Install with Vagrant](https://github.com/geerlingguy/ansible-vagrant-examples/tree/master/gogs)
 - [Install with Kubernetes Using Helm Charts](https://github.com/helm/charts/tree/master/incubator/gogs)
 
@@ -137,6 +137,4 @@ There are 6 ways to install Gogs:
 
 ## License
 
-This project is under the MIT License. See the [LICENSE](https://github.com/gogs/gogs/blob/master/LICENSE) file for the full license text.
-
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fgogs%2Fgogs.svg?type=small)](https://app.fossa.io/projects/git%2Bgithub.com%2Fgogs%2Fgogs?ref=badge_small)
+This project is under the MIT License. See the [LICENSE](https://github.com/G-Node/gogs/blob/master/LICENSE) file for the full license text.

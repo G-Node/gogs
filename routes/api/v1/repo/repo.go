@@ -9,14 +9,14 @@ import (
 
 	log "gopkg.in/clog.v1"
 
-	api "github.com/gogs/go-gogs-client"
+	api "github.com/gogits/go-gogs-client"
 
-	"github.com/gogs/gogs/models"
-	"github.com/gogs/gogs/models/errors"
-	"github.com/gogs/gogs/pkg/context"
-	"github.com/gogs/gogs/pkg/form"
-	"github.com/gogs/gogs/pkg/setting"
-	"github.com/gogs/gogs/routes/api/v1/convert"
+	"github.com/G-Node/gogs/models"
+	"github.com/G-Node/gogs/models/errors"
+	"github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/pkg/form"
+	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/gogs/routes/api/v1/convert"
 )
 
 // https://github.com/gogs/go-gogs-client/wiki/Repositories#search-repositories

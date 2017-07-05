@@ -21,12 +21,10 @@ import (
 
 	"github.com/gogs/git-module"
 
-	"github.com/gogs/gogs/models"
-	"github.com/gogs/gogs/models/errors"
-	"github.com/gogs/gogs/pkg/httplib"
-	"github.com/gogs/gogs/pkg/mailer"
-	"github.com/gogs/gogs/pkg/setting"
-	"github.com/gogs/gogs/pkg/template"
+	"github.com/G-Node/gogs/models"
+	"github.com/G-Node/gogs/pkg/httplib"
+	"github.com/G-Node/gogs/pkg/setting"
+	http "github.com/G-Node/gogs/routes/repo"
 )
 
 var (

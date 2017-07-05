@@ -12,9 +12,8 @@ import (
 	"github.com/gogs/git-module"
 	api "github.com/gogs/go-gogs-client"
 
-	"github.com/gogs/gogs/models"
-	"github.com/gogs/gogs/pkg/context"
-	"github.com/gogs/gogs/pkg/tool"
+	"github.com/G-Node/gogs/models"
+	"github.com/G-Node/gogs/pkg/context"
 )
 
 const (

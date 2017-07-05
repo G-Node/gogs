@@ -20,11 +20,22 @@ import (
 	log "gopkg.in/clog.v1"
 	"gopkg.in/macaron.v1"
 
-	"github.com/gogs/gogs/models"
-	"github.com/gogs/gogs/models/errors"
-	"github.com/gogs/gogs/pkg/context"
-	"github.com/gogs/gogs/pkg/setting"
-	"github.com/gogs/gogs/pkg/tool"
+	"github.com/G-Node/gogs/models"
+	"github.com/G-Node/gogs/models/errors"
+	"github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/gogs/pkg/tool"
+)
+
+const (
+	ENV_AUTH_USER_ID           = "GOGS_AUTH_USER_ID"
+	ENV_AUTH_USER_NAME         = "GOGS_AUTH_USER_NAME"
+	ENV_AUTH_USER_EMAIL        = "GOGS_AUTH_USER_EMAIL"
+	ENV_REPO_OWNER_NAME        = "GOGS_REPO_OWNER_NAME"
+	ENV_REPO_OWNER_SALT_MD5    = "GOGS_REPO_OWNER_SALT_MD5"
+	ENV_REPO_ID                = "GOGS_REPO_ID"
+	ENV_REPO_NAME              = "GOGS_REPO_NAME"
+	ENV_REPO_CUSTOM_HOOKS_PATH = "GOGS_REPO_CUSTOM_HOOKS_PATH"
 )
 
 type HTTPContext struct {

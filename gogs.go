@@ -12,8 +12,8 @@ import (
 
 	"github.com/urfave/cli"
 
-	"github.com/gogs/gogs/cmd"
-	"github.com/gogs/gogs/pkg/setting"
+	"github.com/G-Node/gogs/cmd"
+	"github.com/G-Node/gogs/pkg/setting"
 )
 
 const APP_VER = "0.11.88.0220"
