@@ -20,9 +20,9 @@ import (
 	"github.com/gogits/git-module"
 	api "github.com/gogits/go-gogs-client"
 
-	"github.com/gogits/gogs/models/errors"
-	"github.com/gogits/gogs/pkg/setting"
-	"github.com/gogits/gogs/pkg/tool"
+	"github.com/G-Node/gogs/models/errors"
+	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/gogs/pkg/tool"
 )
 
 type ActionType int

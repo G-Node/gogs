@@ -27,9 +27,9 @@ import (
 
 	"github.com/gogits/go-libravatar"
 
-	"github.com/gogits/gogs/pkg/bindata"
-	"github.com/gogits/gogs/pkg/process"
-	"github.com/gogits/gogs/pkg/user"
+	"github.com/G-Node/gogs/pkg/bindata"
+	"github.com/G-Node/gogs/pkg/process"
+	"github.com/G-Node/gogs/pkg/user"
 )
 
 type Scheme string

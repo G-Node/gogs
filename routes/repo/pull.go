@@ -14,12 +14,12 @@ import (
 
 	"github.com/gogits/git-module"
 
-	"github.com/gogits/gogs/models"
-	"github.com/gogits/gogs/models/errors"
-	"github.com/gogits/gogs/pkg/context"
-	"github.com/gogits/gogs/pkg/form"
-	"github.com/gogits/gogs/pkg/setting"
-	"github.com/gogits/gogs/pkg/tool"
+	"github.com/G-Node/gogs/models"
+	"github.com/G-Node/gogs/models/errors"
+	"github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/pkg/form"
+	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/gogs/pkg/tool"
 )
 
 const (

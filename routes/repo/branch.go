@@ -11,8 +11,8 @@ import (
 
 	"github.com/gogits/git-module"
 
-	"github.com/gogits/gogs/models"
-	"github.com/gogits/gogs/pkg/context"
+	"github.com/G-Node/gogs/models"
+	"github.com/G-Node/gogs/pkg/context"
 )
 
 const (

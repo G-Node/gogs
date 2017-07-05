@@ -1,9 +1,9 @@
-Gogs [![Build Status](https://travis-ci.org/gogits/gogs.svg?branch=master)](https://travis-ci.org/gogits/gogs) [![Build status](https://ci.appveyor.com/api/projects/status/b9uu5ejl933e2wlt/branch/master?svg=true)](https://ci.appveyor.com/project/Unknwon/gogs/branch/master) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/gogs/localized.svg)](https://crowdin.com/project/gogs) [![Sourcegraph](https://sourcegraph.com/github.com/gogits/gogs/-/badge.svg)](https://sourcegraph.com/github.com/gogits/gogs?badge) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/gogits/gogs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+Gogs [![Build Status](https://travis-ci.org/G-Node/gogs.svg?branch=master)](https://travis-ci.org/G-Node/gogs) [![Build status](https://ci.appveyor.com/api/projects/status/b9uu5ejl933e2wlt/branch/master?svg=true)](https://ci.appveyor.com/project/Unknwon/gogs/branch/master) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/gogs/localized.svg)](https://crowdin.com/project/gogs) [![Sourcegraph](https://sourcegraph.com/github.com/G-Node/gogs/-/badge.svg)](https://sourcegraph.com/github.com/G-Node/gogs?badge) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/G-Node/gogs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 =====================
 
-![](https://github.com/gogits/gogs/blob/master/public/img/gogs-large-resize.png?raw=true)
+![](https://github.com/G-Node/gogs/blob/master/public/img/gogs-large-resize.png?raw=true)
 
-##### Current tip version: [`.VERSION`](templates/.VERSION) (see [Releases](https://github.com/gogits/gogs/releases) for binary versions)
+##### Current tip version: [`.VERSION`](templates/.VERSION) (see [Releases](https://github.com/G-Node/gogs/releases) for binary versions)
 
 | Web | UI  | Preview  |
 |:-------------:|:-------:|:-------:|
@@ -13,7 +13,7 @@ Gogs [![Build Status](https://travis-ci.org/gogits/gogs.svg?branch=master)](http
 
 ### Important Notes
 
-1. **YOU MUST READ [Contributing Code](https://github.com/gogits/gogs/wiki/Contributing-Code) BEFORE STARTING TO WORK ON A PULL REQUEST**.
+1. **YOU MUST READ [Contributing Code](https://github.com/G-Node/gogs/wiki/Contributing-Code) BEFORE STARTING TO WORK ON A PULL REQUEST**.
 2. Due to testing purpose, data of [try.gogs.io](https://try.gogs.io) was reset in **Jan 28, 2015** and will reset multiple times after. Please do **NOT** put your important data on the site.
 3. The demo site [try.gogs.io](https://try.gogs.io) is running under `develop` branch.
 4. If you think there are vulnerabilities in the project, please talk privately to **u@gogs.io**, and the name you want to be credited as. Thanks!
@@ -74,7 +74,7 @@ There are 5 ways to install Gogs:
 - [Install from binary](https://gogs.io/docs/installation/install_from_binary.html)
 - [Install from source](https://gogs.io/docs/installation/install_from_source.html)
 - [Install from packages](https://gogs.io/docs/installation/install_from_packages.html)
-- [Ship with Docker](https://github.com/gogits/gogs/tree/master/docker)
+- [Ship with Docker](https://github.com/G-Node/gogs/tree/master/docker)
 - [Install with Vagrant](https://github.com/geerlingguy/ansible-vagrant-examples/tree/master/gogs)
 
 ### Tutorials
@@ -135,4 +135,4 @@ There are 5 ways to install Gogs:
 
 ## License
 
-This project is under the MIT License. See the [LICENSE](https://github.com/gogits/gogs/blob/master/LICENSE) file for the full license text.
+This project is under the MIT License. See the [LICENSE](https://github.com/G-Node/gogs/blob/master/LICENSE) file for the full license text.

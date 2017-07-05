@@ -19,9 +19,9 @@ import (
 	"github.com/go-xorm/xorm"
 	log "gopkg.in/clog.v1"
 
-	"github.com/gogits/gogs/models/errors"
-	"github.com/gogits/gogs/pkg/auth/ldap"
-	"github.com/gogits/gogs/pkg/auth/pam"
+	"github.com/G-Node/gogs/models/errors"
+	"github.com/G-Node/gogs/pkg/auth/ldap"
+	"github.com/G-Node/gogs/pkg/auth/pam"
 )
 
 type LoginType int

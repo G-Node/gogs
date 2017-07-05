@@ -21,8 +21,8 @@ import (
 
 	git "github.com/gogits/git-module"
 
-	"github.com/gogits/gogs/pkg/process"
-	"github.com/gogits/gogs/pkg/setting"
+	"github.com/G-Node/gogs/pkg/process"
+	"github.com/G-Node/gogs/pkg/setting"
 	"github.com/G-Node/go-annex"
 )
 
