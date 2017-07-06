@@ -46,7 +46,7 @@
 								</a>
 							</div>
 							{{else}}
-							{{if $.IsRepositoryAdmin}}
+							{{if and $.IsRepositoryAdmin $.CommitsCount}}
 							<div class="ui labeled button" tabindex="0">
 								<a class="ui basic button"
 									 href="/G-Node/Info/wiki/Doi#how-to-get-a-doi">
