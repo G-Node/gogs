@@ -5,6 +5,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 		{{if or .PageIsExploreRepositories (or .PageIsHome .PageIsWiki) }}
+		<META NAME="ROBOTS" CONTENT="NOFOLLOW"/>
 		{{else if .PageIsViewFiles }}
 		<META NAME="ROBOTS" CONTENT="NOFOLLOW"/>
 		{{else}}
