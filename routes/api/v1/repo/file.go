@@ -23,19 +23,7 @@ func GetRawFile(c *context.APIContext) {
 		c.Status(404)
 		return
 	}
-
-	blob, err := c.Repo.Commit.GetBlobByPath(c.Repo.TreePath)
-	if err != nil {
-		if git.IsErrNotExist(err) {
-			c.Status(404)
-		} else {
-			c.Error(500, "GetBlobByPath", err)
-		}
-		return
-	}
-	if err = repo.ServeBlob(c.Context, blob); err != nil {
-		c.Error(500, "ServeBlob", err)
-	}
+	return
 }
 
 // https://github.com/gogs/go-gogs-client/wiki/Repositories-Contents#download-archive

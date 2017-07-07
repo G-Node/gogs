@@ -1,0 +1,31 @@
+{{template "base/head" .}}
+<div class="user signup">
+	<div class="ui middle very relaxed page grid">
+		<div class="column">
+			<form class="ui form" action="{{.Link}}" method="get">
+				{{.CSRFTokenHTML}}
+				<h3 class="ui top attached header">
+					Solve captcha to proceed
+				</h3>
+				<div class="ui attached segment">
+					{{template "base/alert" .}}
+					{{if .EnableCaptcha}}
+					<div class="inline field">
+						<label></label>
+						{{.Captcha.CreateHtml}}
+					</div>
+					<div class="required inline field {{if .Err_Captcha}}error{{end}}">
+						<label for="captcha">{{.i18n.Tr "captcha"}}</label>
+						<input id="captcha" name="captcha" value="{{.captcha}}" autocomplete="off">
+					</div>
+					{{end}}
+					<div class="inline field">
+						<label></label>
+						<button class="ui button">Proceed</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+	{{template "base/footer" .}}

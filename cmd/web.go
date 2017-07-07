@@ -330,7 +330,7 @@ func runWeb(c *cli.Context) error {
 			c.Header().Set("Cache-Control", "public,max-age=86400")
 			fmt.Println("attach.Name:", attach.Name)
 			c.Header().Set("Content-Disposition", fmt.Sprintf(`inline; filename="%s"`, attach.Name))
-			if err = repo.ServeData(c, attach.Name, fr); err != nil {
+			if err = repo.ServeData(c, attach.Name, fr, nil); err != nil {
 				c.Handle(500, "ServeData", err)
 				return
 			}

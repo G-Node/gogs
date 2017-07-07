@@ -16,9 +16,10 @@ import (
 	"github.com/G-Node/gogs/pkg/setting"
 	"github.com/G-Node/gogs/pkg/tool"
 	"os"
+	"github.com/go-macaron/captcha"
 )
 
-func ServeData(c *context.Context, name string, reader io.Reader) error {
+func ServeData(c *context.Context, name string, reader io.Reader, cpt *captcha.Captcha) error {
 	buf := make([]byte, 1024)
 	n, _ := reader.Read(buf)
 	if n >= 0 {
@@ -32,7 +33,13 @@ func ServeData(c *context.Context, name string, reader io.Reader) error {
 		if err != nil {
 
 		}
+		if af.Info.Size() > gannex.MEGABYTE*setting.Repository.RawCaptchaMinFileSize && !cpt.VerifyReq(c.Req) {
+			c.Data["EnableCaptcha"] = true
+			c.HTML(200, "repo/download")
+			return nil
+		}
 		afp, err = af.Open()
+		defer afp.Close()
 		if err != nil {
 
 		}
@@ -57,16 +64,22 @@ func ServeData(c *context.Context, name string, reader io.Reader) error {
 	return err
 }
 
-func ServeBlob(c *context.Context, blob *git.Blob) error {
+func ServeBlob(c *context.Context, blob *git.Blob, cpt *captcha.Captcha) error {
 	r, w := io.Pipe()
 	defer r.Close()
 	defer w.Close()
 	go blob.DataPipeline(w, w)
-	return ServeData(c, path.Base(c.Repo.TreePath), io.LimitReader(r, blob.Size()))
+	return ServeData(c, path.Base(c.Repo.TreePath), io.LimitReader(r, blob.Size()), cpt)
 }
 
-func SingleDownload(c *context.Context) {
+func SingleDownload(c *context.Context, cpt *captcha.Captcha) {
 	blob, err := c.Repo.Commit.GetBlobByPath(c.Repo.TreePath)
+	if blob.Size() > gannex.MEGABYTE*setting.Repository.RawCaptchaMinFileSize && setting.Service.EnableCaptcha &&
+		!cpt.VerifyReq(c.Req) {
+		c.Data["EnableCaptcha"] = true
+		c.HTML(200, "repo/download")
+		return
+	}
 	if err != nil {
 		if git.IsErrNotExist(err) {
 			c.Handle(404, "GetBlobByPath", nil)
@@ -75,7 +88,7 @@ func SingleDownload(c *context.Context) {
 		}
 		return
 	}
-	if err = ServeBlob(c, blob); err != nil {
+	if err = ServeBlob(c, blob, cpt); err != nil {
 		c.Handle(500, "ServeBlob", err)
 	}
 }
