@@ -134,7 +134,7 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 	c.Data["IsViewFile"] = true
 	blob := entry.Blob()
 	log.Trace("Blob size is %s", blob.Size())
-	if blob.Size() > gannex.MEGABYTE*10 && setting.Service.EnableCaptcha && !cpt.VerifyReq(c.Req) {
+	if blob.Size() > gannex.MEGABYTE*10 && setting.Service.EnableCaptcha && !cpt.VerifyReq(c.Req) && !c.IsLogged {
 		c.Data["EnableCaptcha"] = true
 		c.HTML(200, "repo/download")
 		return
@@ -166,7 +166,7 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			return
 		}
 		if af.Info.Size() > gannex.MEGABYTE*setting.Repository.CaptchaMinFileSize && setting.Service.EnableCaptcha &&
-			!cpt.VerifyReq(c.Req) {
+			!cpt.VerifyReq(c.Req) && !c.IsLogged {
 			c.Data["EnableCaptcha"] = true
 			c.HTML(200, "repo/download")
 			return
@@ -265,13 +265,17 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			c.Data["EditFileTooltip"] = c.Tr("repo.editor.fork_before_edit")
 		}
 
-	case tool.IsPDFFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*gannex.MEGABYTE):
+	case tool.IsPDFFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*gannex.MEGABYTE ||
+		c.IsLogged):
 		c.Data["IsPDFFile"] = true
-	case tool.IsVideoFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*gannex.MEGABYTE):
+	case tool.IsVideoFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*gannex.MEGABYTE ||
+		c.IsLogged):
 		c.Data["IsVideoFile"] = true
-	case tool.IsImageFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*gannex.MEGABYTE):
+	case tool.IsImageFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*gannex.MEGABYTE ||
+		c.IsLogged):
 		c.Data["IsImageFile"] = true
-	case tool.IsAnnexedFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*gannex.MEGABYTE):
+	case tool.IsAnnexedFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*gannex.MEGABYTE ||
+		c.IsLogged):
 		c.Data["IsAnnexedFile"] = true
 	}
 

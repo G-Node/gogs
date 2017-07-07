@@ -33,7 +33,8 @@ func ServeData(c *context.Context, name string, reader io.Reader, cpt *captcha.C
 		if err != nil {
 
 		}
-		if af.Info.Size() > gannex.MEGABYTE*setting.Repository.RawCaptchaMinFileSize && !cpt.VerifyReq(c.Req) {
+		if af.Info.Size() > gannex.MEGABYTE*setting.Repository.RawCaptchaMinFileSize && !cpt.VerifyReq(c.Req) &&
+			!c.IsLogged {
 			c.Data["EnableCaptcha"] = true
 			c.HTML(200, "repo/download")
 			return nil
@@ -75,7 +76,7 @@ func ServeBlob(c *context.Context, blob *git.Blob, cpt *captcha.Captcha) error {
 func SingleDownload(c *context.Context, cpt *captcha.Captcha) {
 	blob, err := c.Repo.Commit.GetBlobByPath(c.Repo.TreePath)
 	if blob.Size() > gannex.MEGABYTE*setting.Repository.RawCaptchaMinFileSize && setting.Service.EnableCaptcha &&
-		!cpt.VerifyReq(c.Req) {
+		!cpt.VerifyReq(c.Req) && !c.IsLogged {
 		c.Data["EnableCaptcha"] = true
 		c.HTML(200, "repo/download")
 		return
