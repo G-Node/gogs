@@ -125,6 +125,8 @@ var (
 		EnableLocalPathMigration bool
 		CommitsFetchConcurrency  int
 		EnableRawFileRenderMode  bool
+		RawCaptchaMinFileSize    int64
+		CaptchaMinFileSize       int64
 
 		// Repository editor settings
 		Editor struct {
