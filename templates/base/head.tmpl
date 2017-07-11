@@ -5,11 +5,11 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 		{{if or .PageIsExploreRepositories (or .PageIsHome .PageIsWiki) }}
-		<META NAME="ROBOTS" CONTENT="NOFOLLOW"/>
+		<meta name="robots" content="nofollow"/>
 		{{else if .PageIsViewFiles }}
-		<META NAME="ROBOTS" CONTENT="NOFOLLOW"/>
+		<meta name="robots" content="noindex,nofollow"/>
 		{{else}}
-		<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW"/>
+		<meta name="robots" content="noindex, nofollow"/>
 		{{end}}
 		{{if not .PageIsAdmin}}
 		<meta name="author" content="{{if .Repository}}{{.Owner.Name}}{{else}}G-Node{{end}}"/>
