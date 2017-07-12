@@ -3,6 +3,18 @@
 	"ignore": "test",
 	"package": [
 		{
+			"checksumSHA1": "/OCenqqlNlqcINpnIQwK6Givd+w=",
+			"path": "github.com/G-Node/git-module",
+			"revision": "69dde43afd4427d634e702c2059a96d99b5af1c2",
+			"revisionTime": "2017-07-11T12:59:03Z"
+		},
+		{
+			"checksumSHA1": "XeImMdXbeZCNadeDcLhvBYTlexs=",
+			"path": "github.com/G-Node/go-annex",
+			"revision": "3cd728fddc604d7cd4b9b74ff6780a9d67aa1d12",
+			"revisionTime": "2017-07-11T13:07:39Z"
+		},
+		{
 			"checksumSHA1": "IyfS7Rbl6OgR83QR7TOfKdDCq+M=",
 			"path": "github.com/Unknwon/cae",
 			"revision": "c6aac99ea2cae2ebaf23f26f76b04fe3fcfc9f8c",
@@ -213,34 +225,10 @@
 			"revisionTime": "2017-03-01T03:54:11Z"
 		},
 		{
-			"checksumSHA1": "aGCfPysPHTVbiC8YMMvSA8Gg7IE=",
-			"path": "github.com/gogs/git-module",
-			"revision": "0b61102314d3384a0d734a2a2c3c20207e72c4a8",
-			"revisionTime": "2018-12-15T04:53:36Z"
-		},
-		{
-			"checksumSHA1": "81S19W6omjG5N+zVWeI2yRsSfw0=",
-			"path": "github.com/gogs/go-gogs-client",
-			"revision": "1cd0db3113de87dbac702b9f1a08d9bd0e7142bb",
-			"revisionTime": "2018-12-17T00:43:19Z"
-		},
-		{
-			"checksumSHA1": "GaJLoEuMGnP5ofXvuweAI4wx06U=",
-			"path": "github.com/golang/protobuf/proto",
-			"revision": "a47340a8e42c4ceb44c00c2a05199e24b24fcaef",
-			"revisionTime": "2018-09-14T20:37:51Z"
-		},
-		{
-			"checksumSHA1": "xbq5LdoNE+8lM/0TjMJCjOZ1Brc=",
-			"path": "github.com/google/go-github/github",
-			"revision": "a83ae98ad5d09188c49d6056edb60ec9bdf202bd",
-			"revisionTime": "2018-06-13T00:47:29Z"
-		},
-		{
-			"checksumSHA1": "p3IB18uJRs4dL2K5yx24MrLYE9A=",
-			"path": "github.com/google/go-querystring/query",
-			"revision": "53e6ce116135b80d037921a7fdd5138cf32d7a8a",
-			"revisionTime": "2017-01-11T10:11:55Z"
+			"checksumSHA1": "yIkYzW7bzAD81zHyuCNmEj4+oxQ=",
+			"path": "github.com/gopherjs/gopherjs/js",
+			"revision": "2b1d432c8a82c9bff0b0baffaeb3ec6e92974112",
+			"revisionTime": "2017-07-02T15:34:43Z"
 		},
 		{
 			"checksumSHA1": "MLO0PyrK2MUO6A7Z9PxWuu43C/A=",
@@ -511,6 +499,18 @@
 			"path": "github.com/urfave/cli",
 			"revision": "b6061c464d493dd94985211595687c862a0dd0bc",
 			"revisionTime": "2016-11-19T19:05:28Z"
+		},
+		{
+			"checksumSHA1": "vE43s37+4CJ2CDU6TlOUOYE0K9c=",
+			"path": "golang.org/x/crypto/bcrypt",
+			"revision": "c367d6eeb7c6158125f2f47e049f7eb7e251c09a",
+			"revisionTime": "2016-10-18T21:00:36Z"
+		},
+		{
+			"checksumSHA1": "JsJdKXhz87gWenMwBeejTOeNE7k=",
+			"path": "golang.org/x/crypto/blowfish",
+			"revision": "c367d6eeb7c6158125f2f47e049f7eb7e251c09a",
+			"revisionTime": "2016-10-18T21:00:36Z"
 		},
 		{
 			"checksumSHA1": "dwOedwBJ1EIK9+S3t108Bx054Y8=",
