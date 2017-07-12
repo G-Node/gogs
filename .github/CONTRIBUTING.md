@@ -1,8 +1,8 @@
-# Contributing to Gogs
+# Contributing to Gin gogs
 
 > This guidelines sheet is forked from [CONTRIBUTING.md](https://github.com/drone/drone/blob/8d9c7cee56d6c2eac81dc156ce27be6716d97e68/CONTRIBUTING.md).
 
-Gogs is not perfect, and it has bugs or incomplete features in rare cases. You're welcome to tell us, or to contribute some code. This document describes details about how can you contribute to Gogs project.
+Gin  Gogs is not perfect, and it has bugs or incomplete features in rare cases. You're welcome to tell us, or to contribute some code. This document describes details about how can contribute.
 
 ## Contribution guidelines
 
@@ -28,7 +28,7 @@ Please take a moment to check that an issue on [GitHub](https://github.com/G-Nod
 
 #### Bug Report Example
 
-Gogs crashed when creating a repository with a license, using v0.5.13.0207, SQLite3, Git 1.9.0, Ubuntu 12.04.
+Gin Gogs crashed when creating a repository with a license, using v0.5.13.0207, SQLite3, Git 1.9.0, Ubuntu 12.04.
 
 Error log:
 
@@ -46,7 +46,7 @@ Please read detailed information on [Wiki](https://github.com/G-Node/gogs/wiki/C
 
 ### Ask For Help
 
-Before opening an issue, please make sure your problem isn't already addressed on the [Troubleshooting](https://gogs.io/docs/intro/troubleshooting.html) and [FAQs](https://gogs.io/docs/intro/faqs.html) pages.
+Contact us for example on gitter [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/gnode-gin/Lobby)
 
 ## Code of conduct
 
@@ -58,6 +58,6 @@ Examples of unacceptable behavior by participants include the use of sexual lang
 
 Project maintainers have the right and responsibility to remove, edit, or reject comments, commits, code, wiki edits, issues, and other contributions that are not aligned to this Code of Conduct. Project maintainers who do not follow the Code of Conduct may be removed from the project team.
 
-Instances of abusive, harassing, or otherwise unacceptable behavior can be reported by emailing u@gogs.io
+Instances of abusive, harassing, or otherwise unacceptable behavior can be reported by emailing dev@g-node.org
 
 This Code of Conduct is adapted from the [Contributor Covenant](http:contributor-covenant.org), version 1.0.0, available at [http://contributor-covenant.org/version/1/0/0/](http://contributor-covenant.org/version/1/0/0/)
