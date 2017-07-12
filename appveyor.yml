@@ -1,6 +1,6 @@
 version: "{build}"
 skip_tags: true
-clone_folder: c:\gopath\src\github.com\gogs\gogs
+clone_folder: c:\gopath\src\github.com\gnode\gogs
 clone_depth: 1
 
 environment:
@@ -16,5 +16,5 @@ install:
 notifications:
   - provider: Email
     to:
-      - u@gogs.io
+      - dev@g-node.org
     on_build_success: false
