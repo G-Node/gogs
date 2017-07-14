@@ -3243,8 +3243,13 @@ footer .ui.language .menu {
 }
 
 .supersmall {
+  padding-left: 10px;
   font-size: 0.8em;
   text-align: left;
+}
+
+.leftspace {
+  padding-left: 40px;
 }
 
 .gogssmall {
