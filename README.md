@@ -1,5 +1,6 @@
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/gnode-gin/Lobby)
 [![Docker Automated build](https://img.shields.io/docker/automated/gnode/gogs.svg)](https://hub.docker.com/r/gnode/gogs/builds/)
+[![Build Status](https://travis-ci.org/G-Node/gogs.svg?branch=master)](https://travis-ci.org/G-Node/gogs)
 
 # About Gin Gogs
 
