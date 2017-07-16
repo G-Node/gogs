@@ -22,7 +22,7 @@ type AnnexFileNotFound struct {
 func NewAFile(annexpath, repopath, Ofilename string, APFileC []byte) (*AFile, error) {
 	nAF := &AFile{OFilename: Ofilename}
 	pathParts := strings.SplitAfter(string(APFileC), string(os.PathSeparator))
-	filename := pathParts[len(pathParts)-1]
+	filename := strings.TrimSpace(pathParts[len(pathParts)-1])
 
 	// lets find the annex file
 	filepath.Walk(filepath.Join(annexpath, repopath), func(path string, info os.FileInfo, err error) error {
