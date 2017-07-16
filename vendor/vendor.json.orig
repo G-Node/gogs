@@ -3,6 +3,8 @@
 	"ignore": "test",
 	"package": [
 		{
+<<<<<<< HEAD
+=======
 			"checksumSHA1": "/OCenqqlNlqcINpnIQwK6Givd+w=",
 			"path": "github.com/G-Node/git-module",
 			"revision": "69dde43afd4427d634e702c2059a96d99b5af1c2",
@@ -15,6 +17,7 @@
 			"revisionTime": "2017-07-11T13:07:39Z"
 		},
 		{
+>>>>>>> 524ff0b... [vendor] update go-annex
 			"checksumSHA1": "IyfS7Rbl6OgR83QR7TOfKdDCq+M=",
 			"path": "github.com/Unknwon/cae",
 			"revision": "c6aac99ea2cae2ebaf23f26f76b04fe3fcfc9f8c",
@@ -219,12 +222,6 @@
 			"revisionTime": "2017-03-01T03:54:11Z"
 		},
 		{
-			"checksumSHA1": "yIkYzW7bzAD81zHyuCNmEj4+oxQ=",
-			"path": "github.com/gopherjs/gopherjs/js",
-			"revision": "2b1d432c8a82c9bff0b0baffaeb3ec6e92974112",
-			"revisionTime": "2017-07-02T15:34:43Z"
-		},
-		{
 			"checksumSHA1": "MLO0PyrK2MUO6A7Z9PxWuu43C/A=",
 			"path": "github.com/issue9/identicon",
 			"revision": "d36b54562f4cf70c83653e13dc95c220c79ef521",
@@ -403,18 +400,6 @@
 			"path": "github.com/urfave/cli",
 			"revision": "b6061c464d493dd94985211595687c862a0dd0bc",
 			"revisionTime": "2016-11-19T19:05:28Z"
-		},
-		{
-			"checksumSHA1": "vE43s37+4CJ2CDU6TlOUOYE0K9c=",
-			"path": "golang.org/x/crypto/bcrypt",
-			"revision": "c367d6eeb7c6158125f2f47e049f7eb7e251c09a",
-			"revisionTime": "2016-10-18T21:00:36Z"
-		},
-		{
-			"checksumSHA1": "JsJdKXhz87gWenMwBeejTOeNE7k=",
-			"path": "golang.org/x/crypto/blowfish",
-			"revision": "c367d6eeb7c6158125f2f47e049f7eb7e251c09a",
-			"revisionTime": "2016-10-18T21:00:36Z"
 		},
 		{
 			"checksumSHA1": "dwOedwBJ1EIK9+S3t108Bx054Y8=",
@@ -639,5 +624,5 @@
 			"revisionTime": "2014-12-09T11:07:59Z"
 		}
 	],
-	"rootPath": "github.com/G-Node/gogs"
+	"rootPath": "github.com/gogits/gogs"
 }
