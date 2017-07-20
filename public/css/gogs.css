@@ -3256,3 +3256,21 @@ footer .ui.language .menu {
   height: 40px;
   align-content: center;
 }
+
+figure {
+  float: right;
+  max-width: 600px;
+}
+figure img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+figure figcaption {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  font-style: italic;
+  text-align: justify;
+}
