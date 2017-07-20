@@ -65,7 +65,9 @@ func checkVersion() {
 		log.Fatal(2, "Fail to read 'templates/.VERSION': %v", err)
 	}
 	tplVer := string(data)
-	if tplVer != setting.AppVer {
+	log.Trace("tmpl:version:%s", tplVer)
+	log.Trace("App:version:%s", setting.AppVer)
+	if strings.TrimSpace(tplVer) != setting.AppVer {
 		if version.Compare(tplVer, setting.AppVer, ">") {
 			log.Fatal(2, "Binary version is lower than template file version, did you forget to recompile Gogs?")
 		} else {
