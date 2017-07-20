@@ -16,7 +16,7 @@ import (
 	"github.com/G-Node/gogs/pkg/setting"
 )
 
-const APP_VER = "0.11.88.0220"
+const APP_VER = "0.1.0.0"
 
 func init() {
 	setting.AppVer = APP_VER
@@ -24,8 +24,8 @@ func init() {
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "Gogs"
-	app.Usage = "A painless self-hosted Git service"
+	app.Name = "Gin"
+	app.Usage = "Modern Research Data Management for Neuroscience"
 	app.Version = APP_VER
 	app.Commands = []cli.Command{
 		cmd.Web,
