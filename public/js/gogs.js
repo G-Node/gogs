@@ -482,6 +482,7 @@ function initRepository() {
         $('#repo-clone-url').val($(this).data('link'));
         $(this).addClass('blue');
         $('#repo-clone-https').removeClass('blue');
+		$('#repo-clone-gin').removeClass('blue');
         localStorage.setItem('repo-clone-protocol', 'ssh');
     });
     $('#repo-clone-https').click(function () {
@@ -489,8 +490,17 @@ function initRepository() {
         $('#repo-clone-url').val($(this).data('link'));
         $(this).addClass('blue');
         $('#repo-clone-ssh').removeClass('blue');
+		$('#repo-clone-gin').removeClass('blue');
         localStorage.setItem('repo-clone-protocol', 'https');
     });
+	$('#repo-clone-gin').click(function () {
+		$('.clone-url').text($(this).data('link'));
+		$('#repo-clone-url').val($(this).data('link'));
+		$(this).addClass('blue');
+		$('#repo-clone-ssh').removeClass('blue');
+		$('#repo-clone-https').removeClass('blue');
+		localStorage.setItem('repo-clone-protocol', 'gin');
+	});
     $('#repo-clone-url').click(function () {
         $(this).select();
     });
@@ -1157,7 +1167,7 @@ $(document).ready(function () {
     csrf = $('meta[name=_csrf]').attr("content");
     suburl = $('meta[name=_suburl]').attr("content");
 
-    // Set cursor to the end of autofocus input string
+	// Set cursor to the end of autofocus input string
     $('input[autofocus]').each(function () {
         $(this).val($(this).val());
     })
