@@ -603,6 +603,7 @@ type CloneLink struct {
 	SSH   string
 	HTTPS string
 	Git   string
+	Gin   string
 }
 
 // ComposeHTTPSCloneURL returns HTTPS clone URL based on given owner and repository name.
@@ -624,6 +625,7 @@ func (repo *Repository) cloneLink(isWiki bool) *CloneLink {
 		cl.SSH = fmt.Sprintf("%s@%s:/%s/%s.git", setting.RunUser, setting.SSH.Domain, repo.Owner.Name, repoName)
 	}
 	cl.HTTPS = ComposeHTTPSCloneURL(repo.Owner.Name, repoName)
+	cl.Gin = fmt.Sprintf("gin get %s/%s", repo.Owner.Name, repoName)
 	return cl
 }
 
