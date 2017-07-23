@@ -10,12 +10,11 @@
 				{{end}}
 			</div>
 			<div class="six wide column">
-				<div class="ui {{if not .ContextUser.IsOrganization}}three{{else}}two{{end}} item tabable menu">
+				<div class="ui {{if not .ContextUser.IsOrganization}}two{{else}}one{{end}} item tabable menu">
 					<a class="item active" data-tab="repos">{{.i18n.Tr "repository"}}</a>
 					{{if not .ContextUser.IsOrganization}}
 						<a class="item" data-tab="orgs">{{.i18n.Tr "organization"}}</a>
 					{{end}}
-					<a class="item" data-tab="mirrors">{{.i18n.Tr "mirror"}}</a>
 				</div>
 				<div class="ui tab active list" data-tab="repos">
 					<div class="ui top attached header">
