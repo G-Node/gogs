@@ -28,8 +28,14 @@ func AUInit(dir string, args ...string) (string, error) {
 	cmd := git.NewACommand("uninit")
 	return cmd.AddArguments(args...).RunInDir(dir)
 }
+
 func Worm(dir string) (string, error) {
 	cmd := git.NewCommand("config", "annex.backends", "WORM")
+	return cmd.RunInDir(dir)
+}
+
+func Md5(dir string) (string, error) {
+	cmd := git.NewCommand("config", "annex.backends", "MD5")
 	return cmd.RunInDir(dir)
 }
 

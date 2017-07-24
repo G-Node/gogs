@@ -496,11 +496,11 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 			if finfo.Size() > setting.Repository.Upload.AnexFileMinSize*gannex.MEGABYTE {
 				log.Trace("This file should be annexed: %s", upload.Name)
 				// annex init in case it isnt yet
-				if msg, err := gannex.AInit(localPath); err != nil {
+				if msg, err := gannex.AInit(localPath, "annex.backend"); err != nil {
 					log.Error(1, "Annex init failed with error: %v,%s,%s", err, msg, repoFileName)
 				}
 				// worm for compatibility
-				gannex.Worm(localPath)
+				gannex.Md5(localPath)
 				if msg, err := gannex.Add(repoFileName, localPath); err != nil {
 					log.Error(1, "Annex add failed with error: %v,%s,%s", err, msg, repoFileName)
 				}
