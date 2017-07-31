@@ -143,16 +143,16 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 	c.Data["FileName"] = blob.Name()
 	c.Data["HighlightClass"] = highlight.FileNameToHighlightClass(blob.Name())
 	c.Data["RawFileLink"] = rawLink + "/" + c.Repo.TreePath
-
+	buf := make([]byte, 1024)
 	r, w := io.Pipe()
 	defer r.Close()
 	defer w.Close()
 	go blob.DataPipeline(w, w)
-
-	buf := make([]byte, 1024)
-	n, _ := r.Read(buf)
-	log.Trace("I read %s bytes", n)
-	buf = buf[:n]
+	if blob.Size() > 0 {
+		n, _ := r.Read(buf)
+		log.Trace("I read %s bytes", n)
+		buf = buf[:n]
+	}
 	isannex := tool.IsAnnexedFile(buf)
 
 	var afpR *bufio.Reader
