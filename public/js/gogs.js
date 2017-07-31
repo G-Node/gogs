@@ -1410,7 +1410,7 @@ $(document).ready(function () {
                 }
                 break;
             default:
-                $('#repo-clone-https').click();
+                $('#repo-clone-gin').click();
                 break;
         }
     }
