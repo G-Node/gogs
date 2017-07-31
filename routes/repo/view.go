@@ -28,6 +28,7 @@ import (
 	"github.com/G-Node/gogs/pkg/tool"
 	"io"
 	"os"
+	"github.com/go-macaron/captcha"
 )
 
 const (
@@ -56,16 +57,19 @@ func renderDirectory(c *context.Context, treeLink string) {
 		c.ServerError("GetCommitsInfoWithCustomConcurrency", err)
 		return
 	}
-
+	c.Data["DOI"] = false
 	var readmeFile *git.Blob
 	for _, entry := range entries {
-		if entry.IsDir() || !markup.IsReadmeFile(entry.Name()) {
+		if entry.IsDir() || (!markup.IsReadmeFile(entry.Name()) && !(entry.Name() == "cloudberry.yml")) {
 			continue
 		}
 
 		// TODO: collect all possible README files and show with priority.
-		readmeFile = entry.Blob()
-		break
+		if markup.IsReadmeFile(entry.Name()) {
+			readmeFile = entry.Blob()
+		} else if entry.Name() == "cloudberry.yml" {
+			c.Data["DOI"] = true
+		}
 	}
 
 	if readmeFile != nil {
@@ -126,27 +130,29 @@ func renderDirectory(c *context.Context, treeLink string) {
 	}
 }
 
-func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink string) {
+func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink string, cpt *captcha.Captcha) {
 	c.Data["IsViewFile"] = true
 	blob := entry.Blob()
 	log.Trace("Blob size is %s", blob.Size())
+	if blob.Size() > gannex.MEGABYTE*10 && setting.Service.EnableCaptcha && !cpt.VerifyReq(c.Req) && !c.IsLogged {
+		c.Data["EnableCaptcha"] = true
+		c.HTML(200, "repo/download")
+		return
+	}
 	c.Data["FileSize"] = blob.Size()
 	c.Data["FileName"] = blob.Name()
 	c.Data["HighlightClass"] = highlight.FileNameToHighlightClass(blob.Name())
 	c.Data["RawFileLink"] = rawLink + "/" + c.Repo.TreePath
-	if blob.Size() > 1024*1024*100 {
-		c.Data["IsFileTooLarge"] = true
-		return
-	}
+	buf := make([]byte, 1024)
 	r, w := io.Pipe()
 	defer r.Close()
 	defer w.Close()
 	go blob.DataPipeline(w, w)
-
-	buf := make([]byte, 1024)
-	n, _ := r.Read(buf)
-	log.Trace("I read %s bytes", n)
-	buf = buf[:n]
+	if blob.Size() > 0 {
+		n, _ := r.Read(buf)
+		log.Trace("I read %s bytes", n)
+		buf = buf[:n]
+	}
 	isannex := tool.IsAnnexedFile(buf)
 
 	var afpR *bufio.Reader
@@ -157,6 +163,12 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 		if err != nil {
 			c.Data["IsAnnexedFile"] = true
 			log.Trace("Could not get annex file: %v", err)
+			return
+		}
+		if af.Info.Size() > gannex.MEGABYTE*setting.Repository.CaptchaMinFileSize && setting.Service.EnableCaptcha &&
+			!cpt.VerifyReq(c.Req) && !c.IsLogged {
+			c.Data["EnableCaptcha"] = true
+			c.HTML(200, "repo/download")
 			return
 		}
 		afp, err = af.Open()
@@ -249,13 +261,17 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			c.Data["EditFileTooltip"] = c.Tr("repo.editor.fork_before_edit")
 		}
 
-	case tool.IsPDFFile(buf):
+	case tool.IsPDFFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*gannex.MEGABYTE ||
+		c.IsLogged):
 		c.Data["IsPDFFile"] = true
-	case tool.IsVideoFile(buf):
+	case tool.IsVideoFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*gannex.MEGABYTE ||
+		c.IsLogged):
 		c.Data["IsVideoFile"] = true
-	case tool.IsImageFile(buf):
+	case tool.IsImageFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*gannex.MEGABYTE ||
+		c.IsLogged):
 		c.Data["IsImageFile"] = true
-	case tool.IsAnnexedFile(buf):
+	case tool.IsAnnexedFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*gannex.MEGABYTE ||
+		c.IsLogged):
 		c.Data["IsAnnexedFile"] = true
 	}
 
@@ -282,7 +298,7 @@ func setEditorconfigIfExists(c *context.Context) {
 	c.Data["Editorconfig"] = ec
 }
 
-func Home(c *context.Context) {
+func Home(c *context.Context, cpt *captcha.Captcha) {
 	c.Data["PageIsViewFiles"] = true
 
 	if c.Repo.Repository.IsBare {
@@ -331,7 +347,7 @@ func Home(c *context.Context) {
 	if entry.IsDir() {
 		renderDirectory(c, treeLink)
 	} else {
-		renderFile(c, entry, treeLink, rawLink)
+		renderFile(c, entry, treeLink, rawLink, cpt)
 	}
 	if c.Written() {
 		return
