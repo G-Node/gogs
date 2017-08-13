@@ -48,7 +48,14 @@ func Search(c *context.APIContext) {
 		}
 	}
 
-	repos, count, err := models.SearchRepositoryByName(opts)
+	tmprepos, count, err := models.SearchRepositoryByName(opts)
+	var repos []*models.Repository
+
+	for _, repo := range tmprepos {
+		if !repo.IsPrivate {
+			repos = append(repos, repo)
+		}
+	}
 	if err != nil {
 		c.JSON(500, map[string]interface{}{
 			"ok":    false,
