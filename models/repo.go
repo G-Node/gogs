@@ -1733,7 +1733,7 @@ func SearchRepositoryByName(opts *SearchRepoOptions) (repos []*Repository, count
 		}
 	}
 	if len(opts.Keyword) > 0 {
-		sess.And("repo.lower_name LIKE ? OR repo.description LIKE ?", "%"+strings.ToLower(opts.Keyword)+"%", "%"+strings.ToLower(opts.Keyword)+"%")
+		sess.And("(repo.lower_name LIKE ? OR repo.description LIKE ?)", "%"+strings.ToLower(opts.Keyword)+"%", "%"+strings.ToLower(opts.Keyword)+"%")
 	}
 	if opts.OwnerID > 0 {
 		sess.And("repo.owner_id = ?", opts.OwnerID)
