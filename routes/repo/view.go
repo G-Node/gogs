@@ -65,7 +65,8 @@ func renderDirectory(c *context.Context, treeLink string) {
 		}
 
 		// TODO: collect all possible README files and show with priority.
-		if markup.IsReadmeFile(entry.Name()) {
+		if markup.IsReadmeFile(entry.Name()) && entry.Blob().Size() <
+			setting.UI.MaxDisplayFileSize {
 			readmeFile = entry.Blob()
 		} else if entry.Name() == "cloudberry.yml" {
 			c.Data["DOI"] = true
@@ -76,14 +77,39 @@ func renderDirectory(c *context.Context, treeLink string) {
 		c.Data["RawFileLink"] = ""
 		c.Data["ReadmeInList"] = true
 		c.Data["ReadmeExist"] = true
-
+		buf := make([]byte, 1024)
+		r, w := io.Pipe()
+		defer r.Close()
+		defer w.Close()
+		go readmeFile.DataPipeline(w, w)
+		if readmeFile.Size() > 0 {
+			n, _ := r.Read(buf)
+			log.Trace("I read %s bytes", n)
+			buf = buf[:n]
+		}
+		isannex := tool.IsAnnexedFile(buf)
 		dataRc, err := readmeFile.Data()
 		if err != nil {
 			c.ServerError("readmeFile.Data", err)
 			return
 		}
-
-		buf := make([]byte, 1024)
+		if isannex {
+			af, err := gannex.NewAFile(c.Repo.Repository.RepoPath(), "annex", readmeFile.Name(), buf)
+			if err != nil {
+				log.Trace("Could not get annex file: %v", err)
+				c.ServerError("readmeFile.Data", err)
+				return
+			}
+			afp, err := af.Open()
+			defer afp.Close()
+			if err != nil {
+				c.ServerError("readmeFile.Data", err)
+				log.Trace("Could not open annex file: %v", err)
+				return
+			}
+			dataRc = bufio.NewReader(afp)
+		}
+		buf = make([]byte, 1024)
 		n, _ := dataRc.Read(buf)
 		buf = buf[:n]
 
@@ -214,7 +240,9 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 				break
 			}
 			c.Data["ReadmeExist"] = markup.IsReadmeFile(blob.Name())
-			afpR.Read(buf)
+			buf = make([]byte, annexf.Info.Size())
+			afp.Seek(0, 0)
+			afp.Read(buf)
 		}
 
 		switch markup.Detect(blob.Name()) {
@@ -256,7 +284,7 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			c.Data["LineNums"] = gotemplate.HTML(output.String())
 		}
 
-		if canEnableEditor {
+		if canEnableEditor && !isannex {
 			c.Data["CanEditFile"] = true
 			c.Data["EditFileTooltip"] = c.Tr("repo.editor.edit_this_file")
 		} else if !c.Repo.IsViewBranch {
