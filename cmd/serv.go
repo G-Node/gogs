@@ -60,9 +60,6 @@ func setup(c *cli.Context, logPath string, connectDB bool) {
 	setting.NewContext()
 
 	level := log.TRACE
-	if setting.ProdMode {
-		level = log.ERROR
-	}
 	log.New(log.FILE, log.FileConfig{
 		Level:    level,
 		Filename: filepath.Join(setting.LogRootPath, logPath),
