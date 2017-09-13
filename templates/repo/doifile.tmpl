@@ -1,0 +1,67 @@
+<div id="file-content" class="tab-size-8">
+<h4 class="ui top attached header" id="repo-doi">
+			<i class="octicon octicon-book"></i>
+				<strong>Cloudberry</strong>
+	</h4>
+		<table class="ui fixed single line table">
+				<tbody>
+				<tr>
+						<td>Title</td>
+						<td>{{.DoiInfo.Title}}</td>
+				</tr>
+				<tr>
+						<td>Authors</td>
+						<td>
+								{{range $index, $auth := .DoiInfo.Authors}}
+								{{ $auth.LastName }},{{ $auth.FirstName }}; {{ $auth.Affiliation}}; {{$auth.ID}}
+								<br>
+								{{end}}
+						</td>
+				</tr>
+				{{if .DoiInfo.Description}}
+				<tr>
+						<td>Description</td>
+						<td>{{.DoiInfo.Description}}
+						</td>
+				</tr>
+				{{end}}
+				{{if .DoiInfo.License}}
+				<tr>
+						<td>License</td>
+						<td>{{.DoiInfo.License.Name}} ({{.DoiInfo.License.Url}})
+						</td>
+				</tr>
+				{{end}}
+				<tr>
+						<td>References</td>
+						<td>
+								{{range $index, $ref := .DoiInfo.References}}
+								{{ $ref.Name }} [{{ $ref.Doi }}] ({{ $ref.Reftype }})
+								<br>
+								{{end}}
+						</td>
+				</tr>
+				<tr>
+						<td>Funding</td>
+						<td>
+								{{range $index, $ref := .DoiInfo.Funding}}
+								{{ $ref}}
+								<br>
+								{{end}}
+						</td>
+				</tr>
+				{{if .DoiInfo.Keywords}}
+				<tr>
+						<td>Keywords</td>
+						<td>
+								{{range $index, $sub := .DoiInfo.Keywords}}
+								{{ $sub }}
+								<br>
+								{{end}}
+						</td>
+				</tr>
+				{{end}}
+				</tbody>
+		</table>
+		</div>
+</div>
