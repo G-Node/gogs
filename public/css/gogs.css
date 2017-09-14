@@ -3229,3 +3229,7 @@ figure figcaption {
   font-style: italic;
   text-align: justify;
 }
+
+#cloudberry-view {
+  margin-top: 14px;
+}

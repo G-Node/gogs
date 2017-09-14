@@ -52,7 +52,7 @@
 							<label for="website">{{.i18n.Tr "settings.website"}}</label>
 							<input id="website" name="website" type="url" value="{{.User.Website}}" placeholder="e.g. http://mydomain.com or https://mydomain.com">
 						</div>
-						<div class="field {{if .Err_Location}}error{{end}}">
+						<div class="field {{if .locationErr_Location}}error{{end}}">
 							<label for="location">{{.i18n.Tr "settings.location"}}</label>
 							<input id="location" name="location" value="{{.User.Location}}">
 						</div>
