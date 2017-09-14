@@ -18,6 +18,10 @@ import (
 	"github.com/gogits/git-module"
 
 	"bufio"
+	"io"
+	"os"
+
+	"github.com/G-Node/gin-doi/src"
 	"github.com/G-Node/go-annex"
 	"github.com/G-Node/gogs/models"
 	"github.com/G-Node/gogs/pkg/context"
@@ -26,9 +30,8 @@ import (
 	"github.com/G-Node/gogs/pkg/template"
 	"github.com/G-Node/gogs/pkg/template/highlight"
 	"github.com/G-Node/gogs/pkg/tool"
-	"io"
-	"os"
 	"github.com/go-macaron/captcha"
+	"gopkg.in/yaml.v2"
 )
 
 const (
@@ -70,6 +73,18 @@ func renderDirectory(c *context.Context, treeLink string) {
 			readmeFile = entry.Blob()
 		} else if entry.Name() == "cloudberry.yml" {
 			c.Data["DOI"] = true
+			doiData, err := entry.Blob().Data()
+			if err != nil {
+				log.Trace("Doi Blob could nor be read:%v", err)
+			}
+			buf, err := ioutil.ReadAll(doiData)
+			doiInfo := ginDoi.CBerry{}
+			err = yaml.Unmarshal(buf, &doiInfo)
+			if err != nil {
+				log.Trace("Doi Blob could not be unmarshalled:%v", err)
+			}
+			log.Trace("Doi info was: %v ", doiInfo)
+			c.Data["DoiInfo"] = doiInfo
 		}
 	}
 
