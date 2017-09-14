@@ -9,6 +9,11 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y libpam-dev
 
+env:
+  - GO15VENDOREXPERIMENT=1
+
 script:
+  - go get github.com/G-Node/gin-doi/src
+  - go get gopkg.in/yaml.v2
   - go build -v -tags "pam"
   - go test -v -cover -race ./...
