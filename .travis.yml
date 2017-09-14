@@ -12,6 +12,8 @@ before_install:
 env:
   - GO15VENDOREXPERIMENT=1
 
-script: 
+script:
+  - go get github.com/G-Node/gin-doi/src
+  - go get gopkg.in/yaml.v2
   - go build -v -tags "pam"
   - go test -v -cover -race ./...
