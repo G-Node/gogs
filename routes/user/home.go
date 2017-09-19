@@ -15,6 +15,7 @@ import (
 	"github.com/G-Node/gogs/models/errors"
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/pkg/setting"
+	log "gopkg.in/clog.v1"
 )
 
 const (
@@ -78,7 +79,14 @@ func retrieveFeeds(c *context.Context, ctxUser *models.User, userID int64, isPro
 		}
 
 		act.ActAvatar = unameAvatars[act.ActUserName]
-		feeds = append(feeds, act)
+
+		// This filters annex related branches from the feed
+		switch branch := act.RefName; branch {
+		case "synced/git-annex", "synced/master", "git-annex":
+			log.Trace("Ignored Ref %s for feed", branch)
+		default:
+			feeds = append(feeds, act)
+		}
 	}
 	c.Data["Feeds"] = feeds
 	if len(feeds) > 0 {
