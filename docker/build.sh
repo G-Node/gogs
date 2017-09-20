@@ -10,6 +10,9 @@ export GO15VENDOREXPERIMENT=1
 #
 go get golang.org/x/crypto/bcrypt
 go get github.com/jteeuwen/go-bindata
+go get github.com/G-Node/gin-doi/src
+go get gopkg.in/yaml.v2
+
 cd ${GOPATH}/src/github.com/jteeuwen/go-bindata/go-bindata
 go install
 
