@@ -29,7 +29,7 @@
 								</a>
 							</div>
 							{{if .CanBeForked}}
-								<div class="ui labeled button" tabindex="0">
+								<div class="ui labeled button" tabindex="0" data-tooltip="Pleaese note: annexed file content will not be forked">
 									<a class="ui basic button {{if eq .OwnerID $.LoggedUserID}}poping up{{end}}" href="{{AppSubURL}}/repo/fork/{{.ID}}">
 										<i class="octicon octicon-repo-forked"></i>{{$.i18n.Tr "repo.fork"}}
 									</a>
