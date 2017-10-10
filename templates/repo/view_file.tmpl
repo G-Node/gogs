@@ -71,27 +71,9 @@
 						<img src="{{EscapePound $.RawFileLink}}">
 					{{else if .IsAnnexedFile}}
 					<div class="ui piled yellow segment">
-						<b>This is an annexed File.</b> This means its full content currently can not be viewed or downloaded
-						with the web interface.
-						{{if not $.DisableSSH}}
-						<div>
-							You can nevertheless download it by first cloning the repository with
-							<a href="https://git-scm.com/">git</a> and <a href="https://git-annex.branchable.com/">git-annex</a>
-							using:
-						</div>
-						<div class="markdown">
-							<pre><code>git clone {{.CloneLink.SSH}}
-git annex get {{.TreePath}}
-							</code></pre>
-						</div>
-						<div>
-							Or by using the gin client:
-						</div>
-						<div class="markdown">
-							<pre><code>gin get {{.Owner.Name}}/{{.Repository.Name}}
-							</code></pre>
-
-							{{end}}
+						<b>This is an annexed File.</b> However its full content currently can not be viewed or downloaded
+						with the web interface. This might be the case because the repository is a fork. In this case case the file
+						content can be viewed in the originating repository.
 						Find more information <a href="/G-Node/Info/wiki/Annexed+Files">here</a></div>
 					{{else if .IsVideoFile}}
 						<video controls src="{{EscapePound $.RawFileLink}}">
