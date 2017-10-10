@@ -53,6 +53,16 @@ ln -s /data/git/.ssh/authorized_keys /data/.ssh/authorized_keys
 # Backward Compatibility with Gogs Container v0.6.15
 ln -sf /data/git /home/git
 
+# check whether we nedd to reset userid
+if [ ! -z "$GITUID" ]; then
+    echo "change git user id to $GITUID"
+    usermod -u "$GITUID" git
+fi
+if [ ! -z "$GITGID" ]; then
+    echo "change git group id to $GITGID"
+    groupmod -g "$GITGID" git
+fi
+
 chown -R git:git /data /app/gogs ~git/
 chmod 0755 /data /data/gogs ~git/
 
