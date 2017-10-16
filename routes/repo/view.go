@@ -63,7 +63,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 	c.Data["DOI"] = false
 	var readmeFile *git.Blob
 	for _, entry := range entries {
-		if entry.IsDir() || (!markup.IsReadmeFile(entry.Name()) && !(entry.Name() == "cloudberry.yml")) {
+		if entry.IsDir() || (!markup.IsReadmeFile(entry.Name()) && !(entry.Name() == "datacite.yml")) {
 			continue
 		}
 
@@ -71,7 +71,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 		if markup.IsReadmeFile(entry.Name()) && entry.Blob().Size() <
 			setting.UI.MaxDisplayFileSize {
 			readmeFile = entry.Blob()
-		} else if entry.Name() == "cloudberry.yml" {
+		} else if entry.Name() == "datacite.yml" {
 			c.Data["DOI"] = true
 			doiData, err := entry.Blob().Data()
 			if err != nil {
