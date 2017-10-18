@@ -25,7 +25,7 @@ func IsAnnexedFile(data []byte) bool {
 		data = data[:ANNEXSNIFFSIZE]
 	}
 	if strings.Contains(http.DetectContentType(data), "text/") {
-		return strings.Contains(string(data), ".git/annex")
+		return strings.Contains(string(data), "/annex/objects")
 	}
 	return false
 }
