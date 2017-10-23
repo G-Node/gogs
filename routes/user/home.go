@@ -80,9 +80,9 @@ func retrieveFeeds(c *context.Context, ctxUser *models.User, userID int64, isPro
 
 		act.ActAvatar = unameAvatars[act.ActUserName]
 
-		// This filters annex related branches from the feed
+		// This filters branches from the feed
 		switch branch := act.RefName; branch {
-		case "synced/git-annex", "synced/master", "git-annex":
+		case "synced/git-annex", "synced/master", "git-annex", "hideme":
 			log.Trace("Ignored Ref %s for feed", branch)
 		default:
 			feeds = append(feeds, act)
