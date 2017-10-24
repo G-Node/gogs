@@ -1214,9 +1214,21 @@ $(document).ready(function () {
     });
 
     // Highlight JS
-    if (typeof hljs != 'undefined') {
-        hljs.initHighlightingOnLoad();
-    }
+	if (typeof hljs != 'undefined') {
+		if (typeof(Worker) !== "undefined") {
+			addEventListener('load', function () {
+				var code = document.querySelector('code');
+				var worker = new Worker('/plugins/highlighter.js');
+				worker.onmessage = function (event) {
+					code.innerHTML = event.data;
+				}
+				worker.postMessage(code.textContent);
+			})
+		} else {
+			hljs.initHighlightingOnLoad()
+		}
+
+	}
 
     // Dropzone
     var $dropzone = $('#dropzone');
