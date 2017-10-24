@@ -259,7 +259,6 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			afp.Seek(0, 0)
 			afp.Read(buf)
 		}
-
 		switch markup.Detect(blob.Name()) {
 		case markup.MARKDOWN:
 			c.Data["IsMarkdown"] = true
@@ -280,9 +279,13 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			} else {
 				fileContent = content
 			}
-
+			fileContent = string(buf)
+			log.Trace("Buffer Size is: %d", len(buf))
 			var output bytes.Buffer
 			lines := strings.Split(fileContent, "\n")
+			if len(lines) > setting.UI.MaxLineHighlight {
+				c.Data["HighlightClass"] = "nohighlight"
+			}
 			for index, line := range lines {
 				output.WriteString(fmt.Sprintf(`<li class="L%d" rel="L%d">%s</li>`, index+1, index+1, gotemplate.HTMLEscapeString(strings.TrimRight(line, "\r"))) + "\n")
 			}

@@ -280,6 +280,7 @@ var (
 		FeedMaxCommitNum   int
 		ThemeColorMetaTag  string
 		MaxDisplayFileSize int64
+		MaxLineHighlight   int
 
 		Admin struct {
 			UserPagingNum   int
