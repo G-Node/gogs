@@ -21,6 +21,9 @@ import (
 	"github.com/G-Node/gogs/pkg/setting"
 	http "github.com/G-Node/gogs/routes/repo"
 	"syscall"
+	"encoding/json"
+	http2 "net/http"
+	"bytes"
 )
 
 const (
@@ -273,8 +276,28 @@ func runServ(c *cli.Context) error {
 		cmd = []string{verb, repoFullName}
 	}
 	runGit(cmd, requestMode, user, owner, repo)
+	if setting.Search.Do && (requestMode == models.ACCESS_MODE_WRITE) {
+		startIndexing(user, owner, repo)
+	}
 	return nil
 
+}
+
+func startIndexing(user, owner *models.User, repo *models.Repository) {
+	var ireq struct{ RepoID, RepoPath string }
+	ireq.RepoID = fmt.Sprintf("%d", repo.ID)
+	ireq.RepoPath = repo.RepoPath()
+	data, err := json.Marshal(ireq)
+	if err != nil {
+		log.Trace("could not marshal index request :%+v", err)
+		return
+	}
+	req, _ := http2.NewRequest(http2.MethodPost, setting.Search.IndexUrl, bytes.NewReader(data))
+	resp, err := http2.Client{}.Do(req)
+	if err != nil || resp.StatusCode != http2.StatusOK {
+		log.Trace("Error doing index request:%+v,%d", err, resp.StatusCode)
+		return
+	}
 }
 
 func runGit(cmd []string, requestMode models.AccessMode, user *models.User, owner *models.User,
