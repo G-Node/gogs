@@ -22,6 +22,7 @@ import (
 	"github.com/G-Node/gogs/routes/api/v1/org"
 	"github.com/G-Node/gogs/routes/api/v1/repo"
 	"github.com/G-Node/gogs/routes/api/v1/user"
+	"github.com/G-Node/gogs/routes/api/v1/search"
 )
 
 func repoAssignment() macaron.Handler {
@@ -164,6 +165,8 @@ func RegisterRoutes(m *macaron.Macaron) {
 		// Miscellaneous
 		m.Post("/markdown", bind(api.MarkdownOption{}), misc.Markdown)
 		m.Post("/markdown/raw", misc.MarkdownRaw)
+
+		m.Get("/search/:querry", search.Search)
 
 		// Users
 		m.Group("/users", func() {
