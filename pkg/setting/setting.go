@@ -693,6 +693,8 @@ func NewContext() {
 		log.Fatal(2, "Failed to map API settings: %v", err)
 	} else if err = Cfg.Section("ui").MapTo(&UI); err != nil {
 		log.Fatal(2, "Fail to map UI settings: %v", err)
+	} else if err = Cfg.Section("search").MapTo(&Search); err != nil {
+		log.Fatal(2, "Fail to map Search settings: %v", err)
 	}
 
 	if Mirror.DefaultInterval <= 0 {
