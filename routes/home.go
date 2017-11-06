@@ -11,6 +11,7 @@ import (
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/pkg/setting"
 	"github.com/G-Node/gogs/routes/user"
+	"strings"
 )
 
 const (
@@ -72,7 +73,15 @@ func ExploreRepos(c *context.Context) {
 		c.ServerError("RepositoryList.LoadAttributes", err)
 		return
 	}
-	c.Data["Repos"] = repos
+	// filter repos we eant to not show in list
+	var showRep []*models.Repository
+	for _, repo := range repos {
+		if !strings.Contains(repo.Name, "hideme") {
+			showRep = append(showRep, repo)
+		}
+	}
+
+	c.Data["Repos"] = showRep
 
 	c.Success(EXPLORE_REPOS)
 }
