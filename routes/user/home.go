@@ -92,6 +92,7 @@ func retrieveFeeds(c *context.Context, ctxUser *models.User, userID int64, isPro
 		case strings.Contains(act.RepoName, "hideme"):
 			log.Trace("Ignored Ref %s for feed", act.RefName)
 		default:
+			log.Trace("Added Ref %s for feed", act.RefName)
 			feeds = append(feeds, act)
 		}
 	}
