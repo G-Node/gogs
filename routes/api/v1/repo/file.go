@@ -10,6 +10,7 @@ import (
 	"github.com/G-Node/gogs/models"
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/routes/repo"
+	"github.com/go-macaron/captcha"
 )
 
 // https://github.com/gogs/go-gogs-client/wiki/Repositories-Contents#download-raw-content
@@ -23,7 +24,20 @@ func GetRawFile(c *context.APIContext) {
 		c.Status(404)
 		return
 	}
-	return
+
+	blob, err := c.Repo.Commit.GetBlobByPath(c.Repo.TreePath)
+	if err != nil {
+		if git.IsErrNotExist(err) {
+			c.Status(404)
+		} else {
+			c.Error(500, "GetBlobByPath", err)
+		}
+		return
+	}
+	cp := captcha.NewCaptcha(captcha.Options{})
+	if err = repo.ServeBlob(c.Context, blob, cp); err != nil {
+		c.Error(500, "ServeBlob", err)
+	}
 }
 
 // https://github.com/gogs/go-gogs-client/wiki/Repositories-Contents#download-archive
