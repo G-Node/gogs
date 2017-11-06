@@ -293,7 +293,8 @@ func startIndexing(user, owner *models.User, repo *models.Repository) {
 		return
 	}
 	req, _ := http2.NewRequest(http2.MethodPost, setting.Search.IndexUrl, bytes.NewReader(data))
-	resp, err := http2.Client{}.Do(req)
+	client := http2.Client{}
+	resp, err := client.Do(req)
 	if err != nil || resp.StatusCode != http2.StatusOK {
 		log.Trace("Error doing index request:%+v,%d", err, resp.StatusCode)
 		return
