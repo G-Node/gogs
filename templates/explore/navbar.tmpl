@@ -8,6 +8,9 @@
 			<span class="octicon octicon-mortar-board"></span> {{.i18n.Tr "gindoi"}}
 		</a>
 		{{if .LoggedUser}}
+		<a class="{{if .PageIsExploreData}}active{{end}} item" href="{{AppSubURL}}/explore/data">
+			<span class="octicon octicon-file"></span> {{.i18n.Tr "explore.data"}}
+		</a>
 		<a class="{{if .PageIsExploreUsers}}active{{end}} item" href="{{AppSubURL}}/explore/users">
 			<span class="octicon octicon-person"></span> {{.i18n.Tr "explore.users"}}
 		</a>

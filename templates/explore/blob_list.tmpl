@@ -1,0 +1,34 @@
+<div class="ui blob list">
+	{{range .Blobs}}
+	<div class="item">
+		<div class="ui header">
+			<div>
+				<a href="{{AppSubURL}}/{{.Source.GinRepoName}}">
+					<span class="octicon octicon-repo"></span>
+					{{.Source.GinRepoName}}
+				</a>
+				<a href="{{AppSubURL}}/{{.Source.GinRepoName}}/src/{{.Source.FirstCommit}}/{{.Source.Path}}">
+					<span class="octicon octicon-file"></span>
+					{{.Source.Path}}
+				</a>
+				<div class="ui right">
+					<i class="heartbeat icon"></i>
+					{{.Score}}
+				</div>
+			</div>
+			<div class="ui horizontal divider">
+				hits
+			</div>
+		</div>
+		{{range .Highlight.Content}}
+		<div>
+			{{. | Safe}}
+		</div>
+		{{end}}
+	</div>
+	<div class="ui horizontal divider"> </div>
+	{{end}}
+</div>
+
+
+
