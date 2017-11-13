@@ -1,6 +1,6 @@
 <div class="ui blob-list">
 	{{range .Blobs}}
-	<div class="item">
+	<div class="ui segment">
 		<div class="ui header">
 			<div>
 				<a href="{{AppSubURL}}/{{.Source.GinRepoName}}">
@@ -20,11 +20,13 @@
 				hits
 			</div>
 		</div>
-		{{range .Highlight.Content}}
-		<div>
-			{{. | Safe}}
+		<div class="ui divided list">
+			{{range .Highlight.Content}}
+			<div class="item">
+				{{. | Safe}}
+			</div>
+			{{end}}
 		</div>
-		{{end}}
 	</div>
 	<div class="ui divider"></div>
 	{{end}}
