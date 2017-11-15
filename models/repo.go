@@ -383,13 +383,9 @@ func (repo *Repository) APIFormat(permission *api.Permission, user ...*User) *ap
 		// Reserved for go-gogs-client change
 		//		AvatarUrl:     repo.AvatarLink(),
 	}
-	if repo.IsFork {
-		p := &api.Permission{Pull: true}
-		if len(user) != 0 {
-			p.Admin = user[0].IsAdminOfRepo(repo)
-			p.Push = user[0].IsWriterOfRepo(repo)
-		}
-		apiRepo.Parent = repo.BaseRepo.APIFormat(p)
+	if repo.IsFork && repo.BaseRepo != nil {
+		// FIXME: check precise permission for base repository
+		apiRepo.Parent = repo.BaseRepo.APIFormat(nil)
 	}
 	return apiRepo
 }
