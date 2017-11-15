@@ -24,6 +24,9 @@ import (
 	"github.com/G-Node/gogs/pkg/process"
 	"github.com/G-Node/gogs/pkg/setting"
 	"github.com/G-Node/go-annex"
+	"encoding/json"
+	"bytes"
+	"net/http"
 )
 
 // ___________    .___.__  __    ___________.__.__
@@ -168,6 +171,9 @@ func (repo *Repository) UpdateRepoFile(doer *User, opts UpdateRepoFileOptions) (
 	}
 
 	go AddTestPullRequestTask(doer, repo.ID, opts.NewBranch, true)
+	if setting.Search.Do {
+		StartIndexing(doer, repo.MustOwner(), repo)
+	}
 	return nil
 }
 
@@ -557,6 +563,29 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 		log.Error(1, "Annex uninit failed with error: %v,%s, at: %s/ This repository might fail at "+
 			"subsequent uploads!", err, msg, localPath)
 	}
+	// Indexing support
+	if setting.Search.Do {
+		StartIndexing(doer, repo.MustOwner(), repo)
+	}
+
 	RemoveAllWithNotice("Cleaning out after upload", localPath)
 	return DeleteUploads(uploads...)
+}
+
+func StartIndexing(user, owner *User, repo *Repository) {
+	var ireq struct{ RepoID, RepoPath string }
+	ireq.RepoID = fmt.Sprintf("%d", repo.ID)
+	ireq.RepoPath = repo.RepoPath()
+	data, err := json.Marshal(ireq)
+	if err != nil {
+		log.Trace("could not marshal index request :%+v", err)
+		return
+	}
+	req, _ := http.NewRequest(http.MethodPost, setting.Search.IndexUrl, bytes.NewReader(data))
+	client := http.Client{}
+	resp, err := client.Do(req)
+	if err != nil || resp.StatusCode != http.StatusOK {
+		log.Trace("Error doing index request:%+v,%d", err, resp.StatusCode)
+		return
+	}
 }
