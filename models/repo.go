@@ -311,7 +311,7 @@ func (repo *Repository) APIFormat(permission *api.Permission) *api.Repository {
 		Updated:       repo.Updated,
 		Permissions:   permission,
 	}
-	if repo.IsFork {
+	if repo.IsFork && repo.BaseRepo != nil {
 		// FIXME: check precise permission for base repository
 		apiRepo.Parent = repo.BaseRepo.APIFormat(nil)
 	}
