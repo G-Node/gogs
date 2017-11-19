@@ -239,6 +239,7 @@ func RepoAssignment(pages ...bool) macaron.Handler {
 		if c.IsLogged {
 			c.Data["IsWatchingRepo"] = models.IsWatching(c.User.ID, repo.ID)
 			c.Data["IsStaringRepo"] = models.IsStaring(c.User.ID, repo.ID)
+			c.Data["HasForked"] = c.User.HasForkedRepo(c.Repo.Repository.ID)
 		}
 
 		// repo is bare and display enable
