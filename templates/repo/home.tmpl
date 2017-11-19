@@ -29,7 +29,7 @@
 						<button class="ui green small button"><i class="octicon octicon-git-compare"></i></button>
 					</a>
 				</div>
-				{{else if or .IsRepositoryWriter .HasForkedRepository}}
+				{{else if or .IsRepositoryWriter .HasForked}}
 					<div class="fitted item"
 							data-tooltip="Pull requests have been disabled for this repository" data-position="top center">
 							<button class="ui disabled small button"><i class="octicon octicon-git-compare"></i></button>
