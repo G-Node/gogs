@@ -193,6 +193,7 @@ func runWeb(c *cli.Context) error {
 			c.Redirect(setting.AppSubURL + "/explore/repos")
 		})
 		m.Get("/data", routes.ExploreData)
+		m.Get("/commits", routes.ExploreCommits)
 		m.Get("/repos", routes.ExploreRepos)
 		m.Get("/users", routes.ExploreUsers)
 		m.Get("/organizations", routes.ExploreOrganizations)

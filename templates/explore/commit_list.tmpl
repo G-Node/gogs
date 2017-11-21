@@ -1,5 +1,5 @@
 <div class="ui blob-list">
-	{{range .Blobs}}
+	{{range .Commits}}
 	<div class="ui segment">
 		<div class="ui header">
 			<div>
@@ -7,32 +7,25 @@
 					<span class="octicon octicon-repo"></span>
 					{{.Source.GinRepoName}}
 				</a>
-				<a href="{{AppSubURL}}/{{.Source.GinRepoName}}/src/{{.Source.FirstCommit}}/{{.Source.Path}}">
-					<span class="octicon octicon-file"></span>
-					{{.Source.Path}}
+				<a href="{{AppSubURL}}/{{.Source.GinRepoName}}/commit/{{.Source.Oid}}">
+					<div class="ui sha label">{{ShortSHA1 .Source.Oid.String}}</div>
 				</a>
 				<div class="ui right">
 					<i class="heartbeat icon"></i>
 					{{.Score}}
 				</div>
 			</div>
-			{{if .Highlight}}
-			<div class="ui horizontal divider">
-				hits
-			</div>
 		</div>
+		{{if .Highlight}}
+		<div class="ui divider"></div>
 		<div class="ui divided list">
-			{{range .Highlight.Content}}
+			{{range .Highlight.Message}}
 			<div class="item">
 				{{. | Safe}}
 			</div>
 			{{end}}
-			{{end}}
 		</div>
+		{{end}}
 	</div>
-	<div class="ui divider"></div>
 	{{end}}
 </div>
-
-
-

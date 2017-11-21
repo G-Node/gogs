@@ -12,7 +12,8 @@ import (
 )
 
 const (
-	EXPLORE_DATA = "explore/data"
+	EXPLORE_DATA    = "explore/data"
+	EXPLORE_COMMITS = "explore/commits"
 )
 
 func Search(c *context.Context, keywords string) ([]byte, error) {
@@ -62,11 +63,32 @@ func ExploreData(c *context.Context) {
 	res := gindex.SearchResults{}
 	err = json.Unmarshal(data, &res)
 	if err != nil {
-		c.Handle(http.StatusInternalServerError, "Could nor display result", err)
+		c.Handle(http.StatusInternalServerError, "Could not display result", err)
 		return
 	}
 	c.Data["Blobs"] = res.Blobs
-	c.Data["Commits"] = res.Commits
 	c.HTML(200, EXPLORE_DATA)
+}
 
+func ExploreCommits(c *context.Context) {
+	c.Data["Title"] = c.Tr("explore")
+	c.Data["PageIsExplore"] = true
+	c.Data["PageIsExploreCommits"] = true
+
+	keywords := c.Query("q")
+	data, err := Search(c, keywords)
+
+	if err != nil {
+		c.Handle(http.StatusInternalServerError, "Could nor querry", err)
+		return
+	}
+
+	res := gindex.SearchResults{}
+	err = json.Unmarshal(data, &res)
+	if err != nil {
+		c.Handle(http.StatusInternalServerError, "Could not display result", err)
+		return
+	}
+	c.Data["Commits"] = res.Commits
+	c.HTML(200, EXPLORE_COMMITS)
 }
