@@ -27,6 +27,11 @@ func Search(c *context.APIContext) {
 		PageSize: convert.ToCorrectPageSize(c.QueryInt("limit")),
 	}
 
+	// workaround for the all querry with logged users
+	if opts.Keyword == "." && c.User.ID > 0 {
+		opts.Keyword = ""
+		log.Trace("User %i asked for all repos")
+	}
 	// Check visibility.
 	if c.IsLogged && opts.OwnerID > 0 {
 		if c.User.ID == opts.OwnerID {

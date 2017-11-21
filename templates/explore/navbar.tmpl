@@ -11,6 +11,9 @@
 		<a class="{{if .PageIsExploreData}}active{{end}} item" href="{{AppSubURL}}/explore/data">
 			<span class="octicon octicon-file"></span> {{.i18n.Tr "explore.data"}}
 		</a>
+		<a class="{{if .PageIsExploreCommits}}active{{end}} item" href="{{AppSubURL}}/explore/commits">
+			<span class="octicon octicon-git-commit"></span> {{.i18n.Tr "explore.commits"}}
+		</a>
 		<a class="{{if .PageIsExploreUsers}}active{{end}} item" href="{{AppSubURL}}/explore/users">
 			<span class="octicon octicon-person"></span> {{.i18n.Tr "explore.users"}}
 		</a>
