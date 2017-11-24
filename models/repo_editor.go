@@ -575,7 +575,7 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 func StartIndexing(user, owner *User, repo *Repository) {
 	var ireq struct{ RepoID, RepoPath string }
 	ireq.RepoID = fmt.Sprintf("%d", repo.ID)
-	ireq.RepoPath = repo.RepoPath()
+	ireq.RepoPath = repo.FullName()
 	data, err := json.Marshal(ireq)
 	if err != nil {
 		log.Trace("could not marshal index request :%+v", err)
