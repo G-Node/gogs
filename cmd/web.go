@@ -494,6 +494,7 @@ func runWeb(c *cli.Context) error {
 		m.Get("/issues/:index", repo.ViewIssue)
 		m.Get("/labels/", repo.RetrieveLabels, repo.Labels)
 		m.Get("/milestones", repo.Milestones)
+		m.Get("/doi", routes.RequestDoi)
 	}, ignSignIn, context.RepoAssignment(true))
 	m.Group("/:username/:reponame", func() {
 		// FIXME: should use different URLs but mostly same logic for comments of issue and pull reuqest.
