@@ -38,6 +38,8 @@ func NewSanitizer() {
 
 		// Custom URL-Schemes
 		sanitizer.policy.AllowURLSchemes(setting.Markdown.CustomURLSchemes...)
+
+		sanitizer.policy.AllowAttrs("class").OnElements("div")
 	})
 }
 
