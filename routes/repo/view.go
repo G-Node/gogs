@@ -246,7 +246,9 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			if blob.Size() > 1024 {
 				d := make([]byte, blob.Size()-
 					1024)
-				r.Read(d)
+				if _, err := io.ReadAtLeast(r, d, int(blob.Size()-1024)); err != nil {
+					log.Error(4., "Could nor read all of a git file:%+v", err)
+				}
 				buf = append(buf, d...)
 			}
 		} else {
@@ -279,8 +281,6 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			} else {
 				fileContent = content
 			}
-			fileContent = string(buf)
-			log.Trace("Buffer Size is: %d", len(buf))
 			var output bytes.Buffer
 			lines := strings.Split(fileContent, "\n")
 			if len(lines) > setting.UI.MaxLineHighlight {
