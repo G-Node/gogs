@@ -5,6 +5,7 @@ type SearchRequest struct {
 	CsrfT  string
 	UserID int64
 	Querry string
+	SType  int64
 }
 
 type IndexRequest struct {

@@ -9,6 +9,8 @@ import (
 	"io/ioutil"
 	"github.com/G-Node/gogs/pkg/setting"
 	"fmt"
+	"strconv"
+	"github.com/Sirupsen/logrus"
 )
 
 const (
@@ -16,7 +18,7 @@ const (
 	EXPLORE_COMMITS = "explore/commits"
 )
 
-func Search(c *context.Context, keywords string) ([]byte, error) {
+func Search(c *context.Context, keywords string, sType int64) ([]byte, error) {
 	if ! c.IsLogged {
 		c.Status(http.StatusUnauthorized)
 		return nil, fmt.Errorf("User nor logged in")
@@ -26,7 +28,7 @@ func Search(c *context.Context, keywords string) ([]byte, error) {
 		return nil, fmt.Errorf("Extended search not implemented")
 	}
 	ireq := gindex.SearchRequest{Token: c.GetCookie(setting.SessionConfig.CookieName), UserID: c.User.ID,
-		Querry: keywords, CsrfT: c.GetCookie(setting.CSRFCookieName)}
+		Querry: keywords, CsrfT: c.GetCookie(setting.CSRFCookieName), SType: sType}
 	data, err := json.Marshal(ireq)
 	if err != nil {
 		c.Status(http.StatusInternalServerError)
@@ -53,7 +55,12 @@ func ExploreData(c *context.Context) {
 	c.Data["PageIsExploreData"] = true
 
 	keywords := c.Query("q")
-	data, err := Search(c, keywords)
+	sType, err := strconv.ParseInt(c.Query("stype"), 10, 0)
+	if err != nil {
+		logrus.Errorf("Serach type not understood:%+v", err)
+		sType = 0
+	}
+	data, err := Search(c, keywords, sType)
 
 	if err != nil {
 		c.Handle(http.StatusInternalServerError, "Could nor querry", err)
@@ -76,7 +83,12 @@ func ExploreCommits(c *context.Context) {
 	c.Data["PageIsExploreCommits"] = true
 
 	keywords := c.Query("q")
-	data, err := Search(c, keywords)
+	sType, err := strconv.ParseInt(c.Query("stype"), 10, 0)
+	if err != nil {
+		logrus.Errorf("Serach type not understood:%+v", err)
+		sType = 0
+	}
+	data, err := Search(c, keywords, sType)
 
 	if err != nil {
 		c.Handle(http.StatusInternalServerError, "Could nor querry", err)
