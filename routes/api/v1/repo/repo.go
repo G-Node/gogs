@@ -28,9 +28,8 @@ func Search(c *context.APIContext) {
 	}
 
 	// workaround for the all querry with logged users
-	if opts.Keyword == "." && c.User.ID > 0 {
+	if opts.Keyword == "." {
 		opts.Keyword = ""
-		log.Trace("User %i asked for all repos")
 	}
 	// Check visibility.
 	if c.IsLogged && opts.OwnerID > 0 {
@@ -71,7 +70,11 @@ func Search(c *context.APIContext) {
 
 	results := make([]*api.Repository, len(repos))
 	for i := range repos {
-		results[i] = repos[i].APIFormat(nil)
+		rep := repos[i].APIFormat(nil)
+		if ! c.IsLogged {
+			rep.Owner.Email = ""
+		}
+		results[i] = rep
 	}
 
 	c.SetLinkHeader(int(count), setting.API.MaxResponseItems)
