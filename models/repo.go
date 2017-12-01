@@ -370,7 +370,6 @@ func (repo *Repository) APIFormat(permission *api.Permission, user ...*User) *ap
 		Size:          repo.Size,
 		HTMLURL:       repo.HTMLURL(),
 		SSHURL:        cloneLink.SSH,
-		CloneURL:      cloneLink.HTTPS,
 		Website:       repo.Website,
 		Stars:         repo.NumStars,
 		Forks:         repo.NumForks,

@@ -135,7 +135,6 @@ func (u *User) APIFormat() *api.User {
 		UserName:  u.Name,
 		Login:     u.Name,
 		FullName:  u.FullName,
-		Email:     u.Email,
 		AvatarUrl: u.AvatarLink(),
 	}
 }
