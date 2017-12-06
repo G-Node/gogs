@@ -32,6 +32,10 @@ import (
 	"github.com/G-Node/gogs/pkg/tool"
 	"github.com/go-macaron/captcha"
 	"gopkg.in/yaml.v2"
+	"github.com/G-Node/godML/odml"
+	"encoding/json"
+	"encoding/xml"
+	"golang.org/x/net/html/charset"
 )
 
 const (
@@ -270,6 +274,22 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			c.Data["FileContent"] = string(markup.OrgMode(buf, path.Dir(treeLink), c.Repo.Repository.ComposeMetas()))
 		case markup.IPYTHON_NOTEBOOK:
 			c.Data["IsIPythonNotebook"] = true
+		case markup.UNRECOGNIZED:
+			if tool.IsOdmlFile(buf) {
+				c.Data["IsOdML"] = true
+				od := odml.Odml{}
+				xml.Unmarshal(buf, &od)
+				decoder := xml.NewDecoder(bytes.NewReader(buf))
+				decoder.CharsetReader = charset.NewReaderLabel
+				decoder.Decode(&od)
+				data, _ := json.Marshal(od)
+				c.Data["FileContent"] = string(data)
+				break
+			} else {
+				goto End
+			}
+		End:
+			fallthrough
 		default:
 			// Building code view blocks with line number on server side.
 			var fileContent string

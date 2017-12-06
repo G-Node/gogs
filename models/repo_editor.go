@@ -638,7 +638,7 @@ func StartIndexing(user, owner *User, repo *Repository) {
 	client := http.Client{}
 	resp, err := client.Do(req)
 	if err != nil || resp.StatusCode != http.StatusOK {
-		log.Trace("Error doing index request:%+v,%d", err, resp.StatusCode)
+		log.Trace("Error doing index request:%+v,%d", err)
 		return
 	}
 }

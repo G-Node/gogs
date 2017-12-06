@@ -33,6 +33,11 @@
 			"revisionTime": "2017-07-13T18:18:00Z"
 		},
 		{
+			"checksumSHA1": "dpa+gHrdw4GXFknbMysx2/32kUM=",
+			"path": "github.com/G-Node/odML/odml",
+			"revision": ""
+		},
+		{
 			"checksumSHA1": "IyfS7Rbl6OgR83QR7TOfKdDCq+M=",
 			"path": "github.com/Unknwon/cae",
 			"revision": "c6aac99ea2cae2ebaf23f26f76b04fe3fcfc9f8c",

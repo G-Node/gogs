@@ -38,7 +38,33 @@
 	<div class="ui unstackable attached table segment">
 		<div id="{{if .IsIPythonNotebook}}ipython-notebook{{end}}" class="file-view {{if .IsMarkdown}}markdown{{else if .IsIPythonNotebook}}ipython-notebook{{else if .ReadmeInList}}plain-text{{else if and .IsTextFile}}code-view{{end}} has-emoji">
 			{{if .IsMarkdown}}
-				{{if .FileContent}}{{.FileContent | Str2HTML}}{{end}}
+				{{if .FileContent}}{{.FileContent | Str2html}}{{end}}
+			{{else if .IsOdML}}
+			<div class="ui fluid action input">
+				<input class="search-input form-control" placeholder="Search"></input>
+			</div>
+			<div id="jstree"></div>
+			<script>
+				$(function() {
+					$(".search-input").keyup(function(e) {
+						if(e.keyCode==13) {
+							var searchString = $(this).val();
+							console.log(searchString);
+							$('#jstree').jstree('search', searchString);
+						}
+					});
+					$('#jstree').jstree({
+						'core': {
+							'data': [{{.FileContent| Str2JS}}]
+				},
+					"search": {
+						"case_insensitive": true,
+							"show_only_matches" : true
+					},
+					"plugins": ["search"]
+				});
+				});
+			</script>
 			{{else if .IsIPythonNotebook}}
 				<script>
 					var rendered = null;

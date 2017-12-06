@@ -60,16 +60,15 @@ func NewFuncMap() []template.FuncMap {
 		"LoadTimes": func(startTime time.Time) string {
 			return fmt.Sprint(time.Since(startTime).Nanoseconds()/1e6) + "ms"
 		},
-		"AvatarLink":       tool.AvatarLink,
-		"AppendAvatarSize": tool.AppendAvatarSize,
-		"Safe":             Safe,
-		"Sanitize":         bluemonday.UGCPolicy().Sanitize,
-		"Str2HTML":         Str2HTML,
-		"NewLine2br":       NewLine2br,
-		"TimeSince":        tool.TimeSince,
-		"RawTimeSince":     tool.RawTimeSince,
-		"FileSize":         tool.FileSize,
-		"Subtract":         tool.Subtract,
+		"AvatarLink":   tool.AvatarLink,
+		"Safe":         Safe,
+		"Sanitize":     bluemonday.UGCPolicy().Sanitize,
+		"Str2html":     Str2html,
+		"Str2JS":       Str2JS,
+		"TimeSince":    tool.TimeSince,
+		"RawTimeSince": tool.RawTimeSince,
+		"FileSize":     tool.FileSize,
+		"Subtract":     tool.Subtract,
 		"Add": func(a, b int) int {
 			return a + b
 		},
@@ -131,9 +130,8 @@ func Str2HTML(raw string) template.HTML {
 	return template.HTML(markup.Sanitize(raw))
 }
 
-// NewLine2br simply replaces "\n" to "<br>".
-func NewLine2br(raw string) string {
-	return strings.Replace(raw, "\n", "<br>", -1)
+func Str2JS(raw string) template.JS {
+	return template.JS(raw)
 }
 
 func List(l *list.List) chan interface{} {
