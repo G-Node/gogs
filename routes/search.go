@@ -19,16 +19,17 @@ const (
 )
 
 func Search(c *context.Context, keywords string, sType int64) ([]byte, error) {
-	if ! c.IsLogged {
-		c.Status(http.StatusUnauthorized)
-		return nil, fmt.Errorf("User nor logged in")
-	}
 	if !setting.Search.Do {
 		c.Status(http.StatusNotImplemented)
 		return nil, fmt.Errorf("Extended search not implemented")
 	}
-	ireq := gindex.SearchRequest{Token: c.GetCookie(setting.SessionConfig.CookieName), UserID: c.User.ID,
-		Querry: keywords, CsrfT: c.GetCookie(setting.CSRFCookieName), SType: sType}
+
+	ireq := gindex.SearchRequest{Token: c.GetCookie(setting.SessionConfig.CookieName),
+		Querry: keywords, CsrfT: c.GetCookie(setting.CSRFCookieName), SType: sType, UserID: -10}
+	if c.IsLogged {
+		ireq.UserID = c.User.ID
+	}
+
 	data, err := json.Marshal(ireq)
 	if err != nil {
 		c.Status(http.StatusInternalServerError)
@@ -61,9 +62,8 @@ func ExploreData(c *context.Context) {
 		sType = 0
 	}
 	data, err := Search(c, keywords, sType)
-
 	if err != nil {
-		c.Handle(http.StatusInternalServerError, "Could nor querry", err)
+		c.Handle(http.StatusInternalServerError, "Could not querry", err)
 		return
 	}
 
