@@ -11,6 +11,13 @@ import (
 	"strings"
 )
 
+func IsOdmlFile(data []byte) bool {
+	if len(data) == 0 {
+		return true
+	}
+	return strings.Contains(string(data), "<odML version=")
+}
+
 // IsTextFile returns true if file content format is plain text or empty.
 func IsTextFile(data []byte) bool {
 	if len(data) == 0 {

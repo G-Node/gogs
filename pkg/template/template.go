@@ -63,6 +63,7 @@ func NewFuncMap() []template.FuncMap {
 		"Safe":         Safe,
 		"Sanitize":     bluemonday.UGCPolicy().Sanitize,
 		"Str2html":     Str2html,
+		"Str2JS":       Str2JS,
 		"TimeSince":    tool.TimeSince,
 		"RawTimeSince": tool.RawTimeSince,
 		"FileSize":     tool.FileSize,
@@ -126,6 +127,10 @@ func Safe(raw string) template.HTML {
 
 func Str2html(raw string) template.HTML {
 	return template.HTML(markup.Sanitize(raw))
+}
+
+func Str2JS(raw string) template.JS {
+	return template.JS(raw)
 }
 
 func List(l *list.List) chan interface{} {
