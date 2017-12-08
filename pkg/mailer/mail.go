@@ -21,6 +21,7 @@ const (
 	MAIL_AUTH_ACTIVATE_EMAIL  = "auth/activate_email"
 	MAIL_AUTH_RESET_PASSWORD  = "auth/reset_passwd"
 	MAIL_AUTH_REGISTER_NOTIFY = "auth/register_notify"
+	MAIL_AUTH_INVITE_NOTIFY   = "auth/invite_email"
 
 	MAIL_ISSUE_COMMENT = "issue/comment"
 	MAIL_ISSUE_MENTION = "issue/mention"
@@ -84,6 +85,9 @@ func SendUserMail(c *macaron.Context, u User, tpl, code, subject, info string) {
 		"ActiveCodeLives":   setting.Service.ActiveCodeLives / 60,
 		"ResetPwdCodeLives": setting.Service.ResetPwdCodeLives / 60,
 		"Code":              code,
+		"Account":           c.Data["Account"],
+		"Inviter":           c.Data["Inviter"],
+		"Pw":                c.Data["Pw"],
 	}
 	body, err := mailRender.HTMLString(string(tpl), data)
 	if err != nil {
@@ -99,6 +103,10 @@ func SendUserMail(c *macaron.Context, u User, tpl, code, subject, info string) {
 
 func SendActivateAccountMail(c *macaron.Context, u User) {
 	SendUserMail(c, u, MAIL_AUTH_ACTIVATE, u.GenerateActivateCode(), c.Tr("mail.activate_account"), "activate account")
+}
+
+func SendInviteMail(c *macaron.Context, u User) {
+	SendUserMail(c, u, MAIL_AUTH_INVITE_NOTIFY, u.GenerateActivateCode(), c.Tr("mail.invite_account"), "invite account")
 }
 
 func SendResetPasswordMail(c *macaron.Context, u User) {
