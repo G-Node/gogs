@@ -104,6 +104,12 @@
 			"revisionTime": "2017-01-17T17:39:00Z"
 		},
 		{
+			"checksumSHA1": "PvxFk8o4Lr9oqxkdJmuEfh4gaS0=",
+			"path": "github.com/dustinkirkland/golang-petname",
+			"revision": "d3c2ba80e75eeef10c5cf2fc76d2c809637376b3",
+			"revisionTime": "2017-09-21T22:06:37Z"
+		},
+		{
 			"checksumSHA1": "XEBl9iQQvfXNlwCSzyAOCqAlYEA=",
 			"path": "github.com/fatih/color",
 			"revision": "42c364ba490082e4815b5222728711b3440603eb",

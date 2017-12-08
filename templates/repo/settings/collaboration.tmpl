@@ -38,7 +38,7 @@
 						</div>
 					{{end}}
 				</div>
-				<div class="ui bottom attached segment">
+				<div class="ui attached segment">
 					<form class="ui form" id="repo-collab-form" action="{{.Link}}" method="post">
 						{{.CSRFTokenHTML}}
 						<div class="inline field ui left">
@@ -50,6 +50,21 @@
 							</div>
 						</div>
 						<button class="ui green button">{{.i18n.Tr "repo.settings.add_collaborator"}}</button>
+					</form>
+				</div>
+				<div class="ui bottom attached segment">
+					<form class="ui form" id="repo-collab-form" action="{{.Link}}" method="post">
+						{{.CSRFTokenHTML}}
+						<div class="inline field ui left">
+							<div id="invite">
+								<div class="ui input">
+									<input class="prompt" name="invite" type="email" placeholder="{{.i18n.Tr "repo.settings.invite_placeholder"}}"
+									autocomplete="off" autofocus required>
+								</div>
+							</div>
+						</div>
+						<button class="ui yellow button"
+										data-tooltip="{{.i18n.Tr "repo.settings.invite_collaborator_warn"}}">{{.i18n.Tr "repo.settings.invite_collaborator"}}</button>
 					</form>
 				</div>
 			</div>

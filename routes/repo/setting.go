@@ -19,6 +19,9 @@ import (
 	"github.com/G-Node/gogs/pkg/form"
 	"github.com/G-Node/gogs/pkg/mailer"
 	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/dustinkirkland/golang-petname"
+
+
 )
 
 const (
@@ -304,8 +307,40 @@ func SettingsCollaboration(c *context.Context) {
 	c.HTML(200, SETTINGS_COLLABORATION)
 }
 
+func inviteWithMail(c *context.Context, mail string) (*models.User, error) {
+	name := petname.Generate(2, "_")
+	pw := petname.Generate(3, "")
+	user := models.User{
+		Name:     name,
+		Passwd:   pw,
+		Email:    mail,
+		IsActive: true}
+	err := models.CreateUser(&user)
+	if err != nil {
+		return nil, err
+	}
+	log.Info("User: %s created", user.Name, pw)
+	c.Context.Data["Account"] = user.Name
+	c.Context.Data["Inviter"] = c.User.Name
+	c.Context.Data["Pw"] = pw
+	mailer.SendInviteMail(c.Context, models.NewMailerUser(&user))
+	return &user, nil
+}
 func SettingsCollaborationPost(c *context.Context) {
-	name := strings.ToLower(c.Query("collaborator"))
+	var name string
+	new := strings.ToLower(c.Query("invite"))
+	if len(new) > 0 {
+		u, err := inviteWithMail(c, new)
+		if err != nil {
+			log.Info("Problem with inviting user:%s, %+v", new, err)
+			c.Flash.Error(c.Tr("form.user_not_invitable"))
+			c.Redirect(setting.AppSubURL + c.Req.URL.Path)
+			return
+		}
+		name = u.Name
+	} else {
+		name = strings.ToLower(c.Query("collaborator"))
+	}
 	if len(name) == 0 || c.Repo.Owner.LowerName == name {
 		c.Redirect(setting.AppSubURL + c.Req.URL.Path)
 		return
@@ -321,7 +356,6 @@ func SettingsCollaborationPost(c *context.Context) {
 		}
 		return
 	}
-
 	// Organization is not allowed to be added as a collaborator
 	if u.IsOrganization() {
 		c.Flash.Error(c.Tr("repo.settings.org_not_allowed_to_be_collaborator"))
@@ -329,7 +363,7 @@ func SettingsCollaborationPost(c *context.Context) {
 		return
 	}
 
-	if err = c.Repo.Repository.AddCollaborator(u); err != nil {
+	if err := c.Repo.Repository.AddCollaborator(u); err != nil {
 		c.Handle(500, "AddCollaborator", err)
 		return
 	}

@@ -2364,6 +2364,11 @@ footer .ui.language .menu {
 .repository.settings.collaboration #repo-collab-form #search-user-box .results {
   left: 7px;
 }
+
+.ui.segment.results.hide {
+  z-index: 1000;
+}
+
 .repository.settings.collaboration #repo-collab-form .ui.button {
   margin-left: 5px;
   margin-top: -3px;
