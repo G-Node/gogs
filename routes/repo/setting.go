@@ -90,6 +90,8 @@ func SettingsPost(c *context.Context, f form.RepoSetting) {
 
 		visibilityChanged := repo.IsPrivate != f.Private
 		repo.IsPrivate = f.Private
+
+		repo.Unlisted = !f.Listed
 		if err := models.UpdateRepository(repo, visibilityChanged); err != nil {
 			c.ServerError("UpdateRepository", err)
 			return
