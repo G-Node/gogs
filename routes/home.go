@@ -11,7 +11,6 @@ import (
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/pkg/setting"
 	"github.com/G-Node/gogs/routes/user"
-	"strings"
 )
 
 const (
@@ -76,7 +75,7 @@ func ExploreRepos(c *context.Context) {
 	// filter repos we eant to not show in list
 	var showRep []*models.Repository
 	for _, repo := range repos {
-		if !strings.Contains(repo.Name, "hideme") && !strings.Contains(repo.Name, "unlisted") {
+		if !repo.Unlisted {
 			showRep = append(showRep, repo)
 		}
 	}
