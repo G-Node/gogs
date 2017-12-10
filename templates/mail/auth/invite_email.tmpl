@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>Data sharing invitation by {{.Inviter}}</title>
+</head>
+
+<body>
+<p>Hey there!</p>
+<p>You have been invited by {{.Inviter}} to share some of his data on GIN - a free and open source scientific data
+	sharing platform hosted at the Ludwig Maximilian University in Munich.</p>
+<p>{{.Inviter}} has already created an account with the temporary name {{.Account}} for you with which you can access
+	the data.</p>
+<p>You can activate that account and set a password by clicking this
+<a href="{{AppURL}}user/reset_password?code={{.Code}}">Link</a>.
+<p>Please click the link to verify your email address within <b>{{.ActiveCodeLives}} hours</b></p>
+<p>Not working? Try copying and pasting it to your browser.</p>
+<p>If you are not interested just ignore this mail!</p>
+<p> All the best from Munich!</p>
+<p>© 2017 <a target="_blank" href="{{AppURL}}">{{AppName}}</a></p>
+</body>
+</html>

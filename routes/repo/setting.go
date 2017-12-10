@@ -23,8 +23,6 @@ import (
 	"github.com/G-Node/gogs/pkg/mailer"
 	"github.com/G-Node/gogs/pkg/setting"
 	"github.com/dustinkirkland/golang-petname"
-
-
 )
 
 const (
