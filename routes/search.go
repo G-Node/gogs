@@ -74,6 +74,7 @@ func ExploreData(c *context.Context) {
 		return
 	}
 	c.Data["Blobs"] = res.Blobs
+	c.Data["opsel"] = sType
 	c.HTML(200, EXPLORE_DATA)
 }
 
