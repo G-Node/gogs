@@ -1,4 +1,4 @@
-{{if and (not .IsPrivate) (and (not .LicenseExists) $.IsRepositoryAdmin)}}
+{{if and (not $.Repository.IsPrivate) (and (not .LicenseExists) $.IsRepositoryAdmin)}}
 <div class="ui warning icon message">
 	<i class="comment outline icon"></i>
 	<div class="content">
