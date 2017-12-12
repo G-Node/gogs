@@ -1,3 +1,15 @@
+{{if and (not .IsPrivate) (and (not .LicenseExists) $.IsRepositoryAdmin)}}
+<div class="ui warning icon message">
+	<i class="comment outline icon"></i>
+	<div class="content">
+	<div class="header">
+		You have provided no LICENSE file!
+	</div>
+	Your repository is public, however, you have provided no LICENSE file. You should really consider adding one! <a href="/G-Node/Info/wiki/Licensing">I want to know more.</a>
+</div>
+</div>
+{{end}}
+
 <table id="repo-files-table" class="ui fixed single line table">
 	<thead>
 		<tr>

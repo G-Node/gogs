@@ -67,7 +67,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 	c.Data["DOI"] = false
 	var readmeFile *git.Blob
 	for _, entry := range entries {
-		if entry.IsDir() || (!markup.IsReadmeFile(entry.Name()) && !(entry.Name() == "datacite.yml")) {
+		if entry.IsDir() || (!markup.IsReadmeFile(entry.Name()) && !(entry.Name() == "datacite.yml")&& !(entry.Name() == "LICENSE")) {
 			continue
 		}
 
@@ -89,6 +89,8 @@ func renderDirectory(c *context.Context, treeLink string) {
 			}
 			log.Trace("Doi info was: %v ", doiInfo)
 			c.Data["DoiInfo"] = doiInfo
+		} else if entry.Name() == "LICENSE" {
+			c.Data["LicenseExists"] = true
 		}
 	}
 
