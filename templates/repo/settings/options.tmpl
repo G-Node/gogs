@@ -29,7 +29,7 @@
 						{{if not .Repository.IsFork}}
 							<div class="inline field">
 								<label>{{.i18n.Tr "repo.visibility"}}</label>
-								<div class="ui checkbox">
+								<div class="ui checkbox" {{if .Repository.IsPrivate}}data-tooltip="{{.i18n.Tr "repo.license_warn"}}"{{end}}>
 									<input name="private" type="checkbox" {{if .Repository.IsPrivate}}checked{{end}}>
 									<label>{{.i18n.Tr "repo.visiblity_helper" | Safe}} {{if .Repository.NumForks}}<span class="text red">{{.i18n.Tr "repo.visiblity_fork_helper"}}</span>{{end}}</label>
 								</div>
