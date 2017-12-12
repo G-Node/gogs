@@ -24,7 +24,7 @@
 		<div class="ui divided list">
 			{{range .Highlight.Content}}
 			<div class="item">
-				{{. | Safe}}
+				{{. | Str2html}}
 			</div>
 			{{end}}
 			{{end}}
