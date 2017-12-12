@@ -1,13 +1,24 @@
-<form class="ui form">
+<form class="ui form labeled ">
 	<div class="ui fluid action input">
 		<input name="q" value="{{.Keyword}}" placeholder="{{.i18n.Tr " explore.search"}}..." autofocus>
 		<select class="ui dropdown" name="stype" id="search-type-select">
 			<option value="0" {{if eq .opsel 0}}selected{{end}}>Match</option>
 			<option value="1" {{if eq .opsel 1}}selected{{end}}>Fuzzy Term</option>
 			<option value="2" {{if eq .opsel 2}}selected{{end}}>Wildcard Term</option>
-			<option value="3" {{if eq .opsel 3}}selected{{end}}>Querry String</option>
+			<option value="3" {{if eq .opsel 3}}selected{{end}}>Query String</option>
 		</select>
-		<button class="ui blue button">{{.i18n.Tr "explore.search"}}</button>
+		<button class="ui blue animated button">
+		<div class="hidden content">Search</div>
+		<div class="visible content">
+			<i class="search icon"></i>
+		</div>
+		</button>
+		<a href="G-Node/Info/wiki/Search" class="ui vertical animated button" tabindex="0">
+		<div class="hidden content">Help</div>
+		<div class="visible content">
+			<i class="info icon"></i>
+		</div>
+		</a>
 	</div>
 </form>
 <div class="ui divider"></div>
