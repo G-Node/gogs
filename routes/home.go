@@ -76,7 +76,7 @@ func ExploreRepos(c *context.Context) {
 	// filter repos we eant to not show in list
 	var showRep []*models.Repository
 	for _, repo := range repos {
-		if !strings.Contains(repo.Name, "hideme") {
+		if !strings.Contains(repo.Name, "hideme") && !strings.Contains(repo.Name, "unlisted") {
 			showRep = append(showRep, repo)
 		}
 	}

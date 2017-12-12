@@ -89,7 +89,7 @@ func retrieveFeeds(c *context.Context, ctxUser *models.User, userID int64, isPro
 			log.Trace("Ignored Ref %s for feed", act.RefName)
 		case strings.Contains(act.RefName, "git-annex"):
 			log.Trace("Ignored Ref %s for feed", act.RefName)
-		case strings.Contains(act.RepoName, "hideme"):
+		case strings.Contains(act.RepoName, "hideme") || strings.Contains(act.RepoName, "unlisted"):
 			log.Trace("Ignored Ref %s for feed", act.RefName)
 		default:
 			log.Trace("Added Ref %s for feed", act.RefName)

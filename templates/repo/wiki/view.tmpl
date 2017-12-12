@@ -5,6 +5,7 @@
 	<div class="ui container">
 		<div class="ui grid">
 			<div class="ui ten wide column">
+				{{if .IsRepositoryWriter}}
 				<div class="choose page">
 					<div class="ui floating filter dropdown" data-no-results="{{.i18n.Tr "repo.pulls.no_results"}}">
 						<div class="ui basic small button">
@@ -27,6 +28,7 @@
 						</div>
 					</div>
 				</div>
+				{{end}}
 			</div>
 			<div class="ui six wide column">
 				<div class="ui action small input" id="clone-panel">
