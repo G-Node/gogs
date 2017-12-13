@@ -28,6 +28,11 @@ func IsIPythonNotebook(name string) bool {
 	return strings.HasSuffix(name, ".ipynb")
 }
 
+// Is JSON return whethe a filename looks liek it could be  ajson file
+func IsJSON(name string) bool {
+	return strings.HasSuffix(name, ".json")
+}
+
 const (
 	ISSUE_NAME_STYLE_NUMERIC      = "numeric"
 	ISSUE_NAME_STYLE_ALPHANUMERIC = "alphanumeric"
@@ -318,6 +323,7 @@ const (
 	MARKDOWN         Type = "markdown"
 	ORG_MODE         Type = "orgmode"
 	IPYTHON_NOTEBOOK Type = "ipynb"
+	JSON             Type = "json"
 )
 
 // Detect returns best guess of a markup type based on file name.
@@ -329,6 +335,8 @@ func Detect(filename string) Type {
 		return ORG_MODE
 	case IsIPythonNotebook(filename):
 		return IPYTHON_NOTEBOOK
+	case IsJSON(filename):
+		return JSON
 	default:
 		return UNRECOGNIZED
 	}

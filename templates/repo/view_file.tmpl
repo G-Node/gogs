@@ -35,8 +35,8 @@
 			</div>
 		{{end}}
 	</h4>
-	<div class="ui unstackable attached table segment">
-		<div id="{{if .IsIPythonNotebook}}ipython-notebook{{end}}" class="file-view {{if .IsMarkdown}}markdown{{else if .IsIPythonNotebook}}ipython-notebook{{else if .ReadmeInList}}plain-text{{else if and .IsTextFile}}code-view{{end}} has-emoji">
+	<div class="{{if .IsJSON}}{{else}}ui attached table segment{{end}}">
+		<div id="{{if not .IsJSON}}{{if .IsIPythonNotebook}}ipython-notebook{{end}}" class="file-view {{if .IsMarkdown}}markdown{{else if .IsIPythonNotebook}}ipython-notebook{{else if .IsIPythonNotebook}}ipython-notebook{{else if .ReadmeInList}}plain-text{{else if and .IsTextFile}}code-view{{end}} has-emoji{{end}}">
 			{{if .IsMarkdown}}
 				{{if .FileContent}}{{.FileContent | Str2html}}{{end}}
 			{{else if .IsOdML}}
@@ -64,6 +64,22 @@
 					"plugins": ["search"]
 				});
 				});
+			</script>
+
+			{{else if .IsJSON}}
+			<div id="jsoneditor"></div>
+			<script>
+				// create the editor
+				var container = document.getElementById("jsoneditor");
+				var options = {mode:"view"};
+				var editor = new JSONEditor(container, options);
+
+				// set json
+				var json = {{.FileContent| Str2JS}}
+				editor.set(json);
+
+				// get json
+				var json = editor.get();
 			</script>
 			{{else if .IsIPythonNotebook}}
 				<script>
