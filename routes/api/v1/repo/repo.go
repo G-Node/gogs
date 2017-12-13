@@ -71,11 +71,13 @@ func Search(c *context.APIContext) {
 
 	results := make([]*api.Repository, len(repos))
 	for i := range repos {
-		rep := repos[i].APIFormat(nil)
-		if ! c.IsLogged {
-			rep.Owner.Email = ""
+		if !repos[i].Unlisted {
+			rep := repos[i].APIFormat(nil)
+			if ! c.IsLogged {
+				rep.Owner.Email = ""
+			}
+			results[i] = rep
 		}
-		results[i] = rep
 	}
 
 	c.SetLinkHeader(int(count), opts.PageSize)
