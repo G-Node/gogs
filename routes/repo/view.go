@@ -276,6 +276,9 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			c.Data["FileContent"] = string(markup.OrgMode(buf, path.Dir(treeLink), c.Repo.Repository.ComposeMetas()))
 		case markup.IPYTHON_NOTEBOOK:
 			c.Data["IsIPythonNotebook"] = true
+		case markup.JSON:
+			c.Data["IsJSON"] = true
+			c.Data["FileContent"] = string(buf)
 		case markup.UNRECOGNIZED:
 			if tool.IsOdmlFile(buf) {
 				c.Data["IsOdML"] = true

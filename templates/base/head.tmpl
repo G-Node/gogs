@@ -66,6 +66,11 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css"/>
 		{{end}}
 
+		{{if .IsJSON}}
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/5.11.0/jsoneditor.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/5.11.0/jsoneditor.min.css"/>
+		{{end}}
+
 		{{if .RequireSimpleMDE}}
 		<link rel="stylesheet" href="{{AppSubURL}}/plugins/simplemde-1.10.1/simplemde.min.css">
 		<script src="{{AppSubURL}}/plugins/simplemde-1.10.1/simplemde.min.js"></script>
