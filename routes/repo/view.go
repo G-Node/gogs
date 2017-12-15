@@ -89,10 +89,9 @@ func renderDirectory(c *context.Context, treeLink string) {
 			}
 			log.Trace("Doi info was: %v ", doiInfo)
 			c.Data["DoiInfo"] = doiInfo
-		} else if entry.Name() == "LICENSE" {
-			c.Data["LicenseExists"] = true
 		}
 	}
+	c.Data["LicenseExists"] = true
 
 	if readmeFile != nil {
 		c.Data["RawFileLink"] = ""
