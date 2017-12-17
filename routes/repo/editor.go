@@ -20,6 +20,7 @@ import (
 	"github.com/G-Node/gogs/pkg/setting"
 	"github.com/G-Node/gogs/pkg/template"
 	"github.com/G-Node/gogs/pkg/tool"
+	"github.com/G-Node/gogs/pkg/markup"
 )
 
 const (
@@ -74,6 +75,7 @@ func editFile(c *context.Context, isNewFile bool) {
 
 		c.Data["FileSize"] = blob.Size()
 		c.Data["FileName"] = blob.Name()
+		c.Data["IsJSON"] = markup.IsJSON(blob.Name())
 
 		buf := make([]byte, 1024)
 		n, _ := dataRc.Read(buf)
