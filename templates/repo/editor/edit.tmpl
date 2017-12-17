@@ -26,6 +26,26 @@
 					</div>
 				</div>
 			</div>
+			{{if .IsJSON}}
+				<div id="jsoneditor"></div>
+				<input id="editcontent" name="content" type="hidden"></input>
+				<script>
+					// create the editor
+					var container = document.getElementById("jsoneditor");
+					var options = {mode:"tree",
+						onChange:function(){
+									$('#editcontent').val(JSON.stringify(editor.get(), null, 2))
+						}};
+					var editor = new JSONEditor(container, options);
+
+					// set json
+					var json = {{.FileContent| Str2JS}}
+					editor.set(json);
+
+					// get json
+					var json = editor.get();
+				</script>
+			{{else}}
 			<div class="field">
 				<div class="ui top attached tabular menu" data-write="write" data-preview="preview" data-diff="diff">
 					<a class="active item" data-tab="write"><i class="octicon octicon-code"></i> {{if .IsNewFile}}{{.i18n.Tr "repo.editor.new_file"}}{{else}}{{.i18n.Tr "repo.editor.edit_file"}}{{end}}</a>
@@ -49,6 +69,7 @@
 					{{.i18n.Tr "repo.release.loading"}}
 				</div>
 			</div>
+			{{end}}
 			{{template "repo/editor/commit_form" .}}
 		</form>
 	</div>
