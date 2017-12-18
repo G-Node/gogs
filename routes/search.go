@@ -56,6 +56,7 @@ func ExploreData(c *context.Context) {
 	c.Data["PageIsExploreData"] = true
 
 	keywords := c.Query("q")
+	c.Data["Keywords"] = keywords
 	sType, err := strconv.ParseInt(c.Query("stype"), 10, 0)
 	if err != nil {
 		logrus.Errorf("Serach type not understood:%+v", err)
