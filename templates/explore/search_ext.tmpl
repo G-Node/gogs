@@ -1,6 +1,6 @@
 <form class="ui form labeled ">
 	<div class="ui fluid action input">
-		<input name="q" value="{{.Keyword}}" placeholder="{{.i18n.Tr " explore.search"}}..." autofocus>
+		<input name="q" value="{{.Keywords}}" placeholder="{{if not .Keywords}}{{.i18n.Tr " explore.search"}}...{{end}}" autofocus>
 		<select class="ui dropdown" name="stype" id="search-type-select">
 			<option value="0" {{if eq .opsel 0}}selected{{end}}>Match</option>
 			<option value="1" {{if eq .opsel 1}}selected{{end}}>Fuzzy Term</option>
