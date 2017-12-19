@@ -33,6 +33,12 @@ func IsJSON(name string) bool {
 	return strings.HasSuffix(name, ".json")
 }
 
+// Is YAML return whethe a filename looks like it could be  a yaml file
+func IsYAML(name string) bool {
+	return strings.HasSuffix(name, ".yml")
+}
+
+
 const (
 	ISSUE_NAME_STYLE_NUMERIC      = "numeric"
 	ISSUE_NAME_STYLE_ALPHANUMERIC = "alphanumeric"
@@ -324,6 +330,7 @@ const (
 	ORG_MODE         Type = "orgmode"
 	IPYTHON_NOTEBOOK Type = "ipynb"
 	JSON             Type = "json"
+	YAML             Type = "yaml"
 )
 
 // Detect returns best guess of a markup type based on file name.
@@ -337,6 +344,8 @@ func Detect(filename string) Type {
 		return IPYTHON_NOTEBOOK
 	case IsJSON(filename):
 		return JSON
+	case IsYAML(filename):
+		return YAML
 	default:
 		return UNRECOGNIZED
 	}

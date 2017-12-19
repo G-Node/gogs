@@ -278,6 +278,9 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 		case markup.JSON:
 			c.Data["IsJSON"] = true
 			c.Data["FileContent"] = string(buf)
+		case markup.YAML:
+			c.Data["IsYAML"] = true
+			c.Data["FileContent"] = string(buf)
 		case markup.UNRECOGNIZED:
 			if tool.IsOdmlFile(buf) {
 				c.Data["IsOdML"] = true
