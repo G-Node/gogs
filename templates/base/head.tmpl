@@ -50,6 +50,7 @@
 		<link rel="shortcut icon" href="{{AppSubURL}}/img/favicon.png"/>
 		<script src="{{AppSubURL}}/js/jquery-1.11.3.min.js"></script>
 		<script src="{{AppSubURL}}/js/libs/jquery.are-you-sure.js"></script>
+		<script src="{{AppSubURL}}/js/libs/js.cookie.js"></script>
 		<link rel="stylesheet" href="{{AppSubURL}}/assets/font-awesome-4.6.3/css/font-awesome.min.css">
 		<link rel="stylesheet" href="{{AppSubURL}}/assets/octicons-4.3.0/octicons.min.css">
 
@@ -106,6 +107,12 @@
 		<noscript>This website works better with JavaScript</noscript>
 
 		{{if not .PageIsInstall}}
+		<div class="ui inline cookie nag">
+			<span class="title">
+				We use cookies to ensure you get the best experience on our website
+			</span>
+			<i class="nag close icon"></i>
+		</div>
 			<div class="following bar light">
 				<div class="ui container">
 					<div class="ui grid">

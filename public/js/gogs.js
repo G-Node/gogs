@@ -1098,6 +1098,22 @@ function initCodeView() {
     }
 }
 
+function initCookieWarn() {
+	// Automatically shows on init if cookie isnt set
+	if (Cookies.get('cookieok') === undefined) {
+		$('.cookie.nag')
+			.nag({
+				key: 'accepts-cookies',
+				value: true
+			})
+		;
+		$('.nag.close').click(function () {
+			Cookies.set('cookieok', true)
+		})
+
+	}
+}
+
 function initUserSettings() {
     console.log('initUserSettings');
 
@@ -1412,6 +1428,7 @@ $(document).ready(function () {
     initOrganization();
     initAdmin();
     initCodeView();
+	initCookieWarn();
 
     // Repo clone url.
     if ($('#repo-clone-url').length > 0) {
