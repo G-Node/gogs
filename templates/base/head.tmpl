@@ -68,13 +68,13 @@
 		{{end}}
 
 		{{if .IsJSON}}
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/5.11.0/jsoneditor.min.js"></script>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/5.11.0/jsoneditor.min.css"/>
+		<script src="{{AppSubURL}}/js/libs/jsoneditor.min.js"></script>
+		<link rel="stylesheet" href="{{AppSubURL}}/css/jsoneditor/jsoneditor.min.css"/>
 		{{end}}
 
 		{{if .IsYAML}}
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/5.11.0/jsoneditor.min.js"></script>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/5.11.0/jsoneditor.min.css"/>
+		<script src="{{AppSubURL}}/js/libs/jsoneditor.min.js"></script>
+		<link rel="stylesheet" href="{{AppSubURL}}/css/jsoneditor/jsoneditor.min.css"/>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/yamljs/0.3.0/yaml.min.js"></script>
 		{{end}}
 
