@@ -99,6 +99,12 @@
 		<title>{{if .Title}}{{.Title}} - {{end}}{{AppName}}</title>
 
 		<meta name="theme-color" content="{{ThemeColorMetaTag}}">
+		<!-- twitterish -->
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:site" content="@gnode" />
+		<meta name="twitter:title" content=" GIN" />
+		<meta name="twitter:description" content="Modern Research Data Management for Neuroscience"/>
+		<meta name="twitter:image" content="https://web.gin.g-node.org/img/favicon.png" />
 
 		{{template "inject/head" .}}
 </head>
