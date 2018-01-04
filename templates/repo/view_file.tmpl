@@ -35,7 +35,13 @@
 			</div>
 		{{end}}
 	</h4>
-	<div class="{{if or .IsJSON .IsYAML}}{{else}}ui attached table segment{{end}}">
+	{{if or .IsJSON (or .IsYAML .IsOdML)}}
+	<div class="ui top attached tabular menu">
+		<a class="item active" data-tab="code"><i class="octicon octicon-file-code"></i> Code</a>
+		<a class="item" data-tab="view"><i class="octicon octicon-file"></i> View</a>
+	</div>
+	{{end}}
+	<div class="{{if or .IsJSON (or .IsYAML .IsOdML)}}ui bottom attached tab segment" data-tab="view{{else}}ui attached table segment{{end}}">
 		<div id="{{if not (or .IsJSON .IsYAML)}}{{if .IsIPythonNotebook}}ipython-notebook{{end}}" class="file-view {{if .IsMarkdown}}markdown{{else if .IsIPythonNotebook}}ipython-notebook{{else if .IsIPythonNotebook}}ipython-notebook{{else if .ReadmeInList}}plain-text{{else if and .IsTextFile}}code-view{{end}} has-emoji{{end}}">
 			{{if .IsMarkdown}}
 				{{if .FileContent}}{{.FileContent | Str2html}}{{end}}
@@ -157,6 +163,22 @@
 			{{end}}
 		</div>
 	</div>
+	{{if or .IsJSON (or .IsYAML .IsOdML)}}
+	<div class="ui bottom attached tab active segment" data-tab="code">
+	<table>
+		<tbody>
+		<tr>
+			{{if .IsFileTooLarge}}
+			<td><strong>{{.i18n.Tr "repo.file_too_large"}}</strong></td>
+			{{else}}
+			<td class="lines-num">{{.LineNums}}</td>
+			<td class="lines-code"><pre><code class="{{.HighlightClass}}"><ol class="linenums">{{.FileContent}}</ol></code></pre></td>
+			{{end}}
+		</tr>
+		</tbody>
+	</table>
+	</div>
+	{{end}}
 </div>
 
 <script>

@@ -8,7 +8,7 @@ import (
 )
 
 func RequestDoi(c *context.Context) {
-	if !c.Repo.IsAdmin(){
+	if !c.Repo.IsAdmin() {
 		c.Status(http.StatusUnauthorized)
 		return
 	}
