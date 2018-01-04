@@ -37,16 +37,16 @@
 	</h4>
 	{{if or .IsJSON (or .IsYAML .IsOdML)}}
 	<div class="ui top attached tabular menu">
-		<a class="item active" data-tab="code"><i class="octicon octicon-file-code"></i> Code</a>
-		<a class="item" data-tab="view"><i class="octicon octicon-file"></i> View</a>
+		<a class="item {{if or .IsJSON .IsYAML}}active{{end}}" data-tab="code"><i class="octicon octicon-file-code"></i> Code</a>
+		<a class="item {{if .IsOdML}}active{{end}}" data-tab="view"><i class="octicon octicon-file"></i> View</a>
 	</div>
 	{{end}}
-	<div class="{{if or .IsJSON (or .IsYAML .IsOdML)}}ui bottom attached tab segment" data-tab="view{{else}}ui attached table segment{{end}}">
+	<div class="{{if or .IsJSON (or .IsYAML .IsOdML)}}ui bottom attached tab {{if .IsOdML}} active{{end}} segment" data-tab="view{{else}}ui attached table segment{{end}}">
 		<div id="{{if not (or .IsJSON .IsYAML)}}{{if .IsIPythonNotebook}}ipython-notebook{{end}}" class="file-view {{if .IsMarkdown}}markdown{{else if .IsIPythonNotebook}}ipython-notebook{{else if .IsIPythonNotebook}}ipython-notebook{{else if .ReadmeInList}}plain-text{{else if and .IsTextFile}}code-view{{end}} has-emoji{{end}}">
 			{{if .IsMarkdown}}
 				{{if .FileContent}}{{.FileContent | Str2html}}{{end}}
 			{{else if .IsOdML}}
-			<div class="ui fluid action input">
+			<div class="ui fluid input">
 				<input class="search-input form-control" placeholder="Search"></input>
 			</div>
 			<div id="jstree"></div>
@@ -61,7 +61,7 @@
 					});
 					$('#jstree').jstree({
 						'core': {
-							'data': [{{.FileContent| Str2JS}}]
+							'data': [{{.OdML| Str2JS}}]
 				},
 					"search": {
 						"case_insensitive": true,
@@ -81,7 +81,7 @@
 				var editor = new JSONEditor(container, options);
 
 				// set json
-				var json = {{.FileContent| Str2JS}}
+				var json = {{.RawFileContent| Str2JS}}
 				editor.set(json);
 
 				// get json
@@ -95,7 +95,7 @@
 				var options = {mode:"view"};
 				var editor = new JSONEditor(container, options);
 				// set json
-				var json = YAML.parse({{.FileContent}})
+				var json = YAML.parse({{.RawFileContent}})
 				editor.set(json);
 
 				// get json
@@ -164,19 +164,21 @@
 		</div>
 	</div>
 	{{if or .IsJSON (or .IsYAML .IsOdML)}}
-	<div class="ui bottom attached tab active segment" data-tab="code">
-	<table>
-		<tbody>
-		<tr>
-			{{if .IsFileTooLarge}}
-			<td><strong>{{.i18n.Tr "repo.file_too_large"}}</strong></td>
-			{{else}}
-			<td class="lines-num">{{.LineNums}}</td>
-			<td class="lines-code"><pre><code class="{{.HighlightClass}}"><ol class="linenums">{{.FileContent}}</ol></code></pre></td>
-			{{end}}
-		</tr>
-		</tbody>
-	</table>
+	<div class="ui bottom attached tab {{if not .IsOdML}}active{{end}} segment" data-tab="code" id="codetab">
+		<div class="file-view code-view has-emoji">
+			<table>
+				<tbody>
+				<tr>
+					{{if .IsFileTooLarge}}
+					<td><strong>{{.i18n.Tr "repo.file_too_large"}}</strong></td>
+					{{else}}
+					<td class="lines-num">{{.LineNums}}</td>
+					<td class="lines-code"><pre><code class="{{.HighlightClass}}"><ol class="linenums">{{.FileContent}}</ol></code></pre></td>
+					{{end}}
+				</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 	{{end}}
 </div>

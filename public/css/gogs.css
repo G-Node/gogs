@@ -3283,3 +3283,7 @@ figure figcaption {
 #cloudberry-view {
   margin-top: 14px;
 }
+
+#codetab #odmltab{
+  padding: 0;
+}
