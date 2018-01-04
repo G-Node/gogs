@@ -277,10 +277,12 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			c.Data["IsIPythonNotebook"] = true
 		case markup.JSON:
 			c.Data["IsJSON"] = true
-			c.Data["FileContent"] = string(buf)
+			c.Data["RawFileContent"] = string(buf)
+			fallthrough
 		case markup.YAML:
 			c.Data["IsYAML"] = true
-			c.Data["FileContent"] = string(buf)
+			c.Data["RawFileContent"]=string(buf)
+			fallthrough
 		case markup.UNRECOGNIZED:
 			if tool.IsOdmlFile(buf) {
 				c.Data["IsOdML"] = true
@@ -290,8 +292,8 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 				decoder.CharsetReader = charset.NewReaderLabel
 				decoder.Decode(&od)
 				data, _ := json.Marshal(od)
-				c.Data["FileContent"] = string(data)
-				break
+				c.Data["OdML"] = string(data)
+				goto End
 			} else {
 				goto End
 			}
