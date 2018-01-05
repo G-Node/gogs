@@ -26,35 +26,18 @@
 					</div>
 				</div>
 			</div>
-			{{if .IsJSON}}
-				<div id="jsoneditor"></div>
-				<input id="editcontent" name="content" type="hidden"></input>
-				<script>
-					// create the editor
-					var container = document.getElementById("jsoneditor");
-					var options = {mode:"tree",
-						onChange:function(){
-									$('#editcontent').val(JSON.stringify(editor.get(), null, 2))
-						}};
-					var editor = new JSONEditor(container, options);
-
-					// set json
-					var json = {{.FileContent| Str2JS}}
-					editor.set(json);
-
-					// get json
-					var json = editor.get();
-				</script>
-			{{else}}
 			<div class="field">
 				<div class="ui top attached tabular menu" data-write="write" data-preview="preview" data-diff="diff">
 					<a class="active item" data-tab="write"><i class="octicon octicon-code"></i> {{if .IsNewFile}}{{.i18n.Tr "repo.editor.new_file"}}{{else}}{{.i18n.Tr "repo.editor.edit_file"}}{{end}}</a>
+					{{if .IsJSON}}
+					<a class="item" data-tab="editor"><i class="octicon octicon-file"></i>Editor</a>
+					{{end}}
 					{{if not .IsNewFile}}
 					<a class="item" id="preview-tab" data-tab="preview" data-url="{{AppSubURL}}/api/v1/markdown" data-root-context="{{.BranchLink}}/" data-context="{{.BranchLink}}/{{.ParentTreePath}}" data-preview-file-modes="{{.PreviewableFileModes}}"><i class="octicon octicon-eye"></i> {{.i18n.Tr "repo.release.preview"}}</a>
 					<a class="item" data-tab="diff" data-url="{{.RepoLink}}/_preview/{{.BranchName}}/{{.TreePath}}"><i class="octicon octicon-diff"></i> {{.i18n.Tr "repo.editor.preview_changes"}}</a>
 					{{end}}
 				</div>
-				<div class="ui bottom attached active tab segment" data-tab="write">
+				<div class="ui bottom attached active tab segment codewriter" data-tab="write">
 					<textarea id="edit_area" name="content" data-id="repo-{{.Repository.Name}}-{{.TreePath}}"
 						data-url="{{AppSubURL}}/api/v1/markdown"
 						data-context="{{.RepoLink}}"
@@ -68,8 +51,31 @@
 				<div class="ui bottom attached tab segment diff" data-tab="diff">
 					{{.i18n.Tr "repo.release.loading"}}
 				</div>
+
+				{{if .IsJSON}}
+				<div class="ui bottom attached tab segment" data-tab="editor">
+				<div id="jsoneditor"></div>
+				<script>
+					// create the editor
+					var container = document.getElementById("jsoneditor");
+					var options = {mode:"tree",
+						onChange:function(){
+							var  ct = JSON.stringify(jsoneditor.get(), null, 2);
+							$('#edit_area').val(ct);
+							codeMirrorEditor.setValue(ct);
+						}};
+					var jsoneditor = new JSONEditor(container, options);
+
+					// set json
+					var json = {{.FileContent| Str2JS}}
+					jsoneditor.set(json);
+
+					// get json
+					var json = jsoneditor.get();
+				</script>
+				</div>
+				{{end}}
 			</div>
-			{{end}}
 			{{template "repo/editor/commit_form" .}}
 		</form>
 	</div>

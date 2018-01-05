@@ -164,7 +164,7 @@
 		</div>
 	</div>
 	{{if or .IsJSON (or .IsYAML .IsOdML)}}
-	<div class="ui bottom attached tab {{if not .IsOdML}}active{{end}} segment" data-tab="code" id="codetab">
+	<div class="ui codetab bottom attached tab {{if not .IsOdML}}active{{end}} segment" data-tab="code">
 		<div class="file-view code-view has-emoji">
 			<table>
 				<tbody>

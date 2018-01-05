@@ -644,6 +644,7 @@ function setCodeMirror($editArea) {
     });
     codeMirrorEditor.on("change", function (cm, change) {
         $editArea.val(cm.getValue());
+        jsoneditor.set(JSON.parse(cm.getValue()));
     });
 
     return true;
