@@ -87,7 +87,6 @@ func renderDirectory(c *context.Context, treeLink string) {
 			if err != nil {
 				log.Trace("Doi Blob could not be unmarshalled:%v", err)
 			}
-			log.Trace("Doi info was: %v ", doiInfo)
 			c.Data["DoiInfo"] = doiInfo
 		}
 	}
