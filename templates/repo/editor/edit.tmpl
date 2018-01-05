@@ -30,7 +30,10 @@
 				<div class="ui top attached tabular menu" data-write="write" data-preview="preview" data-diff="diff">
 					<a class="active item" data-tab="write"><i class="octicon octicon-code"></i> {{if .IsNewFile}}{{.i18n.Tr "repo.editor.new_file"}}{{else}}{{.i18n.Tr "repo.editor.edit_file"}}{{end}}</a>
 					{{if .IsJSON}}
-					<a class="item" data-tab="editor"><i class="octicon octicon-file"></i>Editor</a>
+					<a class="item" data-tab="editor"><i class="octicon octicon-file"></i>Graphical Editor</a>
+					{{end}}
+					{{if .IsYAML}}
+					<a class="item" data-tab="yamleditor" data-tooltip="Using the graphical YAML editor will change the file layout and remove comments!"><i class="octicon octicon-file"></i>Graphical Editor</a>
 					{{end}}
 					{{if not .IsNewFile}}
 					<a class="item" id="preview-tab" data-tab="preview" data-url="{{AppSubURL}}/api/v1/markdown" data-root-context="{{.BranchLink}}/" data-context="{{.BranchLink}}/{{.ParentTreePath}}" data-preview-file-modes="{{.PreviewableFileModes}}"><i class="octicon octicon-eye"></i> {{.i18n.Tr "repo.release.preview"}}</a>
@@ -60,19 +63,42 @@
 					var container = document.getElementById("jsoneditor");
 					var options = {mode:"tree",
 						onChange:function(){
-							var  ct = JSON.stringify(jsoneditor.get(), null, 2);
+							var  ct = JSON.stringify(jsonEditor.get(), null, 2);
 							$('#edit_area').val(ct);
 							codeMirrorEditor.setValue(ct);
 						}};
-					var jsoneditor = new JSONEditor(container, options);
+					var jsonEditor = new JSONEditor(container, options);
 
 					// set json
 					var json = {{.FileContent| Str2JS}}
-					jsoneditor.set(json);
+					jsonEditor.set(json);
 
 					// get json
-					var json = jsoneditor.get();
+					var json = jsonEditor.get();
 				</script>
+				</div>
+				{{end}}
+
+				{{if .IsYAML}}
+				<div class="ui bottom attached tab segment" data-tab="yamleditor">
+					<div id="jsoneditor"></div>
+					<script>
+						// create the editor
+						var container = document.getElementById("jsoneditor");
+						var options = {mode:"tree",
+							onChange:function(){
+								var  ct = YAML.stringify(yamleditor.get(), 10, 2);
+								$('#edit_area').val(ct);
+								codeMirrorEditor.setValue(ct);
+							}};
+						var yamleditor = new JSONEditor(container, options);
+
+						// set json
+						var json = YAML.parse({{.FileContent}})
+						yamleditor.set(json);
+
+						// get json
+					</script>
 				</div>
 				{{end}}
 			</div>

@@ -653,8 +653,16 @@ function setCodeMirror($editArea) {
     });
     codeMirrorEditor.on("change", function (cm, change) {
         $editArea.val(cm.getValue());
-        jsoneditor.set(JSON.parse(cm.getValue()));
     });
+
+	codeMirrorEditor.on("keyup", function (cm, change) {
+		if (typeof (jsonEditor)!== 'undefined') {
+			jsoneditor.set(JSON.parse(cm.getValue()));
+		}
+		if (typeof (yamleditor)!== 'undefined') {
+			yamleditor.set(YAML.parse(cm.getValue()));
+		}
+	});
 
     return true;
 }

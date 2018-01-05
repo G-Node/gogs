@@ -76,6 +76,7 @@ func editFile(c *context.Context, isNewFile bool) {
 		c.Data["FileSize"] = blob.Size()
 		c.Data["FileName"] = blob.Name()
 		c.Data["IsJSON"] = markup.IsJSON(blob.Name())
+		c.Data["IsYAML"] = markup.IsYAML(blob.Name())
 
 		buf := make([]byte, 1024)
 		n, _ := dataRc.Read(buf)
