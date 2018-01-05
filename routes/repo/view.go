@@ -103,7 +103,6 @@ func renderDirectory(c *context.Context, treeLink string) {
 		go readmeFile.DataPipeline(w, w)
 		if readmeFile.Size() > 0 {
 			n, _ := r.Read(buf)
-			log.Trace("I read %s bytes", n)
 			buf = buf[:n]
 		}
 		isannex := tool.IsAnnexedFile(buf)
@@ -195,7 +194,6 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 	go blob.DataPipeline(w, w)
 	if blob.Size() > 0 {
 		n, _ := r.Read(buf)
-		log.Trace("I read %s bytes", n)
 		buf = buf[:n]
 	}
 	isannex := tool.IsAnnexedFile(buf)
