@@ -3284,6 +3284,6 @@ figure figcaption {
   margin-top: 14px;
 }
 
-#codetab #odmltab{
+.ui.codetab{
   padding: 0;
 }
