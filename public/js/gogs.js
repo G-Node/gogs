@@ -1095,7 +1095,7 @@ function initCookieWarn() {
 			})
 		;
 		$('.nag.close').click(function () {
-			Cookies.set('cookieok', true)
+			Cookies.set('cookieok', true,  { expires: 365 })
 		})
 
 	}
