@@ -657,10 +657,26 @@ function setCodeMirror($editArea) {
 
 	codeMirrorEditor.on("keyup", function (cm, change) {
 		if (typeof (jsonEditor)!== 'undefined') {
-			jsoneditor.set(JSON.parse(cm.getValue()));
+			try {
+				jsonEditor.set(JSON.parse(cm.getValue()));
+				document.getElementById("parseerr").innerHTML = "Valid JSON";
+				document.getElementById("parseerr").className="ui positive message"
+			}
+			catch(err) {
+				document.getElementById("parseerr").innerHTML = err.message;
+				document.getElementById("parseerr").className="ui negative message"
+			}
 		}
 		if (typeof (yamleditor)!== 'undefined') {
-			yamleditor.set(YAML.parse(cm.getValue()));
+			try {
+				yamleditor.set(YAML.parse(cm.getValue()));
+				document.getElementById("parseerr").innerHTML = "Valid YAML";
+				document.getElementById("parseerr").className="ui positive message"
+			}
+			catch(err) {
+				document.getElementById("parseerr").innerHTML = err.message;
+				document.getElementById("parseerr").className="ui negative message"
+			}
 		}
 	});
 
