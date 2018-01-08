@@ -41,6 +41,7 @@
 					{{end}}
 				</div>
 				<div class="ui bottom attached active tab segment codewriter" data-tab="write">
+					{{if or .IsYAML .IsJSON}}<div class="ui message" id="parseerr">Change content to check for validity</div>{{end}}
 					<textarea id="edit_area" name="content" data-id="repo-{{.Repository.Name}}-{{.TreePath}}"
 						data-url="{{AppSubURL}}/api/v1/markdown"
 						data-context="{{.RepoLink}}"
