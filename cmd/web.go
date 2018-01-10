@@ -571,6 +571,7 @@ func runWeb(c *cli.Context) error {
 			m.Post("/_preview/*", bindIgnErr(form.EditPreviewDiff{}), repo.DiffPreviewPost)
 			m.Combo("/_delete/*").Get(repo.DeleteFile).
 				Post(bindIgnErr(form.DeleteRepoFile{}), repo.DeleteFilePost)
+			m.Combo("/_add/*").Get(repo.AddFile).Post(bindIgnErr(form.EditRepoFile{}), repo.NewFilePost)
 
 			m.Group("", func() {
 				m.Combo("/_upload/*").Get(repo.UploadFile).
