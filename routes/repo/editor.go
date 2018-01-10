@@ -21,6 +21,7 @@ import (
 	"github.com/G-Node/gogs/pkg/template"
 	"github.com/G-Node/gogs/pkg/tool"
 	"github.com/G-Node/gogs/pkg/markup"
+	"github.com/G-Node/gogs/pkg/bindata"
 )
 
 const (
@@ -118,6 +119,7 @@ func editFile(c *context.Context, isNewFile bool) {
 
 	c.Success(EDIT_FILE)
 }
+
 
 func EditFile(c *context.Context) {
 	editFile(c, false)
@@ -571,4 +573,35 @@ func RemoveUploadFileFromServer(c *context.Context, f form.RemoveUploadFile) {
 
 	log.Trace("Upload file removed: %s", f.File)
 	c.Status(204)
+}
+
+func AddFile(c *context.Context) {
+	link := strings.Split(c.Link, "/")
+	name := link[len(link)-1]
+	treeNames, treePaths := getParentTreeFields(c.Repo.TreePath)
+
+	c.PageIs("Edit")
+	c.RequireHighlightJS()
+	c.RequireSimpleMDE()
+
+	c.Data["IsJSON"] = markup.IsJSON(name)
+	c.Data["IsYAML"] = markup.IsYAML(name)
+	relName := path.Join("conf", "datacite", name)
+	data, _ := bindata.Asset(relName)
+	c.Data["FileContent"] = string(data)
+	c.Data["ParentTreePath"] = path.Dir(c.Repo.TreePath)
+	c.Data["TreeNames"] = treeNames
+	c.Data["TreePaths"] = treePaths
+	c.Data["BranchLink"] = c.Repo.RepoLink + "/src/" + c.Repo.BranchName
+	c.Data["commit_summary"] = ""
+	c.Data["commit_message"] = ""
+	c.Data["commit_choice"] = "direct"
+	c.Data["new_branch_name"] = ""
+	c.Data["last_commit"] = c.Repo.Commit.ID
+	c.Data["MarkdownFileExts"] = strings.Join(setting.Markdown.FileExtensions, ",")
+	c.Data["LineWrapExtensions"] = strings.Join(setting.Repository.Editor.LineWrapExtensions, ",")
+	c.Data["PreviewableFileModes"] = strings.Join(setting.Repository.Editor.PreviewableFileModes, ",")
+	c.Data["EditorconfigURLPrefix"] = fmt.Sprintf("%s/api/v1/repos/%s/editorconfig/", setting.AppSubURL, c.Repo.Repository.FullName())
+
+	c.Success(EDIT_FILE)
 }

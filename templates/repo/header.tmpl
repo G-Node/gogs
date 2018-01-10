@@ -43,11 +43,17 @@
 							</div>
 							{{else}}
 							{{if and $.IsRepositoryAdmin $.CommitsCount}}
-							<div class="ui labeled button" tabindex="0">
+							<div class="ui labeled button	" tabindex="0">
 								<a class="ui basic button"
-									 data-tooltip="Your repository does not yet fulfill all requirements for a doi. Click to get instructions."
+									 data-tooltip="Your repository does not fulfill all requirements for a doi yet. Click to get instructions."
+									 data-position="bottom center"
 									 href="/G-Node/Info/wiki/DOIfile">
 									<i class="octicon octicon-squirrel"></i> DOIfy
+								</a>
+								<a class="ui basic label" href="{{$.RepoLink}}/_add/{{EscapePound $.BranchName}}/datacite.yml"
+									data-tooltip="Add Doifile"
+									data-position="bottom center">
+									<i class="octicon octicon-file"></i>
 								</a>
 							</div>
 							{{end}}

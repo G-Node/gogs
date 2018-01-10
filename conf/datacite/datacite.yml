@@ -1,0 +1,57 @@
+# Required fields
+# The main researchers involved working on the resource,
+# or the authors of the publication in priority order.
+# May be a corporate/institutional or personal name.
+# Include digital identifier (e.g., ORCID) if possible
+authors:
+  -
+    firstname: "GivenName1"
+    lastname: "FamilyName1"
+    affiliation: "Affiliation1"
+    id: "AuthorID1 (e.g. ORCID)"
+  -
+    firstname: "GivenName2"
+    lastname: "FamilyName2"
+    affiliation: "Affiliation2"
+  -
+    firstname: "GivenName3"
+    lastname: "FamilyName3"
+
+# A name or title to describe the published resource.
+title: "Example Title"
+
+# Any additional information. It is best practice to supply a description for the resource.
+description: |
+  Example description
+  that can contain linebreaks
+  but has to maintain indentation.
+
+# List of keywords the resource should be associated with.
+keywords:
+  - Neuroscience
+  - Electrophysiology
+
+# Any rights information for this resource. Please provide both a license name and a link to the license.
+# Please add also a LICENSE file to the repository
+license:
+  name: "CC0"
+  url: "http://creativecommons.org/publicdomain/zero/1.0"
+
+## Optional Fields
+
+# Any funding reference for this resource. Separate funder name and grant number by comma
+funding:
+  - "DFG, DFG.12345"
+  - "EU, EU.12345"
+
+# Related publications. reftype might be: IsCitedBy, IsSupplementTo, IsReferencedBy, IsPartOf
+# for further valid types see https://schema.datacite.org/meta/kernel-4
+# Please provide digital identifier (e.g., DOI) if possible.
+references:
+  -
+    doi: "10.xxx/zzzz"
+    reftype: "IsSupplementTo"
+    name: "PublicationName"
+  -
+    reftype: "IsPartOf"
+    name: "PublicationName"
