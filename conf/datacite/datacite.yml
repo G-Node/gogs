@@ -34,8 +34,8 @@ keywords:
 # Any rights information for this resource. Please provide both a license name and a link to the license.
 # Please add also a LICENSE file to the repository
 license:
-  name: "CC0"
-  url: "http://creativecommons.org/publicdomain/zero/1.0"
+  name: "CC4"
+  url: "https://creativecommons.org/licenses/by/4.0/"
 
 ## Optional Fields
 
