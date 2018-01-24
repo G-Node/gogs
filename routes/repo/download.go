@@ -33,8 +33,8 @@ func ServeData(c *context.Context, name string, reader io.Reader, cpt *captcha.C
 		if err != nil {
 
 		}
-		if af.Info.Size() > gannex.MEGABYTE*setting.Repository.RawCaptchaMinFileSize && !cpt.VerifyReq(c.Req) &&
-			!c.IsLogged && !(cpt==nil){
+		if cpt!=nil && af.Info.Size() > gannex.MEGABYTE*setting.Repository.RawCaptchaMinFileSize && !cpt.VerifyReq(c.Req) &&
+			!c.IsLogged {
 			c.Data["EnableCaptcha"] = true
 			c.HTML(200, "repo/download")
 			return nil

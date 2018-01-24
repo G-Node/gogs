@@ -67,7 +67,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 	c.Data["DOI"] = false
 	var readmeFile *git.Blob
 	for _, entry := range entries {
-		if entry.IsDir() || (!markup.IsReadmeFile(entry.Name()) && !(entry.Name() == "datacite.yml")&& !(entry.Name() == "LICENSE")) {
+		if entry.IsDir() || (!markup.IsReadmeFile(entry.Name()) && !(entry.Name() == "datacite.yml") && !(entry.Name() == "LICENSE")) {
 			continue
 		}
 
@@ -278,7 +278,7 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			fallthrough
 		case markup.YAML:
 			c.Data["IsYAML"] = true
-			c.Data["RawFileContent"]=string(buf)
+			c.Data["RawFileContent"] = string(buf)
 			fallthrough
 		case markup.UNRECOGNIZED:
 			if tool.IsOdmlFile(buf) {
