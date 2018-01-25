@@ -509,6 +509,13 @@ function initRepository() {
     if ($('.repository.compare.pull').length > 0) {
         initFilterSearchDropdown('.choose.branch .dropdown');
     }
+
+	if ($('#download-repo-button')){
+			$('#download-repo-button').click(function () {
+				$('#download_modal')
+					.modal('show');
+			});
+		};
 }
 
 function initWikiForm() {

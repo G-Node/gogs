@@ -11,7 +11,7 @@ import (
 
 	"github.com/Unknwon/com"
 
-	git "github.com/gogits/git-module"
+	git "github.com/G-Node/git-module"
 	api "github.com/gogits/go-gogs-client"
 
 	"github.com/G-Node/gogs/models"

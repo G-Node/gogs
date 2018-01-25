@@ -8,7 +8,7 @@ import (
 	"html/template"
 	"testing"
 
-	"github.com/gogits/git-module"
+	"github.com/G-Node/git-module"
 	dmp "github.com/sergi/go-diff/diffmatchpatch"
 )
 

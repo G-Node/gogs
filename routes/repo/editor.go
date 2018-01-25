@@ -13,7 +13,7 @@ import (
 
 	log "gopkg.in/clog.v1"
 
-	"github.com/gogits/git-module"
+	"github.com/G-Node/git-module"
 	"github.com/G-Node/gogs/models"
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/pkg/form"

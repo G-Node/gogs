@@ -9,7 +9,7 @@ import (
 
 	"github.com/Unknwon/com"
 
-	"github.com/gogits/git-module"
+	"github.com/G-Node/git-module"
 	api "github.com/gogits/go-gogs-client"
 
 	"github.com/G-Node/gogs/models"

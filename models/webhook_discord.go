@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/gogits/git-module"
+	"github.com/G-Node/git-module"
 	api "github.com/gogits/go-gogs-client"
 
 	"github.com/G-Node/gogs/pkg/setting"
