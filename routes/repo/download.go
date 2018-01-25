@@ -8,7 +8,7 @@ import (
 	"io"
 	"path"
 
-	"github.com/gogs/git-module"
+	"github.com/G-Node/git-module"
 
 	"bufio"
 	"github.com/G-Node/go-annex"

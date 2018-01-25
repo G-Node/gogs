@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/Unknwon/com"
-	"github.com/gogs/git-module"
+	"github.com/G-Node/git-module"
 
 	"github.com/G-Node/gogs/pkg/tool"
 )

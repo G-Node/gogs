@@ -27,8 +27,8 @@ import (
 	log "gopkg.in/clog.v1"
 	"gopkg.in/ini.v1"
 
-	git "github.com/gogs/git-module"
-	api "github.com/gogs/go-gogs-client"
+	git "github.com/G-Node/git-module"
+	api "github.com/gogits/go-gogs-client"
 
 	"github.com/G-Node/gogs/models/errors"
 	"github.com/G-Node/gogs/pkg/bindata"

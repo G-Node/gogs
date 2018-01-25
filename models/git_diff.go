@@ -15,7 +15,7 @@ import (
 	"golang.org/x/net/html/charset"
 	"golang.org/x/text/transform"
 
-	"github.com/gogs/git-module"
+	"github.com/G-Node/git-module"
 
 	"github.com/G-Node/gogs/pkg/tool"
 	"github.com/G-Node/gogs/pkg/setting"

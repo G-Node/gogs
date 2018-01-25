@@ -12,7 +12,7 @@ import (
 	"github.com/go-xorm/xorm"
 	log "gopkg.in/clog.v1"
 
-	"github.com/gogs/git-module"
+	"github.com/G-Node/git-module"
 
 	"github.com/G-Node/gogs/pkg/setting"
 )

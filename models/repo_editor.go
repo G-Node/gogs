@@ -19,7 +19,7 @@ import (
 	"github.com/Unknwon/com"
 	gouuid "github.com/satori/go.uuid"
 
-	"github.com/gogs/git-module"
+	git "github.com/G-Node/git-module"
 
 	"github.com/G-Node/gogs/pkg/process"
 	"github.com/G-Node/gogs/pkg/setting"

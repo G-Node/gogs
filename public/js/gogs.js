@@ -509,15 +509,13 @@ function initRepository() {
     if ($('.repository.compare.pull').length > 0) {
         initFilterSearchDropdown('.choose.branch .dropdown');
     }
-    if ($('.repository.view.pull').length > 0) {
-        $('.comment.merge.box input[name=merge_style]').change(function () {
-            if ($(this).val() === 'create_merge_commit') {
-                $('.commit.description.field').show();
-            } else {
-                $('.commit.description.field').hide();
-            }
-        })
-    }
+
+	if ($('#download-repo-button')){
+			$('#download-repo-button').click(function () {
+				$('#download_modal')
+					.modal('show');
+			});
+		};
 }
 
 function initWikiForm() {

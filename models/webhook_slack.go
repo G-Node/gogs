@@ -8,7 +8,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/json-iterator/go"
+	"github.com/G-Node/git-module"
+	api "github.com/gogits/go-gogs-client"
 
 	"github.com/G-Node/gogs/pkg/setting"
 )

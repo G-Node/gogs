@@ -13,7 +13,7 @@ import (
 	"github.com/Unknwon/com"
 	log "gopkg.in/clog.v1"
 
-	"github.com/gogits/git-module"
+	"github.com/G-Node/git-module"
 
 	"github.com/G-Node/gogs/models"
 	"github.com/G-Node/gogs/models/errors"
@@ -274,6 +274,10 @@ func Download(c *context.Context) {
 	)
 
 	switch {
+	case strings.HasSuffix(uri, ".gin.zip"):
+		ext = ".gin.zip"
+		archivePath = path.Join(c.Repo.GitRepo.Path, "archives/gin")
+		archiveType = git.GIN
 	case strings.HasSuffix(uri, ".zip"):
 		ext = ".zip"
 		archivePath = path.Join(c.Repo.GitRepo.Path, "archives/zip")
@@ -282,6 +286,7 @@ func Download(c *context.Context) {
 		ext = ".tar.gz"
 		archivePath = path.Join(c.Repo.GitRepo.Path, "archives/targz")
 		archiveType = git.TARGZ
+
 	default:
 		log.Trace("Unknown format: %s", uri)
 		c.Error(404)
