@@ -1247,7 +1247,6 @@ footer .ui.language .menu {
 .repository #clone-panel {
   margin-top: -8px;
   margin-left: 5px;
-  width: auto;
 }
 .repository #clone-panel input {
   border-radius: 0;
