@@ -332,7 +332,7 @@ func Download(c *context.Context) {
 
 	archivePath = path.Join(archivePath, tool.ShortSHA1(commit.ID.String())+ext)
 	if !com.IsFile(archivePath) {
-		if err := commit.CreateArchive(archivePath, archiveType); err != nil {
+		if err := commit.CreateArchive(archivePath, archiveType, c.Repo.Repository.CloneLink().SSH); err != nil {
 			c.Handle(500, "Download -> CreateArchive "+archivePath, err)
 			return
 		}
