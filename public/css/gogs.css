@@ -3286,3 +3286,7 @@ figure figcaption {
 .ui.codetab{
   padding: 0;
 }
+
+#file-buttons {
+  padding-right: 5px;
+}
