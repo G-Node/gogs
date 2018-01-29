@@ -39,7 +39,7 @@
 									</a>
 								</div>
 							{{end}}
-							{{if and $.DOI $.IsRepositoryAdmin}}
+							{{if and (and $.DOI $.IsRepositoryAdmin) (not .IsPrivate)}}
 							<div class="ui labeled button" tabindex="0">
 								<a class="ui basic button"
 									 href="/{{.Owner.Name}}/{{.Name}}/doi">
