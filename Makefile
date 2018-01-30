@@ -58,6 +58,11 @@ bindata: pkg/bindata/bindata.go
 pkg/bindata/bindata.go: $(DATA_FILES)
 	go-bindata -o=$@ -ignore="\\.DS_Store|README.md|TRANSLATORS" -pkg=bindata conf/...
 
+less: public/css/gogs.css
+
+public/css/gogs.css: $(LESS_FILES)
+	lessc $< $@
+
 clean:
 	go clean -i ./...
 
