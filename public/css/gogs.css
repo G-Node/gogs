@@ -25,7 +25,6 @@ h5,
 .ui.button:not(.label) {
   font-family: "PingFang SC", 'Hiragino Sans GB', "Helvetica Neue", "Microsoft YaHei", Arial, Helvetica, sans-serif !important;
 }
-
 img {
   border-radius: 3px;
 }
@@ -2398,11 +2397,6 @@ footer .ui.language .menu {
 .repository.settings.collaboration #repo-collab-form #search-user-box .results {
   left: 7px;
 }
-
-.ui.segment.results.hide {
-  z-index: 1000;
-}
-
 .repository.settings.collaboration #repo-collab-form .ui.button {
   margin-left: 5px;
   margin-top: -3px;
@@ -3236,31 +3230,25 @@ footer .ui.language .menu {
 .ui.user.list .item .description a:hover {
   text-decoration: underline;
 }
-
-.ginsubtitle{
+.ginsubtitle {
   font-family: "Kaushan Script", "Helvetica Neue", Helvetica, Arial, cursive;
   font-size: 16px;
 }
-
 .bmbf {
   width: 80px;
 }
-
 .supersmall {
   padding-left: 10px;
   font-size: 0.8em;
   text-align: left;
 }
-
 .leftspace {
   padding-left: 40px;
 }
-
 .gogssmall {
   height: 40px;
   align-content: center;
 }
-
 figure {
   float: right;
   max-width: 600px;
@@ -3270,7 +3258,6 @@ figure img {
   margin-left: auto;
   margin-right: auto;
 }
-
 figure figcaption {
   display: block;
   margin-left: auto;
@@ -3278,15 +3265,59 @@ figure figcaption {
   font-style: italic;
   text-align: justify;
 }
-
 #cloudberry-view {
   margin-top: 14px;
 }
-
-.ui.codetab{
+.ui.codetab {
   padding: 0;
 }
-
 #file-buttons {
   padding-right: 5px;
+}
+.ginsubtitle {
+  font-family: "Kaushan Script", "Helvetica Neue", Helvetica, Arial, cursive;
+  font-size: 16px;
+}
+.bmbf {
+  width: 80px;
+}
+.supersmall {
+  padding-left: 10px;
+  font-size: 0.8em;
+  text-align: left;
+}
+.leftspace {
+  padding-left: 40px;
+}
+.gogssmall {
+  height: 40px;
+  align-content: center;
+}
+figure {
+  float: right;
+  max-width: 600px;
+}
+figure img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+figure figcaption {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  font-style: italic;
+  text-align: justify;
+}
+#cloudberry-view {
+  margin-top: 14px;
+}
+.ui.codetab {
+  padding: 0;
+}
+#file-buttons {
+  padding-right: 5px;
+}
+.ui.segment.results.hide {
+  z-index: 1000;
 }

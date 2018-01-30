@@ -8,7 +8,7 @@ RUN apt-get update &&                                   \
                        git git-annex openssh-server     \
                        python-pip python-setuptools     \
                        socat tzdata patch    \
-                       libpam0g-dev \
+                       libpam0g-dev node-less \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install supervisor pyyaml
