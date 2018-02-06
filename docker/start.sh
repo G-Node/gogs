@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# directory setup
+mkdir -p /data/ssh
+mkdir -p /data/gogs/log
+mkdir -p /data/gogs/data
+
 #SSH setup
 # Check if host keys are present, else create them
 if ! test -f /data/ssh/ssh_host_rsa_key; then
@@ -31,10 +36,19 @@ fi
 
 cd /app/gogs
 
+# check authorized keys
+if ! test -f /data/git/.ssh/authorized_keys; then
+    echo "" > /data/git/.ssh/authorized_keys
+fi
+# check authorized keys
+if ! test -d /data/.ssh; then
+    mkdir -p /data/.ssh
+fi
+
 # Link volumed data with app data
 ln -sf /data/gogs/log  ./log
 ln -sf /data/gogs/data ./data
-ln -sd /data/.ssh/authorized_keys /data/git/.ssh/authorized_keys
+ln -s /data/git/.ssh/authorized_keys /data/.ssh/authorized_keys
 
 # Backward Compatibility with Gogs Container v0.6.15
 ln -sf /data/git /home/git
