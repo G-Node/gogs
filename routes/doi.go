@@ -5,6 +5,9 @@ import (
 	"github.com/G-Node/gogs/pkg/setting"
 	"fmt"
 	"net/http"
+	"github.com/G-Node/gin-doi/src"
+	log "gopkg.in/clog.v1"
+
 )
 
 func RequestDoi(c *context.Context) {
@@ -12,8 +15,14 @@ func RequestDoi(c *context.Context) {
 		c.Status(http.StatusUnauthorized)
 		return
 	}
-
 	token := c.GetCookie(setting.SessionConfig.CookieName)
-	c.Redirect(fmt.Sprintf("https://doi.gin.g-node.org/?repo=%s&user=%s&token=%s", c.Repo.Repository.FullName(),
-		c.User.Name, token))
+	token, err := ginDoi.Encrypt([]byte(setting.Doi.DoiKey), token)
+	if err != nil {
+		log.Error(0, "Could not encrypt Secret key:%s", err)
+		c.Status(http.StatusInternalServerError)
+		return
+	}
+	url := fmt.Sprintf("%s/?repo=%s&user=%s&token=%s", setting.Doi.DoiUrl, c.Repo.Repository.FullName(),
+		c.User.Name, token)
+	c.Redirect(url)
 }

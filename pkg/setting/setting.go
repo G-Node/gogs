@@ -109,6 +109,7 @@ var (
 	ReverseProxyAuthUser    string
 	EnableLoginStatusCookie bool
 	LoginStatusCookieName   string
+	DoiKey                  string
 
 	// Database settings
 	UseSQLite3    bool
@@ -333,6 +334,12 @@ var (
 		Do        bool
 		IndexUrl  string
 		SearchUrl string
+	}
+
+	Doi struct {
+		Do     bool
+		DoiUrl string
+		DoiKey string
 	}
 )
 
@@ -695,6 +702,8 @@ func NewContext() {
 		log.Fatal(2, "Fail to map UI settings: %v", err)
 	} else if err = Cfg.Section("search").MapTo(&Search); err != nil {
 		log.Fatal(2, "Fail to map Search settings: %v", err)
+	} else if err = Cfg.Section("doi").MapTo(&Doi); err != nil {
+		log.Fatal(2, "Fail to map Doi settings: %v", err)
 	}
 
 	if Mirror.DefaultInterval <= 0 {
