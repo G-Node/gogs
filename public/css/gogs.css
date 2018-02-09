@@ -3321,3 +3321,22 @@ figure figcaption {
 .ui.segment.results.hide {
   z-index: 1000;
 }
+.gin.doi {
+  float: left;
+  background-color: #5b5b5b;
+  color: white;
+  border-top-left-radius: .28571429rem;
+  border-bottom-left-radius: .28571429rem;
+  padding: .833em 1em;
+}
+.gin.doinr {
+  background-color: #2185D0;
+  float: right;
+  color: white;
+  border-top-right-radius: .28571429rem;
+  border-bottom-right-radius: .28571429rem;
+  padding: .833em 1em;
+}
+.ui.image.label.nobg {
+  background: none;
+}
