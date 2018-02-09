@@ -79,7 +79,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 			c.Data["DOI"] = true
 			doiData, err := entry.Blob().Data()
 			if err != nil {
-				log.Trace("Doi Blob could nor be read:%v", err)
+				log.Trace("Doi Blob could not be read:%v", err)
 			}
 			buf, err := ioutil.ReadAll(doiData)
 			doiInfo := ginDoi.CBerry{}
@@ -88,6 +88,12 @@ func renderDirectory(c *context.Context, treeLink string) {
 				log.Trace("Doi Blob could not be unmarshalled:%v", err)
 			}
 			c.Data["DoiInfo"] = doiInfo
+			doi := ginDoi.MakeDoi(ginDoi.RepoP2UUID(c.Repo.Repository.FullName()), "10.12751/g-node.")
+			//ddata, err := ginDoi.GDoiMData(doi, "https://api.datacite.org/works/") //todo configure URL?
+
+			c.Data["DoiReg"] = ginDoi.IsRegsitredDoi(doi)
+			c.Data["doi"] = doi
+
 		}
 	}
 	c.Data["LicenseExists"] = true
