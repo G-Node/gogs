@@ -88,7 +88,8 @@ func renderDirectory(c *context.Context, treeLink string) {
 				log.Trace("Doi Blob could not be unmarshalled:%v", err)
 			}
 			c.Data["DoiInfo"] = doiInfo
-			doi := ginDoi.MakeDoi(ginDoi.RepoP2UUID(c.Repo.Repository.FullName()), "10.12751/g-node.")
+
+			doi := GDoiRepo(c, setting.Doi.DoiBase)
 			//ddata, err := ginDoi.GDoiMData(doi, "https://api.datacite.org/works/") //todo configure URL?
 
 			c.Data["DoiReg"] = ginDoi.IsRegsitredDoi(doi)
@@ -507,4 +508,15 @@ func Forks(c *context.Context) {
 	c.Data["Forks"] = forks
 
 	c.HTML(200, FORKS)
+}
+
+// Get the (theoretical ) doi for a repository. Make sure its tge doi for the Base repo
+// in cas eits a repo from the doi user
+func GDoiRepo(c *context.Context, doiBAse string) string {
+	repoN := c.Repo.Repository.FullName()
+	// check whether this repo belongs to doi and is a fork
+	if c.Repo.Repository.IsFork && c.Repo.Owner.Name == "doi" {
+		repoN = c.Repo.Repository.BaseRepo.FullName()
+	}
+	return ginDoi.MakeDoi(ginDoi.RepoP2UUID(repoN), doiBAse)
 }
