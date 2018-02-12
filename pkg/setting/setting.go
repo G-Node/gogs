@@ -106,7 +106,6 @@ var (
 	ReverseProxyAuthUser    string
 	EnableLoginStatusCookie bool
 	LoginStatusCookieName   string
-	DoiKey                  string
 
 	// Database settings
 	UseSQLite3    bool
@@ -325,9 +324,10 @@ var (
 	}
 
 	Doi struct {
-		Do     bool
-		DoiUrl string
-		DoiKey string
+		Do      bool
+		DoiUrl  string
+		DoiKey  string
+		DoiBase string
 	}
 )
 
