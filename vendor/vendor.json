@@ -9,12 +9,6 @@
 			"revisionTime": "2017-10-25T13:28:53Z"
 		},
 		{
-			"checksumSHA1": "LnRv1Ks+MlNEtH5YyfzN7YDwchY=",
-			"path": "github.com/G-Node/gin-dex",
-			"revision": "d4994f3bb1774be302aa9be2fdd4db28b454b01e",
-			"revisionTime": "2017-11-17T12:52:54Z"
-		},
-		{
 			"checksumSHA1": "/nx4C9e6SWnuATeRNXMyVaEOwFw=",
 			"path": "github.com/G-Node/gin-dex/gindex",
 			"revision": "d4994f3bb1774be302aa9be2fdd4db28b454b01e",
