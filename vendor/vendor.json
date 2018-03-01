@@ -15,12 +15,6 @@
 			"revisionTime": "2017-11-17T12:52:54Z"
 		},
 		{
-			"checksumSHA1": "kPsa/ri8Vh9yHG8LQYgnH2Xa6YY=",
-			"path": "github.com/G-Node/git-module",
-			"revision": "1de103dca47a72afccccb4ccd6085110874f3551",
-			"revisionTime": "2017-06-08T20:55:22Z"
-		},
-		{
 			"checksumSHA1": "pzrNRxutz5V0VPD/eqgqYs6Mj4o=",
 			"path": "github.com/G-Node/go-annex",
 			"revision": "f44cb4a8236be506a35a47ea3da591c0b2bb58de",
