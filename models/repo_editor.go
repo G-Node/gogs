@@ -527,6 +527,8 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 		if !com.IsFile(tmpPath) {
 			continue
 		}
+		// needed for annex, due to symlinks
+		os.Remove(targetPath)
 		if err = com.Copy(tmpPath, targetPath); err != nil {
 			return fmt.Errorf("copy: %v", err)
 		}
