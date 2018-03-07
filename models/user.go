@@ -39,7 +39,7 @@ import (
 type UserType int
 
 const (
-	USER_TYPE_INDIVIDUAL UserType = iota // Historic reason to make it starts at 0.
+	USER_TYPE_INDIVIDUAL   UserType = iota // Historic reason to make it starts at 0.
 	USER_TYPE_ORGANIZATION
 )
 
@@ -50,10 +50,10 @@ type User struct {
 	Name      string `xorm:"UNIQUE NOT NULL"`
 	FullName  string
 	// Email is the primary email address (to be used for communication)
-	Email       string `xorm:"NOT NULL"`
-	Passwd      string `xorm:"NOT NULL"`
+	Email       string        `xorm:"NOT NULL"`
+	Passwd      string        `xorm:"NOT NULL"`
 	LoginType   LoginType
-	LoginSource int64 `xorm:"NOT NULL DEFAULT 0"`
+	LoginSource int64         `xorm:"NOT NULL DEFAULT 0"`
 	LoginName   string
 	Type        UserType
 	OwnedOrgs   []*User       `xorm:"-"`
@@ -61,8 +61,8 @@ type User struct {
 	Repos       []*Repository `xorm:"-"`
 	Location    string
 	Website     string
-	Rands       string `xorm:"VARCHAR(10)"`
-	Salt        string `xorm:"VARCHAR(10)"`
+	Rands       string        `xorm:"VARCHAR(10)"`
+	Salt        string        `xorm:"VARCHAR(10)"`
 
 	Created     time.Time `xorm:"-"`
 	CreatedUnix int64
@@ -127,6 +127,7 @@ func (u *User) APIFormat() *api.User {
 		UserName:  u.Name,
 		FullName:  u.FullName,
 		AvatarUrl: u.AvatarLink(),
+		Email:     u.Email,
 	}
 }
 
@@ -321,6 +322,7 @@ func (u *User) OldGinVerifyPassword(plain string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(u.Passwd), []byte(plain))
 	return err == nil
 }
+
 // ValidatePassword checks if given password matches the one belongs to the user.
 func (u *User) ValidatePassword(passwd string) bool {
 	if u.OldGinVerifyPassword(passwd) {
