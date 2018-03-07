@@ -63,10 +63,9 @@ func GetInfo(c *context.APIContext) {
 		return
 	}
 
-	// Hide user e-mail when API caller isn't signed in.
-	if !c.IsLogged {
-		u.Email = ""
-	}
+	// Hide user e-mail
+	u.Email = ""
+
 	c.JSON(200, u.APIFormat())
 }
 
