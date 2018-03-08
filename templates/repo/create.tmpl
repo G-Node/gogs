@@ -52,9 +52,9 @@
 					</div>
 					<div class="inline field {{if .Err_Description}}error{{end}}">
 						<label for="description">{{.i18n.Tr "repo.repo_desc"}}</label>
-						<textarea class="autosize" id="description" name="description" rows="3">{{.description}}</textarea>
-						<span class="help">{{.i18n.Tr "repo.repo_description_helper" | Safe}}</span>
-						<span class="help">{{.i18n.Tr "repo.repo_description_length"}}: <span id="descLength"></span></span>
+						<textarea id="description" name="description">{{.description}}</textarea>
+						<span class="help">{{.i18n.Tr "repo.repo_desc_helper" | Safe}}</span>
+
 					</div>
 
 					<div class="ui divider"></div>
