@@ -3298,3 +3298,7 @@ figure figcaption {
 .ui.image.label.nobg > a {
   opacity: 1;
 }
+textarea#description {
+  height: 5em;
+  min-height: 5em;
+}
