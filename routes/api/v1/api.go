@@ -225,8 +225,7 @@ func RegisterRoutes(m *macaron.Macaron) {
 
 		m.Group("/repos", func() {
 			m.Get("/search", repo.Search)
-
-			m.Get("/:username/:reponame", repoAssignment(), repo.Get)
+			m.Get("/suggest/:querry", search.Suggest)
 		})
 
 		m.Group("/repos", func() {
