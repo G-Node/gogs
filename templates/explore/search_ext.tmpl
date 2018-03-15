@@ -1,24 +1,35 @@
 <form class="ui form labeled ">
-	<div class="ui fluid action input">
-		<input name="q" value="{{.Keywords}}" placeholder="{{if not .Keywords}}{{.i18n.Tr " explore.search"}}...{{end}}" autofocus>
-		<select class="ui dropdown" name="stype" id="search-type-select">
-			<option value="0" {{if eq .opsel 0}}selected{{end}}>Match</option>
-			<option value="1" {{if eq .opsel 1}}selected{{end}}>Fuzzy Term</option>
-			<option value="2" {{if eq .opsel 2}}selected{{end}}>Wildcard Term</option>
-			<option value="3" {{if eq .opsel 3}}selected{{end}}>Query String</option>
-		</select>
-		<button class="ui blue animated button">
-		<div class="hidden content">Search</div>
-		<div class="visible content">
+	<div class="ui ginsearch focus">
+		<div class="ui fluid action input">
+		<div class="ui left icon input">
+			<input name="q" value="{{.Keywords}}" class="prompt" placeholder="{{if not .Keywords}}{{.i18n.Tr " explore.search"}}...{{end}}"
+			autocomplete="off" type="text" autofocus>
 			<i class="search icon"></i>
 		</div>
-		</button>
-		<a href="https://web.gin.g-node.org/G-Node/Info/wiki/Search" class="ui vertical animated button" tabindex="0">
-		<div class="hidden content">Help</div>
-		<div class="visible content">
-			<i class="info icon"></i>
-		</div>
-		</a>
+
+	<select class="ui dropdown" name="stype" id="search-type-select">
+		<option value="0"
+		{{if eq .opsel 0}}selected{{end}}>Match</option>
+	<option value="1"
+	{{if eq .opsel 1}}selected{{end}}>Fuzzy Term
+</option>
+<option value="2" {{if eq .opsel 2}}selected{{end}}>Wildcard Term</option>
+<option value="3" {{if eq .opsel 3}}selected{{end}}>Query String</option>
+	</select>
+<button class="ui blue animated button">
+<div class="hidden content">Search</div>
+<div class="visible content">
+	<i class="search icon"></i>
+</div>
+</button>
+<a href="https://web.gin.g-node.org/G-Node/Info/wiki/Search" class="ui vertical animated button" tabindex="0">
+<div class="hidden content">Help</div>
+<div class="visible content">
+	<i class="info icon"></i>
+</div>
+</a>
+	</div>
 	</div>
 </form>
 <div class="ui divider"></div>
+
