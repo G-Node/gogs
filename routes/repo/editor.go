@@ -22,6 +22,7 @@ import (
 	"github.com/G-Node/gogs/pkg/tool"
 	"github.com/G-Node/gogs/pkg/markup"
 	"github.com/G-Node/gogs/pkg/bindata"
+	"path/filepath"
 )
 
 const (
@@ -519,6 +520,9 @@ func UploadFilePost(c *context.Context, f form.UploadRepoFile) {
 
 func UploadFileToServer(c *context.Context) {
 	file, header, err := c.Req.FormFile("file")
+	fvalue := c.Req.Form
+	f_dir := filepath.Dir(fvalue.Get("full_path"))
+	log.Info("full_path:%s", f_dir)
 	if err != nil {
 		c.Error(500, fmt.Sprintf("FormFile: %v", err))
 		return
@@ -548,7 +552,7 @@ func UploadFileToServer(c *context.Context) {
 		}
 	}
 
-	upload, err := models.NewUpload(header.Filename, buf, file)
+	upload, err := models.NewUpload(filepath.Join(f_dir, header.Filename), buf, file)
 	if err != nil {
 		c.Error(500, fmt.Sprintf("NewUpload: %v", err))
 		return

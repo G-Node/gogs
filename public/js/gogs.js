@@ -482,7 +482,7 @@ function initRepository() {
         $('#repo-clone-url').val($(this).data('link'));
         $(this).addClass('blue');
         $('#repo-clone-https').removeClass('blue');
-		$('#repo-clone-gin').removeClass('blue');
+        $('#repo-clone-gin').removeClass('blue');
         localStorage.setItem('repo-clone-protocol', 'ssh');
     });
     $('#repo-clone-https').click(function () {
@@ -490,17 +490,17 @@ function initRepository() {
         $('#repo-clone-url').val($(this).data('link'));
         $(this).addClass('blue');
         $('#repo-clone-ssh').removeClass('blue');
-		$('#repo-clone-gin').removeClass('blue');
+        $('#repo-clone-gin').removeClass('blue');
         localStorage.setItem('repo-clone-protocol', 'https');
     });
-	$('#repo-clone-gin').click(function () {
-		$('.clone-url').text($(this).data('link'));
-		$('#repo-clone-url').val($(this).data('link'));
-		$(this).addClass('blue');
-		$('#repo-clone-ssh').removeClass('blue');
-		$('#repo-clone-https').removeClass('blue');
-		localStorage.setItem('repo-clone-protocol', 'gin');
-	});
+    $('#repo-clone-gin').click(function () {
+        $('.clone-url').text($(this).data('link'));
+        $('#repo-clone-url').val($(this).data('link'));
+        $(this).addClass('blue');
+        $('#repo-clone-ssh').removeClass('blue');
+        $('#repo-clone-https').removeClass('blue');
+        localStorage.setItem('repo-clone-protocol', 'gin');
+    });
     $('#repo-clone-url').click(function () {
         $(this).select();
     });
@@ -510,12 +510,13 @@ function initRepository() {
         initFilterSearchDropdown('.choose.branch .dropdown');
     }
 
-	if ($('#download-repo-button')){
-			$('#download-repo-button').click(function () {
-				$('#download_modal')
-					.modal('show');
-			});
-		};
+    if ($('#download-repo-button')) {
+        $('#download-repo-button').click(function () {
+            $('#download_modal')
+                .modal('show');
+        });
+    }
+    ;
 }
 
 function initWikiForm() {
@@ -653,30 +654,30 @@ function setCodeMirror($editArea) {
         $editArea.val(cm.getValue());
     });
 
-	codeMirrorEditor.on("keyup", function (cm, change) {
-		if (typeof (jsonEditor)!== 'undefined') {
-			try {
-				jsonEditor.set(JSON.parse(cm.getValue()));
-				document.getElementById("parseerr").innerHTML = "Valid JSON";
-				document.getElementById("parseerr").className="ui positive message"
-			}
-			catch(err) {
-				document.getElementById("parseerr").innerHTML = err.message;
-				document.getElementById("parseerr").className="ui negative message"
-			}
-		}
-		if (typeof (yamleditor)!== 'undefined') {
-			try {
-				yamleditor.set(YAML.parse(cm.getValue()));
-				document.getElementById("parseerr").innerHTML = "Valid YAML";
-				document.getElementById("parseerr").className="ui positive message"
-			}
-			catch(err) {
-				document.getElementById("parseerr").innerHTML = err.message;
-				document.getElementById("parseerr").className="ui negative message"
-			}
-		}
-	});
+    codeMirrorEditor.on("keyup", function (cm, change) {
+        if (typeof (jsonEditor) !== 'undefined') {
+            try {
+                jsonEditor.set(JSON.parse(cm.getValue()));
+                document.getElementById("parseerr").innerHTML = "Valid JSON";
+                document.getElementById("parseerr").className = "ui positive message"
+            }
+            catch (err) {
+                document.getElementById("parseerr").innerHTML = err.message;
+                document.getElementById("parseerr").className = "ui negative message"
+            }
+        }
+        if (typeof (yamleditor) !== 'undefined') {
+            try {
+                yamleditor.set(YAML.parse(cm.getValue()));
+                document.getElementById("parseerr").innerHTML = "Valid YAML";
+                document.getElementById("parseerr").className = "ui positive message"
+            }
+            catch (err) {
+                document.getElementById("parseerr").innerHTML = err.message;
+                document.getElementById("parseerr").className = "ui negative message"
+            }
+        }
+    });
 
     return true;
 }
@@ -1118,35 +1119,35 @@ function initCodeView() {
 }
 
 function initCookieWarn() {
-	// Automatically shows on init if cookie isnt set
-	if (Cookies.get('cookieok') === undefined) {
-		$('.cookie.nag')
-			.nag({
-				key: 'accepts-cookies',
-				value: true
-			})
-		;
-		$('.nag.close').click(function () {
-			Cookies.set('cookieok', true,  { expires: 365 })
-		})
+    // Automatically shows on init if cookie isnt set
+    if (Cookies.get('cookieok') === undefined) {
+        $('.cookie.nag')
+            .nag({
+                key: 'accepts-cookies',
+                value: true
+            })
+        ;
+        $('.nag.close').click(function () {
+            Cookies.set('cookieok', true, {expires: 365})
+        })
 
-	}
+    }
 }
 
 function initSuggest() {
-	$('.ui.ginsearch')
-		.search({
-			apiSettings: {
-				url: '/api/v1/repos/suggest/{query}'
-			},
-			fields: {
-				results: 'Items',
-				title: 'Title'
-			},
-			minCharacters: 3,
-			showNoResults: false
-		})
-	;
+    $('.ui.ginsearch')
+        .search({
+            apiSettings: {
+                url: '/api/v1/repos/suggest/{query}'
+            },
+            fields: {
+                results: 'Items',
+                title: 'Title'
+            },
+            minCharacters: 3,
+            showNoResults: false
+        })
+    ;
 }
 
 function initUserSettings() {
@@ -1218,7 +1219,7 @@ $(document).ready(function () {
     csrf = $('meta[name=_csrf]').attr("content");
     suburl = $('meta[name=_suburl]').attr("content");
 
-	// Set cursor to the end of autofocus input string
+    // Set cursor to the end of autofocus input string
     $('input[autofocus]').each(function () {
         $(this).val($(this).val());
     })
@@ -1265,21 +1266,21 @@ $(document).ready(function () {
     });
 
     // Highlight JS
-	if (typeof hljs != 'undefined') {
-		if (typeof(Worker) !== "undefined") {
-			addEventListener('load', function () {
-				var code = document.querySelector('code');
-				var worker = new Worker('/plugins/highlighter.js');
-				worker.onmessage = function (event) {
-					code.innerHTML = event.data;
-				}
-				worker.postMessage(code.textContent);
-			})
-		} else {
-			hljs.initHighlightingOnLoad()
-		}
+    if (typeof hljs != 'undefined') {
+        if (typeof(Worker) !== "undefined") {
+            addEventListener('load', function () {
+                var code = document.querySelector('code');
+                var worker = new Worker('/plugins/highlighter.js');
+                worker.onmessage = function (event) {
+                    code.innerHTML = event.data;
+                }
+                worker.postMessage(code.textContent);
+            })
+        } else {
+            hljs.initHighlightingOnLoad()
+        }
 
-	}
+    }
 
     // Dropzone
     var $dropzone = $('#dropzone');
@@ -1305,6 +1306,9 @@ $(document).ready(function () {
                     var input = $('<input id="' + data.uuid + '" name="files" type="hidden">').val(data.uuid);
                     $('.files').append(input);
                 });
+                this.on("sending", function (file, xhr, formData) {
+                    formData.append("full_path", file.fullPath);
+                });
                 this.on("removedfile", function (file) {
                     if (file.name in filenameDict) {
                         $('#' + filenameDict[file.name]).remove();
@@ -1316,6 +1320,17 @@ $(document).ready(function () {
                         });
                     }
                 })
+                this.on('addedfile', function (file) {
+
+                    var preview = document.getElementsByClassName('dz-filename');
+                    preview = preview[preview.length - 1];
+                    preview.removeChild(preview.firstChild);
+                    var imageName = document.createElement('span');
+                    imageName.innerHTML = file.fullPath;
+
+                    preview.insertBefore(imageName, preview.firstChild);
+
+                });
             }
         });
     }
@@ -1453,8 +1468,8 @@ $(document).ready(function () {
     initOrganization();
     initAdmin();
     initCodeView();
-	initCookieWarn();
-	initSuggest();
+    initCookieWarn();
+    initSuggest();
 
     // Repo clone url.
     if ($('#repo-clone-url').length > 0) {
