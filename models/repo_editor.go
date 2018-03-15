@@ -523,6 +523,7 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 	for _, upload := range uploads {
 		tmpPath := upload.LocalPath()
 		targetPath := path.Join(dirPath, upload.Name)
+		os.MkdirAll(filepath.Dir(targetPath), os.ModePerm)
 		repoFileName := path.Join(opts.TreePath, upload.Name)
 		if !com.IsFile(tmpPath) {
 			continue
