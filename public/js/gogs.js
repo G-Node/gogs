@@ -1133,6 +1133,22 @@ function initCookieWarn() {
 	}
 }
 
+function initSuggest() {
+	$('.ui.ginsearch')
+		.search({
+			apiSettings: {
+				url: '/api/v1/repos/suggest/{query}'
+			},
+			fields: {
+				results: 'Items',
+				title: 'Title'
+			},
+			minCharacters: 3,
+			showNoResults: false
+		})
+	;
+}
+
 function initUserSettings() {
     console.log('initUserSettings');
 
@@ -1438,6 +1454,7 @@ $(document).ready(function () {
     initAdmin();
     initCodeView();
 	initCookieWarn();
+	initSuggest();
 
     // Repo clone url.
     if ($('#repo-clone-url').length > 0) {
