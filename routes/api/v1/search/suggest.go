@@ -11,16 +11,15 @@ import (
 )
 
 func Suggest(c *context.APIContext) {
-	if ! c.IsLogged {
-		c.Status(http.StatusUnauthorized)
-		return
-	}
 	if !setting.Search.Do {
 		c.Status(http.StatusNotImplemented)
 		return
 	}
-	ireq := gindex.SearchRequest{Token: c.GetCookie(setting.SessionConfig.CookieName), UserID: c.User.ID,
+	ireq := gindex.SearchRequest{Token: c.GetCookie(setting.SessionConfig.CookieName),
 		Querry: c.Params("querry"), CsrfT: c.GetCookie(setting.CSRFCookieName), SType:gindex.SEARCH_SUGGEST}
+	if c.IsLogged {
+		ireq.UserID = c.User.ID
+	}
 	data, err := json.Marshal(ireq)
 	if err != nil {
 		c.Status(http.StatusInternalServerError)
