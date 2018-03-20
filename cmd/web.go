@@ -44,6 +44,8 @@ import (
 	"github.com/G-Node/gogs/routes/org"
 	"github.com/G-Node/gogs/routes/repo"
 	"github.com/G-Node/gogs/routes/user"
+	"github.com/G-Node/gogs/pkg/dav"
+	"golang.org/x/net/webdav"
 )
 
 var Web = cli.Command{
@@ -163,6 +165,9 @@ func newMacaron() *macaron.Macaron {
 		},
 	}))
 	m.Use(context.Contexter())
+	// Webdav handler todo: implement
+	h := &webdav.Handler{}
+	m.Map(h)
 	return m
 }
 
@@ -572,7 +577,7 @@ func runWeb(c *cli.Context) error {
 			m.Combo("/_delete/*").Get(repo.DeleteFile).
 				Post(bindIgnErr(form.DeleteRepoFile{}), repo.DeleteFilePost)
 			m.Combo("/_add/*").Get(repo.AddFile).Post(bindIgnErr(form.EditRepoFile{}), repo.NewFilePost)
-
+			m.Any("/_dav", dav.Dav)
 			m.Group("", func() {
 				m.Combo("/_upload/*").Get(repo.UploadFile).
 					Post(bindIgnErr(form.UploadRepoFile{}), repo.UploadFilePost)
