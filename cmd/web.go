@@ -166,7 +166,7 @@ func newMacaron() *macaron.Macaron {
 	}))
 	m.Use(context.Contexter())
 	// Webdav handler todo: implement
-	h := &webdav.Handler{}
+	h := &webdav.Handler{FileSystem:&dav.GinFS{}, LockSystem:webdav.NewMemLS()}
 	m.Map(h)
 	return m
 }
