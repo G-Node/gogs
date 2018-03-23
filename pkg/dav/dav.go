@@ -10,6 +10,7 @@ import (
 	"regexp"
 	"github.com/G-Node/git-module"
 	"time"
+	"io"
 )
 
 var (
@@ -54,16 +55,23 @@ func (fs *GinFS) OpenFile(name string, flag int, perm os.FileMode) (webdav.File,
 	path, _ := getFPath(name)
 	grepo, _ := git.OpenRepository(fmt.Sprintf("%s/%s/%s.git", oname, rname))
 	com, _ := grepo.GetBranchCommit("master")
-	ent, _ := com.GetTreeEntryByPath(path)
-	return GinFile{Trentry: ent}, nil
+	tree, _ := com.SubTree(path)
+	trentry, _ := com.GetTreeEntryByPath(path)
+	return GinFile{trentry: trentry, tree: tree}, nil
 }
 
 func (fs GinFS) Stat(name string) (os.FileInfo, error) {
-	return nil, nil
+	f, err := fs.OpenFile(name, 0, 0)
+	if err != nil {
+		return nil, err
+	}
+	return f.Stat()
 }
 
 type GinFile struct {
-	Trentry *git.TreeEntry
+	tree      *git.Tree
+	trentry   *git.TreeEntry
+	dirrcount int
 }
 
 func (f GinFile) Write(p []byte) (n int, err error) {
@@ -75,7 +83,15 @@ func (f GinFile) Close() error {
 }
 
 func (f GinFile) Read(p []byte) (n int, err error) {
-	return 0, nil
+	if f.trentry.Type != git.OBJECT_BLOB {
+		return 0, fmt.Errorf("not a blob")
+	}
+	data, err := f.trentry.Blob().Data()
+	if err != nil{
+		return 0, err
+	}
+	// todo: annex
+	return data.Read(p)
 }
 
 func (f GinFile) Seek(offset int64, whence int) (int64, error) {
@@ -83,11 +99,27 @@ func (f GinFile) Seek(offset int64, whence int) (int64, error) {
 }
 
 func (f GinFile) Readdir(count int) ([]os.FileInfo, error) {
-	return nil, nil
+	ents, err := f.tree.ListEntries()
+	if err != nil {
+		return nil, err
+	}
+	if count <= 0 {
+		infos := make([]os.FileInfo, len(ents))
+		for c, ent := range ents {
+			finfo, err := GinFile{trentry: ent}.Stat()
+			if err != nil {
+				return nil, err
+			}
+			infos[c] = finfo
+		}
+		return infos, nil
+	} else {
+
+	}
 }
 
 func (f GinFile) Stat() (os.FileInfo, error) {
-	return GinFinfo{f.Trentry}, nil
+	return GinFinfo{f.trentry}, nil
 }
 
 type GinFinfo struct {
