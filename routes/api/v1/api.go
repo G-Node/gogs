@@ -178,6 +178,7 @@ func RegisterRoutes(m *macaron.Macaron) {
 		// Handle preflight OPTIONS request
 		m.Options("/*", func() {})
 
+		m.Get("/cliconfig", misc.ClientC)
 		// Miscellaneous
 		m.Post("/markdown", bind(api.MarkdownOption{}), misc.Markdown)
 		m.Post("/markdown/raw", misc.MarkdownRaw)

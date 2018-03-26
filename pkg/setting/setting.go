@@ -330,6 +330,10 @@ var (
 		DoiBase string
 	}
 
+	CliConfig struct {
+		RsaHostKey string
+	}
+
 	WebDav struct {
 		On     bool
 		Logged bool
@@ -684,6 +688,8 @@ func NewContext() {
 		log.Fatal(2, "Fail to map Search settings: %v", err)
 	} else if err = Cfg.Section("doi").MapTo(&Doi); err != nil {
 		log.Fatal(2, "Fail to map Doi settings: %v", err)
+	} else if err = Cfg.Section("cliconfig").MapTo(&CliConfig); err != nil {
+		log.Fatal(2, "Fail to map Client config settings: %v", err)
 	} else if err = Cfg.Section("dav").MapTo(&WebDav); err != nil {
 		log.Fatal(2, "Fail to map WebDav settings: %v", err)
 	}
