@@ -75,7 +75,20 @@ func TestReadDir(t *testing.T) {
 		t.Fail()
 		return
 	}
-	// todo: add test witrh subdirs
+
+	f, err = fs.OpenFile("https://gin.g-node.org/user1/repo1/_dav/fold1", 0, 0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	ents, err = f.Readdir(0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if len(ents) != 2 {
+		t.Log("Can not read directory")
+		t.Fail()
+		return
+	}
 
 }
 
