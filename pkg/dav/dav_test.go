@@ -1,6 +1,10 @@
 package dav
 
-import "testing"
+import (
+	"testing"
+	"log"
+	"strings"
+)
 
 func TestGetRepoName(t *testing.T){
 	name, err := getRName("https://gin.g-node.org/cgars/test/_dav/adasdasd/daasdas/asdasdsa")
@@ -16,3 +20,81 @@ func TestGetRepoName(t *testing.T){
 	}
 	return
 }
+
+func TestOwnerName(t *testing.T) {
+	name, err := getOName("https://gin.g-node.org/cgars/test/_dav/adasdasd/daasdas/asdasdsa")
+	if err != nil {
+		t.Logf("Repo Name not dtermined from path")
+		t.Fail()
+		return
+	}
+	if name != "cgars" {
+		t.Logf("Owner Name not dtermined from path: name was %s", name)
+		t.Fail()
+		return
+	}
+	return
+}
+
+func TestOpenfile(t *testing.T) {
+	fs := GinFS{"../../trepos"}
+	f, err := fs.OpenFile("https://gin.g-node.org/user1/repo1/_dav/testfile1.txt", 0, 0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	st, err := f.Stat()
+	if st.Name() != "testfile1.txt" {
+		t.Fail()
+		return
+	}
+
+	// lets try a directoty
+	f, err = fs.OpenFile("https://gin.g-node.org/user1/repo1/_dav/", 0, 0)
+	st, err = f.Stat()
+	if err != nil {
+		log.Fatal(err)
+	}
+	if !st.IsDir() {
+		t.Fail()
+		return
+	}
+}
+
+func TestReadDir(t *testing.T) {
+	fs := GinFS{"../../trepos"}
+	f, err := fs.OpenFile("https://gin.g-node.org/user1/repo1/_dav/", 0, 0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	ents, err := f.Readdir(0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if len(ents) < 1 {
+		t.Log("Can not read directory")
+		t.Fail()
+		return
+	}
+	// todo: add test witrh subdirs
+
+}
+
+func TestReadFile(t *testing.T) {
+	fs := GinFS{"../../trepos"}
+	f, err := fs.OpenFile("https://gin.g-node.org/user1/repo1/_dav/testfile1.txt", 0, 0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	bf := make([]byte, 50)
+	_, err = f.Read(bf)
+	if err != nil {
+		log.Fatalf("%+v", err)
+	}
+	txt := string(bf)
+	if !strings.Contains(txt, "test") {
+		t.Log("could not read normal git file")
+		t.Fail()
+	}
+}
+
+
