@@ -85,7 +85,7 @@ func TestReadDir(t *testing.T) {
 		log.Fatal(err)
 	}
 	if len(ents) != 2 {
-		t.Log("Can not read directory")
+		t.Log("Can not read sub directory")
 		t.Fail()
 		return
 	}
@@ -106,6 +106,22 @@ func TestReadFile(t *testing.T) {
 	txt := string(bf)
 	if !strings.Contains(txt, "test") {
 		t.Log("could not read normal git file")
+		t.Fail()
+	}
+
+	// Open a file in a subfolder
+	f, err = fs.OpenFile("https://gin.g-node.org/user1/repo1/_dav/fold1/file1.txt", 0, 0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	bf = make([]byte, 50)
+	_, err = f.Read(bf)
+	if err != nil {
+		log.Fatalf("%+v", err)
+	}
+	txt = string(bf)
+	if !strings.Contains(txt, "bla") {
+		t.Log("could not read git file in sobfolder")
 		t.Fail()
 	}
 }
