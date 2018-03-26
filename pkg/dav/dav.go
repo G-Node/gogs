@@ -15,7 +15,7 @@ import (
 
 var (
 	RE_GETRNAME = regexp.MustCompile(".+/(.+)/_dav")
-	RE_GETROWN  = regexp.MustCompile("./(.+)/.+/_dav")
+	RE_GETROWN  = regexp.MustCompile(`..+\/(.+)\/.+\/_dav`)
 	RE_GETFPATH = regexp.MustCompile("/_dav/(.+)")
 )
 
@@ -53,8 +53,12 @@ func (fs *GinFS) OpenFile(name string, flag int, perm os.FileMode) (webdav.File,
 	rname, _ := getRName(name)
 	oname, _ := getOName(name)
 	path, _ := getFPath(name)
-	grepo, _ := git.OpenRepository(fmt.Sprintf("%s/%s/%s.git", oname, rname))
-	com, _ := grepo.GetBranchCommit("master")
+	rpath := fmt.Sprintf("%s/%s/%s.git", fs.BasePath, oname, rname)
+	grepo, _ := git.OpenRepository(rpath)
+	com, err := grepo.GetBranchCommit("master")
+	if err != nil {
+		return nil, err
+	}
 	tree, _ := com.SubTree(path)
 	trentry, _ := com.GetTreeEntryByPath(path)
 	return GinFile{trentry: trentry, tree: tree}, nil
@@ -103,21 +107,49 @@ func (f GinFile) Readdir(count int) ([]os.FileInfo, error) {
 	if err != nil {
 		return nil, err
 	}
+	// give back all the stuff
 	if count <= 0 {
-		infos := make([]os.FileInfo, len(ents))
-		for c, ent := range ents {
-			finfo, err := GinFile{trentry: ent}.Stat()
-			if err != nil {
-				return nil, err
-			}
-			infos[c] = finfo
-		}
-		return infos, nil
-	} else {
-
+		return getFInfos(ents)
 	}
+	// user requested a bufferrd read
+	switch {
+	case count > len(ents):
+		infos, err := getFInfos(ents)
+		if err != nil {
+			return nil, err
+		}
+		return infos, io.EOF
+	case f.dirrcount >= len(ents):
+		return nil, io.EOF
+	case f.dirrcount+count >= len(ents):
+		infos, err := getFInfos(ents[f.dirrcount:])
+		if err != nil {
+			return nil, err
+		}
+		f.dirrcount = len(ents)
+		return infos, io.EOF
+	case f.dirrcount+count < len(ents):
+		infos, err := getFInfos(ents[f.dirrcount:f.dirrcount+count])
+		if err != nil {
+			return nil, err
+		}
+		f.dirrcount = f.dirrcount+count
+		return infos, nil
+	}
+	return nil, nil
 }
 
+func getFInfos(ents [] *git.TreeEntry) ([]os.FileInfo, error) {
+	infos := make([]os.FileInfo, len(ents))
+	for c, ent := range ents {
+		finfo, err := GinFile{trentry: ent}.Stat()
+		if err != nil {
+			return nil, err
+		}
+		infos[c] = finfo
+	}
+	return infos, nil
+}
 func (f GinFile) Stat() (os.FileInfo, error) {
 	return GinFinfo{f.trentry}, nil
 }
