@@ -76,6 +76,7 @@ type GinFile struct {
 	tree      *git.Tree
 	trentry   *git.TreeEntry
 	dirrcount int
+	seekoset  int64
 }
 
 func (f GinFile) Write(p []byte) (n int, err error) {
@@ -99,6 +100,19 @@ func (f GinFile) Read(p []byte) (n int, err error) {
 }
 
 func (f GinFile) Seek(offset int64, whence int) (int64, error) {
+	switch whence {
+	case 0:
+		f.seekoset = offset
+	case 1:
+		f.seekoset = f.seekoset + offset
+	case 2:
+		fstat, err := f.Stat()
+		if err != nil {
+			return -1, err
+		}
+		fsize := fstat.Size()
+		f.seekoset = fsize - offset
+	}
 	return 0, nil
 }
 
