@@ -1,16 +1,17 @@
 package dav
 
 import (
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+	"regexp"
+	"time"
+
+	"github.com/G-Node/git-module"
+	"github.com/G-Node/gogs/models"
 	"github.com/G-Node/gogs/pkg/context"
 	"golang.org/x/net/webdav"
-	"os"
-	"fmt"
-	"net/http"
-	"github.com/G-Node/gogs/models"
-	"regexp"
-	"github.com/G-Node/git-module"
-	"time"
-	"io"
 )
 
 var (
@@ -65,10 +66,10 @@ func (fs *GinFS) OpenFile(name string, flag int, perm os.FileMode) (webdav.File,
 	}
 	tree, _ := com.SubTree(path)
 	trentry, _ := com.GetTreeEntryByPath(path)
-	return GinFile{trentry: trentry, tree: tree, LChange: com.Committer.When}, nil
+	return &GinFile{trentry: trentry, tree: tree, LChange: com.Committer.When}, nil
 }
 
-func (fs GinFS) Stat(name string) (os.FileInfo, error) {
+func (fs *GinFS) Stat(name string) (os.FileInfo, error) {
 	f, err := fs.OpenFile(name, 0, 0)
 	if err != nil {
 		return nil, err
@@ -84,27 +85,27 @@ type GinFile struct {
 	LChange   time.Time
 }
 
-func (f GinFile) Write(p []byte) (n int, err error) {
+func (f *GinFile) Write(p []byte) (n int, err error) {
 	return 0, fmt.Errorf("Write to GinFile not implemented (read only)")
 }
 
-func (f GinFile) Close() error {
+func (f *GinFile) Close() error {
 	return nil
 }
 
-func (f GinFile) Read(p []byte) (n int, err error) {
+func (f *GinFile) Read(p []byte) (n int, err error) {
 	if f.trentry.Type != git.OBJECT_BLOB {
 		return 0, fmt.Errorf("not a blob")
 	}
 	data, err := f.trentry.Blob().Data()
-	if err != nil{
+	if err != nil {
 		return 0, err
 	}
 	// todo: annex
 	return data.Read(p)
 }
 
-func (f GinFile) Seek(offset int64, whence int) (int64, error) {
+func (f *GinFile) Seek(offset int64, whence int) (int64, error) {
 	switch whence {
 	case 0:
 		f.seekoset = offset
@@ -121,7 +122,7 @@ func (f GinFile) Seek(offset int64, whence int) (int64, error) {
 	return 0, nil
 }
 
-func (f GinFile) Readdir(count int) ([]os.FileInfo, error) {
+func (f *GinFile) Readdir(count int) ([]os.FileInfo, error) {
 	ents, err := f.tree.ListEntries()
 	if err != nil {
 		return nil, err
@@ -148,17 +149,17 @@ func (f GinFile) Readdir(count int) ([]os.FileInfo, error) {
 		f.dirrcount = len(ents)
 		return infos, io.EOF
 	case f.dirrcount+count < len(ents):
-		infos, err := getFInfos(ents[f.dirrcount:f.dirrcount+count])
+		infos, err := getFInfos(ents[f.dirrcount : f.dirrcount+count])
 		if err != nil {
 			return nil, err
 		}
-		f.dirrcount = f.dirrcount+count
+		f.dirrcount = f.dirrcount + count
 		return infos, nil
 	}
 	return nil, nil
 }
 
-func getFInfos(ents [] *git.TreeEntry) ([]os.FileInfo, error) {
+func getFInfos(ents []*git.TreeEntry) ([]os.FileInfo, error) {
 	infos := make([]os.FileInfo, len(ents))
 	for c, ent := range ents {
 		finfo, err := GinFile{trentry: ent}.Stat()
@@ -189,7 +190,6 @@ func (i GinFinfo) ModTime() time.Time {
 func (i GinFinfo) Sys() interface{} {
 	return nil
 }
-
 
 func checkPerms(c *context.Context) error {
 	return nil
