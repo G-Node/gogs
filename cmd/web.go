@@ -166,7 +166,7 @@ func newMacaron() *macaron.Macaron {
 	}))
 	m.Use(context.Contexter())
 	// Webdav handler todo: implement
-	h := &webdav.Handler{FileSystem:&dav.GinFS{}, LockSystem:webdav.NewMemLS()}
+	h := &webdav.Handler{FileSystem: &dav.GinFS{BasePath: setting.RepoRootPath}, LockSystem: webdav.NewMemLS()}
 	m.Map(h)
 	return m
 }
@@ -179,6 +179,7 @@ func runWeb(c *cli.Context) error {
 	checkVersion()
 
 	m := newMacaron()
+
 
 	reqSignIn := context.Toggle(&context.ToggleOptions{SignInRequired: true})
 	ignSignIn := context.Toggle(&context.ToggleOptions{SignInRequired: setting.Service.RequireSignInView})
@@ -431,7 +432,7 @@ func runWeb(c *cli.Context) error {
 		m.Combo("/fork/:repoid").Get(repo.Fork).
 			Post(bindIgnErr(form.CreateRepo{}), repo.ForkPost)
 	}, reqSignIn)
-
+	m.Any("/:username/:reponame/_dav/", dav.Dav, context.RepoAssignment(), context.RepoRef())
 	m.Group("/:username/:reponame", func() {
 		m.Group("/settings", func() {
 			m.Combo("").Get(repo.Settings).
@@ -577,7 +578,6 @@ func runWeb(c *cli.Context) error {
 			m.Combo("/_delete/*").Get(repo.DeleteFile).
 				Post(bindIgnErr(form.DeleteRepoFile{}), repo.DeleteFilePost)
 			m.Combo("/_add/*").Get(repo.AddFile).Post(bindIgnErr(form.EditRepoFile{}), repo.NewFilePost)
-			m.Any("/_dav", dav.Dav)
 			m.Group("", func() {
 				m.Combo("/_upload/*").Get(repo.UploadFile).
 					Post(bindIgnErr(form.UploadRepoFile{}), repo.UploadFilePost)
