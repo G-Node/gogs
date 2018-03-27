@@ -7,7 +7,7 @@ import (
 )
 
 func TestGetRepoName(t *testing.T){
-	name, err := getRName("https://gin.g-node.org/cgars/test/_dav/adasdasd/daasdas/asdasdsa")
+	name, err := getRName("/cgars/test/_dav/adasdasd/daasdas/asdasdsa")
 	if err != nil{
 		t.Logf("Repo Name not dtermined from path")
 		t.Fail()
@@ -22,7 +22,7 @@ func TestGetRepoName(t *testing.T){
 }
 
 func TestOwnerName(t *testing.T) {
-	name, err := getOName("https://gin.g-node.org/cgars/test/_dav/adasdasd/daasdas/asdasdsa")
+	name, err := getOName("/cgars/test/_dav/adasdasd/daasdas/asdasdsa")
 	if err != nil {
 		t.Logf("Repo Name not dtermined from path")
 		t.Fail()
@@ -38,7 +38,7 @@ func TestOwnerName(t *testing.T) {
 
 func TestOpenfile(t *testing.T) {
 	fs := GinFS{"../../trepos"}
-	f, err := fs.OpenFile("https://gin.g-node.org/user1/repo1/_dav/testfile1.txt", 0, 0)
+	f, err := fs.OpenFile("/user1/repo1/_dav/testfile1.txt", 0, 0)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -49,7 +49,7 @@ func TestOpenfile(t *testing.T) {
 	}
 
 	// lets try a directoty
-	f, err = fs.OpenFile("https://gin.g-node.org/user1/repo1/_dav/", 0, 0)
+	f, err = fs.OpenFile("/user1/repo1/_dav/", 0, 0)
 	st, err = f.Stat()
 	if err != nil {
 		log.Fatal(err)
@@ -62,7 +62,7 @@ func TestOpenfile(t *testing.T) {
 
 func TestReadDir(t *testing.T) {
 	fs := GinFS{"../../trepos"}
-	f, err := fs.OpenFile("https://gin.g-node.org/user1/repo1/_dav/", 0, 0)
+	f, err := fs.OpenFile("/user1/repo1/_dav/", 0, 0)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -76,7 +76,7 @@ func TestReadDir(t *testing.T) {
 		return
 	}
 
-	f, err = fs.OpenFile("https://gin.g-node.org/user1/repo1/_dav/fold1", 0, 0)
+	f, err = fs.OpenFile("/user1/repo1/_dav/fold1", 0, 0)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -94,7 +94,7 @@ func TestReadDir(t *testing.T) {
 
 func TestReadFile(t *testing.T) {
 	fs := GinFS{"../../trepos"}
-	f, err := fs.OpenFile("https://gin.g-node.org/user1/repo1/_dav/testfile1.txt", 0, 0)
+	f, err := fs.OpenFile("/user1/repo1/_dav/testfile1.txt", 0, 0)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -110,7 +110,7 @@ func TestReadFile(t *testing.T) {
 	}
 
 	// Open a file in a subfolder
-	f, err = fs.OpenFile("https://gin.g-node.org/user1/repo1/_dav/fold1/file1.txt", 0, 0)
+	f, err = fs.OpenFile("/user1/repo1/_dav/fold1/file1.txt", 0, 0)
 	if err != nil {
 		log.Fatal(err)
 	}

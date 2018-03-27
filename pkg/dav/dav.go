@@ -14,8 +14,8 @@ import (
 )
 
 var (
-	RE_GETRNAME = regexp.MustCompile(".+/(.+)/_dav")
-	RE_GETROWN  = regexp.MustCompile(`..+\/(.+)\/.+\/_dav`)
+	RE_GETRNAME = regexp.MustCompile(`.+\/(.+)\/_dav`)
+	RE_GETROWN  = regexp.MustCompile(`\/(.+)\/.+\/_dav`)
 	RE_GETFPATH = regexp.MustCompile("/_dav/(.+)")
 )
 
@@ -25,6 +25,7 @@ func Dav(c *context.Context, handler *webdav.Handler) {
 		return
 	}
 	handler.ServeHTTP(c.Resp, c.Req.Request)
+	c.WriteHeader(http.StatusOK)
 	return
 }
 
@@ -54,7 +55,10 @@ func (fs *GinFS) OpenFile(name string, flag int, perm os.FileMode) (webdav.File,
 	oname, _ := getOName(name)
 	path, _ := getFPath(name)
 	rpath := fmt.Sprintf("%s/%s/%s.git", fs.BasePath, oname, rname)
-	grepo, _ := git.OpenRepository(rpath)
+	grepo, err := git.OpenRepository(rpath)
+	if err != nil {
+		return nil, err
+	}
 	com, err := grepo.GetBranchCommit("master")
 	if err != nil {
 		return nil, err
