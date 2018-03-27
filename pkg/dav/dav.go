@@ -61,7 +61,7 @@ func (fs *GinFS) OpenFile(name string, flag int, perm os.FileMode) (webdav.File,
 	}
 	tree, _ := com.SubTree(path)
 	trentry, _ := com.GetTreeEntryByPath(path)
-	return GinFile{trentry: trentry, tree: tree}, nil
+	return GinFile{trentry: trentry, tree: tree, LChange: com.Committer.When}, nil
 }
 
 func (fs GinFS) Stat(name string) (os.FileInfo, error) {
@@ -77,6 +77,7 @@ type GinFile struct {
 	trentry   *git.TreeEntry
 	dirrcount int
 	seekoset  int64
+	LChange   time.Time
 }
 
 func (f GinFile) Write(p []byte) (n int, err error) {
@@ -165,11 +166,12 @@ func getFInfos(ents [] *git.TreeEntry) ([]os.FileInfo, error) {
 	return infos, nil
 }
 func (f GinFile) Stat() (os.FileInfo, error) {
-	return GinFinfo{f.trentry}, nil
+	return GinFinfo{TreeEntry: f.trentry, LChange: f.LChange}, nil
 }
 
 type GinFinfo struct {
 	*git.TreeEntry
+	LChange time.Time
 }
 
 func (i GinFinfo) Mode() os.FileMode {
@@ -177,7 +179,7 @@ func (i GinFinfo) Mode() os.FileMode {
 }
 
 func (i GinFinfo) ModTime() time.Time {
-	return time.Now()
+	return i.LChange
 }
 
 func (i GinFinfo) Sys() interface{} {
