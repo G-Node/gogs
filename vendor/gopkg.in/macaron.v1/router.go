@@ -23,13 +23,20 @@ import (
 var (
 	// Known HTTP methods.
 	_HTTP_METHODS = map[string]bool{
-		"GET":     true,
-		"POST":    true,
-		"PUT":     true,
-		"DELETE":  true,
-		"PATCH":   true,
-		"OPTIONS": true,
-		"HEAD":    true,
+		"GET":       true,
+		"POST":      true,
+		"PUT":       true,
+		"DELETE":    true,
+		"PATCH":     true,
+		"OPTIONS":   true,
+		"HEAD":      true,
+		"MKCOL":     true,
+		"COPY":      true,
+		"MOVE":      true,
+		"LOCK":      true,
+		"UNLOCK":    true,
+		"PROPFIND":  true,
+		"PROPPATCH": true,
 	}
 )
 
