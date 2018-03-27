@@ -1,19 +1,19 @@
 package dav
 
 import (
-	"testing"
 	"log"
 	"strings"
+	"testing"
 )
 
-func TestGetRepoName(t *testing.T){
+func TestGetRepoName(t *testing.T) {
 	name, err := getRName("/cgars/test/_dav/adasdasd/daasdas/asdasdsa")
-	if err != nil{
+	if err != nil {
 		t.Logf("Repo Name not dtermined from path")
 		t.Fail()
 		return
 	}
-	if name != "test"{
+	if name != "test" {
 		t.Logf("Repo Name not dtermined from path")
 		t.Fail()
 		return
@@ -126,4 +126,36 @@ func TestReadFile(t *testing.T) {
 	}
 }
 
+func TestModFile(t *testing.T) {
+	fs := GinFS{"../../trepos"}
+	f, err := fs.OpenFile("/user1/repo1/_dav/testfile1.txt", 0, 0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	stat, err := f.Stat()
+	mtime := stat.ModTime().String()
+	if (mtime!="2018-03-26 16:32:51 +0200 CEST"){
+		t.Fail()
+		return
+	}
+	return
+}
 
+func TestSeekFile(t *testing.T) {
+	fs := GinFS{"../../trepos"}
+	f, err := fs.OpenFile("/user1/repo1/_dav/testfile1.txt", 0, 0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	f.Seek(1,0)
+	bf := make([]byte, 50)
+	_, err = f.Read(bf)
+	if err != nil {
+		log.Fatalf("%+v", err)
+	}
+	txt := string(bf)
+	if !strings.Contains(txt, "test") {
+		t.Log("could not read normal git file")
+		t.Fail()
+	}
+}
