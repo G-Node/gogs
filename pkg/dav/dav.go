@@ -27,7 +27,6 @@ func Dav(c *gctx.Context, handler *webdav.Handler) {
 		return
 	}
 	handler.ServeHTTP(c.Resp, c.Req.Request)
-	c.WriteHeader(http.StatusOK)
 	return
 }
 
