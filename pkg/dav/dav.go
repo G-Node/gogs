@@ -10,7 +10,8 @@ import (
 
 	"github.com/G-Node/git-module"
 	"github.com/G-Node/gogs/models"
-	"github.com/G-Node/gogs/pkg/context"
+	gctx "github.com/G-Node/gogs/pkg/context"
+	"golang.org/x/net/context"
 	"golang.org/x/net/webdav"
 )
 
@@ -20,7 +21,7 @@ var (
 	RE_GETFPATH = regexp.MustCompile("/_dav/(.+)")
 )
 
-func Dav(c *context.Context, handler *webdav.Handler) {
+func Dav(c *gctx.Context, handler *webdav.Handler) {
 	if checkPerms(c) != nil {
 		c.WriteHeader(http.StatusUnauthorized)
 		return
@@ -36,21 +37,21 @@ type GinFS struct {
 }
 
 // Just return an error. -> Read Only
-func (fs *GinFS) Mkdir(name string, perm os.FileMode) error {
+func (fs *GinFS) Mkdir(ctx context.Context, name string, perm os.FileMode) error {
 	return fmt.Errorf("Mkdir not implemented for read only gin FS")
 }
 
 // Just return an error. -> Read Only
-func (fs *GinFS) RemoveAll(name string) error {
+func (fs *GinFS) RemoveAll(ctx context.Context, name string) error {
 	return fmt.Errorf("Remove not implemented for read only gin FS")
 }
 
 // Just return an error. -> Read Only
-func (fs *GinFS) Rename(oldName, newName string) error {
+func (fs *GinFS) Rename(ctx context.Context, oldName, newName string) error {
 	return fmt.Errorf("Rename not implemented for read only gin FS")
 }
 
-func (fs *GinFS) OpenFile(name string, flag int, perm os.FileMode) (webdav.File, error) {
+func (fs *GinFS) OpenFile(ctx context.Context, name string, flag int, perm os.FileMode) (webdav.File, error) {
 	//todo: catch all the errors
 	rname, _ := getRName(name)
 	oname, _ := getOName(name)
@@ -69,8 +70,8 @@ func (fs *GinFS) OpenFile(name string, flag int, perm os.FileMode) (webdav.File,
 	return &GinFile{trentry: trentry, tree: tree, LChange: com.Committer.When}, nil
 }
 
-func (fs *GinFS) Stat(name string) (os.FileInfo, error) {
-	f, err := fs.OpenFile(name, 0, 0)
+func (fs *GinFS) Stat(ctx context.Context, name string) (os.FileInfo, error) {
+	f, err := fs.OpenFile(ctx, name, 0, 0)
 	if err != nil {
 		return nil, err
 	}
@@ -191,7 +192,7 @@ func (i GinFinfo) Sys() interface{} {
 	return nil
 }
 
-func checkPerms(c *context.Context) error {
+func checkPerms(c *gctx.Context) error {
 	return nil
 }
 

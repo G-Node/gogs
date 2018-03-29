@@ -38,7 +38,7 @@ func TestOwnerName(t *testing.T) {
 
 func TestOpenfile(t *testing.T) {
 	fs := GinFS{"../../trepos"}
-	f, err := fs.OpenFile("/user1/repo1/_dav/testfile1.txt", 0, 0)
+	f, err := fs.OpenFile(nil, "/user1/repo1/_dav/testfile1.txt", 0, 0)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -49,7 +49,7 @@ func TestOpenfile(t *testing.T) {
 	}
 
 	// lets try a directoty
-	f, err = fs.OpenFile("/user1/repo1/_dav/", 0, 0)
+	f, err = fs.OpenFile(nil, "/user1/repo1/_dav/", 0, 0)
 	st, err = f.Stat()
 	if err != nil {
 		log.Fatal(err)
@@ -62,7 +62,7 @@ func TestOpenfile(t *testing.T) {
 
 func TestReadDir(t *testing.T) {
 	fs := GinFS{"../../trepos"}
-	f, err := fs.OpenFile("/user1/repo1/_dav/", 0, 0)
+	f, err := fs.OpenFile(nil, "/user1/repo1/_dav/", 0, 0)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -76,7 +76,7 @@ func TestReadDir(t *testing.T) {
 		return
 	}
 
-	f, err = fs.OpenFile("/user1/repo1/_dav/fold1", 0, 0)
+	f, err = fs.OpenFile(nil, "/user1/repo1/_dav/fold1", 0, 0)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -94,7 +94,7 @@ func TestReadDir(t *testing.T) {
 
 func TestReadFile(t *testing.T) {
 	fs := GinFS{"../../trepos"}
-	f, err := fs.OpenFile("/user1/repo1/_dav/testfile1.txt", 0, 0)
+	f, err := fs.OpenFile(nil, "/user1/repo1/_dav/testfile1.txt", 0, 0)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -110,7 +110,7 @@ func TestReadFile(t *testing.T) {
 	}
 
 	// Open a file in a subfolder
-	f, err = fs.OpenFile("/user1/repo1/_dav/fold1/file1.txt", 0, 0)
+	f, err = fs.OpenFile(nil, "/user1/repo1/_dav/fold1/file1.txt", 0, 0)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -128,13 +128,13 @@ func TestReadFile(t *testing.T) {
 
 func TestModFile(t *testing.T) {
 	fs := GinFS{"../../trepos"}
-	f, err := fs.OpenFile("/user1/repo1/_dav/testfile1.txt", 0, 0)
+	f, err := fs.OpenFile(nil, "/user1/repo1/_dav/testfile1.txt", 0, 0)
 	if err != nil {
 		log.Fatal(err)
 	}
 	stat, err := f.Stat()
 	mtime := stat.ModTime().String()
-	if (mtime!="2018-03-26 16:32:51 +0200 CEST"){
+	if mtime != "2018-03-26 16:32:51 +0200 CEST" {
 		t.Fail()
 		return
 	}
@@ -143,11 +143,11 @@ func TestModFile(t *testing.T) {
 
 func TestSeekFile(t *testing.T) {
 	fs := GinFS{"../../trepos"}
-	f, err := fs.OpenFile("/user1/repo1/_dav/testfile1.txt", 0, 0)
+	f, err := fs.OpenFile(nil, "/user1/repo1/_dav/testfile1.txt", 0, 0)
 	if err != nil {
 		log.Fatal(err)
 	}
-	f.Seek(1,0)
+	f.Seek(1, 0)
 	bf := make([]byte, 50)
 	_, err = f.Read(bf)
 	if err != nil {
