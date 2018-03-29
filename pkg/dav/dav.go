@@ -102,22 +102,28 @@ func (f *GinFile) Read(p []byte) (n int, err error) {
 		return 0, err
 	}
 	// todo: annex
-	return data.Read(p)
+
+	return data.Read(p[f.seekoset:])
 }
 
 func (f *GinFile) Seek(offset int64, whence int) (int64, error) {
+	//todo: boundaries
 	switch whence {
 	case 0:
 		f.seekoset = offset
+		return offset, nil
 	case 1:
 		f.seekoset = f.seekoset + offset
+		return offset, nil
 	case 2:
 		fstat, err := f.Stat()
 		if err != nil {
 			return -1, err
 		}
 		fsize := fstat.Size()
+		change := fsize - offset - f.seekoset
 		f.seekoset = fsize - offset
+		return change, nil
 	}
 	return 0, nil
 }
