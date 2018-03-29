@@ -158,7 +158,7 @@ func newMacaron() *macaron.Macaron {
 	}))
 	m.Use(toolbox.Toolboxer(m, toolbox.Options{
 		HealthCheckFuncs: []*toolbox.HealthCheckFuncDesc{
-			&toolbox.HealthCheckFuncDesc{
+			{
 				Desc: "Database connection",
 				Func: models.Ping,
 			},
@@ -432,7 +432,9 @@ func runWeb(c *cli.Context) error {
 		m.Combo("/fork/:repoid").Get(repo.Fork).
 			Post(bindIgnErr(form.CreateRepo{}), repo.ForkPost)
 	}, reqSignIn)
-	m.Any("/:username/:reponame/_dav/", dav.Dav, context.RepoAssignment(), context.RepoRef())
+	m.Any("/:username/:reponame/_dav/*", dav.Dav, context.RepoAssignment(), context.RepoRef())
+	m.Any("/:username/:reponame/_dav", dav.Dav, context.RepoAssignment(), context.RepoRef())
+
 	m.Group("/:username/:reponame", func() {
 		m.Group("/settings", func() {
 			m.Combo("").Get(repo.Settings).
