@@ -108,7 +108,7 @@ func (f *GinFile) Read(p []byte) (n int, err error) {
 		return n, err
 	}
 	copy(p, p[f.seekoset:])
-	// todo: int64 issue (signature wrong?)
+	// int64 issue (signature wrong?)-> max slice size 2^32
 	return n - int(f.seekoset), nil
 }
 
@@ -140,7 +140,7 @@ func (f *GinFile) Seek(offset int64, whence int) (int64, error) {
 		f.seekoset = noffset
 		return f.seekoset, nil
 	}
-	return 0, nil
+	return f.seekoset, fmt.Errorf("Seeking failed")
 }
 
 func (f *GinFile) Readdir(count int) ([]os.FileInfo, error) {

@@ -1,6 +1,7 @@
 package dav
 
 import (
+	"io"
 	"log"
 	"strings"
 	"testing"
@@ -147,7 +148,7 @@ func TestSeekFile(t *testing.T) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	f.Seek(1, 0)
+	f.Seek(1, io.SeekStart)
 	bf := make([]byte, 50)
 	n, err := f.Read(bf)
 	if err != nil {
@@ -163,13 +164,13 @@ func TestSeekFile(t *testing.T) {
 		t.Fail()
 	}
 
-	f.Seek(0, 0)
-	end, err := f.Seek(0, 2)
+	// Test Seek end Seek begin
+	end, err := f.Seek(0, io.SeekEnd)
 	if err != nil {
 		t.Logf("%*v", err)
 		t.Fail()
 	}
-	beg, err := f.Seek(0, 0)
+	beg, err := f.Seek(0, io.SeekStart)
 	if err != nil {
 		t.Logf("%*v", err)
 		t.Fail()
