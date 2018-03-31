@@ -102,8 +102,14 @@ func (f *GinFile) Read(p []byte) (n int, err error) {
 		return 0, err
 	}
 	// todo: annex
-
-	return data.Read(p[f.seekoset:])
+	// todo: read with pipes
+	n, err = data.Read(p)
+	if err != nil {
+		return n, err
+	}
+	copy(p, p[f.seekoset:])
+	// todo: int64 issue (signature wrong?)
+	return n - int(f.seekoset), nil
 }
 
 func (f *GinFile) Seek(offset int64, whence int) (int64, error) {
