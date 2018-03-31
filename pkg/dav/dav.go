@@ -9,8 +9,10 @@ import (
 	"time"
 
 	"github.com/G-Node/git-module"
+	"github.com/G-Node/go-annex"
 	"github.com/G-Node/gogs/models"
 	gctx "github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/pkg/tool"
 	"golang.org/x/net/context"
 	"golang.org/x/net/webdav"
 )
@@ -20,6 +22,8 @@ var (
 	RE_GETROWN  = regexp.MustCompile(`\/(.+)\/.+\/_dav`)
 	RE_GETFPATH = regexp.MustCompile("/_dav/(.+)")
 )
+
+const ANNEXPEEKSIZE  = 1024
 
 func Dav(c *gctx.Context, handler *webdav.Handler) {
 	if checkPerms(c) != nil {
@@ -66,7 +70,7 @@ func (fs *GinFS) OpenFile(ctx context.Context, name string, flag int, perm os.Fi
 	}
 	tree, _ := com.SubTree(path)
 	trentry, _ := com.GetTreeEntryByPath(path)
-	return &GinFile{trentry: trentry, tree: tree, LChange: com.Committer.When}, nil
+	return &GinFile{trentry: trentry, tree: tree, LChange: com.Committer.When, rpath: rpath}, nil
 }
 
 func (fs *GinFS) Stat(ctx context.Context, name string) (os.FileInfo, error) {
@@ -83,6 +87,7 @@ type GinFile struct {
 	dirrcount int
 	seekoset  int64
 	LChange   time.Time
+	rpath     string
 }
 
 func (f *GinFile) Write(p []byte) (n int, err error) {
@@ -101,14 +106,21 @@ func (f *GinFile) Read(p []byte) (n int, err error) {
 	if err != nil {
 		return 0, err
 	}
-	// todo: annex
 	// todo: read with pipes
 	n, err = data.Read(p)
 	if err != nil {
 		return n, err
 	}
+
+	annexed := tool.IsAnnexedFile(p)
+	if annexed {
+		af, _ := gannex.NewAFile( f.rpath,"annex", f.trentry.Name(), p)
+		afp, _ := af.Open()
+		defer afp.Close()
+		afp.Seek(f.seekoset, io.SeekStart)
+		return afp.Read(p)
+	}
 	copy(p, p[f.seekoset:])
-	// int64 issue (signature wrong?)-> max slice size 2^32
 	return n - int(f.seekoset), nil
 }
 
@@ -192,6 +204,12 @@ func getFInfos(ents []*git.TreeEntry) ([]os.FileInfo, error) {
 	return infos, nil
 }
 func (f GinFile) Stat() (os.FileInfo, error) {
+	// todo: check for errors
+	peek := make([]byte, ANNEXPEEKSIZE)
+	if tool.IsAnnexedFile(peek) {
+		af, _ := gannex.NewAFile(f.rpath, "annex", f.trentry.Name(), peek)
+		return af.Info, nil
+	}
 	return GinFinfo{TreeEntry: f.trentry, LChange: f.LChange}, nil
 }
 
