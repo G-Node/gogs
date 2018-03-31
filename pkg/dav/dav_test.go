@@ -149,13 +149,33 @@ func TestSeekFile(t *testing.T) {
 	}
 	f.Seek(1, 0)
 	bf := make([]byte, 50)
-	_, err = f.Read(bf)
+	n, err := f.Read(bf)
 	if err != nil {
 		log.Fatalf("%+v", err)
 	}
 	txt := string(bf)
-	if !strings.Contains(txt, "test") {
+	if n != 4 {
+		t.Log("Read count wrong")
+		t.Fail()
+	}
+	if !strings.Contains(txt, "est") {
 		t.Log("could not read normal git file")
+		t.Fail()
+	}
+
+	f.Seek(0, 0)
+	end, err := f.Seek(0, 2)
+	if err != nil {
+		t.Logf("%*v", err)
+		t.Fail()
+	}
+	beg, err := f.Seek(0, 0)
+	if err != nil {
+		t.Logf("%*v", err)
+		t.Fail()
+	}
+	if end-beg != 5 {
+		t.Log("Seek end minus Seek begin is not size")
 		t.Fail()
 	}
 }
