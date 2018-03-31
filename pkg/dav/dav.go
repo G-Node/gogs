@@ -113,23 +113,32 @@ func (f *GinFile) Read(p []byte) (n int, err error) {
 }
 
 func (f *GinFile) Seek(offset int64, whence int) (int64, error) {
-	//todo: boundaries
+	st, err := f.Stat()
+	if err != nil {
+		return f.seekoset, err
+	}
 	switch whence {
-	case 0:
-		f.seekoset = offset
-		return offset, nil
-	case 1:
-		f.seekoset = f.seekoset + offset
-		return offset, nil
-	case 2:
-		fstat, err := f.Stat()
-		if err != nil {
-			return -1, err
+	case io.SeekStart:
+		if offset > st.Size() || offset < 0 {
+			return 0, fmt.Errorf("Cannot seek to %f, only %f big", offset, st.Size())
 		}
-		fsize := fstat.Size()
-		change := fsize - offset - f.seekoset
-		f.seekoset = fsize - offset
-		return change, nil
+		f.seekoset = offset
+		return f.seekoset, nil
+	case io.SeekCurrent:
+		noffset := f.seekoset + offset
+		if noffset > st.Size() || noffset < 0 {
+			return 0, fmt.Errorf("Cannot seek to %f, only %f big", offset, st.Size())
+		}
+		f.seekoset = noffset
+		return f.seekoset, nil
+	case io.SeekEnd:
+		fsize := st.Size()
+		noffset := fsize - offset
+		if noffset > fsize || noffset < 0 {
+			return 0, fmt.Errorf("Cannot seek to %f, only %f big", offset, st.Size())
+		}
+		f.seekoset = noffset
+		return f.seekoset, nil
 	}
 	return 0, nil
 }
