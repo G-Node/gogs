@@ -38,7 +38,7 @@ func TestOwnerName(t *testing.T) {
 }
 
 func TestOpenfile(t *testing.T) {
-	fs := GinFS{"../../trepos"}
+	fs := GinFS{"../../testdata/trepos"}
 	f, err := fs.OpenFile(nil, "/user1/repo1/_dav/testfile1.txt", 0, 0)
 	if err != nil {
 		log.Fatal(err)
@@ -62,7 +62,7 @@ func TestOpenfile(t *testing.T) {
 }
 
 func TestReadDir(t *testing.T) {
-	fs := GinFS{"../../trepos"}
+	fs := GinFS{"../../testdata/trepos"}
 	f, err := fs.OpenFile(nil, "/user1/repo1/_dav/", 0, 0)
 	if err != nil {
 		log.Fatal(err)
@@ -94,7 +94,7 @@ func TestReadDir(t *testing.T) {
 }
 
 func TestReadFile(t *testing.T) {
-	fs := GinFS{"../../trepos"}
+	fs := GinFS{"../../testdata/trepos"}
 	f, err := fs.OpenFile(nil, "/user1/repo1/_dav/testfile1.txt", 0, 0)
 	if err != nil {
 		log.Fatal(err)
@@ -128,14 +128,14 @@ func TestReadFile(t *testing.T) {
 }
 
 func TestModFile(t *testing.T) {
-	fs := GinFS{"../../trepos"}
+	fs := GinFS{"../../testdata/trepos"}
 	f, err := fs.OpenFile(nil, "/user1/repo1/_dav/testfile1.txt", 0, 0)
 	if err != nil {
 		log.Fatal(err)
 	}
 	stat, err := f.Stat()
 	mtime := stat.ModTime().String()
-	if mtime != "2018-03-26 16:32:51 +0200 CEST" {
+	if mtime != "2018-04-03 11:11:17 +0200 CEST" {
 		t.Fail()
 		return
 	}
@@ -143,7 +143,7 @@ func TestModFile(t *testing.T) {
 }
 
 func TestSeekFile(t *testing.T) {
-	fs := GinFS{"../../trepos"}
+	fs := GinFS{"../../testdata/trepos"}
 	f, err := fs.OpenFile(nil, "/user1/repo1/_dav/testfile1.txt", 0, 0)
 	if err != nil {
 		log.Fatal(err)
