@@ -114,23 +114,26 @@ func (f *GinFile) read(p []byte) (int, error) {
 	return n, nil
 }
 func (f *GinFile) Read(p []byte) (int, error) {
-	n, err := f.read(p)
-	p = p[:n]
+	tmp := make([]byte, len(p))
+	n, err := f.read(tmp)
+	tmp = tmp[:n]
 	if err != nil {
 		return n, err
 	}
-	annexed := tool.IsAnnexedFile(p)
+
+	annexed := tool.IsAnnexedFile(tmp)
 	if annexed {
-		af, err := gannex.NewAFile(f.rpath, "annex", f.trentry.Name(), p)
+		af, err := gannex.NewAFile(f.rpath, "annex", f.trentry.Name(), tmp)
 		if err != nil {
 			return n, err
 		}
 		afp, _ := af.Open()
 		defer afp.Close()
 		afp.Seek(f.seekoset, io.SeekStart)
+		defer afp.Close()
 		return afp.Read(p)
 	}
-	copy(p, p[f.seekoset:])
+	copy(p, tmp[f.seekoset:])
 	return n - int(f.seekoset), nil
 }
 
@@ -223,7 +226,7 @@ func (f GinFile) Stat() (os.FileInfo, error) {
 		if err != nil {
 			return nil, err
 		}
-		return af.Info, nil
+		f.trentry.SetSize(af.Info.Size())
 	}
 	return GinFinfo{TreeEntry: f.trentry, LChange: f.LChange}, nil
 }
