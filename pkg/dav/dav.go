@@ -15,6 +15,7 @@ import (
 	"github.com/G-Node/gogs/pkg/tool"
 	"golang.org/x/net/context"
 	"golang.org/x/net/webdav"
+	log "gopkg.in/clog.v1"
 )
 
 var (
@@ -111,10 +112,14 @@ func (f *GinFile) Read(p []byte) (n int, err error) {
 	if err != nil {
 		return n, err
 	}
-
+	p = p[:n]
+	log.Info("%s", string(p))
 	annexed := tool.IsAnnexedFile(p)
 	if annexed {
-		af, _ := gannex.NewAFile( f.rpath,"annex", f.trentry.Name(), p)
+		af, err := gannex.NewAFile(f.rpath, "annex", f.trentry.Name(), p)
+		if err != nil {
+			return n, err
+		}
 		afp, _ := af.Open()
 		defer afp.Close()
 		afp.Seek(f.seekoset, io.SeekStart)
