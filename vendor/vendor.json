@@ -3,22 +3,10 @@
 	"ignore": "test",
 	"package": [
 		{
-			"checksumSHA1": "k9Q/vjcccSVYxRGjpfcIgQYW6B4=",
-			"path": "github.com/G-Node/gig",
-			"revision": "6d784b40b534eb9a398247e27942e705de539b20",
-			"revisionTime": "2017-10-25T13:28:53Z"
-		},
-		{
 			"checksumSHA1": "/nx4C9e6SWnuATeRNXMyVaEOwFw=",
 			"path": "github.com/G-Node/gin-dex/gindex",
 			"revision": "d4994f3bb1774be302aa9be2fdd4db28b454b01e",
 			"revisionTime": "2017-11-17T12:52:54Z"
-		},
-		{
-			"checksumSHA1": "pzrNRxutz5V0VPD/eqgqYs6Mj4o=",
-			"path": "github.com/G-Node/go-annex",
-			"revision": "f44cb4a8236be506a35a47ea3da591c0b2bb58de",
-			"revisionTime": "2017-07-13T18:18:00Z"
 		},
 		{
 			"checksumSHA1": "dpa+gHrdw4GXFknbMysx2/32kUM=",
