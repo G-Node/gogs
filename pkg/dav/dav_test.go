@@ -180,3 +180,63 @@ func TestSeekFile(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestAnnexedFile(t *testing.T) {
+	fs := GinFS{"../../testdata/trepos"}
+	f, err := fs.OpenFile(nil, "/user1/repo1/_dav/testfile2.txt", 0, 0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	bf := make([]byte, 1024)
+	n, err := f.Read(bf)
+	bf = bf[:n]
+	if err != nil {
+		log.Fatalf("%+v", err)
+	}
+	txt := string(bf)
+	if !strings.Contains(txt, "Lorem ipsum") {
+		t.Log("could not read annexed file")
+		t.Fail()
+	}
+	st, _ := f.Stat()
+	size := st.Size()
+	if size != 592 {
+		t.Log("annexed file size is wrong")
+		t.Fail()
+	}
+}
+
+func TestSeekAnnexFile(t *testing.T) {
+	fs := GinFS{"../../testdata/trepos"}
+	f, err := fs.OpenFile(nil, "/user1/repo1/_dav/testfile2.txt", 0, 0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	f.Seek(1, io.SeekStart)
+	bf := make([]byte, 1024)
+	n, err := f.Read(bf)
+	if err != nil {
+		log.Fatalf("%+v", err)
+	}
+	if n != 591 {
+		t.Log("Annex Read count wrong")
+		t.Fail()
+	}
+
+	// Test Seek end Seek begin
+	end, err := f.Seek(0, io.SeekEnd)
+	if err != nil {
+		t.Logf("%*v", err)
+		t.Fail()
+	}
+	beg, err := f.Seek(0, io.SeekStart)
+	if err != nil {
+		t.Logf("%*v", err)
+		t.Fail()
+	}
+	if end-beg != 592 {
+		t.Log("Seek end minus Seek begin is not size")
+		t.Fail()
+	}
+
+}
