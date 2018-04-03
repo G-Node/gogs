@@ -15,7 +15,6 @@ import (
 	"github.com/G-Node/gogs/pkg/tool"
 	"golang.org/x/net/context"
 	"golang.org/x/net/webdav"
-	log "gopkg.in/clog.v1"
 )
 
 var (
@@ -99,7 +98,7 @@ func (f *GinFile) Close() error {
 	return nil
 }
 
-func (f *GinFile) Read(p []byte) (n int, err error) {
+func (f *GinFile) read(p []byte) (int, error) {
 	if f.trentry.Type != git.OBJECT_BLOB {
 		return 0, fmt.Errorf("not a blob")
 	}
@@ -108,12 +107,18 @@ func (f *GinFile) Read(p []byte) (n int, err error) {
 		return 0, err
 	}
 	// todo: read with pipes
-	n, err = data.Read(p)
+	n, err := data.Read(p)
 	if err != nil {
 		return n, err
 	}
+	return n, nil
+}
+func (f *GinFile) Read(p []byte) (int, error) {
+	n, err := f.read(p)
 	p = p[:n]
-	log.Info("%s", string(p))
+	if err != nil {
+		return n, err
+	}
 	annexed := tool.IsAnnexedFile(p)
 	if annexed {
 		af, err := gannex.NewAFile(f.rpath, "annex", f.trentry.Name(), p)
@@ -167,12 +172,12 @@ func (f *GinFile) Readdir(count int) ([]os.FileInfo, error) {
 	}
 	// give back all the stuff
 	if count <= 0 {
-		return getFInfos(ents)
+		return f.getFInfos(ents)
 	}
 	// user requested a bufferrd read
 	switch {
 	case count > len(ents):
-		infos, err := getFInfos(ents)
+		infos, err := f.getFInfos(ents)
 		if err != nil {
 			return nil, err
 		}
@@ -180,14 +185,14 @@ func (f *GinFile) Readdir(count int) ([]os.FileInfo, error) {
 	case f.dirrcount >= len(ents):
 		return nil, io.EOF
 	case f.dirrcount+count >= len(ents):
-		infos, err := getFInfos(ents[f.dirrcount:])
+		infos, err := f.getFInfos(ents[f.dirrcount:])
 		if err != nil {
 			return nil, err
 		}
 		f.dirrcount = len(ents)
 		return infos, io.EOF
 	case f.dirrcount+count < len(ents):
-		infos, err := getFInfos(ents[f.dirrcount : f.dirrcount+count])
+		infos, err := f.getFInfos(ents[f.dirrcount: f.dirrcount+count])
 		if err != nil {
 			return nil, err
 		}
@@ -197,10 +202,10 @@ func (f *GinFile) Readdir(count int) ([]os.FileInfo, error) {
 	return nil, nil
 }
 
-func getFInfos(ents []*git.TreeEntry) ([]os.FileInfo, error) {
+func (f *GinFile) getFInfos(ents []*git.TreeEntry) ([]os.FileInfo, error) {
 	infos := make([]os.FileInfo, len(ents))
 	for c, ent := range ents {
-		finfo, err := GinFile{trentry: ent}.Stat()
+		finfo, err := GinFile{trentry: ent, rpath: f.rpath}.Stat()
 		if err != nil {
 			return nil, err
 		}
@@ -211,8 +216,13 @@ func getFInfos(ents []*git.TreeEntry) ([]os.FileInfo, error) {
 func (f GinFile) Stat() (os.FileInfo, error) {
 	// todo: check for errors
 	peek := make([]byte, ANNEXPEEKSIZE)
+	n, _ := f.read(peek)
+	peek = peek[:n]
 	if tool.IsAnnexedFile(peek) {
-		af, _ := gannex.NewAFile(f.rpath, "annex", f.trentry.Name(), peek)
+		af, err := gannex.NewAFile(f.rpath, "annex", f.trentry.Name(), peek)
+		if err != nil {
+			return nil, err
+		}
 		return af.Info, nil
 	}
 	return GinFinfo{TreeEntry: f.trentry, LChange: f.LChange}, nil
