@@ -88,6 +88,7 @@ type GinFile struct {
 	seekoset  int64
 	LChange   time.Time
 	rpath     string
+	afp       *os.File
 }
 
 func (f *GinFile) Write(p []byte) (n int, err error) {
@@ -95,6 +96,9 @@ func (f *GinFile) Write(p []byte) (n int, err error) {
 }
 
 func (f *GinFile) Close() error {
+	if f.afp != nil {
+		return f.afp.Close()
+	}
 	return nil
 }
 
@@ -114,6 +118,9 @@ func (f *GinFile) read(p []byte) (int, error) {
 	return n, nil
 }
 func (f *GinFile) Read(p []byte) (int, error) {
+	if f.afp != nil {
+		return f.afp.Read(p)
+	}
 	tmp := make([]byte, len(p))
 	n, err := f.read(tmp)
 	tmp = tmp[:n]
@@ -127,17 +134,20 @@ func (f *GinFile) Read(p []byte) (int, error) {
 		if err != nil {
 			return n, err
 		}
-		afp, _ := af.Open()
-		defer afp.Close()
-		afp.Seek(f.seekoset, io.SeekStart)
-		defer afp.Close()
-		return afp.Read(p)
+		f.afp, _ = af.Open()
+		f.afp.Seek(f.seekoset, io.SeekStart)
+		return f.afp.Read(p)
 	}
 	copy(p, tmp[f.seekoset:])
-	return n - int(f.seekoset), nil
+	n = n - int(f.seekoset)
+	f.Seek(int64(n), io.SeekCurrent)
+	return n, nil
 }
 
 func (f *GinFile) Seek(offset int64, whence int) (int64, error) {
+	if f.afp != nil {
+		return f.afp.Seek(offset, whence)
+	}
 	st, err := f.Stat()
 	if err != nil {
 		return f.seekoset, err
