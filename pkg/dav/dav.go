@@ -27,7 +27,7 @@ const ANNEXPEEKSIZE  = 1024
 
 func Dav(c *gctx.Context, handler *webdav.Handler) {
 	if checkPerms(c) != nil {
-		c.WriteHeader(http.StatusUnauthorized)
+		Webdav401(c)
 		return
 	}
 	handler.ServeHTTP(c.Resp, c.Req.Request)
@@ -259,6 +259,9 @@ func (i GinFinfo) Sys() interface{} {
 }
 
 func checkPerms(c *gctx.Context) error {
+	if ! c.Repo.HasAccess() {
+		return fmt.Errorf("no access")
+	}
 	return nil
 }
 
@@ -306,4 +309,11 @@ func getROwnerID(path string) (int64, error) {
 		models.GetUserByName(name[1])
 	}
 	return -100, fmt.Errorf("Could not determine repo owner")
+}
+
+func Webdav401(c *gctx.Context) {
+	//todo realm
+	c.Header().Add("WWW-Authenticate", "Basic realm=\"localhost\"")
+	c.WriteHeader(http.StatusUnauthorized)
+	return
 }
