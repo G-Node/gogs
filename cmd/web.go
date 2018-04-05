@@ -432,8 +432,8 @@ func runWeb(c *cli.Context) error {
 		m.Combo("/fork/:repoid").Get(repo.Fork).
 			Post(bindIgnErr(form.CreateRepo{}), repo.ForkPost)
 	}, reqSignIn)
-	m.Any("/:username/:reponame/_dav/*", dav.Dav, context.RepoAssignment(), context.RepoRef())
-	m.Any("/:username/:reponame/_dav", dav.Dav, context.RepoAssignment(), context.RepoRef())
+	m.Any("/:username/:reponame/_dav/*", dav.DavMiddle(), dav.Dav)
+	m.Any("/:username/:reponame/_dav", dav.DavMiddle(), dav.Dav)
 
 	m.Group("/:username/:reponame", func() {
 		m.Group("/settings", func() {
