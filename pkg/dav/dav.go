@@ -290,7 +290,7 @@ func getRName(path string) (string, error) {
 func getOName(path string) (string, error) {
 	name := RE_GETROWN.FindStringSubmatch(path)
 	if len(name) > 1 {
-		return name[1], nil
+		return strings.ToLower(name[1]), nil
 	}
 	return "", fmt.Errorf("Could not determine repo owner")
 }
