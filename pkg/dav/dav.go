@@ -317,3 +317,7 @@ func Webdav401(c *gctx.Context) {
 	c.WriteHeader(http.StatusUnauthorized)
 	return
 }
+
+func DavLogger(req *http.Request, err error) {
+	log.Trace("davlog:%+v", err)
+}
