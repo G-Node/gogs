@@ -22,6 +22,21 @@ func TestGetRepoName(t *testing.T) {
 	return
 }
 
+func TestGetRepoCasesName(t *testing.T) {
+	name, err := getRName("/cgars/Test/_dav/adasdasd/DASaasdas/asdasdsa")
+	if err != nil {
+		t.Logf("Repo Name not dtermined from path")
+		t.Fail()
+		return
+	}
+	if name != "test" {
+		t.Logf("Repo Name not should ignore casing")
+		t.Fail()
+		return
+	}
+	return
+}
+
 func TestOwnerName(t *testing.T) {
 	name, err := getOName("/cgars/test/_dav/adasdasd/daasdas/asdasdsa")
 	if err != nil {
