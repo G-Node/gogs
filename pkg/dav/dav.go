@@ -282,7 +282,7 @@ func getRepo(path string) (*models.Repository, error) {
 func getRName(path string) (string, error) {
 	name := RE_GETRNAME.FindStringSubmatch(path)
 	if len(name) > 1 {
-		return name[1], nil
+		return strings.ToLower(name[1]), nil
 	}
 	return "", fmt.Errorf("Could not determine repo name")
 }
