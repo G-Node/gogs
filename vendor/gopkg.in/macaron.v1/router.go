@@ -18,6 +18,7 @@ import (
 	"net/http"
 	"strings"
 	"sync"
+	log "gopkg.in/clog.v1"
 )
 
 var (
@@ -149,6 +150,7 @@ func (r *Router) handle(method, pattern string, handle Handle) *Route {
 	methods := make(map[string]bool)
 	if method == "*" {
 		for m := range _HTTP_METHODS {
+			log.Trace("Register Methods:%s", m)
 			methods[m] = true
 		}
 	} else {
