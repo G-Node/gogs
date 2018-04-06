@@ -52,6 +52,21 @@ func TestOwnerName(t *testing.T) {
 	return
 }
 
+func TestOwnerNameCase(t *testing.T) {
+	name, err := getOName("/Cgars/test/_dav/adasdasd/daasdas/asdasdsa")
+	if err != nil {
+		t.Logf("Repo Name not dtermined from path")
+		t.Fail()
+		return
+	}
+	if name != "cgars" {
+		t.Logf("Owner Name not dtermined from path: name was %s", name)
+		t.Fail()
+		return
+	}
+	return
+}
+
 func TestOpenfile(t *testing.T) {
 	fs := GinFS{"../../testdata/trepos"}
 	f, err := fs.OpenFile(nil, "/user1/repo1/_dav/testfile1.txt", 0, 0)
