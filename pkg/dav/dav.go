@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"regexp"
+	"strings"
 	"time"
 
 	"github.com/G-Node/git-module"
@@ -15,6 +16,7 @@ import (
 	"github.com/G-Node/gogs/pkg/tool"
 	"golang.org/x/net/context"
 	"golang.org/x/net/webdav"
+	log "gopkg.in/clog.v1"
 )
 
 var (
@@ -23,7 +25,7 @@ var (
 	RE_GETFPATH = regexp.MustCompile("/_dav/(.+)")
 )
 
-const ANNEXPEEKSIZE  = 1024
+const ANNEXPEEKSIZE = 1024
 
 func Dav(c *gctx.Context, handler *webdav.Handler) {
 	if checkPerms(c) != nil {
@@ -46,7 +48,7 @@ func (fs *GinFS) Mkdir(ctx context.Context, name string, perm os.FileMode) error
 
 // Just return an error. -> Read Only
 func (fs *GinFS) RemoveAll(ctx context.Context, name string) error {
-	return fmt.Errorf("Remove not implemented for read only gin FS")
+	return fmt.Errorf("RemoveAll not implemented for read only gin FS")
 }
 
 // Just return an error. -> Read Only
@@ -92,7 +94,7 @@ type GinFile struct {
 }
 
 func (f *GinFile) Write(p []byte) (n int, err error) {
-	return 0, fmt.Errorf("Write to GinFile not implemented (read only)")
+	return 0, fmt.Errorf("write to GinFile not implemented (read only)")
 }
 
 func (f *GinFile) Close() error {
@@ -155,14 +157,14 @@ func (f *GinFile) Seek(offset int64, whence int) (int64, error) {
 	switch whence {
 	case io.SeekStart:
 		if offset > st.Size() || offset < 0 {
-			return 0, fmt.Errorf("Cannot seek to %f, only %f big", offset, st.Size())
+			return 0, fmt.Errorf("cannot seek to %f, only %f big", offset, st.Size())
 		}
 		f.seekoset = offset
 		return f.seekoset, nil
 	case io.SeekCurrent:
 		noffset := f.seekoset + offset
 		if noffset > st.Size() || noffset < 0 {
-			return 0, fmt.Errorf("Cannot seek to %f, only %f big", offset, st.Size())
+			return 0, fmt.Errorf("cannot seek to %f, only %f big", offset, st.Size())
 		}
 		f.seekoset = noffset
 		return f.seekoset, nil
@@ -170,12 +172,12 @@ func (f *GinFile) Seek(offset int64, whence int) (int64, error) {
 		fsize := st.Size()
 		noffset := fsize - offset
 		if noffset > fsize || noffset < 0 {
-			return 0, fmt.Errorf("Cannot seek to %f, only %f big", offset, st.Size())
+			return 0, fmt.Errorf("cannot seek to %f, only %f big", offset, st.Size())
 		}
 		f.seekoset = noffset
 		return f.seekoset, nil
 	}
-	return f.seekoset, fmt.Errorf("Seeking failed")
+	return f.seekoset, fmt.Errorf("seeking failed")
 }
 
 func (f *GinFile) Readdir(count int) ([]os.FileInfo, error) {
@@ -259,7 +261,7 @@ func (i GinFinfo) Sys() interface{} {
 }
 
 func checkPerms(c *gctx.Context) error {
-	if ! c.Repo.HasAccess() {
+	if !c.Repo.HasAccess() {
 		return fmt.Errorf("no access")
 	}
 	return nil
@@ -284,7 +286,7 @@ func getRName(path string) (string, error) {
 	if len(name) > 1 {
 		return strings.ToLower(name[1]), nil
 	}
-	return "", fmt.Errorf("Could not determine repo name")
+	return "", fmt.Errorf("could not determine repo name")
 }
 
 func getOName(path string) (string, error) {
@@ -292,7 +294,7 @@ func getOName(path string) (string, error) {
 	if len(name) > 1 {
 		return strings.ToLower(name[1]), nil
 	}
-	return "", fmt.Errorf("Could not determine repo owner")
+	return "", fmt.Errorf("could not determine repo owner")
 }
 
 func getFPath(path string) (string, error) {
@@ -300,7 +302,7 @@ func getFPath(path string) (string, error) {
 	if len(name) > 1 {
 		return name[1], nil
 	}
-	return "", fmt.Errorf("Could not determine file path")
+	return "", fmt.Errorf("could not determine file path")
 }
 
 func getROwnerID(path string) (int64, error) {
@@ -308,7 +310,7 @@ func getROwnerID(path string) (int64, error) {
 	if len(name) > 1 {
 		models.GetUserByName(name[1])
 	}
-	return -100, fmt.Errorf("Could not determine repo owner")
+	return -100, fmt.Errorf("could not determine repo owner")
 }
 
 func Webdav401(c *gctx.Context) {
@@ -318,6 +320,9 @@ func Webdav401(c *gctx.Context) {
 	return
 }
 
-func DavLogger(req *http.Request, err error) {
-	log.Trace("davlog:%+v", err)
+func Logger(req *http.Request, err error) {
+	if err != nil {
+		log.Info("davlog: err:%+v", err)
+		log.Trace("davlog: req:%+v", req)
+	}
 }
