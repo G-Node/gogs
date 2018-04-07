@@ -13,6 +13,7 @@ import (
 	"github.com/G-Node/go-annex"
 	"github.com/G-Node/gogs/models"
 	gctx "github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/pkg/setting"
 	"github.com/G-Node/gogs/pkg/tool"
 	"golang.org/x/net/context"
 	"golang.org/x/net/webdav"
@@ -315,7 +316,7 @@ func getROwnerID(path string) (int64, error) {
 
 func Webdav401(c *gctx.Context) {
 	//todo realm
-	c.Header().Add("WWW-Authenticate", "Basic realm=\"localhost\"")
+	c.Header().Add("WWW-Authenticate", fmt.Sprintf("Basic realm=\"%s\"", setting.AppURL))
 	c.WriteHeader(http.StatusUnauthorized)
 	return
 }
