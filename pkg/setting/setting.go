@@ -329,6 +329,10 @@ var (
 		DoiKey  string
 		DoiBase string
 	}
+
+	WebDav struct {
+		On bool
+	}
 )
 
 // DateLang transforms standard language locale name to corresponding value in datetime plugin.
@@ -679,6 +683,8 @@ func NewContext() {
 		log.Fatal(2, "Fail to map Search settings: %v", err)
 	} else if err = Cfg.Section("doi").MapTo(&Doi); err != nil {
 		log.Fatal(2, "Fail to map Doi settings: %v", err)
+	} else if err = Cfg.Section("dav").MapTo(&WebDav); err != nil {
+		log.Fatal(2, "Fail to map WebDav settings: %v", err)
 	}
 
 	if Mirror.DefaultInterval <= 0 {
