@@ -59,9 +59,21 @@ func (fs *GinFS) Rename(ctx context.Context, oldName, newName string) error {
 
 func (fs *GinFS) OpenFile(ctx context.Context, name string, flag int, perm os.FileMode) (webdav.File, error) {
 	//todo: catch all the errors
-	rname, _ := getRName(name)
-	oname, _ := getOName(name)
-	path, _ := getFPath(name)
+	rname, err := getRName(name)
+	if err != nil {
+		return nil, err
+	}
+
+	oname, err := getOName(name)
+	if err != nil {
+		return nil, err
+	}
+
+	path, err := getFPath(name)
+	if err != nil {
+		return nil, err
+	}
+
 	rpath := fmt.Sprintf("%s/%s/%s.git", fs.BasePath, oname, rname)
 	grepo, err := git.OpenRepository(rpath)
 	if err != nil {
@@ -230,9 +242,11 @@ func (f *GinFile) getFInfos(ents []*git.TreeEntry) ([]os.FileInfo, error) {
 	return infos, nil
 }
 func (f GinFile) Stat() (os.FileInfo, error) {
-	// todo: check for errors
 	peek := make([]byte, ANNEXPEEKSIZE)
-	n, _ := f.read(peek)
+	n, err := f.read(peek)
+	if err != nil {
+		return nil, err
+	}
 	peek = peek[:n]
 	if tool.IsAnnexedFile(peek) {
 		af, err := gannex.NewAFile(f.rpath, "annex", f.trentry.Name(), peek)
@@ -315,7 +329,6 @@ func getROwnerID(path string) (int64, error) {
 }
 
 func Webdav401(c *gctx.Context) {
-	//todo realm
 	c.Header().Add("WWW-Authenticate", fmt.Sprintf("Basic realm=\"%s\"", setting.AppURL))
 	c.WriteHeader(http.StatusUnauthorized)
 	return
