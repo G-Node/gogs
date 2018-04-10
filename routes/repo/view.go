@@ -87,7 +87,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 			if err != nil {
 				log.Trace("Doi Blob could not be unmarshalled:%v", err)
 			}
-			c.Data["DoiInfo"] = doiInfo
+			c.Data["DoiInfo"] = &doiInfo
 
 			doi := GDoiRepo(c, setting.Doi.DoiBase)
 			//ddata, err := ginDoi.GDoiMData(doi, "https://api.datacite.org/works/") //todo configure URL?
