@@ -291,7 +291,6 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			if tool.IsOdmlFile(buf) {
 				c.Data["IsOdML"] = true
 				od := odml.Odml{}
-				xml.Unmarshal(buf, &od)
 				decoder := xml.NewDecoder(bytes.NewReader(buf))
 				decoder.CharsetReader = charset.NewReaderLabel
 				decoder.Decode(&od)
