@@ -29,6 +29,10 @@ var (
 const ANNEXPEEKSIZE = 1024
 
 func Dav(c *gctx.Context, handler *webdav.Handler) {
+	if !setting.WebDav.On {
+		c.WriteHeader(http.StatusNotImplemented)
+		return
+	}
 	if checkPerms(c) != nil {
 		Webdav401(c)
 		return
