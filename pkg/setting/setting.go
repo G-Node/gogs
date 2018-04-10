@@ -331,7 +331,8 @@ var (
 	}
 
 	WebDav struct {
-		On bool
+		On     bool
+		Logged bool
 	}
 )
 
