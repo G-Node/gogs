@@ -283,6 +283,12 @@ func checkPerms(c *gctx.Context) error {
 	if !c.Repo.HasAccess() {
 		return fmt.Errorf("no access")
 	}
+	if !setting.WebDav.Logged {
+		return nil
+	}
+	if !c.IsLogged {
+		return fmt.Errorf("no access")
+	}
 	return nil
 }
 
