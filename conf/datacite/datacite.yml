@@ -55,3 +55,8 @@ references:
   -
     reftype: "IsPartOf"
     name: "PublicationName"
+
+# Type of the data in this repository (Dataset, Model, Software, Other see
+# https://schema.datacite.org/meta/kernel-4.1/doc/DataCite-MetadataKernel_v4.1.pdf
+# for examples
+dtype: Dataset
