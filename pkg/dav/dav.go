@@ -73,10 +73,7 @@ func (fs *GinFS) OpenFile(ctx context.Context, name string, flag int, perm os.Fi
 		return nil, err
 	}
 
-	path, err := getFPath(name)
-	if err != nil {
-		return nil, err
-	}
+	path, _ := getFPath(name)
 
 	rpath := fmt.Sprintf("%s/%s/%s.git", fs.BasePath, oname, rname)
 	grepo, err := git.OpenRepository(rpath)
@@ -247,10 +244,7 @@ func (f *GinFile) getFInfos(ents []*git.TreeEntry) ([]os.FileInfo, error) {
 }
 func (f GinFile) Stat() (os.FileInfo, error) {
 	peek := make([]byte, ANNEXPEEKSIZE)
-	n, err := f.read(peek)
-	if err != nil {
-		return nil, err
-	}
+	n, _ := f.read(peek)
 	peek = peek[:n]
 	if tool.IsAnnexedFile(peek) {
 		af, err := gannex.NewAFile(f.rpath, "annex", f.trentry.Name(), peek)
@@ -327,7 +321,7 @@ func getFPath(path string) (string, error) {
 	if len(name) > 1 {
 		return name[1], nil
 	}
-	return "", fmt.Errorf("could not determine file path")
+	return "", fmt.Errorf("could not determine file path from %s", name)
 }
 
 func getROwnerID(path string) (int64, error) {
