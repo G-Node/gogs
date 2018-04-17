@@ -80,6 +80,7 @@ func editFile(c *context.Context, isNewFile bool) {
 		c.Data["IsJSON"] = markup.IsJSON(blob.Name())
 		c.Data["IsYAML"] = markup.IsYAML(blob.Name())
 
+
 		buf := make([]byte, 1024)
 		n, _ := dataRc.Read(buf)
 		buf = buf[:n]
@@ -89,6 +90,8 @@ func editFile(c *context.Context, isNewFile bool) {
 			c.NotFound()
 			return
 		}
+
+		c.Data["IsOdML"] = tool.IsOdmlFile(buf)
 
 		d, _ := ioutil.ReadAll(dataRc)
 		buf = append(buf, d...)

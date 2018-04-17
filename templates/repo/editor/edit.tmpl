@@ -35,6 +35,9 @@
 					{{if .IsYAML}}
 					<a class="item" data-tab="yamleditor" data-tooltip="Using the graphical YAML editor will change the file layout and remove comments!"><i class="octicon octicon-file"></i>Graphical Editor</a>
 					{{end}}
+					{{if .IsOdML}}
+					<a class="item" data-tab="odmleditor"><i class="octicon octicon-file"></i>Graphical Editor</a>
+					{{end}}
 					{{if not .IsNewFile}}
 					<a class="item" id="preview-tab" data-tab="preview" data-url="{{AppSubURL}}/api/v1/markdown" data-root-context="{{.BranchLink}}/" data-context="{{.BranchLink}}/{{.ParentTreePath}}" data-preview-file-modes="{{.PreviewableFileModes}}"><i class="octicon octicon-eye"></i> {{.i18n.Tr "repo.release.preview"}}</a>
 					<a class="item" data-tab="diff" data-url="{{.RepoLink}}/_preview/{{.BranchName}}/{{.TreePath}}"><i class="octicon octicon-diff"></i> {{.i18n.Tr "repo.editor.preview_changes"}}</a>
@@ -101,6 +104,60 @@
 						// get json
 					</script>
 				</div>
+				{{end}}
+
+				{{if .IsOdML}}
+				<div class="ui bottom attached tab segment" data-tab="odmleditor">
+					<div id="xonomy_edit"></div>
+				</div>
+				<script type="text/javascript">
+					var docSpec={
+						elements: {
+							"value": {
+								hasText: true,
+								collapsible:false,
+								menu: [{
+									caption: "Delete this <value>",
+									action: Xonomy.deleteElement
+								}, {
+									caption: "Add <unit>",
+									action: Xonomy.newElementChild,
+									actionParameter: "<unit>...</unit>"
+								}]
+							},
+							"unit": {
+								hasText: true,
+								collapsible:false
+							},
+							"name": {
+								hasText: true,
+								mustBeBefore:["value"],
+								collapsible:false
+							},
+							"property": {
+								oneliner: true,
+								collapsible:false,
+								hasText: false,
+								menu: [{
+									caption: "Delete this <property>",
+									action: Xonomy.deleteElement
+								}, {
+									caption: "New <property> before this",
+									action: Xonomy.newElementBefore,
+									actionParameter: "<property><name>...</name><value>...</value></property>"
+								}, {
+									caption: "New <property> after this",
+									action: Xonomy.newElementAfter,
+									actionParameter: "<property><name>...</name><value>...</value></property>"
+								}]
+							}
+						},
+					allowModeSwitching:true
+					}
+						var xml={{.FileContent}};
+						var editor=document.getElementById("xonomy_edit");
+						Xonomy.render(xml, editor, docSpec);
+				</script>
 				{{end}}
 			</div>
 			{{template "repo/editor/commit_form" .}}
