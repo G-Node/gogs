@@ -72,9 +72,6 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if status != 0 {
 		w.WriteHeader(status)
-		if status != http.StatusNoContent {
-			w.Write([]byte(StatusText(status)))
-		}
 	}
 	if h.Logger != nil {
 		h.Logger(r, err)
@@ -309,7 +306,7 @@ func (h *Handler) handleMkcol(w http.ResponseWriter, r *http.Request) (status in
 		if os.IsNotExist(err) {
 			return http.StatusConflict, err
 		}
-		return http.StatusMethodNotAllowed, err
+		return http.StatusNotImplemented, err
 	}
 	return http.StatusCreated, nil
 }
