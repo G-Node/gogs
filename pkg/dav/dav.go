@@ -119,6 +119,9 @@ func (f *GinFile) Close() error {
 }
 
 func (f *GinFile) read(p []byte) (int, error) {
+	if f.trentry == nil {
+		return 0, fmt.Errorf("File not found")
+	}
 	if f.trentry.Type != git.OBJECT_BLOB {
 		return 0, fmt.Errorf("not a blob")
 	}
@@ -243,8 +246,17 @@ func (f *GinFile) getFInfos(ents []*git.TreeEntry) ([]os.FileInfo, error) {
 	return infos, nil
 }
 func (f GinFile) Stat() (os.FileInfo, error) {
+	if f.trentry == nil {
+		return nil, fmt.Errorf("File not found")
+	}
+	if f.trentry.Type != git.OBJECT_BLOB {
+		return GinFinfo{TreeEntry: f.trentry, LChange: f.LChange}, nil
+	}
 	peek := make([]byte, ANNEXPEEKSIZE)
-	n, _ := f.read(peek)
+	n, err := f.read(peek)
+	if err != nil {
+		return nil, err
+	}
 	peek = peek[:n]
 	if tool.IsAnnexedFile(peek) {
 		af, err := gannex.NewAFile(f.rpath, "annex", f.trentry.Name(), peek)
