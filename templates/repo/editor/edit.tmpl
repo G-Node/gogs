@@ -112,6 +112,7 @@
 				</div>
 				<script type="text/javascript">
 					var docSpec={
+						allowModeSwitching:true,
 						elements: {
 							"value": {
 								hasText: true,
@@ -136,7 +137,12 @@
 							},
 							"property": {
 								oneliner: true,
-								collapsible:false,
+								collapsible:true,
+								collapsed:true,
+								collapsoid: function(jsElement){
+									return jsElement.getChildElements("name")[0].getText()+": "+ jsElement.getChildElements("value")[0].getText();
+								},
+
 								hasText: false,
 								menu: [{
 									caption: "Delete this <property>",
@@ -149,10 +155,90 @@
 									caption: "New <property> after this",
 									action: Xonomy.newElementAfter,
 									actionParameter: "<property><name>...</name><value>...</value></property>"
-								}]
+								}, {
+									caption: "Add <uncertainty>",
+									action: Xonomy.newElementChild,
+									actionParameter: "<uncertainty>...</uncertainty>"
+								}, {
+									caption: "Add <type>",
+									action: Xonomy.newElementChild,
+									actionParameter: "<type>...</type>"
+								}, {
+									caption: "Add <reference>",
+									action: Xonomy.newElementChild,
+									actionParameter: "<reference>...</reference>"
+								},
+								{
+									caption: "Add <definition>",
+									action: Xonomy.newElementChild,
+									actionParameter: "<definition>...</definition>"
+								},
+								{
+									caption: "Add <dependency>",
+									action: Xonomy.newElementChild,
+									actionParameter: "<dependency>...</dependency>"
+								},
+								{
+									caption: "Add <value_origin>",
+									action: Xonomy.newElementChild,
+									actionParameter: "<value_origin>...</value_origin>"
+								}],
+							},
+						"section": {
+							oneliner: false,
+							collapsible:true,
+							hasText: false,
+							collapsed:true,
+							collapsoid: function(jsElement){
+								return jsElement.getChildElements("name")[0].getText();
+							},
+							menu: [{
+								caption: "Delete this <section>",
+								action: Xonomy.deleteElement
+							}, {
+								caption: "New <section> before this",
+								action: Xonomy.newElementBefore,
+								actionParameter: "<section/>"
+							}, {
+								caption: "New <section> after this",
+								action: Xonomy.newElementAfter,
+								actionParameter: "<section/>"
+							}, {
+								caption: "Add <name>",
+								action: Xonomy.newElementChild,
+								actionParameter: "<name>...</name>"
+							}, {
+								caption: "Add <type>",
+								action: Xonomy.newElementChild,
+								actionParameter: "<type>...</type>"
+							}, {
+								caption: "Add <reference>",
+								action: Xonomy.newElementChild,
+								actionParameter: "<reference>...</reference>"
+							},
+							{
+								caption: "Add <definition>",
+								action: Xonomy.newElementChild,
+								actionParameter: "<definition>...</definition>"
+							},
+							{
+								caption: "Add <link>",
+								action: Xonomy.newElementChild,
+								actionParameter: "<link>...</link>"
+							},
+							{
+								caption: "Add <repository>",
+								action: Xonomy.newElementChild,
+								actionParameter: "<repository>...</link>"
+							},
+							{
+								caption: "Add <property>",
+								action: Xonomy.newElementChild,
+								actionParameter: "<property><name>...</name><value>...</value></property>"
 							}
-						},
-					allowModeSwitching:true
+								],
+						}
+						}
 					}
 						var xml={{.FileContent}};
 						var editor=document.getElementById("xonomy_edit");
