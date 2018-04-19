@@ -677,6 +677,9 @@ function setCodeMirror($editArea) {
                 document.getElementById("parseerr").className = "ui negative message"
             }
         }
+        if (typeof (Xonomy) !== 'undefined') {
+            OdmlEditor();
+        }
     });
 
     return true;
@@ -1552,6 +1555,36 @@ function OdmlEditor() {
 	var docSpec = {
 		allowModeSwitching: true,
 		elements: {
+			"odML": {
+				collapsible: true,
+				oneliner: false,
+				menu: [{
+					caption: "Add <section>",
+					action: Xonomy.newElementChild,
+					actionParameter: "<section/>"
+				}, {
+					caption: "Add <author>",
+					action: Xonomy.newElementChild,
+					actionParameter: "<author>...</author>"
+				}, {
+					caption: "Add <date>",
+					action: Xonomy.newElementChild,
+					actionParameter: "<date>...</date>"
+				}, {
+					caption: "Add <repository>",
+					action: Xonomy.newElementChild,
+					actionParameter: "<repository>...</repository>"
+				},
+				{
+					caption: "Add <version>",
+					action: Xonomy.newElementChild,
+					actionParameter: "<version>...</version>"
+				}]
+			},
+			"author": {
+				collapsible: false,
+				oneliner: true
+			},
 			"value": {
 				collapsible: false,
 				menu: [{
@@ -1567,7 +1600,6 @@ function OdmlEditor() {
 				collapsible: false
 			},
 			"name": {
-				mustBeBefore: ["value"],
 				collapsible: false
 			},
 			"property": {
@@ -1577,7 +1609,6 @@ function OdmlEditor() {
 				collapsoid: function (jsElement) {
 					return jsElement.getChildElements("name")[0].getText() + ": " + jsElement.getChildElements("value")[0].getText();
 				},
-
 				menu: [{
 					caption: "Delete this <property>",
 					action: Xonomy.deleteElement
@@ -1602,28 +1633,33 @@ function OdmlEditor() {
 					action: Xonomy.newElementChild,
 					actionParameter: "<reference>...</reference>"
 				},
-					{
-						caption: "Add <definition>",
-						action: Xonomy.newElementChild,
-						actionParameter: "<definition>...</definition>"
-					},
-					{
-						caption: "Add <dependency>",
-						action: Xonomy.newElementChild,
-						actionParameter: "<dependency>...</dependency>"
-					},
-					{
-						caption: "Add <value_origin>",
-						action: Xonomy.newElementChild,
-						actionParameter: "<value_origin>...</value_origin>"
-					}],
+				{
+					caption: "Add <definition>",
+					action: Xonomy.newElementChild,
+					actionParameter: "<definition>...</definition>"
+				},
+				{
+					caption: "Add <dependency>",
+					action: Xonomy.newElementChild,
+					actionParameter: "<dependency>...</dependency>"
+				},
+				{
+					caption: "Add <value_origin>",
+					action: Xonomy.newElementChild,
+					actionParameter: "<value_origin>...</value_origin>"
+				}],
 			},
 			"section": {
 				oneliner: false,
 				collapsible: true,
 				collapsed: true,
 				collapsoid: function (jsElement) {
-					return jsElement.getChildElements("name")[0].getText();
+					if (jsElement.hasChildNodes("name")) {
+						return jsElement.getChildElements("name")[0].getText();
+					}
+					else {
+						return "..."
+					}
 				},
 				menu: [{
 					caption: "Delete this <section>",
@@ -1649,27 +1685,27 @@ function OdmlEditor() {
 					action: Xonomy.newElementChild,
 					actionParameter: "<reference>...</reference>"
 				},
-					{
-						caption: "Add <definition>",
-						action: Xonomy.newElementChild,
-						actionParameter: "<definition>...</definition>"
-					},
-					{
-						caption: "Add <link>",
-						action: Xonomy.newElementChild,
-						actionParameter: "<link>...</link>"
-					},
-					{
-						caption: "Add <repository>",
-						action: Xonomy.newElementChild,
-						actionParameter: "<repository>...</link>"
-					},
-					{
-						caption: "Add <property>",
-						action: Xonomy.newElementChild,
-						actionParameter: "<property><name>...</name><value>...</value></property>"
-					}
-				],
+				{
+					caption: "Add <definition>",
+					action: Xonomy.newElementChild,
+					actionParameter: "<definition>...</definition>"
+				},
+				{
+					caption: "Add <link>",
+					action: Xonomy.newElementChild,
+					actionParameter: "<link>...</link>"
+				},
+				{
+					caption: "Add <repository>",
+					action: Xonomy.newElementChild,
+					actionParameter: "<repository>...</link>"
+				},
+				{
+					caption: "Add <property>",
+					action: Xonomy.newElementChild,
+					actionParameter: "<property><name>...</name><value>...</value></property>"
+				}
+			],
 			}
 		},
 		onchange: function () {
