@@ -3454,3 +3454,6 @@ textarea#description {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
+.textnode.focusable.whitespace {
+  display: none !important;
+}
