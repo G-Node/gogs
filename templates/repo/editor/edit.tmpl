@@ -115,7 +115,6 @@
 						allowModeSwitching:true,
 						elements: {
 							"value": {
-								hasText: true,
 								collapsible:false,
 								menu: [{
 									caption: "Delete this <value>",
@@ -127,11 +126,9 @@
 								}]
 							},
 							"unit": {
-								hasText: true,
 								collapsible:false
 							},
 							"name": {
-								hasText: true,
 								mustBeBefore:["value"],
 								collapsible:false
 							},
@@ -143,7 +140,6 @@
 									return jsElement.getChildElements("name")[0].getText()+": "+ jsElement.getChildElements("value")[0].getText();
 								},
 
-								hasText: false,
 								menu: [{
 									caption: "Delete this <property>",
 									action: Xonomy.deleteElement
@@ -187,7 +183,6 @@
 						"section": {
 							oneliner: false,
 							collapsible:true,
-							hasText: false,
 							collapsed:true,
 							collapsoid: function(jsElement){
 								return jsElement.getChildElements("name")[0].getText();
@@ -238,6 +233,12 @@
 							}
 								],
 						}
+						},
+						onchange: function(){
+							var  ct = Xonomy.harvest();
+							ct = ct.replace(/ xml:space='preserve'/g, "");
+							$('#edit_area').val(ct);
+							codeMirrorEditor.setValue(ct);
 						}
 					}
 						var xml={{.FileContent}};
