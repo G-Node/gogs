@@ -1561,41 +1561,139 @@ $(function () {
     $('form').areYouSure();
 });
 
-// getByteLen counts bytes in a string's UTF-8 representation.
-function getByteLen(normalVal) {
-    // Force string type
-    normalVal = String(normalVal);
 
-    var byteLen = 0;
-    for (var i = 0; i < normalVal.length; i++) {
-        var c = normalVal.charCodeAt(i);
-        byteLen += c < (1 << 7) ? 1 :
-            c < (1 << 11) ? 2 :
-                c < (1 << 16) ? 3 :
-                    c < (1 << 21) ? 4 :
-                        c < (1 << 26) ? 5 :
-                            c < (1 << 31) ? 6 : Number.NaN;
-    }
-    return byteLen;
-}
+function OdmlEditor() {
+	var docSpec = {
+		allowModeSwitching: true,
+		elements: {
+			"value": {
+				collapsible: false,
+				menu: [{
+					caption: "Delete this <value>",
+					action: Xonomy.deleteElement
+				}, {
+					caption: "Add <unit>",
+					action: Xonomy.newElementChild,
+					actionParameter: "<unit>...</unit>"
+				}]
+			},
+			"unit": {
+				collapsible: false
+			},
+			"name": {
+				mustBeBefore: ["value"],
+				collapsible: false
+			},
+			"property": {
+				oneliner: true,
+				collapsible: true,
+				collapsed: true,
+				collapsoid: function (jsElement) {
+					return jsElement.getChildElements("name")[0].getText() + ": " + jsElement.getChildElements("value")[0].getText();
+				},
 
-function showMessageMaxLength(maxLen, textElemId, counterId) {
-    var $msg = $('#' + textElemId);
-    $('#' + counterId).html(maxLen - getByteLen($msg.val()));
-
-    var onMessageKey = function (e) {
-        var $msg = $(this);
-        var text = $msg.val();
-        var len = getByteLen(text);
-        var remainder = maxLen - len;
-
-        if (len >= maxLen) {
-            $msg.val($msg.val().substr(0, maxLen));
-            remainder = 0;
-        }
-
-        $('#' + counterId).html(remainder);
-    };
-
-    $msg.keyup(onMessageKey).keydown(onMessageKey);
+				menu: [{
+					caption: "Delete this <property>",
+					action: Xonomy.deleteElement
+				}, {
+					caption: "New <property> before this",
+					action: Xonomy.newElementBefore,
+					actionParameter: "<property><name>...</name><value>...</value></property>"
+				}, {
+					caption: "New <property> after this",
+					action: Xonomy.newElementAfter,
+					actionParameter: "<property><name>...</name><value>...</value></property>"
+				}, {
+					caption: "Add <uncertainty>",
+					action: Xonomy.newElementChild,
+					actionParameter: "<uncertainty>...</uncertainty>"
+				}, {
+					caption: "Add <type>",
+					action: Xonomy.newElementChild,
+					actionParameter: "<type>...</type>"
+				}, {
+					caption: "Add <reference>",
+					action: Xonomy.newElementChild,
+					actionParameter: "<reference>...</reference>"
+				},
+					{
+						caption: "Add <definition>",
+						action: Xonomy.newElementChild,
+						actionParameter: "<definition>...</definition>"
+					},
+					{
+						caption: "Add <dependency>",
+						action: Xonomy.newElementChild,
+						actionParameter: "<dependency>...</dependency>"
+					},
+					{
+						caption: "Add <value_origin>",
+						action: Xonomy.newElementChild,
+						actionParameter: "<value_origin>...</value_origin>"
+					}],
+			},
+			"section": {
+				oneliner: false,
+				collapsible: true,
+				collapsed: true,
+				collapsoid: function (jsElement) {
+					return jsElement.getChildElements("name")[0].getText();
+				},
+				menu: [{
+					caption: "Delete this <section>",
+					action: Xonomy.deleteElement
+				}, {
+					caption: "New <section> before this",
+					action: Xonomy.newElementBefore,
+					actionParameter: "<section/>"
+				}, {
+					caption: "New <section> after this",
+					action: Xonomy.newElementAfter,
+					actionParameter: "<section/>"
+				}, {
+					caption: "Add <name>",
+					action: Xonomy.newElementChild,
+					actionParameter: "<name>...</name>"
+				}, {
+					caption: "Add <type>",
+					action: Xonomy.newElementChild,
+					actionParameter: "<type>...</type>"
+				}, {
+					caption: "Add <reference>",
+					action: Xonomy.newElementChild,
+					actionParameter: "<reference>...</reference>"
+				},
+					{
+						caption: "Add <definition>",
+						action: Xonomy.newElementChild,
+						actionParameter: "<definition>...</definition>"
+					},
+					{
+						caption: "Add <link>",
+						action: Xonomy.newElementChild,
+						actionParameter: "<link>...</link>"
+					},
+					{
+						caption: "Add <repository>",
+						action: Xonomy.newElementChild,
+						actionParameter: "<repository>...</link>"
+					},
+					{
+						caption: "Add <property>",
+						action: Xonomy.newElementChild,
+						actionParameter: "<property><name>...</name><value>...</value></property>"
+					}
+				],
+			}
+		},
+		onchange: function () {
+			var ct = Xonomy.harvest();
+			ct = ct.replace(/ xml:space='preserve'/g, "");
+			$('#edit_area').val(ct);
+			codeMirrorEditor.setValue(ct);
+		}
+	}
+	var xml = $('#edit_area').val();
+	var editor = document.getElementById("xonomy_edit");
+	Xonomy.render(xml, editor, docSpec);
 }
