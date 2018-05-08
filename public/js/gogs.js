@@ -1333,10 +1333,11 @@ $(document).ready(function () {
                     preview = preview[preview.length - 1];
                     preview.removeChild(preview.firstChild);
                     var imageName = document.createElement('span');
-                    imageName.innerHTML = file.fullPath;
-
+                    imageName.innerHTML = file.name;
+                    if (file.fullPath !== undefined) {
+                        imageName.innerHTML = file.fullPath;
+                    }
                     preview.insertBefore(imageName, preview.firstChild);
-
                 });
             }
         });
