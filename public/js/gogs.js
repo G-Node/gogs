@@ -1655,7 +1655,7 @@ function OdmlEditor() {
 				collapsible: true,
 				collapsed: true,
 				collapsoid: function (jsElement) {
-					if (jsElement.hasChildNodes("name")) {
+					if (jsElement.hasChildElement("name")) {
 						return jsElement.getChildElements("name")[0].getText();
 					}
 					else {
