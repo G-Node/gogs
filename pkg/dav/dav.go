@@ -345,7 +345,7 @@ func getROwnerID(path string) (int64, error) {
 }
 
 func Webdav401(c *gctx.Context) {
-	c.Header().Add("WWW-Authenticate", fmt.Sprintf("Basic realm=\"%s\"", setting.AppURL))
+	c.Header().Add("WWW-Authenticate", fmt.Sprintf("Basic realm=\"%s\"", setting.WebDav.AuthRealm))
 	c.WriteHeader(http.StatusUnauthorized)
 	return
 }

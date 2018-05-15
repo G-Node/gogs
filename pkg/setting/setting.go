@@ -347,8 +347,9 @@ var (
 	}
 
 	WebDav struct {
-		On     bool
-		Logged bool
+		On        bool
+		Logged    bool
+		AuthRealm string
 	}
 )
 
