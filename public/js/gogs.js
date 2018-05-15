@@ -1281,7 +1281,9 @@ $(document).ready(function () {
                 worker.onmessage = function (event) {
                     code.innerHTML = event.data;
                 }
-                worker.postMessage(code.textContent);
+                if (code !== null) {
+                    worker.postMessage(code.textContent);
+                }
             })
         } else {
             hljs.initHighlightingOnLoad()
