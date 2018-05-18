@@ -3,15 +3,51 @@
 	"ignore": "test",
 	"package": [
 		{
-			"checksumSHA1": "/nx4C9e6SWnuATeRNXMyVaEOwFw=",
+			"checksumSHA1": "k9Q/vjcccSVYxRGjpfcIgQYW6B4=",
+			"path": "github.com/G-Node/gig",
+			"revision": "6d784b40b534eb9a398247e27942e705de539b20",
+			"revisionTime": "2017-10-25T13:28:53Z"
+		},
+		{
+			"checksumSHA1": "KCAPU7/nQFEcFBJsX81GJwbYIq8=",
+			"path": "github.com/G-Node/gin-core/gin",
+			"revision": "2f2021f6c48069d5019b05ece2583340567d4842",
+			"revisionTime": "2016-12-06T13:49:03Z"
+		},
+		{
+			"checksumSHA1": "SPEjnxzoOZQu5//N6vuzHB1L7gA=",
 			"path": "github.com/G-Node/gin-dex/gindex",
-			"revision": "d4994f3bb1774be302aa9be2fdd4db28b454b01e",
-			"revisionTime": "2017-11-17T12:52:54Z"
+			"revision": "ebde28e0b0efc30e3e89fdc04f98ac0f52f9c004",
+			"revisionTime": "2018-03-12T09:17:42Z"
+		},
+		{
+			"checksumSHA1": "AbB5Bym9LWwC7RDCCBioMlZaqhA=",
+			"path": "github.com/G-Node/gin-doi/src",
+			"revision": "d6def0df8541a1984874a36ec125152f57fe3ba7",
+			"revisionTime": "2018-04-10T11:20:03Z"
+		},
+		{
+			"checksumSHA1": "1lJbdD+XAqDtYkxeVPm4/+pZd68=",
+			"path": "github.com/G-Node/git-module",
+			"revision": "1d1e8fe41d6a778dddbf2fc583ae272485aca728",
+			"revisionTime": "2018-04-03T14:20:06Z"
+		},
+		{
+			"checksumSHA1": "cupqvQ99dtoFA4VpoqjY9x7c2eM=",
+			"path": "github.com/G-Node/go-annex",
+			"revision": "783f8114c0bff173c89ed76a2099582472ea219b",
+			"revisionTime": "2018-04-12T12:41:14Z"
 		},
 		{
 			"checksumSHA1": "dpa+gHrdw4GXFknbMysx2/32kUM=",
 			"path": "github.com/G-Node/godML/odml",
 			"revision": ""
+		},
+		{
+			"checksumSHA1": "h5Q1o+kA7VMAR5QpBzVJZbBEgC0=",
+			"path": "github.com/Sirupsen/logrus",
+			"revision": "881bee4e20a5d11a6a88a5667c6f292072ac1963",
+			"revisionTime": "2016-12-02T02:35:07Z"
 		},
 		{
 			"checksumSHA1": "IyfS7Rbl6OgR83QR7TOfKdDCq+M=",
@@ -494,6 +530,60 @@
 			"revisionTime": "2016-02-05T03:35:52Z"
 		},
 		{
+			"checksumSHA1": "pa6rfm0AFjTSE5WffJgxxIeIRaE=",
+			"path": "github.com/unidoc/unidoc/common",
+			"revision": "978d94da3322cf4e146894e34daf5bda45961b77",
+			"revisionTime": "2017-11-08T21:19:06Z"
+		},
+		{
+			"checksumSHA1": "3khHfJJlF7IcdLFj5z2KwbJMBME=",
+			"path": "github.com/unidoc/unidoc/common/license",
+			"revision": "978d94da3322cf4e146894e34daf5bda45961b77",
+			"revisionTime": "2017-11-08T21:19:06Z"
+		},
+		{
+			"checksumSHA1": "Of57JY2oDRAu5QoL3QpSLngk/gk=",
+			"path": "github.com/unidoc/unidoc/pdf/contentstream",
+			"revision": "978d94da3322cf4e146894e34daf5bda45961b77",
+			"revisionTime": "2017-11-08T21:19:06Z"
+		},
+		{
+			"checksumSHA1": "GQ4pBrNyU3jBolz6tzDRBqV8pyc=",
+			"path": "github.com/unidoc/unidoc/pdf/core",
+			"revision": "978d94da3322cf4e146894e34daf5bda45961b77",
+			"revisionTime": "2017-11-08T21:19:06Z"
+		},
+		{
+			"checksumSHA1": "zMuVBntT9ZTsZSkYwR/gaLPwdWY=",
+			"path": "github.com/unidoc/unidoc/pdf/model",
+			"revision": "978d94da3322cf4e146894e34daf5bda45961b77",
+			"revisionTime": "2017-11-08T21:19:06Z"
+		},
+		{
+			"checksumSHA1": "6UadnCB59RsOttJW/VKKgPHcs4I=",
+			"path": "github.com/unidoc/unidoc/pdf/model/fonts",
+			"revision": "978d94da3322cf4e146894e34daf5bda45961b77",
+			"revisionTime": "2017-11-08T21:19:06Z"
+		},
+		{
+			"checksumSHA1": "qK2Gfc5HFjs5tV6eamVAaD8YPRI=",
+			"path": "github.com/unidoc/unidoc/pdf/model/sampling",
+			"revision": "978d94da3322cf4e146894e34daf5bda45961b77",
+			"revisionTime": "2017-11-08T21:19:06Z"
+		},
+		{
+			"checksumSHA1": "Fg3IwpUG0I3G4zYJ5Aw7dMBYlt0=",
+			"path": "github.com/unidoc/unidoc/pdf/model/textencoding",
+			"revision": "978d94da3322cf4e146894e34daf5bda45961b77",
+			"revisionTime": "2017-11-08T21:19:06Z"
+		},
+		{
+			"checksumSHA1": "+za+KpWv/GA/bnGHTrpWS7MFTIw=",
+			"path": "github.com/unidoc/unidoc/pdf/ps",
+			"revision": "978d94da3322cf4e146894e34daf5bda45961b77",
+			"revisionTime": "2017-11-08T21:19:06Z"
+		},
+		{
 			"checksumSHA1": "j+CXOooI5VyVEhKPTJkuL/GHPE0=",
 			"path": "github.com/urfave/cli",
 			"revision": "b6061c464d493dd94985211595687c862a0dd0bc",
@@ -512,22 +602,22 @@
 			"revisionTime": "2016-10-18T21:00:36Z"
 		},
 		{
-			"checksumSHA1": "dwOedwBJ1EIK9+S3t108Bx054Y8=",
+			"checksumSHA1": "IQkUIOnvlf0tYloFx9mLaXSvXWQ=",
 			"path": "golang.org/x/crypto/curve25519",
-			"revision": "d8e61c69ab46ca38328da2f4995abaf93b252290",
-			"revisionTime": "2016-12-13T22:25:08Z"
+			"revision": "7d9177d70076375b9a59c8fde23d52d9c4a7ecd5",
+			"revisionTime": "2017-09-15T19:08:28Z"
 		},
 		{
-			"checksumSHA1": "wGb//LjBPNxYHqk+dcLo7BjPXK8=",
+			"checksumSHA1": "X6Q8nYb+KXh+64AKHwWOOcyijHQ=",
 			"path": "golang.org/x/crypto/ed25519",
-			"revision": "d8e61c69ab46ca38328da2f4995abaf93b252290",
-			"revisionTime": "2016-12-13T22:25:08Z"
+			"revision": "7d9177d70076375b9a59c8fde23d52d9c4a7ecd5",
+			"revisionTime": "2017-09-15T19:08:28Z"
 		},
 		{
 			"checksumSHA1": "LXFcVx8I587SnWmKycSDEq9yvK8=",
 			"path": "golang.org/x/crypto/ed25519/internal/edwards25519",
-			"revision": "d8e61c69ab46ca38328da2f4995abaf93b252290",
-			"revisionTime": "2016-12-13T22:25:08Z"
+			"revision": "7d9177d70076375b9a59c8fde23d52d9c4a7ecd5",
+			"revisionTime": "2017-09-15T19:08:28Z"
 		},
 		{
 			"checksumSHA1": "MCeXr2RNeiG1XG6V+er1OR0qyeo=",
@@ -542,10 +632,16 @@
 			"revisionTime": "2016-12-13T22:25:08Z"
 		},
 		{
-			"checksumSHA1": "fsrFs762jlaILyqqQImS1GfvIvw=",
+			"checksumSHA1": "yPCMw2UX8Jad4GNWSwo8QgZS6TY=",
 			"path": "golang.org/x/crypto/ssh",
-			"revision": "453249f01cfeb54c3d549ddb75ff152ca243f9d8",
-			"revisionTime": "2017-02-08T20:51:15Z"
+			"revision": "7d9177d70076375b9a59c8fde23d52d9c4a7ecd5",
+			"revisionTime": "2017-09-15T19:08:28Z"
+		},
+		{
+			"checksumSHA1": "PF6VjvpNpOdR8epWH1Liyy7x1Qg=",
+			"path": "golang.org/x/image/tiff/lzw",
+			"revision": "f7e31b4ea2e3413ab91b4e7d2dc83e5f8d19a44c",
+			"revisionTime": "2017-09-30T09:09:42Z"
 		},
 		{
 			"checksumSHA1": "9jjO5GjLa0XF/nfWihF02RoH4qc=",
@@ -584,10 +680,10 @@
 			"revisionTime": "2017-09-09T04:35:08Z"
 		},
 		{
-			"checksumSHA1": "KqecwXo3OO+p4N+E9RhlHvl9I+w=",
+			"checksumSHA1": "ZWgtYdxJbBEFnRbrdVOi7QrQVdc=",
 			"path": "golang.org/x/sys/unix",
-			"revision": "b699b7032584f0953262cb2788a0ca19bb494703",
-			"revisionTime": "2016-11-10T11:58:56Z"
+			"revision": "b6e1ae21643682ce023deb8d152024597b0e9bb4",
+			"revisionTime": "2017-09-18T15:00:50Z"
 		},
 		{
 			"checksumSHA1": "fpW2dhGFC6SrVzipJx7fjg2DIH8=",
@@ -744,6 +840,12 @@
 			"path": "gopkg.in/redis.v2",
 			"revision": "e6179049628164864e6e84e973cfb56335748dea",
 			"revisionTime": "2014-12-09T11:07:59Z"
+		},
+		{
+			"checksumSHA1": "12GqsW8PiRPnezDDy0v4brZrndM=",
+			"path": "gopkg.in/yaml.v2",
+			"revision": "a5b47d31c556af34a302ce5d659e6fea44d90de0",
+			"revisionTime": "2016-09-28T15:37:09Z"
 		}
 	],
 	"rootPath": "github.com/G-Node/gogs"
