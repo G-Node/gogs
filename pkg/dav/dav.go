@@ -18,6 +18,7 @@ import (
 	"golang.org/x/net/context"
 	"golang.org/x/net/webdav"
 	log "gopkg.in/clog.v1"
+	"io/ioutil"
 )
 
 var (
@@ -130,6 +131,7 @@ func (f *GinFile) read(p []byte) (int, error) {
 		return 0, err
 	}
 	// todo: read with pipes
+	io.CopyN(ioutil.Discard, data, f.seekoset)
 	n, err := data.Read(p)
 	if err != nil {
 		return n, err
@@ -157,8 +159,7 @@ func (f *GinFile) Read(p []byte) (int, error) {
 		f.afp.Seek(f.seekoset, io.SeekStart)
 		return f.afp.Read(p)
 	}
-	copy(p, tmp[f.seekoset:])
-	n = n - int(f.seekoset)
+	copy(p, tmp)
 	f.Seek(int64(n), io.SeekCurrent)
 	return n, nil
 }
@@ -253,7 +254,10 @@ func (f GinFile) Stat() (os.FileInfo, error) {
 		return GinFinfo{TreeEntry: f.trentry, LChange: f.LChange}, nil
 	}
 	peek := make([]byte, ANNEXPEEKSIZE)
+	offset := f.seekoset
+	f.seekoset = 0
 	n, err := f.read(peek)
+	f.seekoset = offset
 	if err != nil {
 		return nil, err
 	}
