@@ -26,7 +26,7 @@
 			{{if .PullRequestCtx.Allowed}}
 				<div class="fitted item" data-tooltip="Please note: annexed file content will not be part of a pull request">
 					<a href="{{.BaseRepo.Link}}/compare/{{.BaseRepo.DefaultBranch}}...{{.PullRequestCtx.HeadInfo}}">
-						<button class="ui green small button"><i class="octicon octicon-git-compare"></i></button>
+						<button class="ui green small button"><i class="octicon octicon-git-compare"></i>Pull request</button>
 					</a>
 				</div>
 				{{else if or .IsRepositoryWriter .HasForked}}
@@ -36,22 +36,7 @@
 					</div>
 			{{end}}
 			{{template "repo/branch_dropdown" .}}
-			<div class="fitted item">
-				<div class="ui breadcrumb">
-					<a class="section" href="{{.RepoLink}}/src/{{EscapePound .BranchName}}">{{EllipsisString .Repository.Name 15}}</a>
-					{{ $n := len .TreeNames}}
-					{{ $l := Subtract $n 1}}
-					{{range $i, $v := .TreeNames}}
-						<div class="divider"> / </div>
-						{{if eq $i $l}}
-							<span class="active section">{{$v}}</span>
-						{{else}}
-							{{ $p := index $.Paths $i}}
-							<span class="section"><a href="{{EscapePound $.BranchLink}}/{{EscapePound $p}}">{{$v}}</a></span>
-						{{end}}
-					{{end}}
-				</div>
-			</div>
+
 			<div class="right fitted item">
 				<div class="ui action small input" id="clone-panel">
 				{{if .Repository.CanEnableEditor}}
@@ -69,7 +54,9 @@
 					</div>
 				{{end}}
 
-				<!-- Only show clone panel in repository home page -->
+				<!-- Only show colne panel in repository home page -->
+				{{ $n := len .TreeNames}}
+				{{ $l := Subtract $n 1}}
 				{{if eq $n 0}}
 
 						<button class="ui basic clone button" id="repo-clone-gin" data-link="{{.CloneLink.Gin}}">
