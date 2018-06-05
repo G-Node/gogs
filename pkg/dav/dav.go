@@ -175,14 +175,14 @@ func (f *GinFile) Seek(offset int64, whence int) (int64, error) {
 	switch whence {
 	case io.SeekStart:
 		if offset > st.Size() || offset < 0 {
-			return 0, fmt.Errorf("cannot seek to %f, only %f big", offset, st.Size())
+			return 0, fmt.Errorf("cannot seek to %d, only %d big", offset, st.Size())
 		}
 		f.seekoset = offset
 		return f.seekoset, nil
 	case io.SeekCurrent:
 		noffset := f.seekoset + offset
 		if noffset > st.Size() || noffset < 0 {
-			return 0, fmt.Errorf("cannot seek to %f, only %f big", offset, st.Size())
+			return 0, fmt.Errorf("cannot seek to %d, only %d big", offset, st.Size())
 		}
 		f.seekoset = noffset
 		return f.seekoset, nil
@@ -190,7 +190,7 @@ func (f *GinFile) Seek(offset int64, whence int) (int64, error) {
 		fsize := st.Size()
 		noffset := fsize - offset
 		if noffset > fsize || noffset < 0 {
-			return 0, fmt.Errorf("cannot seek to %f, only %f big", offset, st.Size())
+			return 0, fmt.Errorf("cannot seek to %d, only %d big", offset, st.Size())
 		}
 		f.seekoset = noffset
 		return f.seekoset, nil
