@@ -3457,3 +3457,6 @@ textarea#description {
 .textnode.focusable.whitespace {
   display: none !important;
 }
+.footertext {
+  font-size: 0.5rem;
+}
