@@ -62,7 +62,7 @@
 						<button class="ui basic clone button" id="repo-clone-gin" data-link="{{.CloneLink.Gin}}">
 							GIN
 						</button>
-						{{if not $.DisableHTTP}}
+						{{if and (not $.DisableHTTP) $.ShowHTTP}}
 							<button class="ui basic clone button" id="repo-clone-https" data-link="{{.CloneLink.HTTPS}}">
 								{{if UseHTTPS}}HTTPS{{else}}HTTP{{end}}
 							</button>
