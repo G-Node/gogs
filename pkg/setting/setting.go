@@ -114,6 +114,7 @@ var (
 	UseMSSQL      bool
 
 	// Repository settings
+	// Repository settingsS
 	Repository struct {
 		AnsiCharset              string
 		ForcePrivate             bool
@@ -122,6 +123,7 @@ var (
 		PullRequestQueueLength   int
 		PreferredLicenses        []string
 		DisableHTTPGit           bool `ini:"DISABLE_HTTP_GIT"`
+		ShowHTTPGit              bool `ini:"SHOW_HTTP_GIT"`
 		EnableLocalPathMigration bool
 		CommitsFetchConcurrency  int
 		EnableRawFileRenderMode  bool
