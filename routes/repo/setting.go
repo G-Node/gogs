@@ -319,7 +319,7 @@ func inviteWithMail(c *context.Context, mail string) (*models.User, error) {
 	if err != nil {
 		return nil, err
 	}
-	log.Info("User: %s created", user.Name, pw)
+	log.Info("User: %s created", user.Name)
 	c.Context.Data["Account"] = user.Name
 	c.Context.Data["Inviter"] = c.User.Name
 	c.Context.Data["Pw"] = pw

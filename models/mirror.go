@@ -306,7 +306,7 @@ func SyncMirrors() {
 
 		m, err := GetMirrorByRepoID(com.StrTo(repoID).MustInt64())
 		if err != nil {
-			log.Error(2, "GetMirrorByRepoID [%s]: %v", m.RepoID, err)
+			log.Error(2, "GetMirrorByRepoID [%d]: %v", m.RepoID, err)
 			continue
 		}
 
@@ -316,7 +316,7 @@ func SyncMirrors() {
 
 		m.ScheduleNextUpdate()
 		if err = UpdateMirror(m); err != nil {
-			log.Error(2, "UpdateMirror [%s]: %v", m.RepoID, err)
+			log.Error(2, "UpdateMirror [%d]: %v", m.RepoID, err)
 			continue
 		}
 
@@ -324,14 +324,14 @@ func SyncMirrors() {
 		// update if latest commit date is newer.
 		commitDate, err := git.GetLatestCommitDate(m.Repo.RepoPath(), "")
 		if err != nil {
-			log.Error(2, "GetLatestCommitDate [%s]: %v", m.RepoID, err)
+			log.Error(2, "GetLatestCommitDate [%d]: %v", m.RepoID, err)
 			continue
 		} else if commitDate.Before(m.Repo.Updated) {
 			continue
 		}
 
 		if _, err = x.Exec("UPDATE repository SET updated_unix = ? WHERE id = ?", commitDate.Unix(), m.RepoID); err != nil {
-			log.Error(2, "Update repository 'updated_unix' [%s]: %v", m.RepoID, err)
+			log.Error(2, "Update repository 'updated_unix' [%d]: %v", m.RepoID, err)
 			continue
 		}
 	}
