@@ -184,7 +184,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink string, cpt *captcha.Captcha) {
 	c.Data["IsViewFile"] = true
 	blob := entry.Blob()
-	log.Trace("Blob size is %s", blob.Size())
+	log.Trace("Blob size is %d", blob.Size())
 	if blob.Size() > gannex.MEGABYTE*10 && setting.Service.EnableCaptcha && !cpt.VerifyReq(c.Req) && !c.IsLogged {
 		c.Data["EnableCaptcha"] = true
 		c.HTML(200, "repo/download")

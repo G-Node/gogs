@@ -533,9 +533,9 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 		if err = com.Copy(tmpPath, targetPath); err != nil {
 			return fmt.Errorf("copy: %v", err)
 		}
-		log.Trace("Check for annexing: %s,%s", upload.Name)
+		log.Trace("Check for annexing: %s", upload.Name)
 		if finfo, err := os.Stat(targetPath); err == nil {
-			log.Trace("Filesize is:%s", finfo.Size())
+			log.Trace("Filesize is:%d", finfo.Size())
 			// Should we annex
 			if finfo.Size() > setting.Repository.Upload.AnexFileMinSize*gannex.MEGABYTE {
 				log.Trace("This file should be annexed: %s", upload.Name)
@@ -641,7 +641,7 @@ func StartIndexing(user, owner *User, repo *Repository) {
 	client := http.Client{}
 	resp, err := client.Do(req)
 	if err != nil || resp.StatusCode != http.StatusOK {
-		log.Trace("Error doing index request:%+v,%d", err)
+		log.Trace("Error doing index request:%+v", err)
 		return
 	}
 }
