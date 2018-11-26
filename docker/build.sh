@@ -6,10 +6,8 @@ set -e
 export GOPATH=/tmp/go
 export PATH=/usr/local/go/bin:${PATH}:${GOPATH}/bin
 
-#
 go get golang.org/x/crypto/bcrypt
 go get github.com/jteeuwen/go-bindata
-go get github.com/G-Node/gin-doi/src
 go get github.com/G-Node/gin-dex/gindex
 go get github.com/G-Node/git-module
 go get gopkg.in/yaml.v2

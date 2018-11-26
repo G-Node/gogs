@@ -1,15 +1,16 @@
 package routes
 
 import (
-	"github.com/G-Node/gogs/pkg/context"
-	"net/http"
-	"github.com/G-Node/gin-dex/gindex"
-	"encoding/json"
 	"bytes"
-	"io/ioutil"
-	"github.com/G-Node/gogs/pkg/setting"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"strconv"
+
+	"github.com/G-Node/gin-dex/gindex"
+	"github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/pkg/setting"
 	"github.com/Sirupsen/logrus"
 )
 
@@ -105,4 +106,12 @@ func ExploreCommits(c *context.Context) {
 	}
 	c.Data["Commits"] = res.Commits
 	c.HTML(200, EXPLORE_COMMITS)
+}
+
+type SearchRequest struct {
+	Token  string
+	CsrfT  string
+	UserID int64
+	Querry string
+	SType  int64
 }
