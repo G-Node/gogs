@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/G-Node/gin-dex/gindex"
 	"github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/pkg/libgin"
 	"github.com/G-Node/gogs/pkg/setting"
 	"github.com/Sirupsen/logrus"
 )
@@ -25,7 +25,7 @@ func Search(c *context.Context, keywords string, sType int64) ([]byte, error) {
 		return nil, fmt.Errorf("Extended search not implemented")
 	}
 
-	ireq := gindex.SearchRequest{Token: c.GetCookie(setting.SessionConfig.CookieName),
+	ireq := libgin.SearchRequest{Token: c.GetCookie(setting.SessionConfig.CookieName),
 		Querry: keywords, CsrfT: c.GetCookie(setting.CSRFCookieName), SType: sType, UserID: -10}
 	if c.IsLogged {
 		ireq.UserID = c.User.ID
@@ -69,7 +69,7 @@ func ExploreData(c *context.Context) {
 		return
 	}
 
-	res := gindex.SearchResults{}
+	res := libgin.SearchResults{}
 	err = json.Unmarshal(data, &res)
 	if err != nil {
 		c.Handle(http.StatusInternalServerError, "Could not display result", err)
@@ -98,7 +98,7 @@ func ExploreCommits(c *context.Context) {
 		return
 	}
 
-	res := gindex.SearchResults{}
+	res := libgin.SearchResults{}
 	err = json.Unmarshal(data, &res)
 	if err != nil {
 		c.Handle(http.StatusInternalServerError, "Could not display result", err)
