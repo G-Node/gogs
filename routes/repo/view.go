@@ -7,15 +7,12 @@ package repo
 import (
 	"bufio"
 	"bytes"
-	"crypto/md5"
-	"encoding/hex"
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	gotemplate "html/template"
 	"io"
 	"io/ioutil"
-	"net/http"
 	"os"
 	"path"
 	"strings"
@@ -25,6 +22,7 @@ import (
 	"github.com/G-Node/godML/odml"
 	"github.com/G-Node/gogs/models"
 	"github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/pkg/libgin"
 	"github.com/G-Node/gogs/pkg/markup"
 	"github.com/G-Node/gogs/pkg/setting"
 	"github.com/G-Node/gogs/pkg/template"
@@ -81,7 +79,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 				log.Trace("Doi Blob could not be read:%v", err)
 			}
 			buf, err := ioutil.ReadAll(doiData)
-			doiInfo := DOIRegInfo{}
+			doiInfo := libgin.DOIRegInfo{}
 			err = yaml.Unmarshal(buf, &doiInfo)
 			if err != nil {
 				log.Trace("Doi Blob could not be unmarshalled:%v", err)
@@ -91,7 +89,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 			doi := GDoiRepo(c, setting.Doi.DoiBase)
 			//ddata, err := ginDoi.GDoiMData(doi, "https://api.datacite.org/works/") //todo configure URL?
 
-			c.Data["DoiReg"] = IsRegisteredDOI(doi)
+			c.Data["DoiReg"] = libgin.IsRegisteredDOI(doi)
 			c.Data["doi"] = doi
 
 		}
@@ -516,74 +514,6 @@ func GDoiRepo(c *context.Context, doiBase string) string {
 	if c.Repo.Repository.IsFork && c.Repo.Owner.Name == "doi" {
 		repoN = c.Repo.Repository.BaseRepo.FullName()
 	}
-	uuid := repoPathToUUID(repoN)
+	uuid := libgin.RepoPathToUUID(repoN)
 	return doiBase + uuid[:6]
-}
-
-// NOTE: TEMPORARY COPIES FROM gin-doi
-
-// uuidMap is a map between registered repositories and their UUIDs for datasets registered before the new UUID generation method was implemented.
-// This map is required because the current method of computing UUIDs differs from the older method and this lookup is used to handle the old-method UUIDs.
-var uuidMap = map[string]string{
-	"INT/multielectrode_grasp":                   "f83565d148510fede8a277f660e1a419",
-	"ajkumaraswamy/HB-PAC_disinhibitory_network": "1090f803258557299d287c4d44a541b2",
-	"steffi/Kleineidam_et_al_2017":               "f53069de4c4921a3cfa8f17d55ef98bb",
-	"Churan/Morris_et_al_Frontiers_2016":         "97bc1456d3f4bca2d945357b3ec92029",
-	"fabee/efish_locking":                        "6953bbf0087ba444b2d549b759de4a06",
-}
-
-// repoPathToUUID computes a UUID from a repository path.
-func repoPathToUUID(URI string) string {
-	if doi, ok := uuidMap[URI]; ok {
-		return doi
-	}
-	currMd5 := md5.Sum([]byte(URI))
-	return hex.EncodeToString(currMd5[:])
-}
-
-// DOIRegInfo holds all the metadata and information necessary for a DOI registration request.
-type DOIRegInfo struct {
-	Missing     []string
-	DOI         string
-	UUID        string
-	FileSize    int64
-	Title       string
-	Authors     []Author
-	Description string
-	Keywords    []string
-	References  []Reference
-	Funding     []string
-	License     *License
-	DType       string
-}
-
-type Author struct {
-	FirstName   string
-	LastName    string
-	Affiliation string
-	ID          string
-}
-
-type Reference struct {
-	Reftype string
-	Name    string
-	DOI     string
-}
-
-type License struct {
-	Name string
-	URL  string
-}
-
-func IsRegisteredDOI(doi string) bool {
-	url := fmt.Sprintf("https://doi.org/%s", doi)
-	resp, err := http.Get(url)
-	if err != nil {
-		log.Trace("Could not query for doi: %s at %s", doi, url)
-		return false
-	}
-	if resp.StatusCode != http.StatusNotFound {
-		return true
-	}
-	return false
 }

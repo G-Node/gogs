@@ -1,17 +1,18 @@
 package search
 
 import (
-	"github.com/G-Node/gogs/pkg/context"
-	"github.com/G-Node/gin-dex/gindex"
-	"net/http"
-	"github.com/G-Node/gogs/pkg/setting"
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"io/ioutil"
+	"net/http"
+
+	"github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/pkg/libgin"
+	"github.com/G-Node/gogs/pkg/setting"
 )
 
 func Search(c *context.APIContext) {
-	if ! c.IsLogged {
+	if !c.IsLogged {
 		c.Status(http.StatusUnauthorized)
 		return
 	}
@@ -19,7 +20,7 @@ func Search(c *context.APIContext) {
 		c.Status(http.StatusNotImplemented)
 		return
 	}
-	ireq := gindex.SearchRequest{Token: c.GetCookie(setting.SessionConfig.CookieName), UserID: c.User.ID,
+	ireq := libgin.SearchRequest{Token: c.GetCookie(setting.SessionConfig.CookieName), UserID: c.User.ID,
 		Querry: c.Params("querry"), CsrfT: c.GetCookie(setting.CSRFCookieName)}
 	data, err := json.Marshal(ireq)
 	if err != nil {
