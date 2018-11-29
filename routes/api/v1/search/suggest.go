@@ -7,8 +7,8 @@ import (
 	"net/http"
 
 	"github.com/G-Node/gogs/pkg/context"
-	"github.com/G-Node/gogs/pkg/libgin"
 	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/libgin/libgin"
 )
 
 func Suggest(c *context.APIContext) {

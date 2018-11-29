@@ -11,6 +11,7 @@ go get golang.org/x/crypto/bcrypt
 go get github.com/jteeuwen/go-bindata
 go get github.com/G-Node/gig
 go get github.com/G-Node/git-module
+go get github.com/G-Node/libgin/libgin
 go get github.com/G-Node/go-annex
 go get github.com/Sirupsen/logrus
 go get gopkg.in/yaml.v2
