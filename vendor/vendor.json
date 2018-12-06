@@ -27,10 +27,10 @@
 			"revisionTime": "2018-04-10T11:20:03Z"
 		},
 		{
-			"checksumSHA1": "1lJbdD+XAqDtYkxeVPm4/+pZd68=",
+			"checksumSHA1": "dDn76dueLKt8WwkLDw6NTPxPCgQ=",
 			"path": "github.com/G-Node/git-module",
-			"revision": "1d1e8fe41d6a778dddbf2fc583ae272485aca728",
-			"revisionTime": "2018-04-03T14:20:06Z"
+			"revision": "c0f9136b39be8f6a930809e8fb563a140c787be8",
+			"revisionTime": "2018-11-26T13:39:30Z"
 		},
 		{
 			"checksumSHA1": "cupqvQ99dtoFA4VpoqjY9x7c2eM=",
@@ -44,10 +44,16 @@
 			"revision": ""
 		},
 		{
-			"checksumSHA1": "h5Q1o+kA7VMAR5QpBzVJZbBEgC0=",
+			"checksumSHA1": "gK3hT9zj3pQS5UiYG0j3wKzHcK4=",
+			"path": "github.com/G-Node/libgin/libgin",
+			"revision": "f1b9f370a6c62ece4e804e335236ec30447a1df2",
+			"revisionTime": "2018-12-06T14:35:50Z"
+		},
+		{
+			"checksumSHA1": "s+CthU3jnDZx1F6sOfsEvRLFjBE=",
 			"path": "github.com/Sirupsen/logrus",
-			"revision": "881bee4e20a5d11a6a88a5667c6f292072ac1963",
-			"revisionTime": "2016-12-02T02:35:07Z"
+			"revision": "e54a77765aca7bbdd8e56c1c54f60579968b2dc9",
+			"revisionTime": "2018-07-02T05:55:18Z"
 		},
 		{
 			"checksumSHA1": "IyfS7Rbl6OgR83QR7TOfKdDCq+M=",
@@ -542,6 +548,12 @@
 			"revisionTime": "2017-09-15T19:08:28Z"
 		},
 		{
+			"checksumSHA1": "BGm8lKZmvJbf/YOJLeL1rw2WVjA=",
+			"path": "golang.org/x/crypto/ssh/terminal",
+			"revision": "a49355c7e3f8fe157a85be2f77e6e269a0f89602",
+			"revisionTime": "2018-06-20T09:14:27Z"
+		},
+		{
 			"checksumSHA1": "PF6VjvpNpOdR8epWH1Liyy7x1Qg=",
 			"path": "golang.org/x/image/tiff/lzw",
 			"revision": "f7e31b4ea2e3413ab91b4e7d2dc83e5f8d19a44c",
@@ -746,10 +758,10 @@
 			"revisionTime": "2014-12-09T11:07:59Z"
 		},
 		{
-			"checksumSHA1": "12GqsW8PiRPnezDDy0v4brZrndM=",
+			"checksumSHA1": "ZSWoOPUNRr5+3dhkLK3C4cZAQPk=",
 			"path": "gopkg.in/yaml.v2",
-			"revision": "a5b47d31c556af34a302ce5d659e6fea44d90de0",
-			"revisionTime": "2016-09-28T15:37:09Z"
+			"revision": "5420a8b6744d3b0345ab293f6fcba19c978f1183",
+			"revisionTime": "2018-03-28T19:50:20Z"
 		}
 	],
 	"rootPath": "github.com/G-Node/gogs"
