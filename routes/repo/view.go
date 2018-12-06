@@ -64,7 +64,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 	c.Data["DOI"] = false
 	var readmeFile *git.Blob
 	for _, entry := range entries {
-		if entry.IsDir() || (!markup.IsReadmeFile(entry.Name()) && !(entry.Name() == "datacite.yml") && !(entry.Name() == "LICENSE")) {
+		if entry.IsDir() || !markup.IsReadmeFile(entry.Name()) && entry.Name() != "datacite.yml" && entry.Name() != "LICENSE" {
 			continue
 		}
 
@@ -76,21 +76,21 @@ func renderDirectory(c *context.Context, treeLink string) {
 			c.Data["DOI"] = true
 			doiData, err := entry.Blob().Data()
 			if err != nil {
-				log.Trace("Doi Blob could not be read:%v", err)
+				log.Trace("DOI Blob could not be read: %v", err)
 			}
 			buf, err := ioutil.ReadAll(doiData)
 			doiInfo := libgin.DOIRegInfo{}
 			err = yaml.Unmarshal(buf, &doiInfo)
 			if err != nil {
-				log.Trace("Doi Blob could not be unmarshalled:%v", err)
+				log.Trace("DOI Blob could not be unmarshalled: %v", err)
 			}
-			c.Data["DoiInfo"] = &doiInfo
+			c.Data["DOIInfo"] = &doiInfo
 
 			doi := GDoiRepo(c, setting.Doi.DoiBase)
 			//ddata, err := ginDoi.GDoiMData(doi, "https://api.datacite.org/works/") //todo configure URL?
 
-			c.Data["DoiReg"] = libgin.IsRegisteredDOI(doi)
-			c.Data["doi"] = doi
+			c.Data["DOIReg"] = libgin.IsRegisteredDOI(doi)
+			c.Data["DOI"] = doi
 
 		}
 	}
