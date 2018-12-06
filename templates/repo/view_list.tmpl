@@ -71,6 +71,6 @@
 {{if and .ReadmeExist .IsTextFile}}
 	{{template "repo/view_file" .}}
 {{end}}
-{{if and .DOI .IsTextFile}}
+{{if and .HasDatacite .IsTextFile}}
 	{{template "repo/doifile" .}}
 {{end}}
