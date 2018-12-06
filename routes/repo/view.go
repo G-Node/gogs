@@ -73,7 +73,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 			setting.UI.MaxDisplayFileSize {
 			readmeFile = entry.Blob()
 		} else if entry.Name() == "datacite.yml" {
-			c.Data["DOI"] = true
+			c.Data["HasDatacite"] = true
 			doiData, err := entry.Blob().Data()
 			if err != nil {
 				log.Trace("DOI Blob could not be read: %v", err)
