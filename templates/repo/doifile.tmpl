@@ -13,36 +13,36 @@
 				<tbody>
 				<tr>
 						<td>Title</td>
-						<td>{{.DoiInfo.Title}}</td>
+						<td>{{.DOIInfo.Title}}</td>
 				</tr>
 				<tr>
 						<td>Authors</td>
 						<td>
-								{{range $index, $auth := .DoiInfo.Authors}}
+								{{range $index, $auth := .DOIInfo.Authors}}
 								{{ $auth.RenderAuthor }}
 								<br>
 								{{end}}
 						</td>
 				</tr>
-				{{if .DoiInfo.Description}}
+				{{if .DOIInfo.Description}}
 				<tr>
 						<td>Description</td>
-						<td>{{.DoiInfo.Description}}
+						<td>{{.DOIInfo.Description}}
 						</td>
 				</tr>
 				{{end}}
-				{{if .DoiInfo.License}}
+				{{if .DOIInfo.License}}
 				<tr>
 						<td>License</td>
-						<td>{{.DoiInfo.License.Name}} ({{.DoiInfo.License.Url}})
+						<td>{{.DOIInfo.License.Name}} ({{.DOIInfo.License.URL}})
 						</td>
 				</tr>
 				{{end}}
 				<tr>
 						<td>References</td>
 						<td>
-								{{range $index, $ref := .DoiInfo.References}}
-								{{ $ref.Name }} [{{ $ref.Doi }}] ({{ $ref.Reftype }})
+								{{range $index, $ref := .DOIInfo.References}}
+								{{ $ref.Name }} [{{ $ref.DOI }}] ({{ $ref.Reftype }})
 								<br>
 								{{end}}
 						</td>
@@ -50,17 +50,17 @@
 				<tr>
 						<td>Funding</td>
 						<td>
-								{{range $index, $ref := .DoiInfo.Funding}}
+								{{range $index, $ref := .DOIInfo.Funding}}
 								{{ $ref}}
 								<br>
 								{{end}}
 						</td>
 				</tr>
-				{{if .DoiInfo.Keywords}}
+				{{if .DOIInfo.Keywords}}
 				<tr>
 						<td>Keywords</td>
 						<td>
-								{{range $index, $sub := .DoiInfo.Keywords}}
+								{{range $index, $sub := .DOIInfo.Keywords}}
 								{{ $sub }}
 								<br>
 								{{end}}
@@ -69,7 +69,7 @@
 				<tr>
 					<td>Resource Type</td>
 					<td>
-						<i>{{.DoiInfo.GetType}}</i><br>
+						<i>{{.DOIInfo.GetType}}</i><br>
 					</td>
 				</tr>
 				{{end}}
