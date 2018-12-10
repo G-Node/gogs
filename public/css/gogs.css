@@ -65,7 +65,7 @@ code.wrap {
 }
 .full.height {
   padding: 0;
-  margin: 0 0 -80px 0;
+  margin: 0 0 -200px 0;
   min-height: 100%;
 }
 .following.bar {
@@ -315,8 +315,8 @@ code.wrap {
   font-weight: 700 !important;
 }
 footer {
-  margin-top: 54px !important;
-  height: 40px;
+  margin-top: 114px !important;
+  height: 100px;
   background-color: white;
   border-top: 1px solid #d6d6d6;
   clear: both;
@@ -879,7 +879,7 @@ footer .ui.language .menu {
   border-top: 0;
 }
 .home {
-  padding-bottom: 80px;
+  padding-bottom: 200px;
 }
 .home .logo {
   margin-bottom: 20px;
@@ -910,11 +910,11 @@ footer .ui.language .menu {
 }
 .signup {
   padding-top: 15px;
-  padding-bottom: 80px;
+  padding-bottom: 200px;
 }
 .install {
   padding-top: 45px;
-  padding-bottom: 80px;
+  padding-bottom: 200px;
 }
 .install form label {
   text-align: right;
@@ -1138,7 +1138,7 @@ footer .ui.language .menu {
 }
 .repository {
   padding-top: 15px;
-  padding-bottom: 80px;
+  padding-bottom: 200px;
 }
 .repository .head .column {
   padding-top: 5px !important;
@@ -2770,7 +2770,7 @@ footer .ui.language .menu {
 }
 .organization {
   padding-top: 15px;
-  padding-bottom: 80px;
+  padding-bottom: 200px;
 }
 .organization .head .ui.header .text {
   vertical-align: middle;
@@ -2895,7 +2895,7 @@ footer .ui.language .menu {
 }
 .user:not(.icon) {
   padding-top: 15px;
-  padding-bottom: 80px;
+  padding-bottom: 200px;
 }
 .user.settings .list .item.ui.grid {
   margin-top: 15px;
@@ -2981,7 +2981,7 @@ footer .ui.language .menu {
 }
 .dashboard {
   padding-top: 15px;
-  padding-bottom: 80px;
+  padding-bottom: 200px;
 }
 .dashboard.feeds .context.user.menu,
 .dashboard.issues .context.user.menu {
@@ -3118,7 +3118,7 @@ footer .ui.language .menu {
 }
 .admin {
   padding-top: 15px;
-  padding-bottom: 80px;
+  padding-bottom: 200px;
 }
 .admin .table.segment {
   padding: 0;
@@ -3175,7 +3175,7 @@ footer .ui.language .menu {
 }
 .explore {
   padding-top: 15px;
-  padding-bottom: 80px;
+  padding-bottom: 200px;
 }
 .explore .navbar .octicon {
   width: 16px;
@@ -3234,20 +3234,13 @@ footer .ui.language .menu {
   font-family: "Kaushan Script", "Helvetica Neue", Helvetica, Arial, cursive;
   font-size: 16px;
 }
-.bmbf {
-  width: 80px;
-}
 .supersmall {
   padding-left: 10px;
   font-size: 0.8em;
   text-align: left;
 }
 .leftspace {
-  padding-left: 40px;
-}
-.gogssmall {
-  height: 40px;
-  align-content: center;
+  padding-left: 20px;
 }
 figure {
   float: right;
@@ -3278,11 +3271,6 @@ figure figcaption {
   font-family: "Kaushan Script", "Helvetica Neue", Helvetica, Arial, cursive;
   font-size: 16px;
 }
-.bmbf {
-  width: 50px;
-  margin-left: auto;
-  margin-right: auto;
-}
 .supersmall {
   padding-left: 10px;
   font-size: 0.8em;
@@ -3290,12 +3278,6 @@ figure figcaption {
 }
 .leftspace {
   padding-left: 40px;
-}
-.gogssmall {
-  height: 30px;
-  align-content: center;
-  margin-left: auto;
-  margin-right: auto;
 }
 figure {
   float: right;
@@ -3329,17 +3311,17 @@ figure figcaption {
   float: left;
   background-color: #5b5b5b;
   color: white;
-  border-top-left-radius: .28571429rem;
-  border-bottom-left-radius: .28571429rem;
-  padding: .833em 1em;
+  border-top-left-radius: 0.28571429rem;
+  border-bottom-left-radius: 0.28571429rem;
+  padding: 0.833em 1em;
 }
 .gin.doinr {
   background-color: #2185D0;
   float: right;
   color: white;
-  border-top-right-radius: .28571429rem;
-  border-bottom-right-radius: .28571429rem;
-  padding: .833em 1em;
+  border-top-right-radius: 0.28571429rem;
+  border-bottom-right-radius: 0.28571429rem;
+  padding: 0.833em 1em;
 }
 .ui.image.label.nobg {
   background: none;
@@ -3366,7 +3348,7 @@ textarea#description {
   border-radius: 500rem;
   border-color: #767676 transparent transparent;
   border-style: solid;
-  border-width: .2em;
+  border-width: 0.2em;
   box-shadow: 0 0 0 1px transparent;
 }
 /*--------------
@@ -3453,14 +3435,19 @@ textarea#description {
   text-align: center;
 }
 #file-buttons > a:first-child {
-  border-top-left-radius: .28571429rem;
-  border-bottom-left-radius: .28571429rem;
+  border-top-left-radius: 0.28571429rem;
+  border-bottom-left-radius: 0.28571429rem;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 .textnode.focusable.whitespace {
   display: none !important;
 }
+.footericon {
+  height: 40px;
+  vertical-align: middle;
+}
 .footertext {
-  font-size: 0.5rem;
+  font-size: 1rem;
+  vertical-align: middle;
 }
