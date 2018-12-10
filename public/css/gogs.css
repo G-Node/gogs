@@ -65,7 +65,7 @@ code.wrap {
 }
 .full.height {
   padding: 0;
-  margin: 0 0 -80px 0;
+  margin: 0 0 -200px 0;
   min-height: 100%;
 }
 .following.bar {
@@ -295,7 +295,7 @@ code.wrap {
   border-top: none;
   line-height: 1em;
   color: rgba(0, 0, 0, 0.8);
-  padding: .71428571em 1.14285714em !important;
+  padding: 0.71428571em 1.14285714em !important;
   font-size: 1rem;
   text-transform: none;
   font-weight: 400;
@@ -314,8 +314,8 @@ code.wrap {
   font-weight: 700 !important;
 }
 footer {
-  margin-top: 54px !important;
-  height: 40px;
+  margin-top: 114px !important;
+  height: 100px;
   background-color: white;
   border-top: 1px solid #d6d6d6;
   clear: both;
@@ -864,7 +864,7 @@ footer .ui.language .menu {
   border-top: 0;
 }
 .home {
-  padding-bottom: 80px;
+  padding-bottom: 200px;
 }
 .home .logo {
   margin-bottom: 20px;
@@ -895,11 +895,11 @@ footer .ui.language .menu {
 }
 .signup {
   padding-top: 15px;
-  padding-bottom: 80px;
+  padding-bottom: 200px;
 }
 .install {
   padding-top: 45px;
-  padding-bottom: 80px;
+  padding-bottom: 200px;
 }
 .install form label {
   text-align: right;
@@ -929,8 +929,8 @@ footer .ui.language .menu {
 }
 .form .help {
   color: #999999;
-  padding-top: .6em;
-  padding-bottom: .6em;
+  padding-top: 0.6em;
+  padding-bottom: 0.6em;
   display: inline-block;
   word-break: break-word;
 }
@@ -1123,7 +1123,7 @@ footer .ui.language .menu {
 }
 .repository {
   padding-top: 15px;
-  padding-bottom: 80px;
+  padding-bottom: 200px;
 }
 .repository .head .column {
   padding-top: 5px !important;
@@ -1241,7 +1241,7 @@ footer .ui.language .menu {
   padding: 0 5px;
 }
 .repository #clone-panel .clone.button:first-child {
-  border-radius: .28571429rem 0 0 .28571429rem;
+  border-radius: 0.28571429rem 0 0 0.28571429rem;
 }
 .repository #clone-panel .icon.button {
   padding: 0 10px;
@@ -1409,7 +1409,7 @@ footer .ui.language .menu {
   background-color: #f5f2f0;
   font-family: Consolas, Monaco, 'Andale Mono', monospace;
   padding: 1em;
-  margin: .5em 0;
+  margin: 0.5em 0;
 }
 .repository.file.list #file-content #ipython-notebook .nb-input:before,
 .repository.file.list #file-content #ipython-notebook .nb-output:before {
@@ -2148,7 +2148,7 @@ footer .ui.language .menu {
 }
 .repository .diff-file-box .code-diff tbody tr.tag-code td {
   background-color: #F0F0F0 !important;
-  border-color: #D2CECE!important;
+  border-color: #D2CECE !important;
   padding-top: 4px;
   padding-bottom: 4px;
 }
@@ -2208,7 +2208,7 @@ footer .ui.language .menu {
   font-weight: normal;
 }
 .repository.quickstart .guide .clone.button:first-child {
-  border-radius: .28571429rem 0 0 .28571429rem;
+  border-radius: 0.28571429rem 0 0 0.28571429rem;
 }
 .repository.quickstart .guide .ui.action.small.input {
   width: 100%;
@@ -2486,10 +2486,10 @@ footer .ui.language .menu {
 }
 .issue.list > .item .desc a.milestone {
   padding-left: 5px;
-  color: #999!important;
+  color: #999 !important;
 }
 .issue.list > .item .desc a.milestone:hover {
-  color: #000!important;
+  color: #000 !important;
 }
 .issue.list > .item .desc .assignee {
   margin-top: -5px;
@@ -2732,7 +2732,7 @@ footer .ui.language .menu {
 }
 .organization {
   padding-top: 15px;
-  padding-bottom: 80px;
+  padding-bottom: 200px;
 }
 .organization .head .ui.header .text {
   vertical-align: middle;
@@ -2857,7 +2857,7 @@ footer .ui.language .menu {
 }
 .user:not(.icon) {
   padding-top: 15px;
-  padding-bottom: 80px;
+  padding-bottom: 200px;
 }
 .user.settings .list .item.ui.grid {
   margin-top: 15px;
@@ -2940,7 +2940,7 @@ footer .ui.language .menu {
 }
 .dashboard {
   padding-top: 15px;
-  padding-bottom: 80px;
+  padding-bottom: 200px;
 }
 .dashboard.feeds .context.user.menu,
 .dashboard.issues .context.user.menu {
@@ -3076,7 +3076,7 @@ footer .ui.language .menu {
 }
 .admin {
   padding-top: 15px;
-  padding-bottom: 80px;
+  padding-bottom: 200px;
 }
 .admin .table.segment {
   padding: 0;
@@ -3130,7 +3130,7 @@ footer .ui.language .menu {
 }
 .explore {
   padding-top: 15px;
-  padding-bottom: 80px;
+  padding-bottom: 200px;
 }
 .explore .navbar .octicon {
   width: 16px;
@@ -3189,20 +3189,13 @@ footer .ui.language .menu {
   font-family: "Kaushan Script", "Helvetica Neue", Helvetica, Arial, cursive;
   font-size: 16px;
 }
-.bmbf {
-  width: 80px;
-}
 .supersmall {
   padding-left: 10px;
   font-size: 0.8em;
   text-align: left;
 }
 .leftspace {
-  padding-left: 40px;
-}
-.gogssmall {
-  height: 40px;
-  align-content: center;
+  padding-left: 20px;
 }
 figure {
   float: right;
@@ -3233,11 +3226,6 @@ figure figcaption {
   font-family: "Kaushan Script", "Helvetica Neue", Helvetica, Arial, cursive;
   font-size: 16px;
 }
-.bmbf {
-  width: 50px;
-  margin-left: auto;
-  margin-right: auto;
-}
 .supersmall {
   padding-left: 10px;
   font-size: 0.8em;
@@ -3245,12 +3233,6 @@ figure figcaption {
 }
 .leftspace {
   padding-left: 40px;
-}
-.gogssmall {
-  height: 30px;
-  align-content: center;
-  margin-left: auto;
-  margin-right: auto;
 }
 figure {
   float: right;
@@ -3284,17 +3266,17 @@ figure figcaption {
   float: left;
   background-color: #5b5b5b;
   color: white;
-  border-top-left-radius: .28571429rem;
-  border-bottom-left-radius: .28571429rem;
-  padding: .833em 1em;
+  border-top-left-radius: 0.28571429rem;
+  border-bottom-left-radius: 0.28571429rem;
+  padding: 0.833em 1em;
 }
 .gin.doinr {
   background-color: #2185D0;
   float: right;
   color: white;
-  border-top-right-radius: .28571429rem;
-  border-bottom-right-radius: .28571429rem;
-  padding: .833em 1em;
+  border-top-right-radius: 0.28571429rem;
+  border-bottom-right-radius: 0.28571429rem;
+  padding: 0.833em 1em;
 }
 .ui.image.label.nobg {
   background: none;
@@ -3321,7 +3303,7 @@ textarea#description {
   border-radius: 500rem;
   border-color: #767676 transparent transparent;
   border-style: solid;
-  border-width: .2em;
+  border-width: 0.2em;
   box-shadow: 0 0 0 1px transparent;
 }
 /*--------------
@@ -3408,14 +3390,19 @@ textarea#description {
   text-align: center;
 }
 #file-buttons > a:first-child {
-  border-top-left-radius: .28571429rem;
-  border-bottom-left-radius: .28571429rem;
+  border-top-left-radius: 0.28571429rem;
+  border-bottom-left-radius: 0.28571429rem;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 .textnode.focusable.whitespace {
   display: none !important;
 }
+.footericon {
+  height: 40px;
+  vertical-align: middle;
+}
 .footertext {
-  font-size: 0.5rem;
+  font-size: 1rem;
+  vertical-align: middle;
 }

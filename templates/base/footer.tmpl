@@ -1,79 +1,49 @@
 {{/*
 <html>
 <body>
-<div>
-	*/}}
-</div>
-<footer>
-	<div class="following bar light">
-	<div class="ui container">
-	<div class="ui grid">
-		<div class="column">
-			<div class="ui top secondary menu center">
-				<a class="item brand footertext" href="http://www.g-node.org">
-					<img class="ui mini image"
-							 src="https://projects.g-node.org/assets/gnode-bootstrap-theme/1.2.0-snapshot/img/gnode-icon-50x50-transparent.png"/>
-					© G-Node, 2016-2018
-				</a>
-				<a class="item brand footertext" href="/G-Node/Info/wiki/about">About</a>
-				<a class="item brand footertext" href="/G-Node/Info/wiki/imprint">Imprint</a>
-				<a class="item brand footertext" href="/G-Node/Info/wiki/contact">Contact</a>
-				<a class="item brand footertext" href="/G-Node/Info/wiki/Terms+of+Use">Terms of Use</a>
-				<a class="item brand footertext " href="/G-Node/Info/wiki/Datenschutz">Datenschutz</a>
-
-
-				<div class="ui supersmall leftspace">
-					Powered by:
-					<a href="https://github.com/gogits/gogs">
-						<img class="ui gogssmall image" src="{{AppSubURL}}/img/gogs.svg"/>
-					</a>
-				</div>
-				<div class="ui supersmall">
-					Hosted by:
-					<a href="http://neuro.bio.lmu.de">
-					<img class="ui bmbf image" src="{{AppSubURL}}/img/lmu.png"/>
-					</a>
-				</div>
-				<div class="ui supersmall">
-					Funded by:
-					<a href="http://www.bmbf.de">
-					<img class="ui bmbf image" src="{{AppSubURL}}/img/bmbf.png"/>
-					</a>
-				</div>
-				<div class="ui supersmall">
-					Registered with:
-					<a href="http://doi.org/10.17616/R3SX9N">
-						<img class="ui bmbf image" src="{{AppSubURL}}/img/re3.png"/>
-					</a>
-				</div>
-				<div class="ui supersmall">
-					Recommended by:
-					<a href="https://www.nature.com/sdata/policies/repositories#neurosci">
-						<img class="ui gogssmall image" src="{{AppSubURL}}/img/sdatarecbadge.jpg"/>
-					</a>
-				</div>
+	<div>
+*/}}
+	</div>
+	<footer>
+		<div class="ui container">
+			<div class="ui center links item brand footertext">
+				<a href="http://www.g-node.org"><img class="ui mini footericon" src="https://projects.g-node.org/assets/gnode-bootstrap-theme/1.2.0-snapshot/img/gnode-icon-50x50-transparent.png"/>© G-Node, 2016-2018</a>
+				<a href="/G-Node/Info/wiki/about">About</a>
+				<a href="/G-Node/Info/wiki/imprint">Imprint</a>
+				<a href="/G-Node/Info/wiki/contact">Contact</a>
+				<a href="/G-Node/Info/wiki/Terms+of+Use">Terms of Use</a>
+				<a href="/G-Node/Info/wiki/Datenschutz">Datenschutz</a>
+			</div>
+			<div class="ui center links item brand footertext">
+				<span>Powered by:      <a href="https://github.com/gogits/gogs"><img class="ui mini footericon" src="{{AppSubURL}}/img/gogs.svg"/></a>         </span>
+				<span>Hosted by:       <a href="http://neuro.bio.lmu.de"><img class="ui mini footericon" src="{{AppSubURL}}/img/lmu.png"/></a>          </span>
+				<span>Funded by:       <a href="http://www.bmbf.de"><img class="ui mini footericon" src="{{AppSubURL}}/img/bmbf.png"/></a>         </span>
+				<span>Registered with: <a href="http://doi.org/10.17616/R3SX9N"><img class="ui mini footericon" src="{{AppSubURL}}/img/re3.png"/></a>          </span>
+				<span>Recommended by:  <a href="https://www.nature.com/sdata/policies/repositories#neurosci"><img class="ui mini footericon" src="{{AppSubURL}}/img/sdatarecbadge.jpg"/><a href="https://journals.plos.org/plosone/s/data-availability#loc-neuroscience"><img class="ui mini footericon" src="{{AppSubURL}}/img/sm_bug-for-trademark-page.png"/></a></span>
 			</div>
 		</div>
-	</div>
-</footer>
+	</footer>
 </body>
 
 <!-- Third-party libraries -->
 {{if .RequireHighlightJS}}
-<link rel="stylesheet" href="{{AppSubURL}}/plugins/highlight-9.6.0/github.css">
-<script src="{{AppSubURL}}/plugins/highlight-9.6.0/highlight.pack.js"></script>
+	<link rel="stylesheet" href="{{AppSubURL}}/plugins/highlight-9.6.0/github.css">
+	<script src="{{AppSubURL}}/plugins/highlight-9.6.0/highlight.pack.js"></script>
 {{end}}
 {{if .RequireMinicolors}}
-<link rel="stylesheet" href="{{AppSubURL}}/plugins/jquery.minicolors-2.2.3/jquery.minicolors.css">
-<script src="{{AppSubURL}}/plugins/jquery.minicolors-2.2.3/jquery.minicolors.min.js"></script>
+	<link rel="stylesheet" href="{{AppSubURL}}/plugins/jquery.minicolors-2.2.3/jquery.minicolors.css">
+	<script src="{{AppSubURL}}/plugins/jquery.minicolors-2.2.3/jquery.minicolors.min.js"></script>
 {{end}}
 {{if .RequireDatetimepicker}}
-<link rel="stylesheet" href="{{AppSubURL}}/plugins/jquery.datetimepicker-2.4.5/jquery.datetimepicker.css">
-<script src="{{AppSubURL}}/plugins/jquery.datetimepicker-2.4.5/jquery.datetimepicker.js"></script>
+	<link rel="stylesheet" href="{{AppSubURL}}/plugins/jquery.datetimepicker-2.4.5/jquery.datetimepicker.css">
+	<script src="{{AppSubURL}}/plugins/jquery.datetimepicker-2.4.5/jquery.datetimepicker.js"></script>
 {{end}}
 {{if .RequireDropzone}}
-<link rel="stylesheet" href="{{AppSubURL}}/plugins/dropzone-4.2.0/dropzone.css">
-<script src="{{AppSubURL}}/plugins/dropzone-4.2.0/dropzone.js"></script>
+	<link rel="stylesheet" href="{{AppSubURL}}/plugins/dropzone-4.2.0/dropzone.css">
+	<script src="{{AppSubURL}}/plugins/dropzone-4.2.0/dropzone.js"></script>
+{{end}}
+{{if .RequireAutosize}}
+	<script src="{{AppSubURL}}/plugins/autosize-4.0.2/autosize.min.js"></script>
 {{end}}
 <script src="{{AppSubURL}}/js/libs/emojify-1.1.0.min.js"></script>
 <script src="{{AppSubURL}}/js/libs/clipboard-1.5.9.min.js"></script>
