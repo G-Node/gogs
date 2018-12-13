@@ -50,10 +50,10 @@
 			"revision": ""
 		},
 		{
-			"checksumSHA1": "ivLQm0J9hV8UR3+YYR7BugdZLsg=",
+			"checksumSHA1": "HM8GI780IYgrBjmQfEB8YXN4Gbs=",
 			"path": "github.com/G-Node/libgin/libgin",
-			"revision": "826bc3c293a0109c9c89cc5d463fc58156a240c0",
-			"revisionTime": "2018-12-12T19:25:09Z"
+			"revision": "c5e0b86f5b8b481b061df2926eea96e7e7793eca",
+			"revisionTime": "2018-12-13T18:01:10Z"
 		},
 		{
 			"checksumSHA1": "s+CthU3jnDZx1F6sOfsEvRLFjBE=",
