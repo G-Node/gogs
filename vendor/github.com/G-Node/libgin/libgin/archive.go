@@ -9,21 +9,20 @@ import (
 	"strings"
 )
 
-// MkZip walks the directory tree rooted at src and writes each file found to the given writers.
-// The function accepts multiple writers to allow for multiple outputs (e.g., a file or md5 hash).
-func MkZip(src string, writers ...io.Writer) error {
-	// ensure the src actually exists before trying to zip it
-	if _, err := os.Stat(src); err != nil {
-		return fmt.Errorf("Unable to zip files: %s", err.Error())
+// MakeZip creates a zip archive called dest from the files specified by source.
+// Any directories listed in source are archived recursively.
+func MakeZip(dest io.Writer, source ...string) error {
+	// check sources
+	for _, src := range source {
+		if _, err := os.Stat(src); err != nil {
+			return fmt.Errorf("Cannot access '%s': %s", src, err.Error())
+		}
 	}
 
-	mw := io.MultiWriter(writers...)
+	zipwriter := zip.NewWriter(dest)
+	defer zipwriter.Close()
 
-	tw := zip.NewWriter(mw)
-	defer tw.Close()
-
-	// walk path
-	return filepath.Walk(src, func(file string, fi os.FileInfo, err error) error {
+	walker := func(filepath string, fi os.FileInfo, err error) error {
 
 		// return on any error
 		if err != nil {
@@ -35,23 +34,24 @@ func MkZip(src string, writers ...io.Writer) error {
 		if err != nil {
 			return err
 		}
+
 		// update the name to correctly reflect the desired destination when unzipping
-		header.Name = strings.TrimPrefix(strings.Replace(file, src, "", -1), string(filepath.Separator))
+		// header.Name = strings.TrimPrefix(strings.Replace(file, src, "", -1), string(filepath.Separator))
+		header.Name = filepath
+
+		if fi.Mode().IsDir() {
+			return nil
+		}
 
 		// write the header
-		w, err := tw.CreateHeader(header)
+		w, err := zipwriter.CreateHeader(header)
 		if err != nil {
 			return err
 		}
 
-		// return on directories since there will be no content to zip
-		if fi.Mode().IsDir() {
-			return nil
-		}
-		mode := fi.Mode()
-		fmt.Print(mode)
+		// Dereference symlinks
 		if fi.Mode()&os.ModeSymlink != 0 {
-			data, err := os.Readlink(file)
+			data, err := os.Readlink(filepath)
 			if err != nil {
 				return err
 			}
@@ -62,7 +62,7 @@ func MkZip(src string, writers ...io.Writer) error {
 		}
 
 		// open files for zipping
-		f, err := os.Open(file)
+		f, err := os.Open(filepath)
 		defer f.Close()
 		if err != nil {
 			return err
@@ -74,5 +74,14 @@ func MkZip(src string, writers ...io.Writer) error {
 		}
 
 		return nil
-	})
+	}
+
+	// walk path
+	for _, src := range source {
+		err := filepath.Walk(src, walker)
+		if err != nil {
+			return fmt.Errorf("Error adding %s to zip file: %s", src, err.Error())
+		}
+	}
+	return nil
 }

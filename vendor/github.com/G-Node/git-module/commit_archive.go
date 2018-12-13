@@ -30,6 +30,7 @@ func (c *Commit) CreateArchive(target string, archiveType ArchiveType, cloneL st
 	case TARGZ:
 		format = "tar.gz"
 	case GIN:
+		// TODO: Fix me!
 		to := filepath.Join(setting.Repository.Upload.TempPath, "archives", filepath.Base(strings.TrimSuffix(c.repo.Path, ".git")))
 		defer os.RemoveAll(to)
 		_, err := NewCommand("clone", c.repo.Path, to).RunTimeout(-1)
@@ -45,7 +46,7 @@ func (c *Commit) CreateArchive(target string, archiveType ArchiveType, cloneL st
 		if err != nil {
 			return err
 		}
-		err = libgin.MkZip(to, fp)
+		err = libgin.MakeZip(fp, to)
 		return err
 	default:
 		return fmt.Errorf("unknown format: %v", archiveType)

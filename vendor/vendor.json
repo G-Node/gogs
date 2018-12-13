@@ -21,13 +21,19 @@
 			"revisionTime": "2018-03-12T09:17:42Z"
 		},
 		{
+			"checksumSHA1": "o9pe3rcDJtawufeidpMJsu4ZtFM=",
+			"path": "github.com/G-Node/gin-doi/cmd/gindoid",
+			"revision": "b72b4a917fa7e5d57da00b071410d06bbdcacf62",
+			"revisionTime": "2018-12-12T20:16:20Z"
+		},
+		{
 			"checksumSHA1": "AbB5Bym9LWwC7RDCCBioMlZaqhA=",
 			"path": "github.com/G-Node/gin-doi/src",
 			"revision": "d6def0df8541a1984874a36ec125152f57fe3ba7",
 			"revisionTime": "2018-04-10T11:20:03Z"
 		},
 		{
-			"checksumSHA1": "JlYHUnql8P/G1SL8LYVZ0IpuUgY=",
+			"checksumSHA1": "V0zjmnydVKKxNJfyobKL5cKCN/g=",
 			"path": "github.com/G-Node/git-module",
 			"revision": "f0e8a2072f9991c76ac81d90aea579ac4e5f1a15",
 			"revisionTime": "2018-12-07T17:41:12Z"
@@ -44,10 +50,10 @@
 			"revision": ""
 		},
 		{
-			"checksumSHA1": "gEf/MJ/hjvUMzYnGTkhd7JJhfCY=",
+			"checksumSHA1": "ivLQm0J9hV8UR3+YYR7BugdZLsg=",
 			"path": "github.com/G-Node/libgin/libgin",
-			"revision": "01566bb6f633cd8db8a9cd430ed6290df7a0d3db",
-			"revisionTime": "2018-12-07T17:44:40Z"
+			"revision": "826bc3c293a0109c9c89cc5d463fc58156a240c0",
+			"revisionTime": "2018-12-12T19:25:09Z"
 		},
 		{
 			"checksumSHA1": "s+CthU3jnDZx1F6sOfsEvRLFjBE=",
