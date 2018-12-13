@@ -11,7 +11,7 @@ import (
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/pkg/setting"
 	"github.com/G-Node/libgin/libgin"
-	"github.com/Sirupsen/logrus"
+	log "gopkg.in/clog.v1"
 )
 
 const (
@@ -60,7 +60,7 @@ func ExploreData(c *context.Context) {
 	c.Data["Keywords"] = keywords
 	sType, err := strconv.ParseInt(c.Query("stype"), 10, 0)
 	if err != nil {
-		logrus.Errorf("Serach type not understood:%+v", err)
+		log.Error(2, "Search type not understood: %s", err.Error())
 		sType = 0
 	}
 	data, err := Search(c, keywords, sType)
@@ -88,13 +88,13 @@ func ExploreCommits(c *context.Context) {
 	keywords := c.Query("q")
 	sType, err := strconv.ParseInt(c.Query("stype"), 10, 0)
 	if err != nil {
-		logrus.Errorf("Serach type not understood:%+v", err)
+		log.Error(2, "Search type not understood: %s", err.Error())
 		sType = 0
 	}
 	data, err := Search(c, keywords, sType)
 
 	if err != nil {
-		c.Handle(http.StatusInternalServerError, "Could nor querry", err)
+		c.Handle(http.StatusInternalServerError, "Could not query", err)
 		return
 	}
 
