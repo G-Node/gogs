@@ -6,12 +6,11 @@ import (
 	"encoding/hex"
 	"encoding/xml"
 	"fmt"
+	"log"
 	"net/http"
 	"regexp"
 	"strings"
 	"time"
-
-	log "github.com/Sirupsen/logrus"
 )
 
 // NOTE: TEMPORARY COPIES FROM gin-doi
@@ -73,7 +72,7 @@ func (c *DOIRegInfo) GetCitation() string {
 func (c *DOIRegInfo) EscXML(txt string) string {
 	buf := new(bytes.Buffer)
 	if err := xml.EscapeText(buf, []byte(txt)); err != nil {
-		log.Errorf("Could not escape:%s, %+v", txt, err)
+		log.Printf("Could not escape: %s :: %s", txt, err.Error())
 		return ""
 	}
 	return buf.String()
@@ -125,7 +124,7 @@ func IsRegisteredDOI(doi string) bool {
 	url := fmt.Sprintf("https://doi.org/%s", doi)
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Errorf("Could not query for doi: %s at %s", doi, url)
+		log.Printf("Could not query for DOI: %s at %s", doi, url)
 		return false
 	}
 	if resp.StatusCode != http.StatusNotFound {
