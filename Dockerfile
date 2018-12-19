@@ -5,17 +5,6 @@ WORKDIR /go/src/github.com/G-Node/gogs
 COPY . .
 RUN make build TAGS="sqlite cert pam"
 
-# RUN apt-get update &&                                   \
-#     apt-get install -y --no-install-recommends          \
-#                        gcc g++ libc6-dev make golang    \
-#                        git git-annex openssh-server     \
-#                        python-pip python-setuptools     \
-#                        socat tzdata patch    \
-#                        libpam0g-dev node-less \
-#     && rm -rf /var/lib/apt/lists/*
-
-
-
 FROM alpine:latest
 # Install system utils & Gogs runtime dependencies
 ADD https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64 /usr/sbin/gosu
@@ -36,6 +25,12 @@ RUN chmod +x /usr/sbin/gosu \
     py-pip
 
 RUN pip install supervisor pyyaml
+RUN mkdir /git-annex
+ENV PATH="${PATH}:/git-annex/git-annex.linux"
+RUN apk add --no-cache git openssh curl
+RUN curl -Lo /git-annex/git-annex-standalone-amd64.tar.gz https://downloads.kitenet.net/git-annex/linux/current/git-annex-standalone-amd64.tar.gz
+RUN cd /git-annex && tar -xzf git-annex-standalone-amd64.tar.gz && rm git-annex-standalone-amd64.tar.gz
+RUN apk del --no-cache curl
 
 ENV GOGS_CUSTOM /data/gogs
 
