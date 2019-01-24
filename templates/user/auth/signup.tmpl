@@ -12,11 +12,9 @@
 					{{if .DisableRegistration}}
 						<p>{{.i18n.Tr "auth.disable_register_prompt"}}</p>
 					{{else}}
-					<div class="ui piled yellow segment">
-						<h4 class="ui header">Please note!</h4>
-						For Registration we require only username, password and email. Please use an institutional email to
-						register. Otherwise you will only be able to use a subset of GIN's functionality and your maximum
-						repository size will be dramatically reduced
+					<div class="ui piled segment">
+						For Registration we require only username, password, and a valid email address, but adding your name and affiliation is recommended.
+						Please use an institutional email address for registration to benefit from the full set of features of GIN.
 					</div>
 					<div class="ui required inline field {{if .Err_UserName}}error{{end}}"
 							 data-tooltip="Username is used to create and to display your repositories. Choose wisely">
