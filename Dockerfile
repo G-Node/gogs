@@ -31,6 +31,7 @@ RUN apk add --no-cache git openssh curl
 RUN curl -Lo /git-annex/git-annex-standalone-amd64.tar.gz https://downloads.kitenet.net/git-annex/linux/current/git-annex-standalone-amd64.tar.gz
 RUN cd /git-annex && tar -xzf git-annex-standalone-amd64.tar.gz && rm git-annex-standalone-amd64.tar.gz
 RUN apk del --no-cache curl
+RUN ln -s /git-annex/git-annex.linux/git-annex-shell /bin/git-annex-shell
 
 ENV GOGS_CUSTOM /data/gogs
 
