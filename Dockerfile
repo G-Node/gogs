@@ -35,13 +35,6 @@ RUN ln -s /git-annex/git-annex.linux/git-annex-shell /bin/git-annex-shell
 
 ENV GOGS_CUSTOM /data/gogs
 
-#COPY . /app/gogs/build
-#WORKDIR /app/gogs/build
-
-#RUN ./docker/build-go.sh
-#RUN ./docker/build.sh
-#RUN ./docker/finalize.sh
-
 # Configure LibC Name Service
 COPY docker/nsswitch.conf /etc/nsswitch.conf
 
@@ -55,7 +48,6 @@ RUN ./docker/finalize.sh
 
 # Configure Docker Container
 VOLUME ["/data"]
-#VOLUME ["/tmp"]
 EXPOSE 22 3000
 ENTRYPOINT ["/app/gogs/docker/start.sh"]
 CMD ["/bin/s6-svscan", "/app/gogs/docker/s6/"]
