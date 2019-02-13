@@ -1,13 +1,14 @@
 package search
 
 import (
-	"net/http"
-	"github.com/G-Node/gin-dex/gindex"
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"io/ioutil"
+	"net/http"
+
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/libgin/libgin"
 )
 
 func Suggest(c *context.APIContext) {
@@ -15,8 +16,8 @@ func Suggest(c *context.APIContext) {
 		c.Status(http.StatusNotImplemented)
 		return
 	}
-	ireq := gindex.SearchRequest{Token: c.GetCookie(setting.SessionConfig.CookieName),
-		Querry: c.Params("querry"), CsrfT: c.GetCookie(setting.CSRFCookieName), SType:gindex.SEARCH_SUGGEST}
+	ireq := libgin.SearchRequest{Token: c.GetCookie(setting.SessionConfig.CookieName),
+		Querry: c.Params("querry"), CsrfT: c.GetCookie(setting.CSRFCookieName), SType: libgin.SEARCH_SUGGEST}
 	if c.IsLogged {
 		ireq.UserID = c.User.ID
 	}

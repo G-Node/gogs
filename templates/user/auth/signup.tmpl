@@ -12,11 +12,9 @@
 					{{if .DisableRegistration}}
 						<p>{{.i18n.Tr "auth.disable_register_prompt"}}</p>
 					{{else}}
-					<div class="ui piled yellow segment">
-						<h4 class="ui header">Please note!</h4>
-						For Registration we require only username, password and email. Please use an institutional email to
-						register. Otherwise you will only be able to use a subset of gins functionality and your maximum
-						repository size will be dramatically reduced
+					<div class="ui piled segment">
+						For Registration we require only username, password, and a valid email address, but adding your name and affiliation is recommended.
+						Please use an institutional email address for registration to benefit from the full set of features of GIN.
 					</div>
 					<div class="ui required inline field {{if .Err_UserName}}error{{end}}"
 							 data-tooltip="Username is used to create and to display your repositories. Choose wisely">
@@ -37,11 +35,11 @@
 						<input id="retype" name="retype" type="password" value="{{.retype}}" required>
 					</div>
 					<div class="inline field">
-						<label for="retype">Full Name</label>
+						<label for="full_name">Full Name</label>
 						<input id="full_name" name="full_name" value="{{.full_name}}">
 					</div>
 					<div class="inline field">
-						<label for="retype">Affiliation</label>
+						<label for="affiliation">Affiliation</label>
 						<input id="affiliation" name="affiliation" value="{{.affiliation}}">
 					</div>
 					{{if .EnableCaptcha}}
@@ -54,15 +52,12 @@
 						<input id="captcha" name="captcha" value="{{.captcha}}" autocomplete="off">
 					</div>
 					{{end}}
-
-					<div class="inline field">
-						<label></label>
-						<button class="ui green button">{{.i18n.Tr "auth.create_new_account"}}</button>
+					<div class="ui segment">
+						By clicking "{{.i18n.Tr "auth.create_new_account"}}"</a>, you agree to our <a href="/G-Node/Info/wiki/Terms+of+Use">Terms of Use</a> and <a href="/G-Node/Info/wiki/Datenschutz">Data Processing Policy</a>.
 					</div>
 					<div class="inline field">
 						<label></label>
-						<a href="/G-Node/Info/wiki/Terms+of+Use">By clicking "{{.i18n.Tr "auth.create_new_account"}}", you agree to
-							our Terms of Use.</a>
+						<button class="ui green button">{{.i18n.Tr "auth.create_new_account"}}</button>
 					</div>
 					{{end}}
 				</div>

@@ -5,24 +5,21 @@
 package repo
 
 import (
+	"bufio"
 	"bytes"
+	"encoding/json"
+	"encoding/xml"
 	"fmt"
 	gotemplate "html/template"
+	"io"
 	"io/ioutil"
+	"os"
 	"path"
 	"strings"
 
-	"github.com/Unknwon/paginater"
-	log "gopkg.in/clog.v1"
-
 	"github.com/G-Node/git-module"
-
-	"bufio"
-	"io"
-	"os"
-
-	"github.com/G-Node/gin-doi/src"
 	"github.com/G-Node/go-annex"
+	"github.com/G-Node/godML/odml"
 	"github.com/G-Node/gogs/models"
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/pkg/markup"
@@ -30,12 +27,12 @@ import (
 	"github.com/G-Node/gogs/pkg/template"
 	"github.com/G-Node/gogs/pkg/template/highlight"
 	"github.com/G-Node/gogs/pkg/tool"
+	"github.com/G-Node/libgin/libgin"
+	"github.com/Unknwon/paginater"
 	"github.com/go-macaron/captcha"
-	"gopkg.in/yaml.v2"
-	"github.com/G-Node/godML/odml"
-	"encoding/json"
-	"encoding/xml"
 	"golang.org/x/net/html/charset"
+	log "gopkg.in/clog.v1"
+	"gopkg.in/yaml.v2"
 )
 
 const (
@@ -67,7 +64,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 	c.Data["DOI"] = false
 	var readmeFile *git.Blob
 	for _, entry := range entries {
-		if entry.IsDir() || (!markup.IsReadmeFile(entry.Name()) && !(entry.Name() == "datacite.yml") && !(entry.Name() == "LICENSE")) {
+		if entry.IsDir() || !markup.IsReadmeFile(entry.Name()) && entry.Name() != "datacite.yml" && entry.Name() != "LICENSE" {
 			continue
 		}
 
@@ -76,24 +73,24 @@ func renderDirectory(c *context.Context, treeLink string) {
 			setting.UI.MaxDisplayFileSize {
 			readmeFile = entry.Blob()
 		} else if entry.Name() == "datacite.yml" {
-			c.Data["DOI"] = true
+			c.Data["HasDatacite"] = true
 			doiData, err := entry.Blob().Data()
 			if err != nil {
-				log.Trace("Doi Blob could not be read:%v", err)
+				log.Trace("DOI Blob could not be read: %v", err)
 			}
 			buf, err := ioutil.ReadAll(doiData)
-			doiInfo := ginDoi.CBerry{}
+			doiInfo := libgin.DOIRegInfo{}
 			err = yaml.Unmarshal(buf, &doiInfo)
 			if err != nil {
-				log.Trace("Doi Blob could not be unmarshalled:%v", err)
+				log.Trace("DOI Blob could not be unmarshalled: %v", err)
 			}
-			c.Data["DoiInfo"] = &doiInfo
+			c.Data["DOIInfo"] = &doiInfo
 
 			doi := GDoiRepo(c, setting.Doi.DoiBase)
 			//ddata, err := ginDoi.GDoiMData(doi, "https://api.datacite.org/works/") //todo configure URL?
 
-			c.Data["DoiReg"] = ginDoi.IsRegsitredDoi(doi)
-			c.Data["doi"] = doi
+			c.Data["DOIReg"] = libgin.IsRegisteredDOI(doi)
+			c.Data["DOI"] = doi
 
 		}
 	}
@@ -511,11 +508,12 @@ func Forks(c *context.Context) {
 
 // Get the (theoretical ) doi for a repository. Make sure its tge doi for the Base repo
 // in cas eits a repo from the doi user
-func GDoiRepo(c *context.Context, doiBAse string) string {
+func GDoiRepo(c *context.Context, doiBase string) string {
 	repoN := c.Repo.Repository.FullName()
 	// check whether this repo belongs to doi and is a fork
 	if c.Repo.Repository.IsFork && c.Repo.Owner.Name == "doi" {
 		repoN = c.Repo.Repository.BaseRepo.FullName()
 	}
-	return ginDoi.MakeDoi(ginDoi.RepoP2UUID(repoN), doiBAse)
+	uuid := libgin.RepoPathToUUID(repoN)
+	return doiBase + uuid[:6]
 }

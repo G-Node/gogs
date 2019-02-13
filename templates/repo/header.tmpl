@@ -33,8 +33,8 @@
 									</a>
 								</div>
 							{{end}}
-							{{if not $.DoiReg}}
-								{{if and (and $.DOI $.IsRepositoryAdmin) (not .IsPrivate)}}
+							{{if not $.DOIReg}}
+								{{if and (and $.HasDatacite $.IsRepositoryAdmin) (not .IsPrivate)}}
 								<div class="ui labeled button" tabindex="0">
 									<a class="ui basic button"
 										 href="/{{.Owner.Name}}/{{.Name}}/doi">
@@ -60,10 +60,10 @@
 								{{end}}
 							{{else}}
 										<div class="nobg ui image label">
-											<a href="https://doi.org/{{$.doi}}">
+											<a href="https://doi.org/{{$.DOI}}">
 												<div class="gin doi">DOI</div>
 											</a>
-												<div class="gin doinr">{{$.doi}}</div>
+												<div class="gin doinr">{{$.DOI}}</div>
 										</div>
 							{{end}}
 						</div>

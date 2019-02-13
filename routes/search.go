@@ -1,16 +1,17 @@
 package routes
 
 import (
-	"github.com/G-Node/gogs/pkg/context"
-	"net/http"
-	"github.com/G-Node/gin-dex/gindex"
-	"encoding/json"
 	"bytes"
-	"io/ioutil"
-	"github.com/G-Node/gogs/pkg/setting"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"strconv"
-	"github.com/Sirupsen/logrus"
+
+	"github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/libgin/libgin"
+	log "gopkg.in/clog.v1"
 )
 
 const (
@@ -24,7 +25,7 @@ func Search(c *context.Context, keywords string, sType int64) ([]byte, error) {
 		return nil, fmt.Errorf("Extended search not implemented")
 	}
 
-	ireq := gindex.SearchRequest{Token: c.GetCookie(setting.SessionConfig.CookieName),
+	ireq := libgin.SearchRequest{Token: c.GetCookie(setting.SessionConfig.CookieName),
 		Querry: keywords, CsrfT: c.GetCookie(setting.CSRFCookieName), SType: sType, UserID: -10}
 	if c.IsLogged {
 		ireq.UserID = c.User.ID
@@ -59,7 +60,7 @@ func ExploreData(c *context.Context) {
 	c.Data["Keywords"] = keywords
 	sType, err := strconv.ParseInt(c.Query("stype"), 10, 0)
 	if err != nil {
-		logrus.Errorf("Serach type not understood:%+v", err)
+		log.Error(2, "Search type not understood: %s", err.Error())
 		sType = 0
 	}
 	data, err := Search(c, keywords, sType)
@@ -68,7 +69,7 @@ func ExploreData(c *context.Context) {
 		return
 	}
 
-	res := gindex.SearchResults{}
+	res := libgin.SearchResults{}
 	err = json.Unmarshal(data, &res)
 	if err != nil {
 		c.Handle(http.StatusInternalServerError, "Could not display result", err)
@@ -87,17 +88,17 @@ func ExploreCommits(c *context.Context) {
 	keywords := c.Query("q")
 	sType, err := strconv.ParseInt(c.Query("stype"), 10, 0)
 	if err != nil {
-		logrus.Errorf("Serach type not understood:%+v", err)
+		log.Error(2, "Search type not understood: %s", err.Error())
 		sType = 0
 	}
 	data, err := Search(c, keywords, sType)
 
 	if err != nil {
-		c.Handle(http.StatusInternalServerError, "Could nor querry", err)
+		c.Handle(http.StatusInternalServerError, "Could not query", err)
 		return
 	}
 
-	res := gindex.SearchResults{}
+	res := libgin.SearchResults{}
 	err = json.Unmarshal(data, &res)
 	if err != nil {
 		c.Handle(http.StatusInternalServerError, "Could not display result", err)
@@ -105,4 +106,12 @@ func ExploreCommits(c *context.Context) {
 	}
 	c.Data["Commits"] = res.Commits
 	c.HTML(200, EXPLORE_COMMITS)
+}
+
+type SearchRequest struct {
+	Token  string
+	CsrfT  string
+	UserID int64
+	Querry string
+	SType  int64
 }
