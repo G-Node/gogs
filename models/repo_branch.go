@@ -8,9 +8,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Unknwon/com"
 	"github.com/G-Node/git-module"
+	"github.com/Unknwon/com"
 
+	"github.com/G-Node/gogs/models/errors"
 	"github.com/G-Node/gogs/pkg/tool"
 )
 

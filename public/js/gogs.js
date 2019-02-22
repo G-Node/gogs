@@ -509,14 +509,21 @@ function initRepository() {
     if ($('.repository.compare.pull').length > 0) {
         initFilterSearchDropdown('.choose.branch .dropdown');
     }
-
+    if ($('.repository.view.pull').length > 0) {
+        $('.comment.merge.box input[name=merge_style]').change(function () {
+            if ($(this).val() === 'create_merge_commit') {
+                $('.commit.description.field').show();
+            } else {
+                $('.commit.description.field').hide();
+            }
+        })
+    }
     if ($('#download-repo-button')) {
         $('#download-repo-button').click(function () {
             $('#download_modal')
                 .modal('show');
-        });
+        })
     }
-    ;
 }
 
 function initWikiForm() {
@@ -1567,6 +1574,44 @@ $(function () {
     $('form').areYouSure();
 });
 
+// getByteLen counts bytes in a string's UTF-8 representation.
+function getByteLen(normalVal) {
+    // Force string type
+    normalVal = String(normalVal);
+
+    var byteLen = 0;
+    for (var i = 0; i < normalVal.length; i++) {
+        var c = normalVal.charCodeAt(i);
+        byteLen += c < (1 << 7) ? 1 :
+            c < (1 << 11) ? 2 :
+                c < (1 << 16) ? 3 :
+                    c < (1 << 21) ? 4 :
+                        c < (1 << 26) ? 5 :
+                            c < (1 << 31) ? 6 : Number.NaN;
+    }
+    return byteLen;
+}
+
+function showMessageMaxLength(maxLen, textElemId, counterId) {
+    var $msg = $('#' + textElemId);
+    $('#' + counterId).html(maxLen - getByteLen($msg.val()));
+
+    var onMessageKey = function (e) {
+        var $msg = $(this);
+        var text = $msg.val();
+        var len = getByteLen(text);
+        var remainder = maxLen - len;
+
+        if (len >= maxLen) {
+            $msg.val($msg.val().substr(0, maxLen));
+            remainder = 0;
+        }
+
+        $('#' + counterId).html(remainder);
+    };
+
+    $msg.keyup(onMessageKey).keydown(onMessageKey);
+}
 
 function OdmlEditor() {
 	var docSpec = {

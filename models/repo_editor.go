@@ -18,15 +18,19 @@ import (
 
 	"github.com/Unknwon/com"
 	gouuid "github.com/satori/go.uuid"
+	log "gopkg.in/clog.v1"
 
 	git "github.com/G-Node/git-module"
 
+	"bytes"
+	"encoding/json"
+	"net/http"
+
+	gannex "github.com/G-Node/go-annex"
+	"github.com/G-Node/gogs/models/errors"
 	"github.com/G-Node/gogs/pkg/process"
 	"github.com/G-Node/gogs/pkg/setting"
-	"github.com/G-Node/go-annex"
-	"encoding/json"
-	"bytes"
-	"net/http"
+	"github.com/G-Node/gogs/pkg/tool"
 )
 
 const (
@@ -196,40 +200,6 @@ func (repo *Repository) UpdateRepoFile(doer *User, opts UpdateRepoFileOptions) (
 		return fmt.Errorf("git push origin %s: %v", opts.NewBranch, err)
 	}
 
-	gitRepo, err := git.OpenRepository(repo.RepoPath())
-	if err != nil {
-		log.Error(2, "OpenRepository: %v", err)
-		return nil
-	}
-	commit, err := gitRepo.GetBranchCommit(opts.NewBranch)
-	if err != nil {
-		log.Error(2, "GetBranchCommit [branch: %s]: %v", opts.NewBranch, err)
-		return nil
-	}
-
-	// Simulate push event.
-	pushCommits := &PushCommits{
-		Len:     1,
-		Commits: []*PushCommit{CommitToPushCommit(commit)},
-	}
-	oldCommitID := opts.LastCommitID
-	if opts.NewBranch != opts.OldBranch {
-		oldCommitID = git.EMPTY_SHA
-	}
-	if err := CommitRepoAction(CommitRepoActionOptions{
-		PusherName:  doer.Name,
-		RepoOwnerID: repo.MustOwner().ID,
-		RepoName:    repo.Name,
-		RefFullName: git.BRANCH_PREFIX + opts.NewBranch,
-		OldCommitID: oldCommitID,
-		NewCommitID: commit.ID.String(),
-		Commits:     pushCommits,
-	}); err != nil {
-		log.Error(2, "CommitRepoAction: %v", err)
-		return nil
-	}
-
-	go AddTestPullRequestTask(doer, repo.ID, opts.NewBranch, true)
 	if setting.Search.Do {
 		StartIndexing(doer, repo.MustOwner(), repo)
 	}
@@ -516,23 +486,30 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 	localPath := repo.LocalCopyPath()
 	dirPath := path.Join(localPath, opts.TreePath)
 	os.MkdirAll(dirPath, os.ModePerm)
-	log.Trace("localpath:%s", localPath)
-	// prepare annex
 
-	// Copy uploaded files into repository.
+	// Copy uploaded files into repository
 	for _, upload := range uploads {
 		tmpPath := upload.LocalPath()
-		targetPath := path.Join(dirPath, upload.Name)
-		os.MkdirAll(filepath.Dir(targetPath), os.ModePerm)
-		repoFileName := path.Join(opts.TreePath, upload.Name)
 		if !com.IsFile(tmpPath) {
 			continue
 		}
-		// needed for annex, due to symlinks
-		os.Remove(targetPath)
+
+		// Prevent copying files into .git directory, see https://github.com/gogs/gogs/issues/5558.
+		if isRepositoryGitPath(upload.Name) {
+			continue
+		}
+
+		targetPath := path.Join(dirPath, upload.Name)
 		if err = com.Copy(tmpPath, targetPath); err != nil {
 			return fmt.Errorf("copy: %v", err)
 		}
+		repoFileName := path.Join(opts.TreePath, upload.Name)
+
+		if err = com.Copy(tmpPath, targetPath); err != nil {
+			return fmt.Errorf("copy: %v", err)
+		}
+		// needed for annex, due to symlinks
+		os.Remove(targetPath)
 		log.Trace("Check for annexing: %s", upload.Name)
 		if finfo, err := os.Stat(targetPath); err == nil {
 			log.Trace("Filesize is:%d", finfo.Size())
@@ -584,36 +561,6 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 		log.Trace("Annex sync:%s", msg)
 	}
 
-	gitRepo, err := git.OpenRepository(repo.RepoPath())
-	if err != nil {
-		log.Error(2, "OpenRepository: %v", err)
-		return nil
-	}
-	commit, err := gitRepo.GetBranchCommit(opts.NewBranch)
-	if err != nil {
-		log.Error(2, "GetBranchCommit [branch: %s]: %v", opts.NewBranch, err)
-		return nil
-	}
-
-	// Simulate push event.
-	pushCommits := &PushCommits{
-		Len:     1,
-		Commits: []*PushCommit{CommitToPushCommit(commit)},
-	}
-	if err := CommitRepoAction(CommitRepoActionOptions{
-		PusherName:  doer.Name,
-		RepoOwnerID: repo.MustOwner().ID,
-		RepoName:    repo.Name,
-		RefFullName: git.BRANCH_PREFIX + opts.NewBranch,
-		OldCommitID: opts.LastCommitID,
-		NewCommitID: commit.ID.String(),
-		Commits:     pushCommits,
-	}); err != nil {
-		log.Error(2, "CommitRepoAction: %v", err)
-		return nil
-	}
-	go AddTestPullRequestTask(doer, repo.ID, opts.NewBranch, true)
-
 	// We better start out cleaning now. No use keeping files around with annex
 	if msg, err := gannex.AUInit(localPath); err != nil {
 		log.Error(1, "Annex uninit failed with error: %v,%s, at: %s/ This repository might fail at "+
@@ -623,7 +570,6 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 	if setting.Search.Do {
 		StartIndexing(doer, repo.MustOwner(), repo)
 	}
-
 	RemoveAllWithNotice("Cleaning out after upload", localPath)
 	return DeleteUploads(uploads...)
 }

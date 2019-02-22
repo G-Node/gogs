@@ -11,7 +11,7 @@ import (
 	"github.com/go-macaron/binding"
 	"gopkg.in/macaron.v1"
 
-	api "github.com/gogits/go-gogs-client"
+	api "github.com/gogs/go-gogs-client"
 
 	"github.com/G-Node/gogs/models"
 	"github.com/G-Node/gogs/models/errors"
@@ -21,8 +21,8 @@ import (
 	"github.com/G-Node/gogs/routes/api/v1/misc"
 	"github.com/G-Node/gogs/routes/api/v1/org"
 	"github.com/G-Node/gogs/routes/api/v1/repo"
-	"github.com/G-Node/gogs/routes/api/v1/user"
 	"github.com/G-Node/gogs/routes/api/v1/search"
+	"github.com/G-Node/gogs/routes/api/v1/user"
 )
 
 func repoAssignment() macaron.Handler {
@@ -226,6 +226,8 @@ func RegisterRoutes(m *macaron.Macaron) {
 
 		m.Group("/repos", func() {
 			m.Get("/search", repo.Search)
+
+			m.Get("/:username/:reponame", repoAssignment(), repo.Get)
 			m.Get("/suggest/:querry", search.Suggest)
 		})
 

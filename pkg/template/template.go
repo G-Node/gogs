@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/json-iterator/go"
+	jsoniter "github.com/json-iterator/go"
 	"github.com/microcosm-cc/bluemonday"
 	"golang.org/x/net/html/charset"
 	"golang.org/x/text/transform"
@@ -22,9 +22,9 @@ import (
 	"gopkg.in/editorconfig/editorconfig-core-go.v1"
 
 	"github.com/G-Node/gogs/models"
-	"github.com/G-Node/gogs/pkg/tool"
 	"github.com/G-Node/gogs/pkg/markup"
 	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/gogs/pkg/tool"
 )
 
 // TODO: only initialize map once and save to a local variable to reduce copies.
@@ -60,15 +60,17 @@ func NewFuncMap() []template.FuncMap {
 		"LoadTimes": func(startTime time.Time) string {
 			return fmt.Sprint(time.Since(startTime).Nanoseconds()/1e6) + "ms"
 		},
-		"AvatarLink":   tool.AvatarLink,
-		"Safe":         Safe,
-		"Sanitize":     bluemonday.UGCPolicy().Sanitize,
-		"Str2html":     Str2html,
-		"Str2JS":       Str2JS,
-		"TimeSince":    tool.TimeSince,
-		"RawTimeSince": tool.RawTimeSince,
-		"FileSize":     tool.FileSize,
-		"Subtract":     tool.Subtract,
+		"AvatarLink":       tool.AvatarLink,
+		"AppendAvatarSize": tool.AppendAvatarSize,
+		"Safe":             Safe,
+		"Sanitize":         bluemonday.UGCPolicy().Sanitize,
+		"Str2HTML":         Str2HTML,
+		"Str2JS":           Str2JS,
+		"NewLine2br":       NewLine2br,
+		"TimeSince":        tool.TimeSince,
+		"RawTimeSince":     tool.RawTimeSince,
+		"FileSize":         tool.FileSize,
+		"Subtract":         tool.Subtract,
 		"Add": func(a, b int) int {
 			return a + b
 		},
@@ -93,13 +95,13 @@ func NewFuncMap() []template.FuncMap {
 			}
 			return str[start:end]
 		},
-		"Join":              strings.Join,
-		"EllipsisString":    tool.EllipsisString,
-		"DiffTypeToStr":     DiffTypeToStr,
-		"DiffLineTypeToStr": DiffLineTypeToStr,
-		"Sha1":              Sha1,
-		"ShortSHA1":         tool.ShortSHA1,
-		"MD5":               tool.MD5,
+		"Join":                  strings.Join,
+		"EllipsisString":        tool.EllipsisString,
+		"DiffTypeToStr":         DiffTypeToStr,
+		"DiffLineTypeToStr":     DiffLineTypeToStr,
+		"Sha1":                  Sha1,
+		"ShortSHA1":             tool.ShortSHA1,
+		"MD5":                   tool.MD5,
 		"ActionContent2Commits": ActionContent2Commits,
 		"EscapePound":           EscapePound,
 		"RenderCommitMessage":   RenderCommitMessage,
@@ -128,6 +130,11 @@ func Safe(raw string) template.HTML {
 
 func Str2HTML(raw string) template.HTML {
 	return template.HTML(markup.Sanitize(raw))
+}
+
+// NewLine2br simply replaces "\n" to "<br>".
+func NewLine2br(raw string) string {
+	return strings.Replace(raw, "\n", "<br>", -1)
 }
 
 func Str2JS(raw string) template.JS {

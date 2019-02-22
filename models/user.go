@@ -27,7 +27,7 @@ import (
 	log "gopkg.in/clog.v1"
 
 	"github.com/G-Node/git-module"
-	api "github.com/gogits/go-gogs-client"
+	api "github.com/gogs/go-gogs-client"
 
 	"github.com/G-Node/gogs/models/errors"
 	"github.com/G-Node/gogs/pkg/avatar"
@@ -42,7 +42,7 @@ const USER_AVATAR_URL_PREFIX = "avatars"
 type UserType int
 
 const (
-	USER_TYPE_INDIVIDUAL   UserType = iota // Historic reason to make it starts at 0.
+	USER_TYPE_INDIVIDUAL UserType = iota // Historic reason to make it starts at 0.
 	USER_TYPE_ORGANIZATION
 )
 
@@ -53,10 +53,10 @@ type User struct {
 	Name      string `xorm:"UNIQUE NOT NULL"`
 	FullName  string
 	// Email is the primary email address (to be used for communication)
-	Email       string        `xorm:"NOT NULL"`
-	Passwd      string        `xorm:"NOT NULL"`
+	Email       string `xorm:"NOT NULL"`
+	Passwd      string `xorm:"NOT NULL"`
 	LoginType   LoginType
-	LoginSource int64         `xorm:"NOT NULL DEFAULT 0"`
+	LoginSource int64 `xorm:"NOT NULL DEFAULT 0"`
 	LoginName   string
 	Type        UserType
 	OwnedOrgs   []*User       `xorm:"-" json:"-"`
@@ -64,8 +64,8 @@ type User struct {
 	Repos       []*Repository `xorm:"-" json:"-"`
 	Location    string
 	Website     string
-	Rands       string        `xorm:"VARCHAR(10)"`
-	Salt        string        `xorm:"VARCHAR(10)"`
+	Rands       string `xorm:"VARCHAR(10)"`
+	Salt        string `xorm:"VARCHAR(10)"`
 
 	Created     time.Time `xorm:"-" json:"-"`
 	CreatedUnix int64
@@ -135,8 +135,8 @@ func (u *User) APIFormat() *api.User {
 		UserName:  u.Name,
 		Login:     u.Name,
 		FullName:  u.FullName,
-		AvatarUrl: u.AvatarLink(),
 		Email:     u.Email,
+		AvatarUrl: u.AvatarLink(),
 	}
 }
 

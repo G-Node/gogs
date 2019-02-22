@@ -44,7 +44,7 @@
 	<div class="{{if or .IsJSON (or .IsYAML .IsOdML)}}ui bottom attached tab {{if .IsOdML}} active{{end}} segment" data-tab="view{{else}}ui attached table segment{{end}}">
 		<div id="{{if not (or .IsJSON .IsYAML)}}{{if .IsIPythonNotebook}}ipython-notebook{{end}}" class="file-view {{if .IsMarkdown}}markdown{{else if .IsIPythonNotebook}}ipython-notebook{{else if .IsIPythonNotebook}}ipython-notebook{{else if .ReadmeInList}}plain-text{{else if and .IsTextFile}}code-view{{end}} has-emoji{{end}}">
 			{{if .IsMarkdown}}
-				{{if .FileContent}}{{.FileContent | Str2html}}{{end}}
+				{{if .FileContent}}{{.FileContent | Str2HTML}}{{end}}
 			{{else if .IsOdML}}
 			<div class="ui fluid input">
 				<input class="search-input form-control" placeholder="Search"></input>

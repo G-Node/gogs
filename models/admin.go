@@ -14,9 +14,8 @@ import (
 	"github.com/go-xorm/xorm"
 	log "gopkg.in/clog.v1"
 
-	"github.com/G-Node/gogs/pkg/setting"
+	gannex "github.com/G-Node/go-annex"
 	"github.com/G-Node/gogs/pkg/tool"
-	"github.com/G-Node/go-annex"
 )
 
 type NoticeType int
@@ -73,15 +72,9 @@ func CreateRepositoryNotice(desc string) error {
 // RemoveAllWithNotice removes all directories in given path and
 // creates a system notice when error occurs.
 func RemoveAllWithNotice(title, path string) {
-	var err error
-	// LEGACY [Go 1.7]: workaround for Go not being able to remove read-only files/folders: https://github.com/golang/go/issues/9606
-	// this bug should be fixed on Go 1.7, so the workaround should be removed when Gogs don't support Go 1.6 anymore:
-	// https://github.com/golang/go/commit/2ffb3e5d905b5622204d199128dec06cefd57790
-	// Note: Windows complains when delete target does not exist, therefore we can skip deletion in such cases.
-
 	if msg, err := gannex.AUInit(path); err != nil {
 		if strings.Contains(msg, "If you don't care about preserving the data") {
-			log.Trace("Annex uninit Repo:%s", msg)
+			log.Trace("Annex uninit Repo: %s", msg)
 		} else {
 			log.Error(1, "Could not annex uninit repo. Error: %s,%s", err, msg)
 		}
@@ -89,15 +82,7 @@ func RemoveAllWithNotice(title, path string) {
 		log.Trace("Annex uninit Repo:%s", msg)
 	}
 
-	if setting.IsWindows && com.IsExist(path) {
-		// converting "/" to "\" in path on Windows
-		path = strings.Replace(path, "/", "\\", -1)
-		err = exec.Command("cmd", "/C", "rmdir", "/S", "/Q", path).Run()
-	} else {
-		err = os.RemoveAll(path)
-	}
-
-	if err != nil {
+	if err := os.RemoveAll(path); err != nil {
 		desc := fmt.Sprintf("%s [%s]: %v", title, path, err)
 		log.Warn(desc)
 		if err = CreateRepositoryNotice(desc); err != nil {

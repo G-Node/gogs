@@ -24,10 +24,10 @@
 									{{.LoggedUser.ShortName 20}}
 								</div>
 								{{range .Orgs}}
-								<div class="item" data-value="{{.ID}}">
-									<img class="ui mini image" src="{{.RelAvatarLink}}">
-									{{.ShortName 20}}
-								</div>
+									<div class="item" data-value="{{.ID}}">
+										<img class="ui mini image" src="{{.RelAvatarLink}}">
+										{{.ShortName 20}}
+									</div>
 								{{end}}
 							</div>
 						</div>
@@ -42,17 +42,17 @@
 						<label>{{.i18n.Tr "repo.visibility"}}</label>
 						<div class="ui checkbox">
 							{{if .IsForcedPrivate}}
-							<input name="private" type="checkbox" checked readonly>
-							<label>{{.i18n.Tr "repo.visiblity_helper_forced" | Safe}}</label>
+								<input name="private" type="checkbox" checked readonly>
+								<label>{{.i18n.Tr "repo.visiblity_helper_forced" | Safe}}</label>
 							{{else}}
-							<input name="private" type="checkbox" {{if .private}}checked{{end}}>
-							<label>{{.i18n.Tr "repo.visiblity_helper" | Safe}}</label>
+								<input name="private" type="checkbox" {{if .private}}checked{{end}}>
+								<label>{{.i18n.Tr "repo.visiblity_helper" | Safe}}</label>
 							{{end}}
 						</div>
 					</div>
 					<div class="inline field {{if .Err_Description}}error{{end}}">
 						<label for="description">{{.i18n.Tr "repo.repo_desc"}}</label>
-						<textarea id="description" name="description">{{.description}}</textarea>
+						<textarea class="autosize" id="description" name="description" rows="3">{{.description}}</textarea>
 						<span class="help">{{.i18n.Tr "repo.repo_desc_helper" | Safe}}</span>
 
 					</div>
@@ -69,7 +69,7 @@
 							<div class="default text">{{.i18n.Tr "repo.repo_gitignore_helper"}}</div>
 							<div class="menu">
 								{{range .Gitignores}}
-								<div class="item" data-value="{{.}}">{{.}}</div>
+									<div class="item" data-value="{{.}}">{{.}}</div>
 								{{end}}
 							</div>
 						</div>
@@ -85,7 +85,7 @@
 							<div class="default text">{{.i18n.Tr "repo.license_helper"}}</div>
 							<div class="menu">
 								{{range .Licenses}}
-								<div class="item" data-value="{{.}}">{{.}}</div>
+									<div class="item" data-value="{{.}}">{{.}}</div>
 								{{end}}
 								<div class="item" data-value="">None</div>
 							</div>
@@ -99,7 +99,7 @@
 							<div class="default text">{{.i18n.Tr "repo.readme_helper"}}</div>
 							<div class="menu">
 								{{range .Readmes}}
-								<div class="item" data-value="{{.}}">{{.}}</div>
+									<div class="item" data-value="{{.}}">{{.}}</div>
 								{{end}}
 							</div>
 						</div>
@@ -123,4 +123,5 @@
 		</div>
 	</div>
 </div>
-	{{template "base/footer" .}}
+
+{{template "base/footer" .}}

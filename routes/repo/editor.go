@@ -13,16 +13,18 @@ import (
 
 	log "gopkg.in/clog.v1"
 
+	"path/filepath"
+
 	"github.com/G-Node/git-module"
 	"github.com/G-Node/gogs/models"
+	"github.com/G-Node/gogs/models/errors"
+	"github.com/G-Node/gogs/pkg/bindata"
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/pkg/form"
+	"github.com/G-Node/gogs/pkg/markup"
 	"github.com/G-Node/gogs/pkg/setting"
 	"github.com/G-Node/gogs/pkg/template"
 	"github.com/G-Node/gogs/pkg/tool"
-	"github.com/G-Node/gogs/pkg/markup"
-	"github.com/G-Node/gogs/pkg/bindata"
-	"path/filepath"
 )
 
 const (
@@ -80,7 +82,6 @@ func editFile(c *context.Context, isNewFile bool) {
 		c.Data["IsJSON"] = markup.IsJSON(blob.Name())
 		c.Data["IsYAML"] = markup.IsYAML(blob.Name())
 
-
 		buf := make([]byte, 1024)
 		n, _ := dataRc.Read(buf)
 		buf = buf[:n]
@@ -123,7 +124,6 @@ func editFile(c *context.Context, isNewFile bool) {
 
 	c.Success(EDIT_FILE)
 }
-
 
 func EditFile(c *context.Context) {
 	editFile(c, false)

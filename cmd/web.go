@@ -33,6 +33,7 @@ import (
 	"github.com/G-Node/gogs/models"
 	"github.com/G-Node/gogs/pkg/bindata"
 	"github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/pkg/dav"
 	"github.com/G-Node/gogs/pkg/form"
 	"github.com/G-Node/gogs/pkg/mailer"
 	"github.com/G-Node/gogs/pkg/setting"
@@ -44,7 +45,6 @@ import (
 	"github.com/G-Node/gogs/routes/org"
 	"github.com/G-Node/gogs/routes/repo"
 	"github.com/G-Node/gogs/routes/user"
-	"github.com/G-Node/gogs/pkg/dav"
 	"golang.org/x/net/webdav"
 )
 
@@ -67,10 +67,8 @@ func checkVersion() {
 	if err != nil {
 		log.Fatal(2, "Fail to read 'templates/.VERSION': %v", err)
 	}
-	tplVer := string(data)
-	log.Trace("tmpl:version:%s", tplVer)
-	log.Trace("App:version:%s", setting.AppVer)
-	if strings.TrimSpace(tplVer) != setting.AppVer {
+	tplVer := strings.TrimSpace(string(data))
+	if tplVer != setting.AppVer {
 		if version.Compare(tplVer, setting.AppVer, ">") {
 			log.Fatal(2, "Binary version is lower than template file version, did you forget to recompile Gogs?")
 		} else {
@@ -180,7 +178,6 @@ func runWeb(c *cli.Context) error {
 	checkVersion()
 
 	m := newMacaron()
-
 
 	reqSignIn := context.Toggle(&context.ToggleOptions{SignInRequired: true})
 	ignSignIn := context.Toggle(&context.ToggleOptions{SignInRequired: setting.Service.RequireSignInView})

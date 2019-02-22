@@ -16,11 +16,11 @@ import (
 	"github.com/urfave/cli"
 	log "gopkg.in/clog.v1"
 
+	"syscall"
+
 	"github.com/G-Node/gogs/models"
 	"github.com/G-Node/gogs/models/errors"
 	"github.com/G-Node/gogs/pkg/setting"
-	http "github.com/G-Node/gogs/routes/repo"
-	"syscall"
 )
 
 const (

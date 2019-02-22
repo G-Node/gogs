@@ -18,7 +18,7 @@ import (
 	"strings"
 
 	"github.com/G-Node/git-module"
-	"github.com/G-Node/go-annex"
+	gannex "github.com/G-Node/go-annex"
 	"github.com/G-Node/godML/odml"
 	"github.com/G-Node/gogs/models"
 	"github.com/G-Node/gogs/pkg/context"
@@ -312,6 +312,10 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			}
 			var output bytes.Buffer
 			lines := strings.Split(fileContent, "\n")
+			// Remove blank line at the end of file
+			if len(lines) > 0 && len(lines[len(lines)-1]) == 0 {
+				lines = lines[:len(lines)-1]
+			}
 			if len(lines) > setting.UI.MaxLineHighlight {
 				c.Data["HighlightClass"] = "nohighlight"
 			}

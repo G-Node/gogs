@@ -28,9 +28,10 @@ import (
 	"gopkg.in/ini.v1"
 
 	git "github.com/G-Node/git-module"
-	api "github.com/gogits/go-gogs-client"
+	api "github.com/gogs/go-gogs-client"
 
 	"github.com/G-Node/gogs/models/errors"
+	"github.com/G-Node/gogs/pkg/avatar"
 	"github.com/G-Node/gogs/pkg/bindata"
 	"github.com/G-Node/gogs/pkg/markup"
 	"github.com/G-Node/gogs/pkg/process"
@@ -384,9 +385,13 @@ func (repo *Repository) APIFormat(permission *api.Permission, user ...*User) *ap
 		// Reserved for go-gogs-client change
 		//		AvatarUrl:     repo.AvatarLink(),
 	}
-	if repo.IsFork && repo.BaseRepo != nil {
-		// FIXME: check precise permission for base repository
-		apiRepo.Parent = repo.BaseRepo.APIFormat(nil)
+	if repo.IsFork {
+		p := &api.Permission{Pull: true}
+		if len(user) != 0 {
+			p.Admin = user[0].IsAdminOfRepo(repo)
+			p.Push = user[0].IsWriterOfRepo(repo)
+		}
+		apiRepo.Parent = repo.BaseRepo.APIFormat(p)
 	}
 	return apiRepo
 }
