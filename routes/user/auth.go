@@ -17,6 +17,7 @@ import (
 	"github.com/G-Node/gogs/pkg/form"
 	"github.com/G-Node/gogs/pkg/mailer"
 	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/gogs/pkg/tool"
 )
 
 const (

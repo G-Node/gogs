@@ -10,7 +10,8 @@ import (
 	"strings"
 
 	"github.com/G-Node/git-module"
-	api "github.com/gogits/go-gogs-client"
+	api "github.com/gogs/go-gogs-client"
+	jsoniter "github.com/json-iterator/go"
 
 	"github.com/G-Node/gogs/pkg/setting"
 )

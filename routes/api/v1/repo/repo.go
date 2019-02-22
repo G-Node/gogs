@@ -9,7 +9,7 @@ import (
 
 	log "gopkg.in/clog.v1"
 
-	api "github.com/gogits/go-gogs-client"
+	api "github.com/gogs/go-gogs-client"
 
 	"github.com/G-Node/gogs/models"
 	"github.com/G-Node/gogs/models/errors"
@@ -73,7 +73,7 @@ func Search(c *context.APIContext) {
 	for i := range repos {
 		if !repos[i].Unlisted {
 			rep := repos[i].APIFormat(nil)
-			if ! c.IsLogged {
+			if !c.IsLogged {
 				rep.Owner.Email = ""
 			}
 			results[i] = rep

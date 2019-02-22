@@ -27,17 +27,6 @@ import (
 	"github.com/G-Node/gogs/pkg/tool"
 )
 
-const (
-	ENV_AUTH_USER_ID           = "GOGS_AUTH_USER_ID"
-	ENV_AUTH_USER_NAME         = "GOGS_AUTH_USER_NAME"
-	ENV_AUTH_USER_EMAIL        = "GOGS_AUTH_USER_EMAIL"
-	ENV_REPO_OWNER_NAME        = "GOGS_REPO_OWNER_NAME"
-	ENV_REPO_OWNER_SALT_MD5    = "GOGS_REPO_OWNER_SALT_MD5"
-	ENV_REPO_ID                = "GOGS_REPO_ID"
-	ENV_REPO_NAME              = "GOGS_REPO_NAME"
-	ENV_REPO_CUSTOM_HOOKS_PATH = "GOGS_REPO_CUSTOM_HOOKS_PATH"
-)
-
 type HTTPContext struct {
 	*context.Context
 	OwnerName string

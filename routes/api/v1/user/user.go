@@ -12,6 +12,7 @@ import (
 	"github.com/G-Node/gogs/models"
 	"github.com/G-Node/gogs/models/errors"
 	"github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/pkg/markup"
 )
 
 func Search(c *context.APIContext) {

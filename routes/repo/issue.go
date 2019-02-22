@@ -23,6 +23,7 @@ import (
 	"github.com/G-Node/gogs/pkg/form"
 	"github.com/G-Node/gogs/pkg/markup"
 	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/gogs/pkg/template"
 	"github.com/G-Node/gogs/pkg/tool"
 )
 

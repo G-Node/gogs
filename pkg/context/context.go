@@ -25,6 +25,7 @@ import (
 	"github.com/G-Node/gogs/pkg/auth"
 	"github.com/G-Node/gogs/pkg/form"
 	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/gogs/pkg/template"
 )
 
 // Context represents context of a request.
@@ -318,7 +319,7 @@ func Contexter() macaron.Handler {
 		}
 
 		c.Data["CSRFToken"] = x.GetToken()
-		c.Data["CSRFTokenHTML"] = template.HTML(`<input type="hidden" name="_csrf" value="` + x.GetToken() + `">`)
+		c.Data["CSRFTokenHTML"] = template.Safe(`<input type="hidden" name="_csrf" value="` + x.GetToken() + `">`)
 		c.Data["SessionID"] = sess.ID()
 		log.Trace("Session ID: %s", sess.ID())
 		log.Trace("CSRF Token: %v", c.Data["CSRFToken"])

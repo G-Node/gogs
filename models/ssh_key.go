@@ -25,7 +25,6 @@ import (
 
 	"github.com/G-Node/gogs/pkg/process"
 	"github.com/G-Node/gogs/pkg/setting"
-	"github.com/G-Node/gogs/pkg/tool"
 )
 
 const (

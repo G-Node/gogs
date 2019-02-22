@@ -22,9 +22,11 @@ import (
 	"github.com/G-Node/git-module"
 
 	"github.com/G-Node/gogs/models"
+	"github.com/G-Node/gogs/models/errors"
 	"github.com/G-Node/gogs/pkg/httplib"
+	"github.com/G-Node/gogs/pkg/mailer"
 	"github.com/G-Node/gogs/pkg/setting"
-	http "github.com/G-Node/gogs/routes/repo"
+	"github.com/G-Node/gogs/pkg/template"
 )
 
 var (

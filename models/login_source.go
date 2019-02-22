@@ -20,13 +20,15 @@ import (
 	"github.com/go-macaron/binding"
 	"github.com/go-xorm/core"
 	"github.com/go-xorm/xorm"
-	"github.com/json-iterator/go"
+	jsoniter "github.com/json-iterator/go"
 	log "gopkg.in/clog.v1"
 	"gopkg.in/ini.v1"
 
 	"github.com/G-Node/gogs/models/errors"
+	"github.com/G-Node/gogs/pkg/auth/github"
 	"github.com/G-Node/gogs/pkg/auth/ldap"
 	"github.com/G-Node/gogs/pkg/auth/pam"
+	"github.com/G-Node/gogs/pkg/setting"
 )
 
 type LoginType int

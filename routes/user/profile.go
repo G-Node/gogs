@@ -11,9 +11,9 @@ import (
 	"github.com/Unknwon/paginater"
 
 	"github.com/G-Node/gogs/models"
-	"github.com/G-Node/gogs/models/errors"
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/gogs/pkg/tool"
 	"github.com/G-Node/gogs/routes/repo"
 )
 

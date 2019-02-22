@@ -5,7 +5,7 @@
 package user
 
 import (
-	api "github.com/gogits/go-gogs-client"
+	api "github.com/gogs/go-gogs-client"
 
 	"github.com/G-Node/gogs/models"
 	"github.com/G-Node/gogs/models/errors"

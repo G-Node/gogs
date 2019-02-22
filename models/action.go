@@ -14,11 +14,11 @@ import (
 
 	"github.com/Unknwon/com"
 	"github.com/go-xorm/xorm"
-	"github.com/json-iterator/go"
+	jsoniter "github.com/json-iterator/go"
 	log "gopkg.in/clog.v1"
 
 	"github.com/G-Node/git-module"
-	api "github.com/gogits/go-gogs-client"
+	api "github.com/gogs/go-gogs-client"
 
 	"github.com/G-Node/gogs/models/errors"
 	"github.com/G-Node/gogs/pkg/setting"

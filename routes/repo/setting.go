@@ -22,7 +22,8 @@ import (
 	"github.com/G-Node/gogs/pkg/form"
 	"github.com/G-Node/gogs/pkg/mailer"
 	"github.com/G-Node/gogs/pkg/setting"
-	"github.com/dustinkirkland/golang-petname"
+	"github.com/G-Node/gogs/pkg/tool"
+	petname "github.com/dustinkirkland/golang-petname"
 )
 
 const (
@@ -421,6 +422,7 @@ func SettingsCollaborationPost(c *context.Context) {
 		}
 		return
 	}
+
 	// Organization is not allowed to be added as a collaborator
 	if u.IsOrganization() {
 		c.Flash.Error(c.Tr("repo.settings.org_not_allowed_to_be_collaborator"))
@@ -428,7 +430,7 @@ func SettingsCollaborationPost(c *context.Context) {
 		return
 	}
 
-	if err := c.Repo.Repository.AddCollaborator(u); err != nil {
+	if err = c.Repo.Repository.AddCollaborator(u); err != nil {
 		c.Handle(500, "AddCollaborator", err)
 		return
 	}

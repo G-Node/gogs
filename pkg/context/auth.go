@@ -14,6 +14,7 @@ import (
 
 	"github.com/G-Node/gogs/pkg/auth"
 	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/gogs/pkg/tool"
 )
 
 type ToggleOptions struct {

@@ -9,10 +9,10 @@ import (
 	"strings"
 
 	"github.com/Unknwon/com"
-	"github.com/json-iterator/go"
+	jsoniter "github.com/json-iterator/go"
 
 	git "github.com/G-Node/git-module"
-	api "github.com/gogits/go-gogs-client"
+	api "github.com/gogs/go-gogs-client"
 
 	"github.com/G-Node/gogs/models"
 	"github.com/G-Node/gogs/models/errors"

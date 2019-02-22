@@ -7,7 +7,7 @@ package repo
 import (
 	api "github.com/gogs/go-gogs-client"
 
-	"github.com/G-Node/gogs/models"
+	"github.com/G-Node/gogs/models/errors"
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/routes/api/v1/convert"
 )
