@@ -30,7 +30,7 @@ web: build
 
 govet:
 	$(GOVET) gogs.go
-	$(GOVET) models pkg routers
+	$(GOVET) models pkg routes
 
 build: $(GENERATED)
 	go install $(BUILD_FLAGS) -ldflags '$(LDFLAGS)' -tags '$(TAGS)'
@@ -56,12 +56,12 @@ release: build pack
 bindata: pkg/bindata/bindata.go
 
 pkg/bindata/bindata.go: $(DATA_FILES)
-	go-bindata -o=$@ -ignore="\\.DS_Store|README.md|TRANSLATORS" -pkg=bindata conf/...
+	go-bindata -o=$@ -ignore="\\.DS_Store|README.md|TRANSLATORS|auth.d" -pkg=bindata conf/...
 
 less: public/css/gogs.css
 
 public/css/gogs.css: $(LESS_FILES)
-	lessc $< $@
+	@type lessc >/dev/null 2>&1 && lessc $< >$@ || echo "lessc command not found, skipped."
 
 clean:
 	go clean -i ./...
@@ -80,4 +80,4 @@ todo:
 
 # Legacy code should be remove by the time of release
 legacy:
-	grep -rnw "LEGACY" cmd routers models pkg
+	grep -rnw "LEGACY" cmd routes models pkg

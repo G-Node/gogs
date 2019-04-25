@@ -1,6 +1,6 @@
 # Docker for Gogs
 
-Visit [Docker Hub](https://hub.docker.com/r/gogs/) / [Docker Store](https://store.docker.com/community/images/gogs/gogs) see all available images and tags.
+Visit [Docker Cloud](https://cloud.docker.com/swarm/gogs/repository/docker/gogs/gogs) / [Docker Store](https://store.docker.com/community/images/gogs/gogs) see all available images and tags.
 
 ## Usage
 
@@ -35,6 +35,10 @@ Directory `/var/gogs` keeps Git repositories and Gogs data:
         |-- conf
         |-- data
         |-- log
+
+#### Custom Directory
+
+The "custom" directory may not be obvious in Docker environment. The `/var/gogs/gogs` (in the host) and `/data/gogs` (in the container) is already the "custom" directory and you do not need to create another layer but directly edit corresponding files under this directory.
 
 ### Volume With Data Container
 
@@ -104,11 +108,11 @@ Steps to upgrade Gogs with Docker:
 - `docker pull gogs/gogs`
 - `docker stop gogs`
 - `docker rm gogs`
-- Finally, create container as the first time and don't forget to do same volume and port mapping.
+- Finally, create a container for the first time and don't forget to do the same for the volume and port mapping.
 
 ## Known Issues
 
-- The docker container can not currently be build on Raspberry 1 (armv6l) as our base image `alpine` does not have a `go` package available for this platform.
+- The docker container cannot currently be built on Raspberry 1 (armv6l) as our base image `alpine` does not have a `go` package available for this platform.
 
 ## Useful Links
 
