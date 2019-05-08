@@ -26,7 +26,7 @@ func Search(c *context.Context, keywords string, sType int64) ([]byte, error) {
 	}
 
 	ireq := libgin.SearchRequest{Token: c.GetCookie(setting.SessionConfig.CookieName),
-		Querry: keywords, CsrfT: c.GetCookie(setting.CSRFCookieName), SType: sType, UserID: -10}
+		Query: keywords, CsrfT: c.GetCookie(setting.CSRFCookieName), SType: sType, UserID: -10}
 	if c.IsLogged {
 		ireq.UserID = c.User.ID
 	}
@@ -65,7 +65,7 @@ func ExploreData(c *context.Context) {
 	}
 	data, err := Search(c, keywords, sType)
 	if err != nil {
-		c.Handle(http.StatusInternalServerError, "Could not querry", err)
+		c.Handle(http.StatusInternalServerError, "Could not query", err)
 		return
 	}
 
@@ -112,6 +112,6 @@ type SearchRequest struct {
 	Token  string
 	CsrfT  string
 	UserID int64
-	Querry string
+	Query  string
 	SType  int64
 }

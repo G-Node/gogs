@@ -167,7 +167,7 @@ func RegisterRoutes(m *macaron.Macaron) {
 		m.Post("/markdown", bind(api.MarkdownOption{}), misc.Markdown)
 		m.Post("/markdown/raw", misc.MarkdownRaw)
 
-		m.Get("/search/:querry", search.Search)
+		m.Get("/search/:query", search.Search)
 
 		// Users
 		m.Group("/users", func() {
@@ -228,7 +228,7 @@ func RegisterRoutes(m *macaron.Macaron) {
 			m.Get("/search", repo.Search)
 
 			m.Get("/:username/:reponame", repoAssignment(), repo.Get)
-			m.Get("/suggest/:querry", search.Suggest)
+			m.Get("/suggest/:query", search.Suggest)
 		})
 
 		m.Group("/repos", func() {

@@ -17,7 +17,7 @@ func Suggest(c *context.APIContext) {
 		return
 	}
 	ireq := libgin.SearchRequest{Token: c.GetCookie(setting.SessionConfig.CookieName),
-		Querry: c.Params("querry"), CsrfT: c.GetCookie(setting.CSRFCookieName), SType: libgin.SEARCH_SUGGEST}
+		Query: c.Params("query"), CsrfT: c.GetCookie(setting.CSRFCookieName), SType: libgin.SEARCH_SUGGEST}
 	if c.IsLogged {
 		ireq.UserID = c.User.ID
 	}
