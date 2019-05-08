@@ -31,6 +31,14 @@ func StartIndexing(user, owner *User, repo *Repository) {
 	}
 }
 
+func annexUninit(path string) {
+	log.Trace("Uninit annex at '%s'", path)
+	if msg, err := gannex.AUInit(path); err != nil {
+		log.Error(1, "uninit failed: %v (%s)", err, msg)
+		// TODO: Set mode 777 on all files to allow removal
+	}
+}
+
 func annexAdd(path string) {
 	log.Trace("Running annex add (with filesize filter) in '%s'", path)
 
