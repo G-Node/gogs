@@ -22,10 +22,6 @@ import (
 
 	git "github.com/G-Node/git-module"
 
-	"bytes"
-	"encoding/json"
-	"net/http"
-
 	gannex "github.com/G-Node/go-annex"
 	"github.com/G-Node/gogs/models/errors"
 	"github.com/G-Node/gogs/pkg/process"
@@ -573,22 +569,4 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 	}
 	RemoveAllWithNotice("Cleaning out after upload", localPath)
 	return DeleteUploads(uploads...)
-}
-
-func StartIndexing(user, owner *User, repo *Repository) {
-	var ireq struct{ RepoID, RepoPath string }
-	ireq.RepoID = fmt.Sprintf("%d", repo.ID)
-	ireq.RepoPath = repo.FullName()
-	data, err := json.Marshal(ireq)
-	if err != nil {
-		log.Trace("could not marshal index request :%+v", err)
-		return
-	}
-	req, _ := http.NewRequest(http.MethodPost, setting.Search.IndexUrl, bytes.NewReader(data))
-	client := http.Client{}
-	resp, err := client.Do(req)
-	if err != nil || resp.StatusCode != http.StatusOK {
-		log.Trace("Error doing index request:%+v", err)
-		return
-	}
 }
