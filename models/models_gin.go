@@ -33,7 +33,7 @@ func StartIndexing(user, owner *User, repo *Repository) {
 
 func annexUninit(path string) {
 	log.Trace("Uninit annex at '%s'", path)
-	if msg, err := gannex.AUInit(path); err != nil {
+	if msg, err := gannex.Uninit(path); err != nil {
 		log.Error(1, "uninit failed: %v (%s)", err, msg)
 		// TODO: Set mode 777 on all files to allow removal
 	}
@@ -43,7 +43,7 @@ func annexAdd(path string) {
 	log.Trace("Running annex add (with filesize filter) in '%s'", path)
 
 	// Initialise annex in case it's a new repository
-	if msg, err := gannex.AInit(path, "--version=7"); err != nil {
+	if msg, err := gannex.Init(path, "--version=7"); err != nil {
 		log.Error(1, "Annex init failed: %v (%s)", err, msg)
 		return
 	}
@@ -54,7 +54,7 @@ func annexAdd(path string) {
 	}
 
 	// Set MD5 as default backend
-	if msg, err := gannex.Md5(path); err != nil {
+	if msg, err := gannex.MD5(path); err != nil {
 		log.Error(1, "Failed to set default backend to 'MD5': %v (%s)", err, msg)
 	}
 
