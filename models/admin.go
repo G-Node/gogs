@@ -14,7 +14,6 @@ import (
 	"github.com/go-xorm/xorm"
 	log "gopkg.in/clog.v1"
 
-	gannex "github.com/G-Node/go-annex"
 	"github.com/G-Node/gogs/pkg/tool"
 )
 
@@ -72,16 +71,7 @@ func CreateRepositoryNotice(desc string) error {
 // RemoveAllWithNotice removes all directories in given path and
 // creates a system notice when error occurs.
 func RemoveAllWithNotice(title, path string) {
-	if msg, err := gannex.AUInit(path); err != nil {
-		if strings.Contains(msg, "If you don't care about preserving the data") {
-			log.Trace("Annex uninit Repo: %s", msg)
-		} else {
-			log.Error(1, "Could not annex uninit repo. Error: %s,%s", err, msg)
-		}
-	} else {
-		log.Trace("Annex uninit Repo:%s", msg)
-	}
-
+	annexUninit(path) // uninit annex to allow deleting
 	if err := os.RemoveAll(path); err != nil {
 		desc := fmt.Sprintf("%s [%s]: %v", title, path, err)
 		log.Warn(desc)
