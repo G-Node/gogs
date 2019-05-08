@@ -499,34 +499,9 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 		if err = com.Copy(tmpPath, targetPath); err != nil {
 			return fmt.Errorf("copy: %v", err)
 		}
-		repoFileName := path.Join(opts.TreePath, upload.Name)
-
-		// needed for annex, due to symlinks
-		os.Remove(targetPath)
-		if err = com.Copy(tmpPath, targetPath); err != nil {
-			return fmt.Errorf("copy: %v", err)
-		}
-		log.Trace("Check for annexing: %s", upload.Name)
-		if finfo, err := os.Stat(targetPath); err == nil {
-			log.Trace("Filesize is:%d", finfo.Size())
-			// Should we annex
-			if finfo.Size() > setting.Repository.Upload.AnexFileMinSize*gannex.MEGABYTE {
-				log.Trace("This file should be annexed: %s", upload.Name)
-				// annex init in case it isnt yet
-				if msg, err := gannex.AInit(localPath, "annex.backend"); err != nil {
-					log.Error(1, "Annex init failed with error: %v,%s,%s", err, msg, repoFileName)
-				}
-				// worm for compatibility
-				gannex.Md5(localPath)
-				if msg, err := gannex.Add(repoFileName, localPath); err != nil {
-					log.Error(1, "Annex add failed with error: %v,%s,%s", err, msg, repoFileName)
-				}
-			}
-		} else {
-			log.Error(1, "could not stat: %s", targetPath)
-		}
 	}
 
+	annexAdd(localPath) // Running annex add with filter for big files
 	if err = git.AddChanges(localPath, true); err != nil {
 		return fmt.Errorf("git add --all: %v", err)
 	} else if err = git.CommitChanges(localPath, git.CommitChangesOptions{
@@ -546,27 +521,20 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 		return fmt.Errorf("git push origin %s: %v", opts.NewBranch, err)
 	}
 
-	// Sometimes you need this twice
-	if msg, err := gannex.ASync(localPath, "--content", "--no-pull"); err != nil {
-		log.Error(1, "Annex sync failed with error: %v,%s", err, msg)
-	} else {
-		log.Trace("Annex sync:%s", msg)
-	}
-	if msg, err := gannex.ASync(localPath, "--content", "--no-pull"); err != nil {
-		log.Error(1, "Annex sync failed with error: %v,%s", err, msg)
-	} else {
-		log.Trace("Annex sync:%s", msg)
+	// GIN START
+	log.Trace("Synchronising annexed data")
+	if msg, err := gannex.ASync(localPath, "--content"); err != nil {
+		// TODO: This will also DOWNLOAD content, which is unnecessary for a simple upload
+		// TODO: Use gin-cli upload function instead
+		log.Error(1, "Annex sync failed: %v (%s)", err, msg)
 	}
 
-	// We better start out cleaning now. No use keeping files around with annex
-	if msg, err := gannex.AUInit(localPath); err != nil {
-		log.Error(1, "Annex uninit failed with error: %v,%s, at: %s/ This repository might fail at "+
-			"subsequent uploads!", err, msg, localPath)
-	}
+	annexUninit(localPath)
 	// Indexing support
 	if setting.Search.Do {
 		StartIndexing(doer, repo.MustOwner(), repo)
 	}
 	RemoveAllWithNotice("Cleaning out after upload", localPath)
+	// GIN END
 	return DeleteUploads(uploads...)
 }

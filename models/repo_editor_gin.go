@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
+	gannex "github.com/G-Node/go-annex"
 	"github.com/G-Node/gogs/pkg/setting"
 	log "gopkg.in/clog.v1"
 )
@@ -27,5 +28,30 @@ func StartIndexing(user, owner *User, repo *Repository) {
 	if err != nil || resp.StatusCode != http.StatusOK {
 		log.Trace("Error doing index request:%+v", err)
 		return
+	}
+}
+
+func annexAdd(path string) {
+	log.Trace("Running annex add (with filesize filter) in '%s'", path)
+
+	// Initialise annex in case it's a new repository
+	if msg, err := gannex.AInit(path, "--version=7"); err != nil {
+		log.Error(1, "Annex init failed: %v (%s)", err, msg)
+		return
+	}
+
+	// Enable addunlocked for annex v7
+	if msg, err := gannex.SetAddUnlocked(path); err != nil {
+		log.Error(1, "Failed to set 'addunlocked' annex option: %v (%s)", err, msg)
+	}
+
+	// Set MD5 as default backend
+	if msg, err := gannex.Md5(path); err != nil {
+		log.Error(1, "Failed to set default backend to 'MD5': %v (%s)", err, msg)
+	}
+
+	sizefilterflag := fmt.Sprintf("--largerthan=%d", setting.Repository.Upload.AnexFileMinSize*gannex.MEGABYTE)
+	if msg, err := gannex.Add(path, sizefilterflag); err != nil {
+		log.Error(1, "Annex add failed with error: %v (%s)", err, msg)
 	}
 }
