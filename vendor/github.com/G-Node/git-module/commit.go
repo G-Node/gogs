@@ -97,7 +97,7 @@ func (c *Commit) GetCommitByPath(relpath string) (*Commit, error) {
 	return c.repo.getCommitByPathWithID(c.ID, relpath)
 }
 
-// AddAllChanges marks local changes to be ready for commit.
+// AddChanges marks local changes to be ready for commit.
 func AddChanges(repoPath string, all bool, files ...string) error {
 	cmd := NewCommand("add")
 	if all {
@@ -289,7 +289,7 @@ func GetCommitFileStatus(repoPath, commitID string) (*CommitFileStatus, error) {
 	}()
 
 	stderr := new(bytes.Buffer)
-	err := NewCommand("log", "-1", "--name-status", "--pretty=format:''", commitID).RunInDirPipeline(repoPath, w, stderr)
+	err := NewCommand("show", "--name-status", "--pretty=format:''", commitID).RunInDirPipeline(repoPath, w, stderr)
 	w.Close() // Close writer to exit parsing goroutine
 	if err != nil {
 		return nil, concatenateError(err, stderr.String())

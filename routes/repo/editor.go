@@ -9,11 +9,10 @@ import (
 	"io/ioutil"
 	"net/http"
 	"path"
+	"path/filepath"
 	"strings"
 
 	log "gopkg.in/clog.v1"
-
-	"path/filepath"
 
 	"github.com/G-Node/git-module"
 	"github.com/G-Node/gogs/models"
@@ -527,7 +526,7 @@ func UploadFileToServer(c *context.Context) {
 	file, header, err := c.Req.FormFile("file")
 	fvalue := c.Req.Form
 	fp := filepath.Dir(fvalue.Get("full_path"))
-	log.Info("full_path:%s", fp)
+	log.Info("full_path: %s", fp)
 	if err != nil {
 		c.Error(http.StatusInternalServerError, fmt.Sprintf("FormFile: %v", err))
 		return

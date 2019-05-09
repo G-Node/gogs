@@ -8,10 +8,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/json-iterator/go"
-
-	"github.com/gogs/git-module"
+	"github.com/G-Node/git-module"
 	api "github.com/gogs/go-gogs-client"
+	jsoniter "github.com/json-iterator/go"
 )
 
 const (

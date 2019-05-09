@@ -505,11 +505,11 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 		}
 		repoFileName := path.Join(opts.TreePath, upload.Name)
 
+		// needed for annex, due to symlinks
+		os.Remove(targetPath)
 		if err = com.Copy(tmpPath, targetPath); err != nil {
 			return fmt.Errorf("copy: %v", err)
 		}
-		// needed for annex, due to symlinks
-		os.Remove(targetPath)
 		log.Trace("Check for annexing: %s", upload.Name)
 		if finfo, err := os.Stat(targetPath); err == nil {
 			log.Trace("Filesize is:%d", finfo.Size())
@@ -530,6 +530,7 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 			log.Error(1, "could not stat: %s", targetPath)
 		}
 	}
+
 	if err = git.AddChanges(localPath, true); err != nil {
 		return fmt.Errorf("git add --all: %v", err)
 	} else if err = git.CommitChanges(localPath, git.CommitChangesOptions{

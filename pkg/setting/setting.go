@@ -711,7 +711,9 @@ func NewContext() {
 	} else if err = Cfg.Section("api").MapTo(&API); err != nil {
 		log.Fatal(2, "Failed to map API settings: %v", err)
 	} else if err = Cfg.Section("ui").MapTo(&UI); err != nil {
-		log.Fatal(2, "Fail to map UI settings: %v", err)
+		log.Fatal(2, "Failed to map UI settings: %v", err)
+	} else if err = Cfg.Section("prometheus").MapTo(&Prometheus); err != nil {
+		log.Fatal(2, "Failed to map Prometheus settings: %v", err)
 	} else if err = Cfg.Section("search").MapTo(&Search); err != nil {
 		log.Fatal(2, "Fail to map Search settings: %v", err)
 	} else if err = Cfg.Section("doi").MapTo(&Doi); err != nil {
