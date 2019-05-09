@@ -510,11 +510,12 @@ func Forks(c *context.Context) {
 	c.HTML(200, FORKS)
 }
 
-// Get the (theoretical ) doi for a repository. Make sure its tge doi for the Base repo
-// in cas eits a repo from the doi user
+// GDoiRepo calculates the theoretical DOI for a repository. If the repository
+// belongs to the DOI user (and is a fork) it uses the name for the base
+// repository.
 func GDoiRepo(c *context.Context, doiBase string) string {
 	repoN := c.Repo.Repository.FullName()
-	// check whether this repo belongs to doi and is a fork
+	// check whether this repo belongs to DOI and is a fork
 	if c.Repo.Repository.IsFork && c.Repo.Owner.Name == "doi" {
 		repoN = c.Repo.Repository.BaseRepo.FullName()
 	}

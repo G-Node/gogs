@@ -1,12 +1,13 @@
 package misc
 
 import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/pkg/setting"
-	"encoding/json"
-	"net/http"
 	log "gopkg.in/clog.v1"
-	"fmt"
 )
 
 type CliCongig struct {
@@ -20,9 +21,10 @@ type ApiCliConfig struct {
 	SSHUser string
 	SSHPort int
 }
+
 func ClientC(c *context.APIContext) {
 	cf := ApiCliConfig{RSAKet: setting.CliConfig.RsaHostKey,
-		Weburl: fmt.Sprintf("%s://%s", setting.Protocol, setting.Domain),
+		Weburl:  fmt.Sprintf("%s://%s", setting.Protocol, setting.Domain),
 		Webport: setting.HTTPPort, SSHUrl: setting.SSH.Domain, SSHPort: setting.SSH.Port,
 		SSHUser: setting.RunUser}
 	data, err := json.Marshal(cf)

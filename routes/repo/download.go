@@ -9,13 +9,14 @@ import (
 	"path"
 
 	"github.com/G-Node/git-module"
+	gannex "github.com/G-Node/go-annex"
 
 	"bufio"
-	"github.com/G-Node/go-annex"
+	"os"
+
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/pkg/setting"
 	"github.com/G-Node/gogs/pkg/tool"
-	"os"
 	"github.com/go-macaron/captcha"
 )
 
@@ -33,7 +34,7 @@ func ServeData(c *context.Context, name string, reader io.Reader, cpt *captcha.C
 		if err != nil {
 
 		}
-		if cpt!=nil && af.Info.Size() > gannex.MEGABYTE*setting.Repository.RawCaptchaMinFileSize && !cpt.VerifyReq(c.Req) &&
+		if cpt != nil && af.Info.Size() > gannex.MEGABYTE*setting.Repository.RawCaptchaMinFileSize && !cpt.VerifyReq(c.Req) &&
 			!c.IsLogged {
 			c.Data["EnableCaptcha"] = true
 			c.HTML(200, "repo/download")

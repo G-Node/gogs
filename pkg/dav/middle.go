@@ -1,14 +1,16 @@
 package dav
 
 import (
-	"gopkg.in/macaron.v1"
-	"strings"
 	"net/http"
+	"strings"
+
+	"github.com/G-Node/git-module"
 	"github.com/G-Node/gogs/models"
 	"github.com/G-Node/gogs/pkg/context"
-	"github.com/G-Node/git-module"
+	"gopkg.in/macaron.v1"
 )
 
+// DavMiddle initialises and returns a WebDav middleware handler (macaron.Handler)
 // [0]: issues, [1]: wiki
 func DavMiddle() macaron.Handler {
 	return func(c *context.Context) {

@@ -21,7 +21,7 @@ func Search(c *context.APIContext) {
 		return
 	}
 	ireq := libgin.SearchRequest{Token: c.GetCookie(setting.SessionConfig.CookieName), UserID: c.User.ID,
-		Querry: c.Params("querry"), CsrfT: c.GetCookie(setting.CSRFCookieName)}
+		Query: c.Params("query"), CsrfT: c.GetCookie(setting.CSRFCookieName)}
 	data, err := json.Marshal(ireq)
 	if err != nil {
 		c.Status(http.StatusInternalServerError)

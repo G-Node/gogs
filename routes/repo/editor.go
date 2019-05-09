@@ -526,8 +526,8 @@ func UploadFilePost(c *context.Context, f form.UploadRepoFile) {
 func UploadFileToServer(c *context.Context) {
 	file, header, err := c.Req.FormFile("file")
 	fvalue := c.Req.Form
-	f_dir := filepath.Dir(fvalue.Get("full_path"))
-	log.Info("full_path:%s", f_dir)
+	fp := filepath.Dir(fvalue.Get("full_path"))
+	log.Info("full_path:%s", fp)
 	if err != nil {
 		c.Error(http.StatusInternalServerError, fmt.Sprintf("FormFile: %v", err))
 		return
@@ -557,7 +557,7 @@ func UploadFileToServer(c *context.Context) {
 		}
 	}
 
-	upload, err := models.NewUpload(filepath.Join(f_dir, header.Filename), buf, file)
+	upload, err := models.NewUpload(filepath.Join(fp, header.Filename), buf, file)
 	if err != nil {
 		c.Error(http.StatusInternalServerError, fmt.Sprintf("NewUpload: %v", err))
 		return

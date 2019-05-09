@@ -9,8 +9,10 @@ import (
 	"strings"
 	"time"
 
+	"io/ioutil"
+
 	"github.com/G-Node/git-module"
-	"github.com/G-Node/go-annex"
+	gannex "github.com/G-Node/go-annex"
 	"github.com/G-Node/gogs/models"
 	gctx "github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/pkg/setting"
@@ -18,7 +20,6 @@ import (
 	"golang.org/x/net/context"
 	"golang.org/x/net/webdav"
 	log "gopkg.in/clog.v1"
-	"io/ioutil"
 )
 
 var (
@@ -47,21 +48,22 @@ type GinFS struct {
 	BasePath string
 }
 
-// Just return an error. -> Read Only
+// Mkdir not implemented: Just return an error. -> Read Only
 func (fs *GinFS) Mkdir(ctx context.Context, name string, perm os.FileMode) error {
 	return fmt.Errorf("Mkdir not implemented for read only gin FS")
 }
 
-// Just return an error. -> Read Only
+// RemoveAll not implemented: Just return an error. -> Read Only
 func (fs *GinFS) RemoveAll(ctx context.Context, name string) error {
 	return fmt.Errorf("RemoveAll not implemented for read only gin FS")
 }
 
-// Just return an error. -> Read Only
+// Rename not implemented: Just return an error. -> Read Only
 func (fs *GinFS) Rename(ctx context.Context, oldName, newName string) error {
 	return fmt.Errorf("Rename not implemented for read only gin FS")
 }
 
+// OpenFile returns a named file from the repository
 func (fs *GinFS) OpenFile(ctx context.Context, name string, flag int, perm os.FileMode) (webdav.File, error) {
 	//todo: catch all the errors
 	rname, err := getRName(name)
@@ -225,7 +227,7 @@ func (f *GinFile) Readdir(count int) ([]os.FileInfo, error) {
 		f.dirrcount = len(ents)
 		return infos, io.EOF
 	case f.dirrcount+count < len(ents):
-		infos, err := f.getFInfos(ents[f.dirrcount: f.dirrcount+count])
+		infos, err := f.getFInfos(ents[f.dirrcount : f.dirrcount+count])
 		if err != nil {
 			return nil, err
 		}

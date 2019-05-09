@@ -12,7 +12,7 @@ type SearchRequest struct {
 	Token  string
 	CsrfT  string
 	UserID int64
-	Querry string
+	Query  string
 	SType  int64
 }
 
@@ -20,7 +20,7 @@ const (
 	SEARCH_MATCH = iota
 	SEARCH_FUZZY
 	SEARCH_WILDCARD
-	SEARCH_QUERRY
+	SEARCH_QUERY
 	SEARCH_SUGGEST
 )
 

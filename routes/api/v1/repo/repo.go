@@ -28,7 +28,7 @@ func Search(c *context.APIContext) {
 		Page:     c.QueryInt("page"),
 	}
 
-	// workaround for the all querry with logged users
+	// workaround for the all query with logged users
 	if opts.Keyword == "." {
 		opts.Keyword = ""
 	}

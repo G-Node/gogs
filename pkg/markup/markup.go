@@ -28,16 +28,15 @@ func IsIPythonNotebook(name string) bool {
 	return strings.HasSuffix(name, ".ipynb")
 }
 
-// Is JSON return whethe a filename looks liek it could be  ajson file
+// IsJSON returns whether a filename looks like a JSON file based on its extension.
 func IsJSON(name string) bool {
 	return strings.HasSuffix(name, ".json")
 }
 
-// Is YAML return whethe a filename looks like it could be  a yaml file
+// IsYAML returns whether a filename looks like a YAML file based on its extension.
 func IsYAML(name string) bool {
 	return strings.HasSuffix(name, ".yml")
 }
-
 
 const (
 	ISSUE_NAME_STYLE_NUMERIC      = "numeric"
