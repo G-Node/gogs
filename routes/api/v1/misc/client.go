@@ -10,10 +10,10 @@ import (
 	log "gopkg.in/clog.v1"
 )
 
-type CliCongig struct {
-	RsaHostKey string
+type CLICongig struct {
+	RSAHostKey string
 }
-type ApiCliConfig struct {
+type APICLIConfig struct {
 	RSAKet  string
 	Weburl  string
 	Webport string
@@ -23,7 +23,7 @@ type ApiCliConfig struct {
 }
 
 func ClientC(c *context.APIContext) {
-	cf := ApiCliConfig{RSAKet: setting.CliConfig.RsaHostKey,
+	cf := APICLIConfig{RSAKet: setting.CLIConfig.RSAHostKey,
 		Weburl:  fmt.Sprintf("%s://%s", setting.Protocol, setting.Domain),
 		Webport: setting.HTTPPort, SSHUrl: setting.SSH.Domain, SSHPort: setting.SSH.Port,
 		SSHUser: setting.RunUser}

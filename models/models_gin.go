@@ -22,7 +22,7 @@ func StartIndexing(user, owner *User, repo *Repository) {
 		log.Trace("could not marshal index request :%+v", err)
 		return
 	}
-	req, _ := http.NewRequest(http.MethodPost, setting.Search.IndexUrl, bytes.NewReader(data))
+	req, _ := http.NewRequest(http.MethodPost, setting.Search.IndexURL, bytes.NewReader(data))
 	client := http.Client{}
 	resp, err := client.Do(req)
 	if err != nil || resp.StatusCode != http.StatusOK {

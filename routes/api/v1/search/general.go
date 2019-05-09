@@ -27,7 +27,7 @@ func Search(c *context.APIContext) {
 		c.Status(http.StatusInternalServerError)
 		return
 	}
-	req, _ := http.NewRequest("Post", setting.Search.SearchUrl, bytes.NewReader(data))
+	req, _ := http.NewRequest("Post", setting.Search.SearchURL, bytes.NewReader(data))
 	cl := http.Client{}
 	resp, err := cl.Do(req)
 	if err != nil {

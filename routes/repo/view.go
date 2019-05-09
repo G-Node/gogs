@@ -86,7 +86,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 			}
 			c.Data["DOIInfo"] = &doiInfo
 
-			doi := GDoiRepo(c, setting.Doi.DoiBase)
+			doi := GDoiRepo(c, setting.DOI.DOIBase)
 			//ddata, err := ginDoi.GDoiMData(doi, "https://api.datacite.org/works/") //todo configure URL?
 
 			c.Data["DOIReg"] = libgin.IsRegisteredDOI(doi)
