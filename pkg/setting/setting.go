@@ -140,12 +140,12 @@ var (
 
 		// Repository upload settings
 		Upload struct {
-			Enabled         bool
-			TempPath        string
-			AllowedTypes    []string `delim:"|"`
-			FileMaxSize     int64
-			AnexFileMinSize int64
-			MaxFiles        int
+			Enabled          bool
+			TempPath         string
+			AllowedTypes     []string `delim:"|"`
+			FileMaxSize      int64
+			AnnexFileMinSize int64
+			MaxFiles         int
 		} `ini:"-"`
 	}
 	RepoRootPath string

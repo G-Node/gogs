@@ -58,7 +58,7 @@ func annexAdd(path string) {
 		log.Error(1, "Failed to set default backend to 'MD5': %v (%s)", err, msg)
 	}
 
-	sizefilterflag := fmt.Sprintf("--largerthan=%d", setting.Repository.Upload.AnexFileMinSize*gannex.MEGABYTE)
+	sizefilterflag := fmt.Sprintf("--largerthan=%d", setting.Repository.Upload.AnnexFileMinSize*gannex.MEGABYTE)
 	if msg, err := gannex.Add(path, sizefilterflag); err != nil {
 		log.Error(1, "Annex add failed with error: %v (%s)", err, msg)
 	}
