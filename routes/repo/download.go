@@ -9,10 +9,6 @@ import (
 	"path"
 
 	"github.com/G-Node/git-module"
-	gannex "github.com/G-Node/go-annex"
-
-	"bufio"
-	"os"
 
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/pkg/setting"
@@ -26,27 +22,9 @@ func ServeData(c *context.Context, name string, reader io.Reader, cpt *captcha.C
 	if n >= 0 {
 		buf = buf[:n]
 	}
-	isannex := tool.IsAnnexedFile(buf)
-	var afpR *bufio.Reader
-	var afp *os.File
-	if isannex == true {
-		af, err := gannex.NewAFile(c.Repo.Repository.RepoPath(), "annex", name, buf)
-		if err != nil {
 
-		}
-		if cpt != nil && af.Info.Size() > gannex.MEGABYTE*setting.Repository.RawCaptchaMinFileSize && !cpt.VerifyReq(c.Req) &&
-			!c.IsLogged {
-			c.Data["EnableCaptcha"] = true
-			c.HTML(200, "repo/download")
-			return nil
-		}
-		afp, err = af.Open()
-		defer afp.Close()
-		if err != nil {
-
-		}
-		afpR = bufio.NewReader(afp)
-		buf, _ = afpR.Peek(1024)
+	if tool.IsAnnexedFile(buf) {
+		return serveAnnexedData(c, name, cpt, buf)
 	}
 
 	if !tool.IsTextFile(buf) {
@@ -56,10 +34,6 @@ func ServeData(c *context.Context, name string, reader io.Reader, cpt *captcha.C
 		}
 	} else if !setting.Repository.EnableRawFileRenderMode || !c.QueryBool("render") {
 		c.Resp.Header().Set("Content-Type", "text/plain; charset=utf-8")
-	}
-	if isannex {
-		_, err := io.Copy(c.Resp, afpR)
-		return err
 	}
 	c.Resp.Write(buf)
 	_, err := io.Copy(c.Resp, reader)
