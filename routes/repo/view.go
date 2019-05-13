@@ -59,10 +59,10 @@ func renderDirectory(c *context.Context, treeLink string) {
 		c.ServerError("GetCommitsInfoWithCustomConcurrency", err)
 		return
 	}
-	c.Data["DOI"] = false
+	c.Data["HasDatacite"] = false
 	var readmeFile *git.Blob
 	for _, entry := range entries {
-		if entry.Name() == "datacite.yml" {
+		if !entry.IsDir() && entry.Name() == "datacite.yml" {
 			readDataciteFile(entry, c)
 			continue
 		}
@@ -71,50 +71,27 @@ func renderDirectory(c *context.Context, treeLink string) {
 		}
 
 		// TODO: collect all possible README files and show with priority.
-		if markup.IsReadmeFile(entry.Name()) && entry.Blob().Size() <
-			setting.UI.MaxDisplayFileSize {
-			readmeFile = entry.Blob()
-		}
+		readmeFile = entry.Blob()
+		break
 	}
 
 	if readmeFile != nil {
 		c.Data["RawFileLink"] = ""
 		c.Data["ReadmeInList"] = true
 		c.Data["ReadmeExist"] = true
-		buf := make([]byte, 1024)
-		r, w := io.Pipe()
-		defer r.Close()
-		defer w.Close()
-		go readmeFile.DataPipeline(w, w)
-		if readmeFile.Size() > 0 {
-			n, _ := r.Read(buf)
-			buf = buf[:n]
-		}
-		isannex := tool.IsAnnexedFile(buf)
+
 		dataRc, err := readmeFile.Data()
 		if err != nil {
 			c.ServerError("readmeFile.Data", err)
 			return
 		}
-		if isannex {
-			af, err := gannex.NewAFile(c.Repo.Repository.RepoPath(), "annex", readmeFile.Name(), buf)
-			if err != nil {
-				log.Trace("Could not get annex file: %v", err)
-				c.ServerError("readmeFile.Data", err)
-				return
-			}
-			afp, err := af.Open()
-			defer afp.Close()
-			if err != nil {
-				c.ServerError("readmeFile.Data", err)
-				log.Trace("Could not open annex file: %v", err)
-				return
-			}
-			dataRc = bufio.NewReader(afp)
-		}
-		buf = make([]byte, 1024)
+
+		buf := make([]byte, 1024)
 		n, _ := dataRc.Read(buf)
 		buf = buf[:n]
+
+		// Replace existing buf and reader with annexed content buf and reader
+		buf, dataRc = resolveAnnexedContent(c, buf, dataRc)
 
 		isTextFile := tool.IsTextFile(buf)
 		c.Data["IsTextFile"] = isTextFile
@@ -343,10 +320,6 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 	} else if !c.Repo.IsWriter() {
 		c.Data["DeleteFileTooltip"] = c.Tr("repo.editor.must_have_write_access")
 	}
-}
-
-func renderAnnexFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink string) {
-
 }
 
 func setEditorconfigIfExists(c *context.Context) {

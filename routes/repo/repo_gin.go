@@ -81,3 +81,35 @@ func calcRepoDOI(c *context.Context, doiBase string) string {
 	uuid := libgin.RepoPathToUUID(repoN)
 	return doiBase + uuid[:6]
 }
+
+// resolveAnnexedContent takes a buffer with the contents of a git-annex
+// pointer file and an io.Reader for the underlying file and returns the
+// corresponding buffer and a bufio.Reader for the underlying content file.
+// The returned byte slice and bufio.Reader can be used to replace the buffer
+// and io.Reader sent in through the caller so that any existing code can use
+// the two variables without modifications.
+func resolveAnnexedContent(c *context.Context, buf []byte, dataRc io.Reader) ([]byte, io.Reader) {
+	if !tool.IsAnnexedFile(buf) {
+		// not an annex pointer file; return as is
+		return buf, dataRc
+	}
+	af, err := gannex.NewAFile(c.Repo.Repository.RepoPath(), "annex", "", buf)
+	if err != nil {
+		log.Trace("Could not get annex file: %v", err)
+		c.ServerError("readmeFile.Data", err)
+		return buf, dataRc
+	}
+
+	afp, err := af.Open()
+	if err != nil {
+		c.ServerError("readmeFile.Data", err)
+		log.Trace("Could not open annex file: %v", err)
+		return buf, dataRc
+	}
+	annexDataReader := bufio.NewReader(afp)
+	annexBuf := make([]byte, 1024)
+	n, _ := annexDataReader.Read(annexBuf)
+	annexBuf = annexBuf[:n]
+	log.Trace("Read %d bytes into buffer (annex)", n)
+	return annexBuf, annexDataReader
+}
