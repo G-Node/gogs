@@ -3,12 +3,17 @@ package repo
 import (
 	"bufio"
 	"io"
+	"io/ioutil"
 
+	"github.com/G-Node/git-module"
 	gannex "github.com/G-Node/go-annex"
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/pkg/setting"
 	"github.com/G-Node/gogs/pkg/tool"
+	"github.com/G-Node/libgin/libgin"
 	"github.com/go-macaron/captcha"
+	log "gopkg.in/clog.v1"
+	"gopkg.in/yaml.v2"
 )
 
 func serveAnnexedData(ctx *context.Context, name string, cpt *captcha.Captcha, buf []byte) error {
@@ -41,4 +46,25 @@ func serveAnnexedData(ctx *context.Context, name string, cpt *captcha.Captcha, b
 
 	_, err = io.Copy(ctx.Resp, annexReader)
 	return err
+}
+
+func readDataciteFile(entry *git.TreeEntry, c *context.Context) {
+	c.Data["HasDatacite"] = true
+	doiData, err := entry.Blob().Data()
+	if err != nil {
+		log.Trace("DOI Blob could not be read: %v", err)
+	}
+	buf, err := ioutil.ReadAll(doiData)
+	doiInfo := libgin.DOIRegInfo{}
+	err = yaml.Unmarshal(buf, &doiInfo)
+	if err != nil {
+		log.Trace("DOI Blob could not be unmarshalled: %v", err)
+	}
+	c.Data["DOIInfo"] = &doiInfo
+
+	doi := GDoiRepo(c, setting.DOI.DOIBase)
+	//ddata, err := ginDoi.GDoiMData(doi, "https://api.datacite.org/works/") //todo configure URL?
+
+	c.Data["DOIReg"] = libgin.IsRegisteredDOI(doi)
+	c.Data["DOI"] = doi
 }

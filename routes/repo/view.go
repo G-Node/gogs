@@ -32,7 +32,6 @@ import (
 	"github.com/go-macaron/captcha"
 	"golang.org/x/net/html/charset"
 	log "gopkg.in/clog.v1"
-	"gopkg.in/yaml.v2"
 )
 
 const (
@@ -64,7 +63,11 @@ func renderDirectory(c *context.Context, treeLink string) {
 	c.Data["DOI"] = false
 	var readmeFile *git.Blob
 	for _, entry := range entries {
-		if entry.IsDir() || !markup.IsReadmeFile(entry.Name()) && entry.Name() != "datacite.yml" {
+		if entry.Name() == "datacite.yml" {
+			readDataciteFile(entry, c)
+			continue
+		}
+		if entry.IsDir() || !markup.IsReadmeFile(entry.Name()) {
 			continue
 		}
 
@@ -72,25 +75,6 @@ func renderDirectory(c *context.Context, treeLink string) {
 		if markup.IsReadmeFile(entry.Name()) && entry.Blob().Size() <
 			setting.UI.MaxDisplayFileSize {
 			readmeFile = entry.Blob()
-		} else if entry.Name() == "datacite.yml" {
-			c.Data["HasDatacite"] = true
-			doiData, err := entry.Blob().Data()
-			if err != nil {
-				log.Trace("DOI Blob could not be read: %v", err)
-			}
-			buf, err := ioutil.ReadAll(doiData)
-			doiInfo := libgin.DOIRegInfo{}
-			err = yaml.Unmarshal(buf, &doiInfo)
-			if err != nil {
-				log.Trace("DOI Blob could not be unmarshalled: %v", err)
-			}
-			c.Data["DOIInfo"] = &doiInfo
-
-			doi := GDoiRepo(c, setting.DOI.DOIBase)
-			//ddata, err := ginDoi.GDoiMData(doi, "https://api.datacite.org/works/") //todo configure URL?
-
-			c.Data["DOIReg"] = libgin.IsRegisteredDOI(doi)
-			c.Data["DOI"] = doi
 		}
 	}
 
