@@ -27,7 +27,6 @@ import (
 	"github.com/G-Node/gogs/pkg/template"
 	"github.com/G-Node/gogs/pkg/template/highlight"
 	"github.com/G-Node/gogs/pkg/tool"
-	"github.com/G-Node/libgin/libgin"
 	"github.com/Unknwon/paginater"
 	"github.com/go-macaron/captcha"
 	"golang.org/x/net/html/charset"
@@ -490,17 +489,4 @@ func Forks(c *context.Context) {
 	c.Data["Forks"] = forks
 
 	c.HTML(200, FORKS)
-}
-
-// GDoiRepo calculates the theoretical DOI for a repository. If the repository
-// belongs to the DOI user (and is a fork) it uses the name for the base
-// repository.
-func GDoiRepo(c *context.Context, doiBase string) string {
-	repoN := c.Repo.Repository.FullName()
-	// check whether this repo belongs to DOI and is a fork
-	if c.Repo.Repository.IsFork && c.Repo.Owner.Name == "doi" {
-		repoN = c.Repo.Repository.BaseRepo.FullName()
-	}
-	uuid := libgin.RepoPathToUUID(repoN)
-	return doiBase + uuid[:6]
 }

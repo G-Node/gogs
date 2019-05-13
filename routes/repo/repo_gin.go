@@ -62,9 +62,22 @@ func readDataciteFile(entry *git.TreeEntry, c *context.Context) {
 	}
 	c.Data["DOIInfo"] = &doiInfo
 
-	doi := GDoiRepo(c, setting.DOI.DOIBase)
+	doi := calcRepoDOI(c, setting.DOI.DOIBase)
 	//ddata, err := ginDoi.GDoiMData(doi, "https://api.datacite.org/works/") //todo configure URL?
 
 	c.Data["DOIReg"] = libgin.IsRegisteredDOI(doi)
 	c.Data["DOI"] = doi
+}
+
+// calcRepoDOI calculates the theoretical DOI for a repository. If the repository
+// belongs to the DOI user (and is a fork) it uses the name for the base
+// repository.
+func calcRepoDOI(c *context.Context, doiBase string) string {
+	repoN := c.Repo.Repository.FullName()
+	// check whether this repo belongs to DOI and is a fork
+	if c.Repo.Repository.IsFork && c.Repo.Owner.Name == "doi" {
+		repoN = c.Repo.Repository.BaseRepo.FullName()
+	}
+	uuid := libgin.RepoPathToUUID(repoN)
+	return doiBase + uuid[:6]
 }
