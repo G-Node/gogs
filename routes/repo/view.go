@@ -64,7 +64,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 	c.Data["DOI"] = false
 	var readmeFile *git.Blob
 	for _, entry := range entries {
-		if entry.IsDir() || !markup.IsReadmeFile(entry.Name()) && entry.Name() != "datacite.yml" && entry.Name() != "LICENSE" {
+		if entry.IsDir() || !markup.IsReadmeFile(entry.Name()) && entry.Name() != "datacite.yml" {
 			continue
 		}
 
@@ -91,10 +91,8 @@ func renderDirectory(c *context.Context, treeLink string) {
 
 			c.Data["DOIReg"] = libgin.IsRegisteredDOI(doi)
 			c.Data["DOI"] = doi
-
 		}
 	}
-	c.Data["LicenseExists"] = true
 
 	if readmeFile != nil {
 		c.Data["RawFileLink"] = ""
