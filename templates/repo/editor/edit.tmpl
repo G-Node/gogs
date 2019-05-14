@@ -35,7 +35,7 @@
 					{{if .IsYAML}}
 					<a class="item" data-tab="yamleditor" data-tooltip="Using the graphical YAML editor will change the file layout and remove comments!"><i class="octicon octicon-file"></i>Graphical Editor</a>
 					{{end}}
-					{{if .IsOdML}}
+					{{if .IsODML}}
 					<a class="item" data-tab="odmleditor"><i class="octicon octicon-file"></i>Graphical Editor</a>
 					{{end}}
 					{{if not .IsNewFile}}
@@ -106,7 +106,7 @@
 				</div>
 				{{end}}
 
-				{{if .IsOdML}}
+				{{if .IsODML}}
 				<div class="ui bottom attached tab segment" data-tab="odmleditor">
 					<div id="xonomy_edit"></div>
 				</div>

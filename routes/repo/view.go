@@ -5,21 +5,15 @@
 package repo
 
 import (
-	"bufio"
 	"bytes"
-	"encoding/json"
-	"encoding/xml"
 	"fmt"
 	gotemplate "html/template"
-	"io"
 	"io/ioutil"
-	"os"
 	"path"
 	"strings"
 
 	"github.com/G-Node/git-module"
 	gannex "github.com/G-Node/go-annex"
-	"github.com/G-Node/godML/odml"
 	"github.com/G-Node/gogs/models"
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/pkg/markup"
@@ -29,7 +23,6 @@ import (
 	"github.com/G-Node/gogs/pkg/tool"
 	"github.com/Unknwon/paginater"
 	"github.com/go-macaron/captcha"
-	"golang.org/x/net/html/charset"
 	log "gopkg.in/clog.v1"
 )
 
@@ -190,6 +183,7 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			c.Data["FileContent"] = string(markup.OrgMode(buf, path.Dir(treeLink), c.Repo.Repository.ComposeMetas()))
 		case markup.IPYTHON_NOTEBOOK:
 			c.Data["IsIPythonNotebook"] = true
+			// GIN mod: JSON, YAML, and odML render support with jsTree
 		case markup.JSON:
 			c.Data["IsJSON"] = true
 			c.Data["RawFileContent"] = string(buf)
@@ -198,20 +192,14 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			c.Data["IsYAML"] = true
 			c.Data["RawFileContent"] = string(buf)
 			fallthrough
-		case markup.UNRECOGNIZED:
-			if tool.IsOdmlFile(buf) {
-				c.Data["IsOdML"] = true
-				od := odml.Odml{}
-				decoder := xml.NewDecoder(bytes.NewReader(buf))
-				decoder.CharsetReader = charset.NewReaderLabel
-				decoder.Decode(&od)
-				data, _ := json.Marshal(od)
-				c.Data["OdML"] = string(data)
-				goto End
-			} else {
-				goto End
+		case markup.XML:
+			// pass XML down to ODML checker
+			fallthrough
+		case markup.ODML:
+			if tool.IsODMLFile(buf) {
+				c.Data["IsODML"] = true
+				c.Data["ODML"] = string(markup.MarshalODML(buf))
 			}
-		End:
 			fallthrough
 		default:
 			// Building code view blocks with line number on server side.
@@ -224,15 +212,18 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			} else {
 				fileContent = content
 			}
+
 			var output bytes.Buffer
 			lines := strings.Split(fileContent, "\n")
 			// Remove blank line at the end of file
 			if len(lines) > 0 && len(lines[len(lines)-1]) == 0 {
 				lines = lines[:len(lines)-1]
 			}
+			// > GIN
 			if len(lines) > setting.UI.MaxLineHighlight {
 				c.Data["HighlightClass"] = "nohighlight"
 			}
+			// < GIN
 			for index, line := range lines {
 				output.WriteString(fmt.Sprintf(`<li class="L%d" rel="L%d">%s</li>`, index+1, index+1, gotemplate.HTMLEscapeString(strings.TrimRight(line, "\r"))) + "\n")
 			}
