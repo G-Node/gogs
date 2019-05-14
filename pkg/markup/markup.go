@@ -30,12 +30,13 @@ func IsIPythonNotebook(name string) bool {
 
 // IsJSON returns whether a filename looks like a JSON file based on its extension.
 func IsJSON(name string) bool {
-	return strings.HasSuffix(name, ".json")
+	return strings.HasSuffix(strings.ToLower(name), ".json")
 }
 
 // IsYAML returns whether a filename looks like a YAML file based on its extension.
 func IsYAML(name string) bool {
-	return strings.HasSuffix(name, ".yml")
+	lowname := strings.ToLower(name)
+	return strings.HasSuffix(lowname, ".yml") || strings.HasSuffix(lowname, ".yaml")
 }
 
 const (
