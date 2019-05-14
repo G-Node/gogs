@@ -90,7 +90,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 		n, _ := dataRc.Read(buf)
 		buf = buf[:n]
 
-		// Replace existing buf and reader with annexed content buf and reader
+		// GIN mod: Replace existing buf and reader with annexed content buf and reader
 		buf, dataRc = resolveAnnexedContent(c, buf, dataRc)
 
 		isTextFile := tool.IsTextFile(buf)
@@ -138,56 +138,25 @@ func renderDirectory(c *context.Context, treeLink string) {
 
 func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink string, cpt *captcha.Captcha) {
 	c.Data["IsViewFile"] = true
+
 	blob := entry.Blob()
-	log.Trace("Blob size is %d", blob.Size())
-	if blob.Size() > gannex.MEGABYTE*10 && setting.Service.EnableCaptcha && !cpt.VerifyReq(c.Req) && !c.IsLogged {
-		c.Data["EnableCaptcha"] = true
-		c.HTML(200, "repo/download")
+	dataRc, err := blob.Data()
+	if err != nil {
+		c.Handle(500, "Data", err)
 		return
 	}
+
 	c.Data["FileSize"] = blob.Size()
 	c.Data["FileName"] = blob.Name()
 	c.Data["HighlightClass"] = highlight.FileNameToHighlightClass(blob.Name())
 	c.Data["RawFileLink"] = rawLink + "/" + c.Repo.TreePath
-	buf := make([]byte, 1024)
-	r, w := io.Pipe()
-	defer r.Close()
-	defer w.Close()
-	go blob.DataPipeline(w, w)
-	if blob.Size() > 0 {
-		n, _ := r.Read(buf)
-		buf = buf[:n]
-	}
-	isannex := tool.IsAnnexedFile(buf)
 
-	var afpR *bufio.Reader
-	var afp *os.File
-	var annexf *gannex.AFile
-	if isannex == true {
-		af, err := gannex.NewAFile(c.Repo.Repository.RepoPath(), "annex", entry.Name(), buf)
-		if err != nil {
-			c.Data["IsAnnexedFile"] = true
-			log.Trace("Could not get annex file: %v", err)
-			return
-		}
-		if af.Info.Size() > gannex.MEGABYTE*setting.Repository.CaptchaMinFileSize && setting.Service.EnableCaptcha &&
-			!cpt.VerifyReq(c.Req) && !c.IsLogged {
-			c.Data["EnableCaptcha"] = true
-			c.HTML(200, "repo/download")
-			return
-		}
-		afp, err = af.Open()
-		defer afp.Close()
-		if err != nil {
-			log.Trace("Could not open annex file: %v", err)
-			c.Data["IsAnnexedFile"] = true
-			return
-		}
-		afpR = bufio.NewReader(afp)
-		buf, _ = afpR.Peek(1024)
-		annexf = af
-		c.Data["FileSize"] = af.Info.Size()
-	}
+	buf := make([]byte, 1024)
+	n, _ := dataRc.Read(buf)
+	buf = buf[:n]
+
+	// GIN mod: Replace existing buf and reader with annexed content buf and reader
+	buf, dataRc = resolveAnnexedContent(c, buf, dataRc)
 
 	isTextFile := tool.IsTextFile(buf)
 	c.Data["IsTextFile"] = isTextFile
@@ -200,31 +169,18 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 	canEnableEditor := c.Repo.CanEnableEditor()
 	switch {
 	case isTextFile:
-		if !isannex {
-			if blob.Size() >= setting.UI.MaxDisplayFileSize {
-				c.Data["IsFileTooLarge"] = true
-				break
-			}
-
-			c.Data["ReadmeExist"] = markup.IsReadmeFile(blob.Name())
-			if blob.Size() > 1024 {
-				d := make([]byte, blob.Size()-
-					1024)
-				if _, err := io.ReadAtLeast(r, d, int(blob.Size()-1024)); err != nil {
-					log.Error(4., "Could nor read all of a git file:%+v", err)
-				}
-				buf = append(buf, d...)
-			}
-		} else {
-			if annexf.Info.Size() >= setting.UI.MaxDisplayFileSize {
-				c.Data["IsFileTooLarge"] = true
-				break
-			}
-			c.Data["ReadmeExist"] = markup.IsReadmeFile(blob.Name())
-			buf = make([]byte, annexf.Info.Size())
-			afp.Seek(0, 0)
-			afp.Read(buf)
+		// GIN mod: Use c.Data["FileSize"] which is replaced by annexed content
+		// size in resolveAnnexedContent() when necessary
+		if c.Data["FileSize"].(int64) >= setting.UI.MaxDisplayFileSize {
+			c.Data["IsFileTooLarge"] = true
+			break
 		}
+
+		c.Data["ReadmeExist"] = markup.IsReadmeFile(blob.Name())
+
+		d, _ := ioutil.ReadAll(dataRc)
+		buf = append(buf, d...)
+
 		switch markup.Detect(blob.Name()) {
 		case markup.MARKDOWN:
 			c.Data["IsMarkdown"] = true
@@ -289,6 +245,7 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			c.Data["LineNums"] = gotemplate.HTML(output.String())
 		}
 
+		isannex := tool.IsAnnexedFile(buf)
 		if canEnableEditor && !isannex {
 			c.Data["CanEditFile"] = true
 			c.Data["EditFileTooltip"] = c.Tr("repo.editor.edit_this_file")

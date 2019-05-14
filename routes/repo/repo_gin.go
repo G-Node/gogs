@@ -2,6 +2,7 @@ package repo
 
 import (
 	"bufio"
+	"bytes"
 	"io"
 	"io/ioutil"
 
@@ -88,11 +89,14 @@ func calcRepoDOI(c *context.Context, doiBase string) string {
 // The returned byte slice and bufio.Reader can be used to replace the buffer
 // and io.Reader sent in through the caller so that any existing code can use
 // the two variables without modifications.
+// Any errors that occur during processing are stored in the provided context.
+// The FileSize of the annexed content is also saved in the context (c.Data["FileSize"]).
 func resolveAnnexedContent(c *context.Context, buf []byte, dataRc io.Reader) ([]byte, io.Reader) {
 	if !tool.IsAnnexedFile(buf) {
 		// not an annex pointer file; return as is
 		return buf, dataRc
 	}
+	log.Trace("Annexed file requested: Resolving content for [%s]", bytes.TrimSpace(buf))
 	af, err := gannex.NewAFile(c.Repo.Repository.RepoPath(), "annex", "", buf)
 	if err != nil {
 		log.Trace("Could not get annex file: %v", err)
@@ -110,6 +114,7 @@ func resolveAnnexedContent(c *context.Context, buf []byte, dataRc io.Reader) ([]
 	annexBuf := make([]byte, 1024)
 	n, _ := annexDataReader.Read(annexBuf)
 	annexBuf = annexBuf[:n]
-	log.Trace("Read %d bytes into buffer (annex)", n)
+	c.Data["FileSize"] = af.Info.Size()
+	log.Trace("Annexed file size: %d B", af.Info.Size())
 	return annexBuf, annexDataReader
 }
