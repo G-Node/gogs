@@ -39,6 +39,16 @@ func IsYAML(name string) bool {
 	return strings.HasSuffix(lowname, ".yml") || strings.HasSuffix(lowname, ".yaml")
 }
 
+// IsODML returns whether a filename looks like an odML file based on its extension.
+func IsODML(name string) bool {
+	return strings.HasSuffix(strings.ToLower(name), ".odml")
+}
+
+// IsXML returns whether a filename looks like an XML file based on its extension.
+func IsXML(name string) bool {
+	return strings.HasSuffix(strings.ToLower(name), ".xml")
+}
+
 const (
 	ISSUE_NAME_STYLE_NUMERIC      = "numeric"
 	ISSUE_NAME_STYLE_ALPHANUMERIC = "alphanumeric"
@@ -331,6 +341,8 @@ const (
 	IPYTHON_NOTEBOOK Type = "ipynb"
 	JSON             Type = "json"
 	YAML             Type = "yaml"
+	ODML             Type = "odml"
+	XML              Type = "xml"
 )
 
 // Detect returns best guess of a markup type based on file name.
@@ -346,6 +358,10 @@ func Detect(filename string) Type {
 		return JSON
 	case IsYAML(filename):
 		return YAML
+	case IsODML(filename):
+		return ODML
+	case IsXML(filename):
+		return XML
 	default:
 		return UNRECOGNIZED
 	}
