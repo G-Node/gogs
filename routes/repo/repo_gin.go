@@ -53,13 +53,19 @@ func readDataciteFile(entry *git.TreeEntry, c *context.Context) {
 	c.Data["HasDatacite"] = true
 	doiData, err := entry.Blob().Data()
 	if err != nil {
-		log.Trace("DOI Blob could not be read: %v", err)
+		log.Error(2, "datacite.yml blob could not be read: %v", err)
+		return
 	}
 	buf, err := ioutil.ReadAll(doiData)
+	if err != nil {
+		log.Error(2, "datacite.yml data could not be read: %v", err)
+		return
+	}
 	doiInfo := libgin.DOIRegInfo{}
 	err = yaml.Unmarshal(buf, &doiInfo)
 	if err != nil {
-		log.Trace("DOI Blob could not be unmarshalled: %v", err)
+		log.Error(2, "datacite.yml data could not be unmarshalled: %v", err)
+		return
 	}
 	c.Data["DOIInfo"] = &doiInfo
 
