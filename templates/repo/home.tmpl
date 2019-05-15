@@ -26,7 +26,7 @@
 			{{if .PullRequestCtx.Allowed}}
 				<div class="fitted item" data-tooltip="Please note: annexed file content will not be part of a pull request">
 					<a href="{{.BaseRepo.Link}}/compare/{{EscapePound .BaseRepo.DefaultBranch}}...{{EscapePound .PullRequestCtx.HeadInfo}}">
-						<button class="ui green small button"><i class="octicon octicon-git-compare"></i></button>
+						<button class="ui green small button"><i class="octicon octicon-git-compare"></i>Pull request</button>
 					</a>
 				</div>
 				{{else if or .IsRepositoryWriter .HasForked}}
