@@ -18,11 +18,9 @@ import (
 
 	"github.com/Unknwon/com"
 	gouuid "github.com/satori/go.uuid"
-	log "gopkg.in/clog.v1"
 
 	git "github.com/G-Node/git-module"
 
-	gannex "github.com/G-Node/go-annex"
 	"github.com/G-Node/gogs/models/errors"
 	"github.com/G-Node/gogs/pkg/process"
 	"github.com/G-Node/gogs/pkg/setting"
@@ -521,20 +519,10 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 		return fmt.Errorf("git push origin %s: %v", opts.NewBranch, err)
 	}
 
-	// GIN START
-	log.Trace("Synchronising annexed data")
-	if msg, err := gannex.ASync(localPath, "--content"); err != nil {
-		// TODO: This will also DOWNLOAD content, which is unnecessary for a simple upload
-		// TODO: Use gin-cli upload function instead
-		log.Error(1, "Annex sync failed: %v (%s)", err, msg)
+	if err := annexSync(localPath); err != nil { // Run full annex sync
+		return err
 	}
-
-	annexUninit(localPath)
-	// Indexing support
-	if setting.Search.Do {
-		StartIndexing(doer, repo.MustOwner(), repo)
-	}
-	RemoveAllWithNotice("Cleaning out after upload", localPath)
-	// GIN END
+	annexUninit(localPath)                      // Uninitialise annex to prepare for deletion
+	StartIndexing(doer, repo.MustOwner(), repo) // Index the new data
 	return DeleteUploads(uploads...)
 }

@@ -14,6 +14,9 @@ import (
 // StartIndexing sends an indexing request to the configured indexing service
 // for a repository.
 func StartIndexing(user, owner *User, repo *Repository) {
+	if !setting.Search.Do {
+		return
+	}
 	var ireq struct{ RepoID, RepoPath string }
 	ireq.RepoID = fmt.Sprintf("%d", repo.ID)
 	ireq.RepoPath = repo.FullName()
@@ -62,4 +65,15 @@ func annexAdd(path string) {
 	if msg, err := gannex.Add(path, sizefilterflag); err != nil {
 		log.Error(1, "Annex add failed with error: %v (%s)", err, msg)
 	}
+}
+
+func annexSync(path string) error {
+	log.Trace("Synchronising annexed data")
+	if msg, err := gannex.ASync(path, "--content"); err != nil {
+		// TODO: This will also DOWNLOAD content, which is unnecessary for a simple upload
+		// TODO: Use gin-cli upload function instead
+		log.Error(1, "Annex sync failed: %v (%s)", err, msg)
+		return fmt.Errorf("git annex sync --content [%s]", path)
+	}
+	return nil
 }
