@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
+	"path/filepath"
 
 	gannex "github.com/G-Node/go-annex"
 	"github.com/G-Node/gogs/pkg/setting"
@@ -35,10 +37,30 @@ func StartIndexing(user, owner *User, repo *Repository) {
 }
 
 func annexUninit(path string) {
+	// walker sets the permission for any file found to 0600, to allow deletion
+	var mode os.FileMode
+	walker := func(path string, info os.FileInfo, err error) error {
+		if info == nil {
+			return nil
+		}
+
+		mode = 0660
+		if info.IsDir() {
+			mode = 0770
+		}
+
+		if err := os.Chmod(path, mode); err != nil {
+			log.Error(1, "failed to change permissions on '%s': %v", path, err)
+		}
+		return nil
+	}
+
 	log.Trace("Uninit annex at '%s'", path)
 	if msg, err := gannex.Uninit(path); err != nil {
 		log.Error(1, "uninit failed: %v (%s)", err, msg)
-		// TODO: Set mode 777 on all files to allow removal
+		if werr := filepath.Walk(path, walker); werr != nil {
+			log.Error(1, "file permission change failed: %v", werr)
+		}
 	}
 }
 
