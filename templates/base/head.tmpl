@@ -3,13 +3,6 @@
 <head data-suburl="{{AppSubURL}}">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-	{{if or .PageIsExploreRepositories (or .PageIsHome .PageIsWiki) }}
-		<meta name="robots" content="nofollow"/>
-	{{else if .PageIsViewFiles }}
-		<meta name="robots" content="noindex,nofollow"/>
-	{{else}}
-		<meta name="robots" content="noindex, nofollow"/>
-	{{end}}
 	{{if not .PageIsAdmin}}
 		<meta name="author" content="{{if .Repository}}{{.Owner.Name}}{{else}}G-Node{{end}}"/>
 		<meta name="description" content="{{if .Repository}}{{.Repository.Name}}{{if .Repository.Description}} - {{.Repository.Description}}{{end}}{{else}}Gin is a data repository for science{{end}}"/>
@@ -46,35 +39,13 @@
 
 	<script src="{{AppSubURL}}/js/jquery-1.11.3.min.js"></script>
 	<script src="{{AppSubURL}}/js/libs/jquery.are-you-sure.js"></script>
-	<script src="{{AppSubURL}}/js/libs/js.cookie.js"></script>
 	<link rel="stylesheet" href="{{AppSubURL}}/assets/font-awesome-4.6.3/css/font-awesome.min.css">
 	<link rel="stylesheet" href="{{AppSubURL}}/assets/octicons-4.3.0/octicons.min.css">
-
-	<link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
 
 	<!-- notebook.js for rendering ipython notebooks and marked.js for rendering markdown in notebooks -->
 	{{if .IsIPythonNotebook}}
 		<script src="{{AppSubURL}}/plugins/notebookjs-0.3.0/notebook.min.js"></script>
 		<script src="{{AppSubURL}}/plugins/marked-0.3.6/marked.min.js"></script>
-	{{end}}
-
-	{{if .IsODML}}
-		<script type="text/javascript" src="{{AppSubURL}}/plugins/xonomy/xonomy.js"></script>
-		<link type="text/css" rel="stylesheet" href="{{AppSubURL}}/plugins/xonomy/xonomy.css"/>
-
-		<script src="{{AppSubURL}}/js/libs/jstree.min.js"></script>
-		<link rel="stylesheet" href="{{AppSubURL}}/css/jstree/jstree.css">
-	{{end}}
-
-	{{if .IsJSON}}
-		<script src="{{AppSubURL}}/js/libs/jsoneditor.min.js"></script>
-		<link rel="stylesheet" href="{{AppSubURL}}/css/jsoneditor/jsoneditor.min.css"/>
-	{{end}}
-
-	{{if .IsYAML}}
-		<script src="{{AppSubURL}}/js/libs/jsoneditor.min.js"></script>
-		<link rel="stylesheet" href="{{AppSubURL}}/css/jsoneditor/jsoneditor.min.css"/>
-		<script src="{{AppSubURL}}/js/libs/yaml.min.js"></script>
 	{{end}}
 
 	{{if .RequireSimpleMDE}}
@@ -104,12 +75,6 @@
 	<title>{{if .Title}}{{.Title}} - {{end}}{{AppName}}</title>
 
 	<meta name="theme-color" content="{{ThemeColorMetaTag}}">
-	<!-- twitterish -->
-	<meta name="twitter:card" content="summary" />
-	<meta name="twitter:site" content="@gnode" />
-	<meta name="twitter:title" content=" GIN" />
-	<meta name="twitter:description" content="Modern Research Data Management for Neuroscience"/>
-	<meta name="twitter:image" content="https://web.gin.g-node.org/img/favicon.png" />
 
 	{{template "inject/head" .}}
 </head>
@@ -118,10 +83,6 @@
 		<noscript>This website works better with JavaScript</noscript>
 
 		{{if not .PageIsInstall}}
-			<div class="ui inline cookie nag">
-				<span class="title">We use cookies to ensure you get the best experience on our website</span>
-				<i class="nag close icon"></i>
-			</div>
 			<div class="following bar light">
 				<div class="ui container">
 					<div class="ui grid">
