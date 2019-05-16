@@ -13,6 +13,7 @@
 				<a href="/G-Node/Info/wiki/contact">Contact</a>
 				<a href="/G-Node/Info/wiki/Terms+of+Use">Terms of Use</a>
 				<a href="/G-Node/Info/wiki/Datenschutz">Datenschutz</a>
+				{{if .PageIsAdmin}}<span>{{.i18n.Tr "version"}}: {{AppVer}}</span>{{end}}
 			</div>
 			<div class="ui center links item brand footertext">
 				<span>Powered by:      <a href="https://github.com/gogits/gogs"><img class="ui mini footericon" src="{{AppSubURL}}/img/gogs.svg"/></a>         </span>
