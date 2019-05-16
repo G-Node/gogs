@@ -5,27 +5,26 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 	{{if or .PageIsExploreRepositories (or .PageIsHome .PageIsWiki) }}
 		<meta name="robots" content="nofollow"/>
-		{{else if .PageIsViewFiles }}
+	{{else if .PageIsViewFiles }}
 		<meta name="robots" content="noindex,nofollow"/>
-		{{else}}
+	{{else}}
 		<meta name="robots" content="noindex, nofollow"/>
-		{{end}}
-		{{if not .PageIsAdmin}}
+	{{end}}
+	{{if not .PageIsAdmin}}
 		<meta name="author" content="{{if .Repository}}{{.Owner.Name}}{{else}}G-Node{{end}}"/>
-		<meta name="description"
-					content="{{if .Repository}}{{.Repository.Name}}{{if .Repository.Description}} - {{.Repository.Description}}{{end}}{{else}}Gin is a data repository for science{{end}}"/>
+		<meta name="description" content="{{if .Repository}}{{.Repository.Name}}{{if .Repository.Description}} - {{.Repository.Description}}{{end}}{{else}}Gin is a data repository for science{{end}}"/>
 		<meta name="keywords" content="gin, data, sharing, science git">
-		{{end}}
-		<meta name="referrer" content="no-referrer"/>
-		<meta name="_csrf" content="{{.CSRFToken}}"/>
-		<meta name="_suburl" content="{{AppSubURL}}"/>
-		{{if .GoGetImport}}
+	{{end}}
+	<meta name="referrer" content="no-referrer" />
+	<meta name="_csrf" content="{{.CSRFToken}}" />
+	<meta name="_suburl" content="{{AppSubURL}}" />
+	{{if .GoGetImport}}
 		<meta name="go-import" content="{{.GoGetImport}} git {{.CloneLink.HTTPS}}"/>
 		<meta name="go-source" content="{{.GoGetImport}} _ {{.GoDocDirectory}} {{.GoDocFile}}"/>
-		{{end}}
-		<!-- Open Graph Tags -->
-		{{if .PageIsAdmin}}
-		{{else if .PageIsUserProfile}}
+	{{end}}
+	<!-- Open Graph Tags -->
+	{{if .PageIsAdmin}}
+	{{else if .PageIsUserProfile}}
 		<meta property="og:url" content="{{.Owner.HTMLURL}}" />
 		<meta property="og:type" content="profile" />
 		<meta property="og:title" content="{{.Owner.Name}}{{if .Owner.FullName}} ({{.Owner.FullName}}){{end}}">
@@ -46,12 +45,13 @@
 		<meta property="og:site_name" content="GIN">
 	{{end}}
 
-	<link rel="shortcut icon" href="{{AppSubURL}}/img/favicon.png"/>
-		<script src="{{AppSubURL}}/js/jquery-1.11.3.min.js"></script>
-		<script src="{{AppSubURL}}/js/libs/jquery.are-you-sure.js"></script>
-		<script src="{{AppSubURL}}/js/libs/js.cookie.js"></script>
-		<link rel="stylesheet" href="{{AppSubURL}}/assets/font-awesome-4.6.3/css/font-awesome.min.css">
-		<link rel="stylesheet" href="{{AppSubURL}}/assets/octicons-4.3.0/octicons.min.css">
+	<link rel="shortcut icon" href="{{AppSubURL}}/img/favicon.png" />
+
+	<script src="{{AppSubURL}}/js/jquery-1.11.3.min.js"></script>
+	<script src="{{AppSubURL}}/js/libs/jquery.are-you-sure.js"></script>
+	<script src="{{AppSubURL}}/js/libs/js.cookie.js"></script>
+	<link rel="stylesheet" href="{{AppSubURL}}/assets/font-awesome-4.6.3/css/font-awesome.min.css">
+	<link rel="stylesheet" href="{{AppSubURL}}/assets/octicons-4.3.0/octicons.min.css">
 
 	<link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
 
@@ -67,20 +67,20 @@
 
 		<script src="{{AppSubURL}}/js/libs/jstree.min.js"></script>
 		<link rel="stylesheet" href="{{AppSubURL}}/css/jstree/jstree.css">
-		{{end}}
+	{{end}}
 
-		{{if .IsJSON}}
+	{{if .IsJSON}}
 		<script src="{{AppSubURL}}/js/libs/jsoneditor.min.js"></script>
 		<link rel="stylesheet" href="{{AppSubURL}}/css/jsoneditor/jsoneditor.min.css"/>
-		{{end}}
+	{{end}}
 
-		{{if .IsYAML}}
+	{{if .IsYAML}}
 		<script src="{{AppSubURL}}/js/libs/jsoneditor.min.js"></script>
 		<link rel="stylesheet" href="{{AppSubURL}}/css/jsoneditor/jsoneditor.min.css"/>
 		<script src="{{AppSubURL}}/js/libs/yaml.min.js"></script>
-		{{end}}
+	{{end}}
 
-		{{if .RequireSimpleMDE}}
+	{{if .RequireSimpleMDE}}
 		<link rel="stylesheet" href="{{AppSubURL}}/plugins/simplemde-1.10.1/simplemde.min.css">
 		<script src="{{AppSubURL}}/plugins/simplemde-1.10.1/simplemde.min.js"></script>
 		<script src="{{AppSubURL}}/plugins/codemirror-5.17.0/addon/mode/loadmode.js"></script>
@@ -103,24 +103,22 @@
 	<meta name="theme-color" content="{{ThemeColorMetaTag}}">
 	<!-- twitterish -->
 	<meta name="twitter:card" content="summary" />
-		<meta name="twitter:site" content="@gnode" />
-		<meta name="twitter:title" content=" GIN" />
-		<meta name="twitter:description" content="Modern Research Data Management for Neuroscience"/>
-		<meta name="twitter:image" content="https://web.gin.g-node.org/img/favicon.png" />
+	<meta name="twitter:site" content="@gnode" />
+	<meta name="twitter:title" content=" GIN" />
+	<meta name="twitter:description" content="Modern Research Data Management for Neuroscience"/>
+	<meta name="twitter:image" content="https://web.gin.g-node.org/img/favicon.png" />
 
-		{{template "inject/head" .}}
+	{{template "inject/head" .}}
 </head>
 <body>
 	<div class="full height">
 		<noscript>This website works better with JavaScript</noscript>
 
 		{{if not .PageIsInstall}}
-		<div class="ui inline cookie nag">
-			<span class="title">
-				We use cookies to ensure you get the best experience on our website
-			</span>
-			<i class="nag close icon"></i>
-		</div>
+			<div class="ui inline cookie nag">
+				<span class="title">We use cookies to ensure you get the best experience on our website</span>
+				<i class="nag close icon"></i>
+			</div>
 			<div class="following bar light">
 				<div class="ui container">
 					<div class="ui grid">
@@ -213,7 +211,7 @@
 
 								{{else}}
 
-						<div class="right menu">
+									<div class="right menu">
 										{{if .ShowRegistrationButton}}
 											<a class="item{{if .PageIsSignUp}} active{{end}}" href="{{AppSubURL}}/user/sign_up">
 												<i class="octicon octicon-person"></i> {{.i18n.Tr "register"}}
