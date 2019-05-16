@@ -15,8 +15,6 @@ import (
 	"github.com/G-Node/gogs/models/errors"
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/pkg/setting"
-	log "gopkg.in/clog.v1"
-	"strings"
 )
 
 const (
@@ -80,19 +78,8 @@ func retrieveFeeds(c *context.Context, ctxUser *models.User, userID int64, isPro
 		}
 
 		act.ActAvatar = unameAvatars[act.ActUserName]
-
-		// This filters branches from the feed
-		switch {
-		case strings.Contains(act.RefName, "synced/git-annex"):
-			log.Trace("Ignored Ref %s for feed", act.RefName)
-		case strings.Contains(act.RefName, "synced/master"):
-			log.Trace("Ignored Ref %s for feed", act.RefName)
-		case strings.Contains(act.RefName, "git-annex"):
-			log.Trace("Ignored Ref %s for feed", act.RefName)
-		case strings.Contains(act.RepoName, "hideme") || strings.Contains(act.RepoName, "unlisted"):
-			log.Trace("Ignored Ref %s for feed", act.RefName)
-		default:
-			log.Trace("Added Ref %s for feed", act.RefName)
+		// GIN mod: Feed filtering for annex branches
+		if !excludeFromFeed(act) {
 			feeds = append(feeds, act)
 		}
 	}

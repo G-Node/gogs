@@ -5,21 +5,15 @@
 package repo
 
 import (
-	"bufio"
 	"bytes"
-	"encoding/json"
-	"encoding/xml"
 	"fmt"
 	gotemplate "html/template"
-	"io"
 	"io/ioutil"
-	"os"
 	"path"
 	"strings"
 
 	"github.com/G-Node/git-module"
 	gannex "github.com/G-Node/go-annex"
-	"github.com/G-Node/godML/odml"
 	"github.com/G-Node/gogs/models"
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/pkg/markup"
@@ -27,12 +21,9 @@ import (
 	"github.com/G-Node/gogs/pkg/template"
 	"github.com/G-Node/gogs/pkg/template/highlight"
 	"github.com/G-Node/gogs/pkg/tool"
-	"github.com/G-Node/libgin/libgin"
 	"github.com/Unknwon/paginater"
 	"github.com/go-macaron/captcha"
-	"golang.org/x/net/html/charset"
 	log "gopkg.in/clog.v1"
-	"gopkg.in/yaml.v2"
 )
 
 const (
@@ -61,79 +52,39 @@ func renderDirectory(c *context.Context, treeLink string) {
 		c.ServerError("GetCommitsInfoWithCustomConcurrency", err)
 		return
 	}
-	c.Data["DOI"] = false
+	c.Data["HasDatacite"] = false
 	var readmeFile *git.Blob
 	for _, entry := range entries {
-		if entry.IsDir() || !markup.IsReadmeFile(entry.Name()) && entry.Name() != "datacite.yml" && entry.Name() != "LICENSE" {
+		if !entry.IsDir() && entry.Name() == "datacite.yml" {
+			readDataciteFile(entry, c)
+			continue
+		}
+		if entry.IsDir() || !markup.IsReadmeFile(entry.Name()) {
 			continue
 		}
 
 		// TODO: collect all possible README files and show with priority.
-		if markup.IsReadmeFile(entry.Name()) && entry.Blob().Size() <
-			setting.UI.MaxDisplayFileSize {
-			readmeFile = entry.Blob()
-		} else if entry.Name() == "datacite.yml" {
-			c.Data["HasDatacite"] = true
-			doiData, err := entry.Blob().Data()
-			if err != nil {
-				log.Trace("DOI Blob could not be read: %v", err)
-			}
-			buf, err := ioutil.ReadAll(doiData)
-			doiInfo := libgin.DOIRegInfo{}
-			err = yaml.Unmarshal(buf, &doiInfo)
-			if err != nil {
-				log.Trace("DOI Blob could not be unmarshalled: %v", err)
-			}
-			c.Data["DOIInfo"] = &doiInfo
-
-			doi := GDoiRepo(c, setting.Doi.DoiBase)
-			//ddata, err := ginDoi.GDoiMData(doi, "https://api.datacite.org/works/") //todo configure URL?
-
-			c.Data["DOIReg"] = libgin.IsRegisteredDOI(doi)
-			c.Data["DOI"] = doi
-
-		}
+		readmeFile = entry.Blob()
+		break
 	}
-	c.Data["LicenseExists"] = true
 
 	if readmeFile != nil {
 		c.Data["RawFileLink"] = ""
 		c.Data["ReadmeInList"] = true
 		c.Data["ReadmeExist"] = true
-		buf := make([]byte, 1024)
-		r, w := io.Pipe()
-		defer r.Close()
-		defer w.Close()
-		go readmeFile.DataPipeline(w, w)
-		if readmeFile.Size() > 0 {
-			n, _ := r.Read(buf)
-			buf = buf[:n]
-		}
-		isannex := tool.IsAnnexedFile(buf)
+
 		dataRc, err := readmeFile.Data()
 		if err != nil {
 			c.ServerError("readmeFile.Data", err)
 			return
 		}
-		if isannex {
-			af, err := gannex.NewAFile(c.Repo.Repository.RepoPath(), "annex", readmeFile.Name(), buf)
-			if err != nil {
-				log.Trace("Could not get annex file: %v", err)
-				c.ServerError("readmeFile.Data", err)
-				return
-			}
-			afp, err := af.Open()
-			defer afp.Close()
-			if err != nil {
-				c.ServerError("readmeFile.Data", err)
-				log.Trace("Could not open annex file: %v", err)
-				return
-			}
-			dataRc = bufio.NewReader(afp)
-		}
-		buf = make([]byte, 1024)
+
+		buf := make([]byte, 1024)
 		n, _ := dataRc.Read(buf)
 		buf = buf[:n]
+
+		// GIN mod: Replace existing buf and reader with annexed content buf and reader
+		buf, dataRc = resolveAnnexedContent(c, buf, dataRc)
 
 		isTextFile := tool.IsTextFile(buf)
 		c.Data["IsTextFile"] = isTextFile
@@ -180,56 +131,25 @@ func renderDirectory(c *context.Context, treeLink string) {
 
 func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink string, cpt *captcha.Captcha) {
 	c.Data["IsViewFile"] = true
+
 	blob := entry.Blob()
-	log.Trace("Blob size is %d", blob.Size())
-	if blob.Size() > gannex.MEGABYTE*10 && setting.Service.EnableCaptcha && !cpt.VerifyReq(c.Req) && !c.IsLogged {
-		c.Data["EnableCaptcha"] = true
-		c.HTML(200, "repo/download")
+	dataRc, err := blob.Data()
+	if err != nil {
+		c.Handle(500, "Data", err)
 		return
 	}
+
 	c.Data["FileSize"] = blob.Size()
 	c.Data["FileName"] = blob.Name()
 	c.Data["HighlightClass"] = highlight.FileNameToHighlightClass(blob.Name())
 	c.Data["RawFileLink"] = rawLink + "/" + c.Repo.TreePath
-	buf := make([]byte, 1024)
-	r, w := io.Pipe()
-	defer r.Close()
-	defer w.Close()
-	go blob.DataPipeline(w, w)
-	if blob.Size() > 0 {
-		n, _ := r.Read(buf)
-		buf = buf[:n]
-	}
-	isannex := tool.IsAnnexedFile(buf)
 
-	var afpR *bufio.Reader
-	var afp *os.File
-	var annexf *gannex.AFile
-	if isannex == true {
-		af, err := gannex.NewAFile(c.Repo.Repository.RepoPath(), "annex", entry.Name(), buf)
-		if err != nil {
-			c.Data["IsAnnexedFile"] = true
-			log.Trace("Could not get annex file: %v", err)
-			return
-		}
-		if af.Info.Size() > gannex.MEGABYTE*setting.Repository.CaptchaMinFileSize && setting.Service.EnableCaptcha &&
-			!cpt.VerifyReq(c.Req) && !c.IsLogged {
-			c.Data["EnableCaptcha"] = true
-			c.HTML(200, "repo/download")
-			return
-		}
-		afp, err = af.Open()
-		defer afp.Close()
-		if err != nil {
-			log.Trace("Could not open annex file: %v", err)
-			c.Data["IsAnnexedFile"] = true
-			return
-		}
-		afpR = bufio.NewReader(afp)
-		buf, _ = afpR.Peek(1024)
-		annexf = af
-		c.Data["FileSize"] = af.Info.Size()
-	}
+	buf := make([]byte, 1024)
+	n, _ := dataRc.Read(buf)
+	buf = buf[:n]
+
+	// GIN mod: Replace existing buf and reader with annexed content buf and reader
+	buf, dataRc = resolveAnnexedContent(c, buf, dataRc)
 
 	isTextFile := tool.IsTextFile(buf)
 	c.Data["IsTextFile"] = isTextFile
@@ -242,31 +162,18 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 	canEnableEditor := c.Repo.CanEnableEditor()
 	switch {
 	case isTextFile:
-		if !isannex {
-			if blob.Size() >= setting.UI.MaxDisplayFileSize {
-				c.Data["IsFileTooLarge"] = true
-				break
-			}
-
-			c.Data["ReadmeExist"] = markup.IsReadmeFile(blob.Name())
-			if blob.Size() > 1024 {
-				d := make([]byte, blob.Size()-
-					1024)
-				if _, err := io.ReadAtLeast(r, d, int(blob.Size()-1024)); err != nil {
-					log.Error(4., "Could nor read all of a git file:%+v", err)
-				}
-				buf = append(buf, d...)
-			}
-		} else {
-			if annexf.Info.Size() >= setting.UI.MaxDisplayFileSize {
-				c.Data["IsFileTooLarge"] = true
-				break
-			}
-			c.Data["ReadmeExist"] = markup.IsReadmeFile(blob.Name())
-			buf = make([]byte, annexf.Info.Size())
-			afp.Seek(0, 0)
-			afp.Read(buf)
+		// GIN mod: Use c.Data["FileSize"] which is replaced by annexed content
+		// size in resolveAnnexedContent() when necessary
+		if c.Data["FileSize"].(int64) >= setting.UI.MaxDisplayFileSize {
+			c.Data["IsFileTooLarge"] = true
+			break
 		}
+
+		c.Data["ReadmeExist"] = markup.IsReadmeFile(blob.Name())
+
+		d, _ := ioutil.ReadAll(dataRc)
+		buf = append(buf, d...)
+
 		switch markup.Detect(blob.Name()) {
 		case markup.MARKDOWN:
 			c.Data["IsMarkdown"] = true
@@ -276,6 +183,7 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			c.Data["FileContent"] = string(markup.OrgMode(buf, path.Dir(treeLink), c.Repo.Repository.ComposeMetas()))
 		case markup.IPYTHON_NOTEBOOK:
 			c.Data["IsIPythonNotebook"] = true
+			// GIN mod: JSON, YAML, and odML render support with jsTree
 		case markup.JSON:
 			c.Data["IsJSON"] = true
 			c.Data["RawFileContent"] = string(buf)
@@ -284,20 +192,14 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			c.Data["IsYAML"] = true
 			c.Data["RawFileContent"] = string(buf)
 			fallthrough
-		case markup.UNRECOGNIZED:
-			if tool.IsOdmlFile(buf) {
-				c.Data["IsOdML"] = true
-				od := odml.Odml{}
-				decoder := xml.NewDecoder(bytes.NewReader(buf))
-				decoder.CharsetReader = charset.NewReaderLabel
-				decoder.Decode(&od)
-				data, _ := json.Marshal(od)
-				c.Data["OdML"] = string(data)
-				goto End
-			} else {
-				goto End
+		case markup.XML:
+			// pass XML down to ODML checker
+			fallthrough
+		case markup.ODML:
+			if tool.IsODMLFile(buf) {
+				c.Data["IsODML"] = true
+				c.Data["ODML"] = string(markup.MarshalODML(buf))
 			}
-		End:
 			fallthrough
 		default:
 			// Building code view blocks with line number on server side.
@@ -310,15 +212,18 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			} else {
 				fileContent = content
 			}
+
 			var output bytes.Buffer
 			lines := strings.Split(fileContent, "\n")
 			// Remove blank line at the end of file
 			if len(lines) > 0 && len(lines[len(lines)-1]) == 0 {
 				lines = lines[:len(lines)-1]
 			}
+			// > GIN
 			if len(lines) > setting.UI.MaxLineHighlight {
 				c.Data["HighlightClass"] = "nohighlight"
 			}
+			// < GIN
 			for index, line := range lines {
 				output.WriteString(fmt.Sprintf(`<li class="L%d" rel="L%d">%s</li>`, index+1, index+1, gotemplate.HTMLEscapeString(strings.TrimRight(line, "\r"))) + "\n")
 			}
@@ -331,6 +236,7 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			c.Data["LineNums"] = gotemplate.HTML(output.String())
 		}
 
+		isannex := tool.IsAnnexedFile(buf)
 		if canEnableEditor && !isannex {
 			c.Data["CanEditFile"] = true
 			c.Data["EditFileTooltip"] = c.Tr("repo.editor.edit_this_file")
@@ -362,10 +268,6 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 	} else if !c.Repo.IsWriter() {
 		c.Data["DeleteFileTooltip"] = c.Tr("repo.editor.must_have_write_access")
 	}
-}
-
-func renderAnnexFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink string) {
-
 }
 
 func setEditorconfigIfExists(c *context.Context) {
@@ -508,17 +410,4 @@ func Forks(c *context.Context) {
 	c.Data["Forks"] = forks
 
 	c.HTML(200, FORKS)
-}
-
-// GDoiRepo calculates the theoretical DOI for a repository. If the repository
-// belongs to the DOI user (and is a fork) it uses the name for the base
-// repository.
-func GDoiRepo(c *context.Context, doiBase string) string {
-	repoN := c.Repo.Repository.FullName()
-	// check whether this repo belongs to DOI and is a fork
-	if c.Repo.Repository.IsFork && c.Repo.Owner.Name == "doi" {
-		repoN = c.Repo.Repository.BaseRepo.FullName()
-	}
-	uuid := libgin.RepoPathToUUID(repoN)
-	return doiBase + uuid[:6]
 }

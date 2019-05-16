@@ -36,7 +36,7 @@ func Search(c *context.Context, keywords string, sType int64) ([]byte, error) {
 		c.Status(http.StatusInternalServerError)
 		return nil, err
 	}
-	req, _ := http.NewRequest("Post", setting.Search.SearchUrl, bytes.NewReader(data))
+	req, _ := http.NewRequest("Post", setting.Search.SearchURL, bytes.NewReader(data))
 	cl := http.Client{}
 	resp, err := cl.Do(req)
 	if err != nil {

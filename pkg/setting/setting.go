@@ -117,7 +117,6 @@ var (
 	UseMSSQL      bool
 
 	// Repository settings
-	// Repository settingsS
 	Repository struct {
 		AnsiCharset              string
 		ForcePrivate             bool
@@ -141,12 +140,12 @@ var (
 
 		// Repository upload settings
 		Upload struct {
-			Enabled         bool
-			TempPath        string
-			AllowedTypes    []string `delim:"|"`
-			FileMaxSize     int64
-			AnexFileMinSize int64
-			MaxFiles        int
+			Enabled          bool
+			TempPath         string
+			AllowedTypes     []string `delim:"|"`
+			FileMaxSize      int64
+			AnnexFileMinSize int64
+			MaxFiles         int
 		} `ini:"-"`
 	}
 	RepoRootPath string
@@ -333,19 +332,19 @@ var (
 
 	Search struct {
 		Do        bool
-		IndexUrl  string
-		SearchUrl string
+		IndexURL  string
+		SearchURL string
 	}
 
-	Doi struct {
+	DOI struct {
 		Do      bool
-		DoiUrl  string
-		DoiKey  string
-		DoiBase string
+		DOIURL  string
+		DOIKey  string
+		DOIBase string
 	}
 
-	CliConfig struct {
-		RsaHostKey string
+	CLIConfig struct {
+		RSAHostKey string
 	}
 
 	WebDav struct {
@@ -716,9 +715,9 @@ func NewContext() {
 		log.Fatal(2, "Failed to map Prometheus settings: %v", err)
 	} else if err = Cfg.Section("search").MapTo(&Search); err != nil {
 		log.Fatal(2, "Fail to map Search settings: %v", err)
-	} else if err = Cfg.Section("doi").MapTo(&Doi); err != nil {
-		log.Fatal(2, "Fail to map Doi settings: %v", err)
-	} else if err = Cfg.Section("cliconfig").MapTo(&CliConfig); err != nil {
+	} else if err = Cfg.Section("doi").MapTo(&DOI); err != nil {
+		log.Fatal(2, "Fail to map DOI settings: %v", err)
+	} else if err = Cfg.Section("cliconfig").MapTo(&CLIConfig); err != nil {
 		log.Fatal(2, "Fail to map Client config settings: %v", err)
 	} else if err = Cfg.Section("dav").MapTo(&WebDav); err != nil {
 		log.Fatal(2, "Fail to map WebDav settings: %v", err)

@@ -91,7 +91,7 @@ func editFile(c *context.Context, isNewFile bool) {
 			return
 		}
 
-		c.Data["IsOdML"] = tool.IsOdmlFile(buf)
+		c.Data["IsODML"] = tool.IsODMLFile(buf)
 
 		d, _ := ioutil.ReadAll(dataRc)
 		buf = append(buf, d...)

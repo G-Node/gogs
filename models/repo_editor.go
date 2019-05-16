@@ -18,15 +18,9 @@ import (
 
 	"github.com/Unknwon/com"
 	gouuid "github.com/satori/go.uuid"
-	log "gopkg.in/clog.v1"
 
 	git "github.com/G-Node/git-module"
 
-	"bytes"
-	"encoding/json"
-	"net/http"
-
-	gannex "github.com/G-Node/go-annex"
 	"github.com/G-Node/gogs/models/errors"
 	"github.com/G-Node/gogs/pkg/process"
 	"github.com/G-Node/gogs/pkg/setting"
@@ -503,34 +497,9 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 		if err = com.Copy(tmpPath, targetPath); err != nil {
 			return fmt.Errorf("copy: %v", err)
 		}
-		repoFileName := path.Join(opts.TreePath, upload.Name)
-
-		// needed for annex, due to symlinks
-		os.Remove(targetPath)
-		if err = com.Copy(tmpPath, targetPath); err != nil {
-			return fmt.Errorf("copy: %v", err)
-		}
-		log.Trace("Check for annexing: %s", upload.Name)
-		if finfo, err := os.Stat(targetPath); err == nil {
-			log.Trace("Filesize is:%d", finfo.Size())
-			// Should we annex
-			if finfo.Size() > setting.Repository.Upload.AnexFileMinSize*gannex.MEGABYTE {
-				log.Trace("This file should be annexed: %s", upload.Name)
-				// annex init in case it isnt yet
-				if msg, err := gannex.AInit(localPath, "annex.backend"); err != nil {
-					log.Error(1, "Annex init failed with error: %v,%s,%s", err, msg, repoFileName)
-				}
-				// worm for compatibility
-				gannex.Md5(localPath)
-				if msg, err := gannex.Add(repoFileName, localPath); err != nil {
-					log.Error(1, "Annex add failed with error: %v,%s,%s", err, msg, repoFileName)
-				}
-			}
-		} else {
-			log.Error(1, "could not stat: %s", targetPath)
-		}
 	}
 
+	annexAdd(localPath) // Running annex add with filter for big files
 	if err = git.AddChanges(localPath, true); err != nil {
 		return fmt.Errorf("git add --all: %v", err)
 	} else if err = git.CommitChanges(localPath, git.CommitChangesOptions{
@@ -550,45 +519,10 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 		return fmt.Errorf("git push origin %s: %v", opts.NewBranch, err)
 	}
 
-	// Sometimes you need this twice
-	if msg, err := gannex.ASync(localPath, "--content", "--no-pull"); err != nil {
-		log.Error(1, "Annex sync failed with error: %v,%s", err, msg)
-	} else {
-		log.Trace("Annex sync:%s", msg)
+	if err := annexSync(localPath); err != nil { // Run full annex sync
+		return err
 	}
-	if msg, err := gannex.ASync(localPath, "--content", "--no-pull"); err != nil {
-		log.Error(1, "Annex sync failed with error: %v,%s", err, msg)
-	} else {
-		log.Trace("Annex sync:%s", msg)
-	}
-
-	// We better start out cleaning now. No use keeping files around with annex
-	if msg, err := gannex.AUInit(localPath); err != nil {
-		log.Error(1, "Annex uninit failed with error: %v,%s, at: %s/ This repository might fail at "+
-			"subsequent uploads!", err, msg, localPath)
-	}
-	// Indexing support
-	if setting.Search.Do {
-		StartIndexing(doer, repo.MustOwner(), repo)
-	}
-	RemoveAllWithNotice("Cleaning out after upload", localPath)
+	annexUninit(localPath)                      // Uninitialise annex to prepare for deletion
+	StartIndexing(doer, repo.MustOwner(), repo) // Index the new data
 	return DeleteUploads(uploads...)
-}
-
-func StartIndexing(user, owner *User, repo *Repository) {
-	var ireq struct{ RepoID, RepoPath string }
-	ireq.RepoID = fmt.Sprintf("%d", repo.ID)
-	ireq.RepoPath = repo.FullName()
-	data, err := json.Marshal(ireq)
-	if err != nil {
-		log.Trace("could not marshal index request :%+v", err)
-		return
-	}
-	req, _ := http.NewRequest(http.MethodPost, setting.Search.IndexUrl, bytes.NewReader(data))
-	client := http.Client{}
-	resp, err := client.Do(req)
-	if err != nil || resp.StatusCode != http.StatusOK {
-		log.Trace("Error doing index request:%+v", err)
-		return
-	}
 }

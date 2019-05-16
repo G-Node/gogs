@@ -72,15 +72,7 @@ func ExploreRepos(c *context.Context) {
 		c.ServerError("RepositoryList.LoadAttributes", err)
 		return
 	}
-	// filter repos we eant to not show in list
-	var showRep []*models.Repository
-	for _, repo := range repos {
-		if !repo.Unlisted {
-			showRep = append(showRep, repo)
-		}
-	}
-
-	c.Data["Repos"] = showRep
+	c.Data["Repos"] = filterUnlistedRepos(repos)
 
 	c.Success(EXPLORE_REPOS)
 }

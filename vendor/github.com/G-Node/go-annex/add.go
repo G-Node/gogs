@@ -12,19 +12,12 @@ const (
 	TERABYTE = 1024 * GIGABYTE
 )
 
-type ACommand struct {
-	git.Command
-	name string
-	args []string
-	env  []string
-}
-
-func AInit(dir string, args ...string) (string, error) {
+func Init(dir string, args ...string) (string, error) {
 	cmd := git.NewACommand("init")
 	return cmd.AddArguments(args...).RunInDir(dir)
 }
 
-func AUInit(dir string, args ...string) (string, error) {
+func Uninit(dir string, args ...string) (string, error) {
 	cmd := git.NewACommand("uninit")
 	return cmd.AddArguments(args...).RunInDir(dir)
 }
@@ -34,7 +27,7 @@ func Worm(dir string) (string, error) {
 	return cmd.RunInDir(dir)
 }
 
-func Md5(dir string) (string, error) {
+func MD5(dir string) (string, error) {
 	cmd := git.NewCommand("config", "annex.backends", "MD5")
 	return cmd.RunInDir(dir)
 }
@@ -44,7 +37,13 @@ func ASync(dir string, args ...string) (string, error) {
 	return cmd.AddArguments(args...).RunInDir(dir)
 }
 
-func Add(filename, dir string) (string, error) {
-	cmd := git.NewACommand("add", filename)
+func Add(dir string, args ...string) (string, error) {
+	cmd := git.NewACommand("add")
+	cmd.AddArguments(args...)
+	return cmd.RunInDir(dir)
+}
+
+func SetAddUnlocked(dir string) (string, error) {
+	cmd := git.NewCommand("config", "annex.addunlocked", "true")
 	return cmd.RunInDir(dir)
 }

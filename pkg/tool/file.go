@@ -11,9 +11,10 @@ import (
 	"strings"
 )
 
-func IsOdmlFile(data []byte) bool {
-	if len(data) == 0 {
-		return true
+// IsODMLFile returns true of the file has an odML header
+func IsODMLFile(data []byte) bool {
+	if !IsTextFile(data) {
+		return false
 	}
 	return strings.Contains(string(data), "<odML version=")
 }
