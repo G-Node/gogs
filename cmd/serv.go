@@ -38,7 +38,7 @@ var Serv = cli.Command{
 }
 
 func fail(userMessage, logMessage string, args ...interface{}) {
-	fmt.Fprintln(os.Stderr, "Gin:", userMessage)
+	fmt.Fprintln(os.Stderr, "GIN:", userMessage)
 
 	if len(logMessage) > 0 {
 		if !setting.ProdMode {
@@ -134,7 +134,7 @@ func runServ(c *cli.Context) error {
 	setup(c, "serv.log", true)
 
 	if setting.SSH.Disabled {
-		println("Gins: SSH has been disabled")
+		println("GIN: SSH has been disabled")
 		return nil
 	}
 
@@ -145,7 +145,7 @@ func runServ(c *cli.Context) error {
 	sshCmd := strings.Replace(os.Getenv("SSH_ORIGINAL_COMMAND"), "'", "", -1)
 	log.Info("SSH commadn:%s", sshCmd)
 	if len(sshCmd) == 0 {
-		println("Hi there, You've successfully authenticated, but Gin does not provide shell access.")
+		println("Hi there, You've successfully authenticated, but GIN does not provide shell access.")
 		return nil
 	}
 

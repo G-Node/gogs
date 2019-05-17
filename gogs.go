@@ -24,7 +24,7 @@ func init() {
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "Gin"
+	app.Name = "GIN"
 	app.Usage = "Modern Research Data Management for Neuroscience"
 	app.Version = APP_VER
 	app.Commands = []cli.Command{
