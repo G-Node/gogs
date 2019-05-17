@@ -3,29 +3,18 @@
 <head data-suburl="{{AppSubURL}}">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-	{{if or .PageIsExploreRepositories (or .PageIsHome .PageIsWiki) }}
-		<meta name="robots" content="nofollow"/>
-		{{else if .PageIsViewFiles }}
-		<meta name="robots" content="noindex,nofollow"/>
-		{{else}}
-		<meta name="robots" content="noindex, nofollow"/>
-		{{end}}
-		{{if not .PageIsAdmin}}
+	{{if not .PageIsAdmin}}
 		<meta name="author" content="{{if .Repository}}{{.Owner.Name}}{{else}}G-Node{{end}}"/>
-		<meta name="description"
-					content="{{if .Repository}}{{.Repository.Name}}{{if .Repository.Description}} - {{.Repository.Description}}{{end}}{{else}}Gin is a data repository for science{{end}}"/>
+		<meta name="description" content="{{if .Repository}}{{.Repository.Name}}{{if .Repository.Description}} - {{.Repository.Description}}{{end}}{{else}}Gin is a data repository for science{{end}}"/>
 		<meta name="keywords" content="gin, data, sharing, science git">
-		{{end}}
-		<meta name="referrer" content="no-referrer"/>
-		<meta name="_csrf" content="{{.CSRFToken}}"/>
-		<meta name="_suburl" content="{{AppSubURL}}"/>
-		{{if .GoGetImport}}
-		<meta name="go-import" content="{{.GoGetImport}} git {{.CloneLink.HTTPS}}"/>
-		<meta name="go-source" content="{{.GoGetImport}} _ {{.GoDocDirectory}} {{.GoDocFile}}"/>
-		{{end}}
-		<!-- Open Graph Tags -->
-		{{if .PageIsAdmin}}
-		{{else if .PageIsUserProfile}}
+	{{end}}
+	<meta name="referrer" content="no-referrer" />
+	<meta name="_csrf" content="{{.CSRFToken}}" />
+	<meta name="_suburl" content="{{AppSubURL}}" />
+	
+	<!-- Open Graph Tags -->
+	{{if .PageIsAdmin}}
+	{{else if .PageIsUserProfile}}
 		<meta property="og:url" content="{{.Owner.HTMLURL}}" />
 		<meta property="og:type" content="profile" />
 		<meta property="og:title" content="{{.Owner.Name}}{{if .Owner.FullName}} ({{.Owner.FullName}}){{end}}">
@@ -46,14 +35,12 @@
 		<meta property="og:site_name" content="GIN">
 	{{end}}
 
-	<link rel="shortcut icon" href="{{AppSubURL}}/img/favicon.png"/>
-		<script src="{{AppSubURL}}/js/jquery-1.11.3.min.js"></script>
-		<script src="{{AppSubURL}}/js/libs/jquery.are-you-sure.js"></script>
-		<script src="{{AppSubURL}}/js/libs/js.cookie.js"></script>
-		<link rel="stylesheet" href="{{AppSubURL}}/assets/font-awesome-4.6.3/css/font-awesome.min.css">
-		<link rel="stylesheet" href="{{AppSubURL}}/assets/octicons-4.3.0/octicons.min.css">
+	<link rel="shortcut icon" href="{{AppSubURL}}/img/favicon.png" />
 
-	<link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+	<script src="{{AppSubURL}}/js/jquery-1.11.3.min.js"></script>
+	<script src="{{AppSubURL}}/js/libs/jquery.are-you-sure.js"></script>
+	<link rel="stylesheet" href="{{AppSubURL}}/assets/font-awesome-4.6.3/css/font-awesome.min.css">
+	<link rel="stylesheet" href="{{AppSubURL}}/assets/octicons-4.3.0/octicons.min.css">
 
 	<!-- notebook.js for rendering ipython notebooks and marked.js for rendering markdown in notebooks -->
 	{{if .IsIPythonNotebook}}
@@ -61,26 +48,7 @@
 		<script src="{{AppSubURL}}/plugins/marked-0.3.6/marked.min.js"></script>
 	{{end}}
 
-	{{if .IsODML}}
-		<script type="text/javascript" src="{{AppSubURL}}/plugins/xonomy/xonomy.js"></script>
-		<link type="text/css" rel="stylesheet" href="{{AppSubURL}}/plugins/xonomy/xonomy.css"/>
-
-		<script src="{{AppSubURL}}/js/libs/jstree.min.js"></script>
-		<link rel="stylesheet" href="{{AppSubURL}}/css/jstree/jstree.css">
-		{{end}}
-
-		{{if .IsJSON}}
-		<script src="{{AppSubURL}}/js/libs/jsoneditor.min.js"></script>
-		<link rel="stylesheet" href="{{AppSubURL}}/css/jsoneditor/jsoneditor.min.css"/>
-		{{end}}
-
-		{{if .IsYAML}}
-		<script src="{{AppSubURL}}/js/libs/jsoneditor.min.js"></script>
-		<link rel="stylesheet" href="{{AppSubURL}}/css/jsoneditor/jsoneditor.min.css"/>
-		<script src="{{AppSubURL}}/js/libs/yaml.min.js"></script>
-		{{end}}
-
-		{{if .RequireSimpleMDE}}
+	{{if .RequireSimpleMDE}}
 		<link rel="stylesheet" href="{{AppSubURL}}/plugins/simplemde-1.10.1/simplemde.min.css">
 		<script src="{{AppSubURL}}/plugins/simplemde-1.10.1/simplemde.min.js"></script>
 		<script src="{{AppSubURL}}/plugins/codemirror-5.17.0/addon/mode/loadmode.js"></script>
@@ -93,6 +61,12 @@
 	<!-- Stylesheet -->
 	<link rel="stylesheet" href="{{AppSubURL}}/css/semantic-2.3.1.min.css">
 	<link rel="stylesheet" href="{{AppSubURL}}/css/gogs.css?v={{MD5 AppVer}}">
+	<noscript>
+		<style>
+			.dropdown:hover > .menu { display: block; }
+			.ui.secondary.menu .dropdown.item > .menu { margin-top: 0; }
+		 </style>
+	</noscript>
 
 	<!-- JavaScript -->
 	<script src="{{AppSubURL}}/js/semantic-2.3.1.min.js"></script>
@@ -101,26 +75,14 @@
 	<title>{{if .Title}}{{.Title}} - {{end}}{{AppName}}</title>
 
 	<meta name="theme-color" content="{{ThemeColorMetaTag}}">
-	<!-- twitterish -->
-	<meta name="twitter:card" content="summary" />
-		<meta name="twitter:site" content="@gnode" />
-		<meta name="twitter:title" content=" GIN" />
-		<meta name="twitter:description" content="Modern Research Data Management for Neuroscience"/>
-		<meta name="twitter:image" content="https://web.gin.g-node.org/img/favicon.png" />
 
-		{{template "inject/head" .}}
+	{{template "inject/head" .}}
 </head>
 <body>
 	<div class="full height">
 		<noscript>This website works better with JavaScript</noscript>
 
 		{{if not .PageIsInstall}}
-		<div class="ui inline cookie nag">
-			<span class="title">
-				We use cookies to ensure you get the best experience on our website
-			</span>
-			<i class="nag close icon"></i>
-		</div>
 			<div class="following bar light">
 				<div class="ui container">
 					<div class="ui grid">
@@ -138,18 +100,15 @@
 									<a class="item{{if .PageIsHome}} active{{end}}" href="{{AppSubURL}}/">{{.i18n.Tr "home"}}</a>
 								{{end}}
 
-								<a class="item{{if .PageIsExplore}} active{{end}}" href="{{AppSubURL}}/explore/repos">{{.i18n.Tr "explore"}}</a>
+								<a class="item{{if .PageIsExplore}} active{{end}}" href="{{AppSubURL}}/explore/repos"><i class="octicon octicon-search"></i>{{.i18n.Tr "explore"}}</a>
 								{{/*<div class="item">
 									<div class="ui icon input">
 									<input class="searchbox" type="text" placeholder="{{.i18n.Tr "search_project"}}">
 									<i class="search icon"></i>
 									</div>
 									</div>*/}}
-								<a class="item" href="/G-Node/Info/wiki/FaqTroubleshooting">FAQ</a>
-								<a class="item" target="_blank" href="/G-Node/info/wiki" rel="noreferrer">
-									<i class="octicon octicon-question"></i>
-									{{.i18n.Tr "help"}}<!-- Help -->
-								</a>
+
+								<a class="item" href="/G-Node/info/wiki" rel="noreferrer"><i class="octicon octicon-question"></i>{{.i18n.Tr "help"}}</a>
 								<a class="item" href="/G-Node/Info/wiki/News">News</a>
 								{{if .IsLogged}}
 									<div class="right menu">
@@ -213,7 +172,7 @@
 
 								{{else}}
 
-						<div class="right menu">
+									<div class="right menu">
 										{{if .ShowRegistrationButton}}
 											<a class="item{{if .PageIsSignUp}} active{{end}}" href="{{AppSubURL}}/user/sign_up">
 												<i class="octicon octicon-person"></i> {{.i18n.Tr "register"}}
