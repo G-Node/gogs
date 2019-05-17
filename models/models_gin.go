@@ -50,16 +50,16 @@ func annexUninit(path string) {
 		}
 
 		if err := os.Chmod(path, mode); err != nil {
-			log.Error(1, "failed to change permissions on '%s': %v", path, err)
+			log.Error(3, "failed to change permissions on '%s': %v", path, err)
 		}
 		return nil
 	}
 
 	log.Trace("Uninit annex at '%s'", path)
 	if msg, err := gannex.Uninit(path); err != nil {
-		log.Error(1, "uninit failed: %v (%s)", err, msg)
+		log.Error(3, "uninit failed: %v (%s)", err, msg)
 		if werr := filepath.Walk(path, walker); werr != nil {
-			log.Error(1, "file permission change failed: %v", werr)
+			log.Error(3, "file permission change failed: %v", werr)
 		}
 	}
 }
