@@ -1,14 +1,13 @@
 <!-- Custom CSS overrides -->
 <link rel="stylesheet" href="/css/custom.css">
 
-
-	{{if or .PageIsExploreRepositories (or .PageIsHome .PageIsWiki) }}
-		<meta name="robots" content="nofollow"/>
-	{{else if .PageIsViewFiles }}
-		<meta name="robots" content="noindex,nofollow"/>
-	{{else}}
-		<meta name="robots" content="noindex, nofollow"/>
-	{{end}}
+{{if or .PageIsExploreRepositories (or .PageIsHome .PageIsWiki) }}
+	<meta name="robots" content="nofollow"/>
+{{else if .PageIsViewFiles }}
+	<meta name="robots" content="noindex,nofollow"/>
+{{else}}
+	<meta name="robots" content="noindex,nofollow"/>
+{{end}}
 
 <!-- Front page cursive font -->
 <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
@@ -16,7 +15,7 @@
 <!-- twitterish -->
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@gnode" />
-<meta name="twitter:title" content=" GIN" />
+<meta name="twitter:title" content="GIN" />
 <meta name="twitter:description" content="Modern Research Data Management for Neuroscience"/>
 <meta name="twitter:image" content="https://web.gin.g-node.org/img/favicon.png" />
 

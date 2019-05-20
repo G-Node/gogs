@@ -10,7 +10,5 @@ import (
 func excludeFromFeed(act *models.Action) bool {
 	return strings.Contains(act.RefName, "synced/git-annex") ||
 		strings.Contains(act.RefName, "synced/master") ||
-		strings.Contains(act.RefName, "git-annex") ||
-		strings.Contains(act.RepoName, "hideme") ||
-		strings.Contains(act.RepoName, "unlisted")
+		strings.Contains(act.RefName, "git-annex")
 }
