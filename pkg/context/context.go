@@ -330,6 +330,8 @@ func Contexter() macaron.Handler {
 
 		c.Data["auto_init"] = true
 
+		readNotice(c) // GIN mod: Add notice if notice file exists
+
 		ctx.Map(c)
 	}
 }
