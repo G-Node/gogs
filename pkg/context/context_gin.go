@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/gogs/pkg/tool"
 	"github.com/Unknwon/com"
 	log "gopkg.in/clog.v1"
 )
@@ -20,6 +21,7 @@ func readNotice(c *Context) {
 	if !com.IsExist(fileloc) {
 		return
 	}
+
 	log.Trace("Found notice file")
 	fp, err := os.Open(fileloc)
 	if err != nil {
@@ -45,6 +47,11 @@ func readNotice(c *Context) {
 		return
 	}
 	buf = buf[:n]
+
+	if !tool.IsTextFile(buf) {
+		log.Error(2, "Notice file %s does not appear to be a text file: aborting", fileloc)
+		return
+	}
 
 	noticetext := strings.SplitN(string(buf), "\n", 2)
 	c.Data["HasNotice"] = true
