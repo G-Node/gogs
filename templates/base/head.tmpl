@@ -87,6 +87,8 @@
 				<div class="ui container">
 					<div class="ui grid">
 						<div class="column">
+
+
 							<div class="ui top secondary menu">
 								<a class="item brand" href="{{AppSubURL}}/">
 									<img class="ui mini image" src="{{AppSubURL}}/img/favicon.png">
@@ -189,6 +191,17 @@
 					</div><!-- end grid -->
 				</div><!-- end container -->
 			</div><!-- end bar -->
+		{{end}}
+
+		{{if .HasNotice}}
+			<div class="ui container grid warning message">
+				<div class="content">
+					<div class="header">
+						{{.NoticeTitle}}
+					</div>
+					<p>{{.NoticeMessage | Str2HTML}}</p>
+				</div>
+			</div>
 		{{end}}
 {{/*
 	</div>
