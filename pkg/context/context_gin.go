@@ -28,6 +28,7 @@ func readNotice(c *Context) {
 		log.Error(2, "Failed to open notice file %s: %v", fileloc, err)
 		return
 	}
+	defer fp.Close()
 
 	finfo, err := fp.Stat()
 	if err != nil {
