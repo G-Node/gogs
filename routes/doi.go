@@ -26,7 +26,7 @@ func RequestDOI(c *context.Context) {
 		c.Status(http.StatusInternalServerError)
 		return
 	}
-	url := fmt.Sprintf("%s/?repo=%s&user=%s&token=%s", setting.DOI.DOIURL, c.Repo.Repository.FullName(),
+	url := fmt.Sprintf("%s/register?repo=%s&user=%s&token=%s", setting.DOI.DOIURL, c.Repo.Repository.FullName(),
 		c.User.Name, token)
 	c.Redirect(url)
 }
