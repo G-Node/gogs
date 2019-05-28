@@ -36,23 +36,23 @@ func RepoPathToUUID(URI string) string {
 
 // DOIRegInfo holds all the metadata and information necessary for a DOI registration request.
 type DOIRegInfo struct {
-	Missing     []string
-	DOI         string
-	UUID        string
-	FileSize    int64
-	Title       string
-	Authors     []Author
-	Description string
-	Keywords    []string
-	References  []Reference
-	Funding     []string
-	License     *License
-	DType       string
+	Missing      []string
+	DOI          string
+	UUID         string
+	FileSize     int64
+	Title        string
+	Authors      []Author
+	Description  string
+	Keywords     []string
+	References   []Reference
+	Funding      []string
+	License      *License
+	ResourceType string
 }
 
 func (c *DOIRegInfo) GetType() string {
-	if c.DType != "" {
-		return c.DType
+	if c.ResourceType != "" {
+		return c.ResourceType
 	}
 	return "Dataset"
 }
@@ -112,7 +112,7 @@ type NamedIdentifier struct {
 type Reference struct {
 	Reftype string
 	Name    string
-	DOI     string
+	ID      string
 }
 
 type License struct {
