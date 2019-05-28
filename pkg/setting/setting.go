@@ -325,11 +325,10 @@ var (
 		SearchUrl string
 	}
 
-	Doi struct {
-		Do      bool
-		DoiUrl  string
-		DoiKey  string
-		DoiBase string
+	DOI struct {
+		URL  string `ini:"DOI_URL"`
+		Key  string `ini:"DOI_KEY"`
+		Base string `ini:"DOI_BASE"`
 	}
 
 	CliConfig struct {
@@ -689,7 +688,7 @@ func NewContext() {
 		log.Fatal(2, "Fail to map UI settings: %v", err)
 	} else if err = Cfg.Section("search").MapTo(&Search); err != nil {
 		log.Fatal(2, "Fail to map Search settings: %v", err)
-	} else if err = Cfg.Section("doi").MapTo(&Doi); err != nil {
+	} else if err = Cfg.Section("doi").MapTo(&DOI); err != nil {
 		log.Fatal(2, "Fail to map Doi settings: %v", err)
 	} else if err = Cfg.Section("cliconfig").MapTo(&CliConfig); err != nil {
 		log.Fatal(2, "Fail to map Client config settings: %v", err)

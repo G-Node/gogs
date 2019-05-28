@@ -14,20 +14,19 @@ import (
 	log "gopkg.in/clog.v1"
 )
 
-func RequestDoi(c *context.Context) {
+func RequestDOI(c *context.Context) {
 	if !c.Repo.IsAdmin() {
 		c.Status(http.StatusUnauthorized)
 		return
 	}
 	token := c.GetCookie(setting.SessionConfig.CookieName)
-	token, err := encrypt([]byte(setting.Doi.DoiKey), token)
+	token, err := encrypt([]byte(setting.DOI.Key), token)
 	if err != nil {
-		log.Error(0, "Could not encrypt Secret key:%s", err)
+		log.Error(2, "Could not encrypt Secret key: %s", err)
 		c.Status(http.StatusInternalServerError)
 		return
 	}
-	url := fmt.Sprintf("%s/register?repo=%s&user=%s&token=%s", setting.Doi.DoiUrl, c.Repo.Repository.FullName(),
-		c.User.Name, token)
+	url := fmt.Sprintf("%s/register?repo=%s&user=%s&token=%s", setting.DOI.URL, c.Repo.Repository.FullName(), c.User.Name, token)
 	c.Redirect(url)
 }
 
