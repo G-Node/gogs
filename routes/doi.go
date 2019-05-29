@@ -5,9 +5,9 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"encoding/base64"
-	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/pkg/setting"
@@ -26,8 +26,19 @@ func RequestDOI(c *context.Context) {
 		c.Status(http.StatusInternalServerError)
 		return
 	}
-	url := fmt.Sprintf("%s/register?repo=%s&user=%s&token=%s", setting.DOI.URL, c.Repo.Repository.FullName(), c.User.Name, token)
-	c.Redirect(url)
+	doiurl, err := url.Parse(setting.DOI.URL + "/register") // TODO: Handle error by notifying admin email
+	if err != nil {
+		log.Error(2, "Failed to parse DOI URL: %s", setting.DOI.URL)
+	}
+
+	params := url.Values{}
+	params.Add("repo", c.Repo.Repository.FullName())
+	params.Add("user", c.User.Name)
+	params.Add("token", token)
+	doiurl.RawQuery = params.Encode()
+	target, _ := url.PathUnescape(doiurl.String())
+	log.Trace(target)
+	c.Redirect(target)
 }
 
 // NOTE: TEMPORARY COPY FROM gin-doi
