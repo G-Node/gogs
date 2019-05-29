@@ -19,8 +19,11 @@ func RequestDOI(c *context.Context) {
 		c.Status(http.StatusUnauthorized)
 		return
 	}
-	token := c.GetCookie(setting.SessionConfig.CookieName)
-	token, err := encrypt([]byte(setting.DOI.Key), token)
+
+	repo := c.Repo.Repository.FullName()
+	username := c.User.Name
+	// verification := c.GetCookie(setting.SessionConfig.CookieName)
+	verification, err := encrypt([]byte(setting.DOI.Key), repo+username)
 	if err != nil {
 		log.Error(2, "Could not encrypt secret key: %s", err)
 		c.Status(http.StatusInternalServerError)
@@ -32,9 +35,9 @@ func RequestDOI(c *context.Context) {
 	}
 
 	params := url.Values{}
-	params.Add("repo", c.Repo.Repository.FullName())
-	params.Add("user", c.User.Name)
-	params.Add("token", token)
+	params.Add("repo", repo)
+	params.Add("user", username)
+	params.Add("verification", verification)
 	doiurl.RawQuery = params.Encode()
 	target, _ := url.PathUnescape(doiurl.String())
 	log.Trace(target)
