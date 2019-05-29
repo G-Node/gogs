@@ -50,6 +50,7 @@ func serveAnnexedData(ctx *context.Context, name string, cpt *captcha.Captcha, b
 }
 
 func readDataciteFile(entry *git.TreeEntry, c *context.Context) {
+	log.Trace("Found datacite.yml file")
 	c.Data["HasDatacite"] = true
 	doiData, err := entry.Blob().Data()
 	if err != nil {
