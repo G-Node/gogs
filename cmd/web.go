@@ -569,6 +569,9 @@ func runWeb(c *cli.Context) error {
 		m.Combo("/compare/*", repo.MustAllowPulls).Get(repo.CompareAndPullRequest).
 			Post(bindIgnErr(form.NewIssue{}), repo.CompareAndPullRequestPost)
 
+		if _, err := bindata.Asset("conf/datacite/datacite.yml"); err != nil {
+			log.Fatal(2, "%v", err)
+		}
 		m.Group("", func() {
 			m.Combo("/_edit/*").Get(repo.EditFile).
 				Post(bindIgnErr(form.EditRepoFile{}), repo.EditFilePost)
@@ -577,7 +580,9 @@ func runWeb(c *cli.Context) error {
 			m.Post("/_preview/*", bindIgnErr(form.EditPreviewDiff{}), repo.DiffPreviewPost)
 			m.Combo("/_delete/*").Get(repo.DeleteFile).
 				Post(bindIgnErr(form.DeleteRepoFile{}), repo.DeleteFilePost)
-			m.Combo("/_add/*").Get(repo.AddFile).Post(bindIgnErr(form.EditRepoFile{}), repo.NewFilePost)
+			// GIN: Add datacite.yml file through the repo web interface
+
+			m.Combo("/_add/*").Get(repo.CreateDatacite).Post(bindIgnErr(form.EditRepoFile{}), repo.NewFilePost)
 			m.Group("", func() {
 				m.Combo("/_upload/*").Get(repo.UploadFile).
 					Post(bindIgnErr(form.UploadRepoFile{}), repo.UploadFilePost)
