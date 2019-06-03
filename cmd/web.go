@@ -32,6 +32,7 @@ import (
 	"github.com/G-Node/gogs/models"
 	"github.com/G-Node/gogs/pkg/bindata"
 	"github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/pkg/dav"
 	"github.com/G-Node/gogs/pkg/form"
 	"github.com/G-Node/gogs/pkg/mailer"
 	"github.com/G-Node/gogs/pkg/setting"
@@ -43,7 +44,6 @@ import (
 	"github.com/G-Node/gogs/routes/org"
 	"github.com/G-Node/gogs/routes/repo"
 	"github.com/G-Node/gogs/routes/user"
-	"github.com/G-Node/gogs/pkg/dav"
 	"golang.org/x/net/webdav"
 )
 
@@ -172,7 +172,6 @@ func runWeb(c *cli.Context) error {
 	checkVersion()
 
 	m := newMacaron()
-
 
 	reqSignIn := context.Toggle(&context.ToggleOptions{SignInRequired: true})
 	ignSignIn := context.Toggle(&context.ToggleOptions{SignInRequired: setting.Service.RequireSignInView})
@@ -486,7 +485,7 @@ func runWeb(c *cli.Context) error {
 		m.Get("/issues/:index", repo.ViewIssue)
 		m.Get("/labels/", repo.RetrieveLabels, repo.Labels)
 		m.Get("/milestones", repo.Milestones)
-		m.Get("/doi", routes.RequestDoi)
+		m.Get("/doi", routes.RequestDOI)
 	}, ignSignIn, context.RepoAssignment(true))
 	m.Group("/:username/:reponame", func() {
 		// FIXME: should use different URLs but mostly same logic for comments of issue and pull reuqest.
