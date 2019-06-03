@@ -22,7 +22,7 @@ func RequestDOI(c *context.Context) {
 	token := c.GetCookie(setting.SessionConfig.CookieName)
 	token, err := encrypt([]byte(setting.DOI.Key), token)
 	if err != nil {
-		log.Error(2, "Could not encrypt Secret key: %s", err)
+		log.Error(2, "Could not encrypt token for DOI request: %s", err)
 		c.Status(http.StatusInternalServerError)
 		return
 	}
