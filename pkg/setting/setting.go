@@ -337,10 +337,9 @@ var (
 	}
 
 	DOI struct {
-		Do      bool
-		DOIURL  string
-		DOIKey  string
-		DOIBase string
+		URL  string `ini:"DOI_URL"`
+		Key  string `ini:"DOI_KEY"`
+		Base string `ini:"DOI_BASE"`
 	}
 
 	CLIConfig struct {

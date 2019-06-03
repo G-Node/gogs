@@ -50,6 +50,7 @@ func serveAnnexedData(ctx *context.Context, name string, cpt *captcha.Captcha, b
 }
 
 func readDataciteFile(entry *git.TreeEntry, c *context.Context) {
+	log.Trace("Found datacite.yml file")
 	c.Data["HasDatacite"] = true
 	doiData, err := entry.Blob().Data()
 	if err != nil {
@@ -69,7 +70,7 @@ func readDataciteFile(entry *git.TreeEntry, c *context.Context) {
 	}
 	c.Data["DOIInfo"] = &doiInfo
 
-	doi := calcRepoDOI(c, setting.DOI.DOIBase)
+	doi := calcRepoDOI(c, setting.DOI.Base)
 	//ddata, err := ginDoi.GDoiMData(doi, "https://api.datacite.org/works/") //todo configure URL?
 
 	c.Data["DOIReg"] = libgin.IsRegisteredDOI(doi)

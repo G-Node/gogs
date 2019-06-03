@@ -57,8 +57,10 @@ func renderDirectory(c *context.Context, treeLink string) {
 	for _, entry := range entries {
 		if !entry.IsDir() && entry.Name() == "datacite.yml" {
 			readDataciteFile(entry, c)
-			continue
+			break
 		}
+	}
+	for _, entry := range entries {
 		if entry.IsDir() || !markup.IsReadmeFile(entry.Name()) {
 			continue
 		}
