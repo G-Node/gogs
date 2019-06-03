@@ -583,25 +583,23 @@ func RemoveUploadFileFromServer(c *context.Context, f form.RemoveUploadFile) {
 	c.Status(204)
 }
 
-func AddFile(c *context.Context) {
-	link := strings.Split(c.Link, "/")
-	name := link[len(link)-1]
+func CreateDatacite(c *context.Context) {
+	dcname := path.Join("conf/datacite/datacite.yml")
 	treeNames, treePaths := getParentTreeFields(c.Repo.TreePath)
 
 	c.PageIs("Edit")
 	c.RequireHighlightJS()
 	c.RequireSimpleMDE()
 
-	c.Data["IsJSON"] = markup.IsJSON(name)
-	c.Data["IsYAML"] = markup.IsYAML(name)
-	relName := path.Join("conf", "datacite", name)
-	data, _ := bindata.Asset(relName)
+	c.Data["IsYAML"] = true
+	// safe to ignore error since we check for the asseet at startup
+	data, _ := bindata.Asset(dcname)
 	c.Data["FileContent"] = string(data)
 	c.Data["ParentTreePath"] = path.Dir(c.Repo.TreePath)
 	c.Data["TreeNames"] = treeNames
 	c.Data["TreePaths"] = treePaths
 	c.Data["BranchLink"] = c.Repo.RepoLink + "/src/" + c.Repo.BranchName
-	c.Data["commit_summary"] = ""
+	c.Data["commit_summary"] = "Add information for publishing with DataCite"
 	c.Data["commit_message"] = ""
 	c.Data["commit_choice"] = "direct"
 	c.Data["new_branch_name"] = ""
