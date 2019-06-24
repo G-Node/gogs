@@ -17,6 +17,7 @@ import (
 // for a repository.
 func StartIndexing(user, owner *User, repo *Repository) {
 	if !setting.Search.Do {
+		log.Trace("Indexing not enabled")
 		return
 	}
 	var ireq struct{ RepoID, RepoPath string }

@@ -107,11 +107,3 @@ func ExploreCommits(c *context.Context) {
 	c.Data["Commits"] = res.Commits
 	c.HTML(200, EXPLORE_COMMITS)
 }
-
-type SearchRequest struct {
-	Token  string
-	CsrfT  string
-	UserID int64
-	Query  string
-	SType  int64
-}

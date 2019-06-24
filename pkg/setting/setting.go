@@ -332,8 +332,8 @@ var (
 
 	Search struct {
 		Do        bool
-		IndexURL  string
-		SearchURL string
+		IndexURL  string `ini:"INDEX_URL"`
+		SearchURL string `ini:"SEARCH_URL"`
 	}
 
 	DOI struct {
