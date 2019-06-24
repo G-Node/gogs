@@ -12,7 +12,7 @@ import (
 )
 
 func Suggest(c *context.APIContext) {
-	if !setting.Search.Do {
+	if setting.Search.SearchURL == "" {
 		c.Status(http.StatusNotImplemented)
 		return
 	}

@@ -331,7 +331,6 @@ var (
 	HasRobotsTxt bool
 
 	Search struct {
-		Do        bool
 		IndexURL  string `ini:"INDEX_URL"`
 		SearchURL string `ini:"SEARCH_URL"`
 	}

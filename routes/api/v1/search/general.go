@@ -16,7 +16,7 @@ func Search(c *context.APIContext) {
 		c.Status(http.StatusUnauthorized)
 		return
 	}
-	if !setting.Search.Do {
+	if setting.Search.SearchURL == "" {
 		c.Status(http.StatusNotImplemented)
 		return
 	}

@@ -20,7 +20,7 @@ const (
 )
 
 func Search(c *context.Context, keywords string, sType int64) ([]byte, error) {
-	if !setting.Search.Do {
+	if setting.Search.SearchURL == "" {
 		c.Status(http.StatusNotImplemented)
 		return nil, fmt.Errorf("Extended search not implemented")
 	}

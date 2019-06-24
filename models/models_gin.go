@@ -16,7 +16,7 @@ import (
 // StartIndexing sends an indexing request to the configured indexing service
 // for a repository.
 func StartIndexing(user, owner *User, repo *Repository) {
-	if !setting.Search.Do {
+	if setting.Search.IndexURL == "" {
 		log.Trace("Indexing not enabled")
 		return
 	}
