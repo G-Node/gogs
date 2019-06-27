@@ -12,15 +12,17 @@ import (
 )
 
 func Suggest(c *context.APIContext) {
+	// TODO: API calls shouldn't use cookie (see https://github.com/G-Node/gin-dex/issues/2)
 	if setting.Search.SearchURL == "" {
 		c.Status(http.StatusNotImplemented)
 		return
 	}
-	ireq := libgin.SearchRequest{Token: c.GetCookie(setting.SessionConfig.CookieName),
-		Query: c.Params("query"), CsrfT: c.GetCookie(setting.CSRFCookieName), SType: libgin.SEARCH_SUGGEST}
-	if c.IsLogged {
-		ireq.UserID = c.User.ID
-	}
+	ireq := libgin.SearchRequest{}
+	// ireq := libgin.SearchRequest{Token: c.GetCookie(setting.SessionConfig.CookieName),
+	// 	Query: c.Params("query"), CsrfT: c.GetCookie(setting.CSRFCookieName), SType: libgin.SEARCH_SUGGEST}
+	// if c.IsLogged {
+	// 	ireq.UserID = c.User.ID
+	// }
 	data, err := json.Marshal(ireq)
 	if err != nil {
 		c.Status(http.StatusInternalServerError)

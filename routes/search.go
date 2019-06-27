@@ -1,13 +1,14 @@
 package routes
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 
+	"github.com/G-Node/gogs/models"
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/pkg/setting"
 	"github.com/G-Node/libgin/libgin"
@@ -19,24 +20,98 @@ const (
 	EXPLORE_COMMITS = "explore/commits"
 )
 
-func Search(c *context.Context, keywords string, sType int64) ([]byte, error) {
+type set map[int64]interface{}
+
+func newset() set {
+	return make(map[int64]interface{}, 0)
+}
+
+func (s set) add(item int64) {
+	s[item] = nil
+}
+
+func (s set) contains(item int64) bool {
+	_, yes := s[item]
+	return yes
+}
+
+func (s set) remove(item int64) {
+	delete(s, item)
+}
+
+func (s set) asSlice() []int64 {
+	slice := make([]int64, len(s))
+	idx := 0
+	for item := range s {
+		slice[idx] = item
+		idx++
+	}
+	return slice
+}
+
+func collectSearchableRepoIDs(c *context.Context) ([]int64, error) {
+	repoIDSet := newset()
+
+	updateSet := func(repos []*models.Repository) {
+		for _, r := range repos {
+			repoIDSet.add(r.ID)
+		}
+	}
+	ownRepos := c.User.Repos // user's own repositories
+	updateSet(ownRepos)
+
+	accessibleRepos, _ := c.User.GetAccessibleRepositories(0) // shared and org repos
+	updateSet(accessibleRepos)
+
+	repos, _, err := models.SearchRepositoryByName(&models.SearchRepoOptions{
+		Keyword:  "",
+		UserID:   c.UserID(),
+		OrderBy:  "updated_unix DESC",
+		Page:     0,
+		PageSize: 0,
+	})
+	if err != nil {
+		c.ServerError("SearchRepositoryByName", err)
+		return nil, err
+	}
+
+	// If it's not unlisted, add it to the set
+	// This will add public (listed) repositories
+	for _, r := range repos {
+		if !r.Unlisted {
+			repoIDSet.add(r.ID)
+		}
+	}
+
+	return repoIDSet.asSlice(), nil
+}
+
+func Search(c *context.Context, keywords string, sType int) ([]byte, error) {
 	if setting.Search.SearchURL == "" {
 		c.Status(http.StatusNotImplemented)
 		return nil, fmt.Errorf("Extended search not implemented")
 	}
 
-	ireq := libgin.SearchRequest{Token: c.GetCookie(setting.SessionConfig.CookieName),
-		Query: keywords, CsrfT: c.GetCookie(setting.CSRFCookieName), SType: sType, UserID: -10}
-	if c.IsLogged {
-		ireq.UserID = c.User.ID
-	}
+	key := []byte(setting.Search.Key)
 
-	data, err := json.Marshal(ireq)
+	repoids, err := collectSearchableRepoIDs(c)
+	if err != nil {
+		return nil, err
+	}
+	searchdata := libgin.SearchRequest{keywords, sType, repoids}
+
+	data, err := json.Marshal(searchdata)
 	if err != nil {
 		c.Status(http.StatusInternalServerError)
 		return nil, err
 	}
-	req, _ := http.NewRequest("Post", setting.Search.SearchURL, bytes.NewReader(data))
+
+	encdata, err := libgin.EncryptString(key, string(data))
+	if err != nil {
+		c.Status(http.StatusInternalServerError)
+		return nil, err
+	}
+	req, _ := http.NewRequest("POST", setting.Search.SearchURL, strings.NewReader(encdata))
 	cl := http.Client{}
 	resp, err := cl.Do(req)
 	if err != nil {
@@ -63,7 +138,7 @@ func ExploreData(c *context.Context) {
 		log.Error(2, "Search type not understood: %s", err.Error())
 		sType = 0
 	}
-	data, err := Search(c, keywords, sType)
+	data, err := Search(c, keywords, int(sType))
 	if err != nil {
 		c.Handle(http.StatusInternalServerError, "Could not query", err)
 		return
@@ -91,7 +166,7 @@ func ExploreCommits(c *context.Context) {
 		log.Error(2, "Search type not understood: %s", err.Error())
 		sType = 0
 	}
-	data, err := Search(c, keywords, sType)
+	data, err := Search(c, keywords, int(sType))
 
 	if err != nil {
 		c.Handle(http.StatusInternalServerError, "Could not query", err)

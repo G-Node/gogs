@@ -333,6 +333,7 @@ var (
 	Search struct {
 		IndexURL  string `ini:"INDEX_URL"`
 		SearchURL string `ini:"SEARCH_URL"`
+		Key       string `ini:"SEARCH_KEY"`
 	}
 
 	DOI struct {

@@ -12,6 +12,7 @@ import (
 )
 
 func Search(c *context.APIContext) {
+	// TODO: API calls shouldn't use cookie (see https://github.com/G-Node/gin-dex/issues/2)
 	if !c.IsLogged {
 		c.Status(http.StatusUnauthorized)
 		return
@@ -20,8 +21,7 @@ func Search(c *context.APIContext) {
 		c.Status(http.StatusNotImplemented)
 		return
 	}
-	ireq := libgin.SearchRequest{Token: c.GetCookie(setting.SessionConfig.CookieName), UserID: c.User.ID,
-		Query: c.Params("query"), CsrfT: c.GetCookie(setting.CSRFCookieName)}
+	ireq := libgin.SearchRequest{}
 	data, err := json.Marshal(ireq)
 	if err != nil {
 		c.Status(http.StatusInternalServerError)
