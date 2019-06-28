@@ -5,14 +5,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strconv"
 	"strings"
 
 	"github.com/G-Node/gogs/models"
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/pkg/setting"
 	"github.com/G-Node/libgin/libgin"
-	log "gopkg.in/clog.v1"
 )
 
 const (
@@ -127,53 +125,66 @@ func Search(c *context.Context, keywords string, sType int) ([]byte, error) {
 }
 
 func ExploreData(c *context.Context) {
+	keywords := c.Query("q")
+	sType := c.QueryInt("stype") // non integer stype will return 0
+
 	c.Data["Title"] = c.Tr("explore")
 	c.Data["PageIsExplore"] = true
 	c.Data["PageIsExploreData"] = true
 
-	keywords := c.Query("q")
+	// send query data back even if the search fails or is aborted to fill in
+	// the form on refresh
 	c.Data["Keywords"] = keywords
-	sType, err := strconv.ParseInt(c.Query("stype"), 10, 0)
-	if err != nil {
-		log.Error(2, "Search type not understood: %s", err.Error())
-		sType = 0
+	c.Data["opsel"] = sType
+
+	res := libgin.SearchResults{}
+	if keywords == "" {
+		// no keywords submitted: don't search
+		c.Data["Blobs"] = res.Blobs
+		c.HTML(200, EXPLORE_DATA)
 	}
-	data, err := Search(c, keywords, int(sType))
+	data, err := Search(c, keywords, sType)
 	if err != nil {
 		c.Handle(http.StatusInternalServerError, "Could not query", err)
 		return
 	}
 
-	res := libgin.SearchResults{}
 	err = json.Unmarshal(data, &res)
 	if err != nil {
 		c.Handle(http.StatusInternalServerError, "Could not display result", err)
 		return
 	}
 	c.Data["Blobs"] = res.Blobs
-	c.Data["opsel"] = sType
 	c.HTML(200, EXPLORE_DATA)
 }
 
 func ExploreCommits(c *context.Context) {
+	keywords := c.Query("q")
+	sType := c.QueryInt("stype") // non integer stype will return 0
+
 	c.Data["Title"] = c.Tr("explore")
 	c.Data["PageIsExplore"] = true
 	c.Data["PageIsExploreCommits"] = true
 
-	keywords := c.Query("q")
-	sType, err := strconv.ParseInt(c.Query("stype"), 10, 0)
-	if err != nil {
-		log.Error(2, "Search type not understood: %s", err.Error())
-		sType = 0
+	// send query data back even if the search fails or is aborted to fill in
+	// the form on refresh
+	c.Data["Keywords"] = keywords
+	c.Data["opsel"] = sType
+
+	res := libgin.SearchResults{}
+	if keywords == "" {
+		// no keywords submitted: don't search
+		c.Data["Commits"] = res.Commits
+		c.HTML(200, EXPLORE_COMMITS)
 	}
-	data, err := Search(c, keywords, int(sType))
+
+	data, err := Search(c, keywords, sType)
 
 	if err != nil {
 		c.Handle(http.StatusInternalServerError, "Could not query", err)
 		return
 	}
 
-	res := libgin.SearchResults{}
 	err = json.Unmarshal(data, &res)
 	if err != nil {
 		c.Handle(http.StatusInternalServerError, "Could not display result", err)
