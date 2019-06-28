@@ -98,24 +98,26 @@ func calcRepoDOI(c *context.Context, doiBase string) string {
 // the two variables without modifications.
 // Any errors that occur during processing are stored in the provided context.
 // The FileSize of the annexed content is also saved in the context (c.Data["FileSize"]).
-func resolveAnnexedContent(c *context.Context, buf []byte, dataRc io.Reader) ([]byte, io.Reader) {
+func resolveAnnexedContent(c *context.Context, buf []byte, dataRc io.Reader) ([]byte, io.Reader, error) {
 	if !tool.IsAnnexedFile(buf) {
 		// not an annex pointer file; return as is
-		return buf, dataRc
+		return buf, dataRc, nil
 	}
 	log.Trace("Annexed file requested: Resolving content for [%s]", bytes.TrimSpace(buf))
 	af, err := gannex.NewAFile(c.Repo.Repository.RepoPath(), "annex", "", buf)
 	if err != nil {
 		log.Trace("Could not get annex file: %v", err)
-		c.ServerError("readmeFile.Data", err)
-		return buf, dataRc
+		// c.ServerError("readmeFile.Data", err)
+		c.Data["IsAnnexedFile"] = true
+		return buf, dataRc, err
 	}
 
 	afp, err := af.Open()
 	if err != nil {
-		c.ServerError("readmeFile.Data", err)
+		// c.ServerError("readmeFile.Data", err)
 		log.Trace("Could not open annex file: %v", err)
-		return buf, dataRc
+		c.Data["IsAnnexedFile"] = true
+		return buf, dataRc, err
 	}
 	annexDataReader := bufio.NewReader(afp)
 	annexBuf := make([]byte, 1024)
@@ -123,5 +125,5 @@ func resolveAnnexedContent(c *context.Context, buf []byte, dataRc io.Reader) ([]
 	annexBuf = annexBuf[:n]
 	c.Data["FileSize"] = af.Info.Size()
 	log.Trace("Annexed file size: %d B", af.Info.Size())
-	return annexBuf, annexDataReader
+	return annexBuf, annexDataReader, nil
 }

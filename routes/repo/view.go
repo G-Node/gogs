@@ -86,7 +86,10 @@ func renderDirectory(c *context.Context, treeLink string) {
 		buf = buf[:n]
 
 		// GIN mod: Replace existing buf and reader with annexed content buf and reader
-		buf, dataRc = resolveAnnexedContent(c, buf, dataRc)
+		buf, dataRc, err = resolveAnnexedContent(c, buf, dataRc)
+		if err != nil {
+			return
+		}
 
 		isTextFile := tool.IsTextFile(buf)
 		c.Data["IsTextFile"] = isTextFile
@@ -151,7 +154,10 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 	buf = buf[:n]
 
 	// GIN mod: Replace existing buf and reader with annexed content buf and reader
-	buf, dataRc = resolveAnnexedContent(c, buf, dataRc)
+	buf, dataRc, err = resolveAnnexedContent(c, buf, dataRc)
+	if err != nil {
+		return
+	}
 
 	isTextFile := tool.IsTextFile(buf)
 	c.Data["IsTextFile"] = isTextFile
