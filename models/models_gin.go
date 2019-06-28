@@ -65,7 +65,7 @@ func annexUninit(path string) {
 	}
 }
 
-func annexAdd(path string) {
+func annexSetup(path string) {
 	log.Trace("Running annex add (with filesize filter) in '%s'", path)
 
 	// Initialise annex in case it's a new repository
@@ -84,9 +84,9 @@ func annexAdd(path string) {
 		log.Error(1, "Failed to set default backend to 'MD5': %v (%s)", err, msg)
 	}
 
-	sizefilterflag := fmt.Sprintf("--largerthan=%d", setting.Repository.Upload.AnnexFileMinSize*gannex.MEGABYTE)
-	if msg, err := gannex.Add(path, sizefilterflag); err != nil {
-		log.Error(1, "Annex add failed with error: %v (%s)", err, msg)
+	// Set size filter in config
+	if msg, err := gannex.SetAnnexSizeFilter(path, setting.Repository.Upload.AnnexFileMinSize*gannex.MEGABYTE); err != nil {
+		log.Error(2, "Failed to set size filter for annex: %v (%s)", err, msg)
 	}
 }
 

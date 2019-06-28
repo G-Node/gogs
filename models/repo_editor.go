@@ -499,7 +499,7 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 		}
 	}
 
-	annexAdd(localPath) // Running annex add with filter for big files
+	annexSetup(localPath) // Initialise annex and set configuration (with add filter for filesizes)
 	if err = git.AddChanges(localPath, true); err != nil {
 		return fmt.Errorf("git add --all: %v", err)
 	} else if err = git.CommitChanges(localPath, git.CommitChangesOptions{
