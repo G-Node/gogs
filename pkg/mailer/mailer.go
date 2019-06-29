@@ -28,12 +28,12 @@ type Message struct {
 }
 
 // NewMessageFrom creates new mail message object with custom From header.
-func NewMessageFrom(to []string, from, subject, htmlBody string) *Message {
+func NewMessageFrom(to string, from, subject, htmlBody string) *Message {
 	log.Trace("NewMessageFrom (htmlBody):\n%s", htmlBody)
 
 	msg := gomail.NewMessage()
 	msg.SetHeader("From", from)
-	msg.SetHeader("To", to...)
+	msg.SetHeader("To", to)
 	msg.SetHeader("Subject", setting.MailService.SubjectPrefix+subject)
 	msg.SetDateHeader("Date", time.Now())
 
@@ -64,7 +64,7 @@ func NewMessageFrom(to []string, from, subject, htmlBody string) *Message {
 }
 
 // NewMessage creates new mail message object with default From header.
-func NewMessage(to []string, subject, body string) *Message {
+func NewMessage(to string, subject, body string) *Message {
 	return NewMessageFrom(to, setting.MailService.From, subject, body)
 }
 
