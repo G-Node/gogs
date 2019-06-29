@@ -142,16 +142,21 @@ func ExploreData(c *context.Context) {
 		// no keywords submitted: don't search
 		c.Data["Blobs"] = res.Blobs
 		c.HTML(200, EXPLORE_DATA)
+		return
 	}
 	data, err := Search(c, keywords, sType)
 	if err != nil {
-		c.Handle(http.StatusInternalServerError, "Could not query", err)
+		// c.Handle(http.StatusInternalServerError, "Could not query", err)
+		c.Data["Blobs"] = res.Blobs
+		c.HTML(200, EXPLORE_DATA)
 		return
 	}
 
 	err = json.Unmarshal(data, &res)
 	if err != nil {
-		c.Handle(http.StatusInternalServerError, "Could not display result", err)
+		// c.Handle(http.StatusInternalServerError, "Could not display result", err)
+		c.Data["Blobs"] = res.Blobs
+		c.HTML(200, EXPLORE_DATA)
 		return
 	}
 	c.Data["Blobs"] = res.Blobs
@@ -176,18 +181,23 @@ func ExploreCommits(c *context.Context) {
 		// no keywords submitted: don't search
 		c.Data["Commits"] = res.Commits
 		c.HTML(200, EXPLORE_COMMITS)
+		return
 	}
 
 	data, err := Search(c, keywords, sType)
 
 	if err != nil {
-		c.Handle(http.StatusInternalServerError, "Could not query", err)
-		return
+		// c.Handle(http.StatusInternalServerError, "Could not query", err)
+		// return
+		c.Data["Commits"] = res.Commits
+		c.HTML(200, EXPLORE_COMMITS)
 	}
 
 	err = json.Unmarshal(data, &res)
 	if err != nil {
-		c.Handle(http.StatusInternalServerError, "Could not display result", err)
+		// c.Handle(http.StatusInternalServerError, "Could not display result", err)
+		c.Data["Commits"] = res.Commits
+		c.HTML(200, EXPLORE_COMMITS)
 		return
 	}
 	c.Data["Commits"] = res.Commits
