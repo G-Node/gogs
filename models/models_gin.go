@@ -10,6 +10,7 @@ import (
 
 	gannex "github.com/G-Node/go-annex"
 	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/libgin/libgin"
 	log "gopkg.in/clog.v1"
 )
 
@@ -20,9 +21,10 @@ func StartIndexing(user, owner *User, repo *Repository) {
 		log.Trace("Indexing not enabled")
 		return
 	}
-	var ireq struct{ RepoID, RepoPath string }
-	ireq.RepoID = fmt.Sprintf("%d", repo.ID)
-	ireq.RepoPath = repo.FullName()
+	ireq := libgin.IndexRequest{
+		RepoID:   repo.ID,
+		RepoPath: repo.FullName(),
+	}
 	data, err := json.Marshal(ireq)
 	if err != nil {
 		log.Trace("could not marshal index request :%+v", err)

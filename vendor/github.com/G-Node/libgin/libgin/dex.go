@@ -58,3 +58,9 @@ type IndexCommit struct {
 	GinRepoName  string
 	IndexingTime time.Time
 }
+
+type IndexRequest struct {
+	UserID   int64
+	RepoID   int64
+	RepoPath string
+}
