@@ -106,6 +106,7 @@ func search(c *context.Context, keywords string, sType int) ([]byte, error) {
 		return nil, err
 	}
 
+	// encrypt query
 	encdata, err := libgin.EncryptString(key, string(data))
 	if err != nil {
 		log.Error(2, "Failed to encrypt search data for gin-dex: %v", err)
@@ -123,12 +124,20 @@ func search(c *context.Context, keywords string, sType int) ([]byte, error) {
 		log.Error(2, "Failed to send request to gin-dex: %v", err)
 		return nil, err
 	}
-	data, err = ioutil.ReadAll(resp.Body)
+
+	encrespdata, err := ioutil.ReadAll(resp.Body) // response is encrypted
 	if err != nil {
 		log.Error(2, "Failed to read response body from gin-dex: %v", err)
 		return nil, err
 	}
-	return data, nil
+
+	// decrypt response
+	respdata, err := libgin.DecryptString(key, string(encrespdata))
+	if err != nil {
+		log.Error(2, "Failed to decrypt response body form gin-dex: %v", err)
+	}
+
+	return []byte(respdata), nil
 }
 
 // ExploreData handles the search box served at /explore/data
