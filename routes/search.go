@@ -124,6 +124,7 @@ func Search(c *context.Context, keywords string, sType int) ([]byte, error) {
 	return data, nil
 }
 
+// ExploreData handles the search box served at /explore/data
 func ExploreData(c *context.Context) {
 	keywords := c.Query("q")
 	sType := c.QueryInt("stype") // non integer stype will return 0
@@ -163,6 +164,7 @@ func ExploreData(c *context.Context) {
 	c.HTML(200, EXPLORE_DATA)
 }
 
+// ExploreCommits handles the search box served at /explore/commits
 func ExploreCommits(c *context.Context) {
 	keywords := c.Query("q")
 	sType := c.QueryInt("stype") // non integer stype will return 0
