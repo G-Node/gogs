@@ -56,11 +56,14 @@ func collectSearchableRepoIDs(c *context.Context) ([]int64, error) {
 			repoIDSet.add(r.ID)
 		}
 	}
-	ownRepos := c.User.Repos // user's own repositories
-	updateSet(ownRepos)
 
-	accessibleRepos, _ := c.User.GetAccessibleRepositories(0) // shared and org repos
-	updateSet(accessibleRepos)
+	if c.User != nil {
+		ownRepos := c.User.Repos // user's own repositories
+		updateSet(ownRepos)
+
+		accessibleRepos, _ := c.User.GetAccessibleRepositories(0) // shared and org repos
+		updateSet(accessibleRepos)
+	}
 
 	repos, _, err := models.SearchRepositoryByName(&models.SearchRepoOptions{
 		Keyword:  "",
