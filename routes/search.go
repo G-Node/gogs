@@ -86,7 +86,6 @@ func collectSearchableRepoIDs(c *context.Context) ([]int64, error) {
 
 func search(c *context.Context, keywords string, sType int) ([]byte, error) {
 	if setting.Search.SearchURL == "" {
-		c.Status(http.StatusNotImplemented)
 		return nil, fmt.Errorf("Extended search not implemented")
 	}
 
@@ -100,25 +99,21 @@ func search(c *context.Context, keywords string, sType int) ([]byte, error) {
 
 	data, err := json.Marshal(searchdata)
 	if err != nil {
-		c.Status(http.StatusInternalServerError)
 		return nil, err
 	}
 
 	encdata, err := libgin.EncryptString(key, string(data))
 	if err != nil {
-		c.Status(http.StatusInternalServerError)
 		return nil, err
 	}
 	req, _ := http.NewRequest("POST", setting.Search.SearchURL, strings.NewReader(encdata))
 	cl := http.Client{}
 	resp, err := cl.Do(req)
 	if err != nil {
-		c.Status(http.StatusInternalServerError)
 		return nil, err
 	}
 	data, err = ioutil.ReadAll(resp.Body)
 	if err != nil {
-		c.Status(http.StatusInternalServerError)
 		return nil, err
 	}
 	return data, nil
