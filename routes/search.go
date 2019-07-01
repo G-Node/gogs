@@ -11,6 +11,7 @@ import (
 	"github.com/G-Node/gogs/pkg/context"
 	"github.com/G-Node/gogs/pkg/setting"
 	"github.com/G-Node/libgin/libgin"
+	log "gopkg.in/clog.v1"
 )
 
 const (
@@ -86,6 +87,7 @@ func collectSearchableRepoIDs(c *context.Context) ([]int64, error) {
 
 func search(c *context.Context, keywords string, sType int) ([]byte, error) {
 	if setting.Search.SearchURL == "" {
+		log.Error(2, "Unable to perform search: SearchURL not configured")
 		return nil, fmt.Errorf("Extended search not implemented")
 	}
 
@@ -93,27 +95,37 @@ func search(c *context.Context, keywords string, sType int) ([]byte, error) {
 
 	repoids, err := collectSearchableRepoIDs(c)
 	if err != nil {
+		log.Error(2, "Failed to collect searchable repository IDs: %v", err)
 		return nil, err
 	}
 	searchdata := libgin.SearchRequest{keywords, sType, repoids}
 
 	data, err := json.Marshal(searchdata)
 	if err != nil {
+		log.Error(2, "Failed to marshal search request for gin-dex: %v", err)
 		return nil, err
 	}
 
 	encdata, err := libgin.EncryptString(key, string(data))
 	if err != nil {
+		log.Error(2, "Failed to encrypt search data for gin-dex: %v", err)
 		return nil, err
 	}
-	req, _ := http.NewRequest("POST", setting.Search.SearchURL, strings.NewReader(encdata))
+
+	// Send query to gin-dex
+	req, err := http.NewRequest("POST", setting.Search.SearchURL, strings.NewReader(encdata))
+	if err != nil {
+		log.Error(2, "Failed to build request for gin-dex: %v", err)
+	}
 	cl := http.Client{}
 	resp, err := cl.Do(req)
 	if err != nil {
+		log.Error(2, "Failed to send request to gin-dex: %v", err)
 		return nil, err
 	}
 	data, err = ioutil.ReadAll(resp.Body)
 	if err != nil {
+		log.Error(2, "Failed to read response body from gin-dex: %v", err)
 		return nil, err
 	}
 	return data, nil
