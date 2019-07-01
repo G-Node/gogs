@@ -1,12 +1,12 @@
 package models
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 
 	gannex "github.com/G-Node/go-annex"
 	"github.com/G-Node/gogs/pkg/setting"
@@ -27,14 +27,22 @@ func StartIndexing(user, owner *User, repo *Repository) {
 	}
 	data, err := json.Marshal(ireq)
 	if err != nil {
-		log.Trace("could not marshal index request :%+v", err)
+		log.Error(2, "Could not marshal index request: %v", err)
 		return
 	}
-	req, _ := http.NewRequest(http.MethodPost, setting.Search.IndexURL, bytes.NewReader(data))
+	key := []byte(setting.Search.Key)
+	encdata, err := libgin.EncryptString(key, string(data))
+	if err != nil {
+		log.Error(2, "Could not encrypt index request: %v", err)
+	}
+	req, err := http.NewRequest(http.MethodPost, setting.Search.IndexURL, strings.NewReader(encdata))
+	if err != nil {
+		log.Error(2, "Error creating index request")
+	}
 	client := http.Client{}
 	resp, err := client.Do(req)
 	if err != nil || resp.StatusCode != http.StatusOK {
-		log.Trace("Error doing index request: %+v", err)
+		log.Error(2, "Error submitting index request: %v", err)
 		return
 	}
 }
