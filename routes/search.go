@@ -84,7 +84,7 @@ func collectSearchableRepoIDs(c *context.Context) ([]int64, error) {
 	return repoIDSet.asSlice(), nil
 }
 
-func Search(c *context.Context, keywords string, sType int) ([]byte, error) {
+func search(c *context.Context, keywords string, sType int) ([]byte, error) {
 	if setting.Search.SearchURL == "" {
 		c.Status(http.StatusNotImplemented)
 		return nil, fmt.Errorf("Extended search not implemented")
@@ -145,7 +145,7 @@ func ExploreData(c *context.Context) {
 		c.HTML(200, EXPLORE_DATA)
 		return
 	}
-	data, err := Search(c, keywords, sType)
+	data, err := search(c, keywords, sType)
 	if err != nil {
 		// c.Handle(http.StatusInternalServerError, "Could not query", err)
 		c.Data["Blobs"] = res.Blobs
@@ -186,7 +186,7 @@ func ExploreCommits(c *context.Context) {
 		return
 	}
 
-	data, err := Search(c, keywords, sType)
+	data, err := search(c, keywords, sType)
 
 	if err != nil {
 		// c.Handle(http.StatusInternalServerError, "Could not query", err)
