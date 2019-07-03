@@ -49,10 +49,21 @@ func StartIndexing(user, owner *User, repo *Repository) {
 	}()
 }
 
+// RebuildIndex sends all repositories to the indexing service to be indexed.
 func RebuildIndex() error {
 	indexurl := setting.Search.IndexURL
 	if indexurl == "" {
 		return fmt.Errorf("Indexing service not configured")
+	}
+
+	// collect all repo ID -> Path mappings directly from the DB
+	repos := make(RepositoryList, 0, 100)
+	if err := x.Find(&repos); err != nil {
+		return fmt.Errorf("get all repos: %v", err)
+	}
+	log.Trace("Found %d repositories to index", len(repos))
+	for _, repo := range repos {
+		StartIndexing(nil, nil, repo)
 	}
 	log.Trace("Rebuilding search index")
 	return nil
