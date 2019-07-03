@@ -194,9 +194,7 @@ func (repo *Repository) UpdateRepoFile(doer *User, opts UpdateRepoFileOptions) (
 		return fmt.Errorf("git push origin %s: %v", opts.NewBranch, err)
 	}
 
-	if setting.Search.IndexURL != "" {
-		StartIndexing(doer, repo.MustOwner(), repo)
-	}
+	StartIndexing(doer, repo.MustOwner(), repo)
 	return nil
 }
 

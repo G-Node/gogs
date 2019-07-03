@@ -273,7 +273,7 @@ func runServ(c *cli.Context) error {
 		cmd = []string{verb, repoFullName}
 	}
 	runGit(cmd, requestMode, user, owner, repo)
-	if setting.Search.IndexURL != "" && (requestMode == models.ACCESS_MODE_WRITE) {
+	if requestMode == models.ACCESS_MODE_WRITE {
 		models.StartIndexing(user, owner, repo)
 	}
 	return nil
