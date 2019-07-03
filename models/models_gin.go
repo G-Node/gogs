@@ -22,6 +22,7 @@ func StartIndexing(repo Repository) {
 			log.Trace("Indexing not enabled")
 			return
 		}
+		log.Trace("Indexing repository %d", repo.ID)
 		ireq := libgin.IndexRequest{
 			RepoID:   repo.ID,
 			RepoPath: repo.FullName(),
