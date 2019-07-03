@@ -274,7 +274,7 @@ func runServ(c *cli.Context) error {
 	}
 	runGit(cmd, requestMode, user, owner, repo)
 	if requestMode == models.ACCESS_MODE_WRITE {
-		models.StartIndexing(user, owner, repo)
+		models.StartIndexing(*repo)
 	}
 	return nil
 

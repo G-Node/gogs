@@ -16,7 +16,7 @@ import (
 
 // StartIndexing sends an indexing request to the configured indexing service
 // for a repository.
-func StartIndexing(user, owner *User, repo *Repository) {
+func StartIndexing(repo Repository) {
 	go func() {
 		if setting.Search.IndexURL == "" {
 			log.Trace("Indexing not enabled")
@@ -43,7 +43,7 @@ func StartIndexing(user, owner *User, repo *Repository) {
 		client := http.Client{}
 		resp, err := client.Do(req)
 		if err != nil || resp.StatusCode != http.StatusOK {
-			log.Error(2, "Error submitting index request: %v", err)
+			log.Error(2, "Error submitting index request for [%d: %s]: %v", repo.ID, repo.FullName(), err)
 			return
 		}
 	}()
@@ -63,7 +63,7 @@ func RebuildIndex() error {
 	}
 	log.Trace("Found %d repositories to index", len(repos))
 	for _, repo := range repos {
-		StartIndexing(nil, nil, repo)
+		StartIndexing(*repo)
 	}
 	log.Trace("Rebuilding search index")
 	return nil

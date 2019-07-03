@@ -194,7 +194,7 @@ func (repo *Repository) UpdateRepoFile(doer *User, opts UpdateRepoFileOptions) (
 		return fmt.Errorf("git push origin %s: %v", opts.NewBranch, err)
 	}
 
-	StartIndexing(doer, repo.MustOwner(), repo)
+	StartIndexing(*repo)
 	return nil
 }
 
@@ -520,7 +520,7 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 	if err := annexSync(localPath); err != nil { // Run full annex sync
 		return err
 	}
-	annexUninit(localPath)                      // Uninitialise annex to prepare for deletion
-	StartIndexing(doer, repo.MustOwner(), repo) // Index the new data
+	annexUninit(localPath) // Uninitialise annex to prepare for deletion
+	StartIndexing(*repo)   // Index the new data
 	return DeleteUploads(uploads...)
 }
