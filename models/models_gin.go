@@ -17,34 +17,36 @@ import (
 // StartIndexing sends an indexing request to the configured indexing service
 // for a repository.
 func StartIndexing(user, owner *User, repo *Repository) {
-	if setting.Search.IndexURL == "" {
-		log.Trace("Indexing not enabled")
-		return
-	}
-	ireq := libgin.IndexRequest{
-		RepoID:   repo.ID,
-		RepoPath: repo.FullName(),
-	}
-	data, err := json.Marshal(ireq)
-	if err != nil {
-		log.Error(2, "Could not marshal index request: %v", err)
-		return
-	}
-	key := []byte(setting.Search.Key)
-	encdata, err := libgin.EncryptString(key, string(data))
-	if err != nil {
-		log.Error(2, "Could not encrypt index request: %v", err)
-	}
-	req, err := http.NewRequest(http.MethodPost, setting.Search.IndexURL, strings.NewReader(encdata))
-	if err != nil {
-		log.Error(2, "Error creating index request")
-	}
-	client := http.Client{}
-	resp, err := client.Do(req)
-	if err != nil || resp.StatusCode != http.StatusOK {
-		log.Error(2, "Error submitting index request: %v", err)
-		return
-	}
+	go func() {
+		if setting.Search.IndexURL == "" {
+			log.Trace("Indexing not enabled")
+			return
+		}
+		ireq := libgin.IndexRequest{
+			RepoID:   repo.ID,
+			RepoPath: repo.FullName(),
+		}
+		data, err := json.Marshal(ireq)
+		if err != nil {
+			log.Error(2, "Could not marshal index request: %v", err)
+			return
+		}
+		key := []byte(setting.Search.Key)
+		encdata, err := libgin.EncryptString(key, string(data))
+		if err != nil {
+			log.Error(2, "Could not encrypt index request: %v", err)
+		}
+		req, err := http.NewRequest(http.MethodPost, setting.Search.IndexURL, strings.NewReader(encdata))
+		if err != nil {
+			log.Error(2, "Error creating index request")
+		}
+		client := http.Client{}
+		resp, err := client.Do(req)
+		if err != nil || resp.StatusCode != http.StatusOK {
+			log.Error(2, "Error submitting index request: %v", err)
+			return
+		}
+	}()
 }
 
 func annexUninit(path string) {
