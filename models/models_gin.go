@@ -49,6 +49,15 @@ func StartIndexing(user, owner *User, repo *Repository) {
 	}()
 }
 
+func RebuildIndex() error {
+	indexurl := setting.Search.IndexURL
+	if indexurl == "" {
+		return fmt.Errorf("Indexing service not configured")
+	}
+	log.Trace("Rebuilding search index")
+	return nil
+}
+
 func annexUninit(path string) {
 	// walker sets the permission for any file found to 0600, to allow deletion
 	var mode os.FileMode

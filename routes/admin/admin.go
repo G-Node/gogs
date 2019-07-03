@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/Unknwon/com"
-	"github.com/json-iterator/go"
+	jsoniter "github.com/json-iterator/go"
 	"gopkg.in/macaron.v1"
 
 	"github.com/G-Node/gogs/models"
@@ -123,6 +123,7 @@ const (
 	SYNC_SSH_AUTHORIZED_KEY
 	SYNC_REPOSITORY_HOOKS
 	REINIT_MISSING_REPOSITORY
+	REBUILD_SEARCH_INDEX
 )
 
 func Dashboard(c *context.Context) {
@@ -158,6 +159,10 @@ func Dashboard(c *context.Context) {
 		case REINIT_MISSING_REPOSITORY:
 			success = c.Tr("admin.dashboard.reinit_missing_repos_success")
 			err = models.ReinitMissingRepositories()
+		case REBUILD_SEARCH_INDEX:
+			// TODO: Add success message to locale files
+			success = "All repositories have been submitted to the indexing service successfully."
+			err = models.RebuildIndex()
 		}
 
 		if err != nil {

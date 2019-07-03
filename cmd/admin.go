@@ -30,6 +30,7 @@ to make automatic initialization process more smoothly`,
 			subcmdRewriteAuthorizedKeys,
 			subcmdSyncRepositoryHooks,
 			subcmdReinitMissingRepositories,
+			subcmdRebuildSearchIndex,
 		},
 	}
 
