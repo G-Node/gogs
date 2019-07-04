@@ -107,14 +107,12 @@ func resolveAnnexedContent(c *context.Context, buf []byte, dataRc io.Reader) ([]
 	af, err := gannex.NewAFile(c.Repo.Repository.RepoPath(), "annex", "", buf)
 	if err != nil {
 		log.Trace("Could not get annex file: %v", err)
-		// c.ServerError("readmeFile.Data", err)
 		c.Data["IsAnnexedFile"] = true
 		return buf, dataRc, err
 	}
 
 	afp, err := af.Open()
 	if err != nil {
-		// c.ServerError("readmeFile.Data", err)
 		log.Trace("Could not open annex file: %v", err)
 		c.Data["IsAnnexedFile"] = true
 		return buf, dataRc, err

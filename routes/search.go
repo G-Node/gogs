@@ -172,7 +172,6 @@ func ExploreData(c *context.Context) {
 	log.Trace("Searching data/blobs")
 	data, err := search(c, keywords, sType)
 	if err != nil {
-		// c.Handle(http.StatusInternalServerError, "Could not query", err)
 		log.Error(2, "Query returned error: %v", err)
 		c.Data["Blobs"] = res.Blobs
 		c.HTML(200, EXPLORE_DATA)
@@ -181,7 +180,6 @@ func ExploreData(c *context.Context) {
 
 	err = json.Unmarshal(data, &res)
 	if err != nil {
-		// c.Handle(http.StatusInternalServerError, "Could not display result", err)
 		log.Error(2, "Failed to unmarshal response: %v", err)
 		c.Data["Blobs"] = res.Blobs
 		c.HTML(200, EXPLORE_DATA)
@@ -218,8 +216,6 @@ func ExploreCommits(c *context.Context) {
 	data, err := search(c, keywords, sType)
 
 	if err != nil {
-		// c.Handle(http.StatusInternalServerError, "Could not query", err)
-		// return
 		log.Error(2, "Query returned error: %v", err)
 		c.Data["Commits"] = res.Commits
 		c.HTML(200, EXPLORE_COMMITS)
@@ -227,7 +223,6 @@ func ExploreCommits(c *context.Context) {
 
 	err = json.Unmarshal(data, &res)
 	if err != nil {
-		// c.Handle(http.StatusInternalServerError, "Could not display result", err)
 		log.Error(2, "Failed to unmarshal response: %v", err)
 		c.Data["Commits"] = res.Commits
 		c.HTML(200, EXPLORE_COMMITS)

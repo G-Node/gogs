@@ -18,11 +18,6 @@ func Suggest(c *context.APIContext) {
 		return
 	}
 	ireq := libgin.SearchRequest{}
-	// ireq := libgin.SearchRequest{Token: c.GetCookie(setting.SessionConfig.CookieName),
-	// 	Query: c.Params("query"), CsrfT: c.GetCookie(setting.CSRFCookieName), SType: libgin.SEARCH_SUGGEST}
-	// if c.IsLogged {
-	// 	ireq.UserID = c.User.ID
-	// }
 	data, err := json.Marshal(ireq)
 	if err != nil {
 		c.Status(http.StatusInternalServerError)

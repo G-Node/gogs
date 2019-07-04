@@ -21,7 +21,6 @@ func ExploreSuggest(c *context.Context) {
 	log.Trace("Searching data/blobs for suggestions")
 	data, err := search(c, keywords, sType)
 	if err != nil {
-		// c.Handle(http.StatusInternalServerError, "Could not query", err)
 		log.Error(2, "Query returned error: %v", err)
 		return
 	}
