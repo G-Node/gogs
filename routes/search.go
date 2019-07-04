@@ -140,6 +140,7 @@ func search(c *context.Context, keywords string, sType int) ([]byte, error) {
 	respdata, err := libgin.DecryptString(key, string(encrespdata))
 	if err != nil {
 		log.Error(2, "Failed to decrypt response body form gin-dex: %v", err)
+		return nil, err
 	}
 
 	return []byte(respdata), nil
