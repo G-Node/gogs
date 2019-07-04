@@ -103,7 +103,7 @@ func search(c *context.Context, keywords string, sType int) ([]byte, error) {
 		log.Error(2, "Failed to collect searchable repository IDs: %v", err)
 		return nil, err
 	}
-	searchdata := libgin.SearchRequest{keywords, sType, repoids}
+	searchdata := libgin.SearchRequest{Keywords: keywords, SType: sType, RepoIDs: repoids}
 
 	data, err := json.Marshal(searchdata)
 	if err != nil {
