@@ -65,6 +65,8 @@ func collectSearchableRepoIDs(c *context.Context) ([]int64, error) {
 		updateSet(accessibleRepos)
 	}
 
+	// Run a full repository search (with no keywords) to get public
+	// repositories and then filter out the unlisted ones.
 	repos, _, err := models.SearchRepositoryByName(&models.SearchRepoOptions{
 		Keyword:  "",
 		UserID:   c.UserID(),
