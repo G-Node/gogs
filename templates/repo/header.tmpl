@@ -17,16 +17,20 @@
 						{{if .IsMirror}}<div class="fork-flag">{{$.i18n.Tr "repo.mirror_from"}} <a target="_blank" rel="noopener noreferrer" href="{{$.Mirror.Address}}">{{$.Mirror.Address}}</a></div>{{end}}
 						{{if .IsFork}}<div class="fork-flag">{{$.i18n.Tr "repo.forked_from"}} <a href="{{.BaseRepo.Link}}">{{SubStr .BaseRepo.RelLink 1 -1}}</a></div>{{end}}
 					</div>
+
 					{{if not $.IsGuest}}
 						<div class="ui right">
-							<div class="ui labeled button" tabindex="0">
-								<a class="ui basic button" href="{{$.RepoLink}}/action/{{if $.IsWatchingRepo}}un{{end}}watch?redirect_to={{$.Link}}">
-									<i class="icon fa-eye{{if not $.IsWatchingRepo}}-slash{{end}}"></i>{{if $.IsWatchingRepo}}{{$.i18n.Tr "repo.unwatch"}}{{else}}{{$.i18n.Tr "repo.watch"}}{{end}}
-								</a>
-								<a class="ui basic label" href="{{.Link}}/watchers">
-									{{.NumWatches}}
-								</a>
-							</div>
+							<form class="display inline" action="{{$.RepoLink}}/action/{{if $.IsWatchingRepo}}un{{end}}watch?redirect_to={{$.Link}}" method="POST">
+								{{$.CSRFTokenHTML}}
+								<div class="ui labeled button" tabindex="0">
+									<button class="ui basic button">
+										<i class="eye{{if not $.IsWatchingRepo}} slash outline{{end}} icon"></i>{{if $.IsWatchingRepo}}{{$.i18n.Tr "repo.unwatch"}}{{else}}{{$.i18n.Tr "repo.watch"}}{{end}}
+									</button>
+									<a class="ui basic label" href="{{.Link}}/watchers">
+										{{.NumWatches}}
+									</a>
+								</div>
+							</form>
 							{{if .CanBeForked}}
 							<div class="ui labeled button" tabindex="0"
 									 data-tooltip="Please note: annexed file content will not be forked" data-position="bottom center">

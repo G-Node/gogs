@@ -69,14 +69,12 @@ func Search(c *context.APIContext) {
 		return
 	}
 
-	results := make([]*api.Repository, len(repos))
+	results := make([]*api.Repository, 0, len(repos))
 	for i := range repos {
 		if !repos[i].Unlisted {
 			rep := repos[i].APIFormat(nil)
-			if !c.IsLogged {
-				rep.Owner.Email = ""
-			}
-			results[i] = rep
+			rep.Owner.Email = ""
+			results = append(results, rep)
 		}
 	}
 

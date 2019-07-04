@@ -1152,11 +1152,11 @@ function initSuggest() {
     $('.ui.ginsearch')
         .search({
             apiSettings: {
-                url: '/api/v1/repos/suggest/{query}'
+                url: '/explore/_suggest/{query}'
             },
             fields: {
                 results: 'Items',
-                title: 'Title'
+                title: 'Keyword',
             },
             minCharacters: 3,
             showNoResults: false

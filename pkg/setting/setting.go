@@ -331,9 +331,9 @@ var (
 	HasRobotsTxt bool
 
 	Search struct {
-		Do        bool
-		IndexURL  string
-		SearchURL string
+		IndexURL  string `ini:"INDEX_URL"`
+		SearchURL string `ini:"SEARCH_URL"`
+		Key       string `ini:"SEARCH_KEY"`
 	}
 
 	DOI struct {
@@ -532,7 +532,7 @@ func NewContext() {
 	SSH.ServerCiphers = sec.Key("SSH_SERVER_CIPHERS").Strings(",")
 	SSH.KeyTestPath = os.TempDir()
 	if err = Cfg.Section("server").MapTo(&SSH); err != nil {
-		log.Fatal(2, "Fail to map SSH settings: %v", err)
+		log.Fatal(2, "Failed to map SSH settings: %v", err)
 	}
 	if SSH.Disabled {
 		SSH.StartBuiltinServer = false
@@ -632,11 +632,11 @@ func NewContext() {
 	}
 	ScriptType = sec.Key("SCRIPT_TYPE").MustString("bash")
 	if err = Cfg.Section("repository").MapTo(&Repository); err != nil {
-		log.Fatal(2, "Fail to map Repository settings: %v", err)
+		log.Fatal(2, "Failed to map Repository settings: %v", err)
 	} else if err = Cfg.Section("repository.editor").MapTo(&Repository.Editor); err != nil {
-		log.Fatal(2, "Fail to map Repository.Editor settings: %v", err)
+		log.Fatal(2, "Failed to map Repository.Editor settings: %v", err)
 	} else if err = Cfg.Section("repository.upload").MapTo(&Repository.Upload); err != nil {
-		log.Fatal(2, "Fail to map Repository.Upload settings: %v", err)
+		log.Fatal(2, "Failed to map Repository.Upload settings: %v", err)
 	}
 
 	if !filepath.IsAbs(Repository.Upload.TempPath) {
@@ -713,13 +713,13 @@ func NewContext() {
 	} else if err = Cfg.Section("prometheus").MapTo(&Prometheus); err != nil {
 		log.Fatal(2, "Failed to map Prometheus settings: %v", err)
 	} else if err = Cfg.Section("search").MapTo(&Search); err != nil {
-		log.Fatal(2, "Fail to map Search settings: %v", err)
+		log.Fatal(2, "Failed to map Search settings: %v", err)
 	} else if err = Cfg.Section("doi").MapTo(&DOI); err != nil {
-		log.Fatal(2, "Fail to map DOI settings: %v", err)
+		log.Fatal(2, "Failed to map DOI settings: %v", err)
 	} else if err = Cfg.Section("cliconfig").MapTo(&CLIConfig); err != nil {
-		log.Fatal(2, "Fail to map Client config settings: %v", err)
+		log.Fatal(2, "Failed to map Client config settings: %v", err)
 	} else if err = Cfg.Section("dav").MapTo(&WebDav); err != nil {
-		log.Fatal(2, "Fail to map WebDav settings: %v", err)
+		log.Fatal(2, "Failed to map WebDav settings: %v", err)
 	}
 
 	if Mirror.DefaultInterval <= 0 {

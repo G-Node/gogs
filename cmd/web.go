@@ -201,6 +201,7 @@ func runWeb(c *cli.Context) error {
 		m.Get("/repos", routes.ExploreRepos)
 		m.Get("/users", routes.ExploreUsers)
 		m.Get("/organizations", routes.ExploreOrganizations)
+		m.Get("/_suggest/:keywords", routes.ExploreSuggest)
 	}, ignSignIn)
 	m.Combo("/install", routes.InstallInit).Get(routes.Install).
 		Post(bindIgnErr(form.Install{}), routes.InstallPost)

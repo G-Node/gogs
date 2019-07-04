@@ -1,39 +1,73 @@
 package models
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 
 	gannex "github.com/G-Node/go-annex"
 	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/libgin/libgin"
 	log "gopkg.in/clog.v1"
 )
 
 // StartIndexing sends an indexing request to the configured indexing service
 // for a repository.
-func StartIndexing(user, owner *User, repo *Repository) {
-	if !setting.Search.Do {
-		return
+func StartIndexing(repo Repository) {
+	go func() {
+		if setting.Search.IndexURL == "" {
+			log.Trace("Indexing not enabled")
+			return
+		}
+		log.Trace("Indexing repository %d", repo.ID)
+		ireq := libgin.IndexRequest{
+			RepoID:   repo.ID,
+			RepoPath: repo.FullName(),
+		}
+		data, err := json.Marshal(ireq)
+		if err != nil {
+			log.Error(2, "Could not marshal index request: %v", err)
+			return
+		}
+		key := []byte(setting.Search.Key)
+		encdata, err := libgin.EncryptString(key, string(data))
+		if err != nil {
+			log.Error(2, "Could not encrypt index request: %v", err)
+		}
+		req, err := http.NewRequest(http.MethodPost, setting.Search.IndexURL, strings.NewReader(encdata))
+		if err != nil {
+			log.Error(2, "Error creating index request")
+		}
+		client := http.Client{}
+		resp, err := client.Do(req)
+		if err != nil || resp.StatusCode != http.StatusOK {
+			log.Error(2, "Error submitting index request for [%d: %s]: %v", repo.ID, repo.FullName(), err)
+			return
+		}
+	}()
+}
+
+// RebuildIndex sends all repositories to the indexing service to be indexed.
+func RebuildIndex() error {
+	indexurl := setting.Search.IndexURL
+	if indexurl == "" {
+		return fmt.Errorf("Indexing service not configured")
 	}
-	var ireq struct{ RepoID, RepoPath string }
-	ireq.RepoID = fmt.Sprintf("%d", repo.ID)
-	ireq.RepoPath = repo.FullName()
-	data, err := json.Marshal(ireq)
-	if err != nil {
-		log.Trace("could not marshal index request :%+v", err)
-		return
+
+	// collect all repo ID -> Path mappings directly from the DB
+	repos := make(RepositoryList, 0, 100)
+	if err := x.Find(&repos); err != nil {
+		return fmt.Errorf("get all repos: %v", err)
 	}
-	req, _ := http.NewRequest(http.MethodPost, setting.Search.IndexURL, bytes.NewReader(data))
-	client := http.Client{}
-	resp, err := client.Do(req)
-	if err != nil || resp.StatusCode != http.StatusOK {
-		log.Trace("Error doing index request:%+v", err)
-		return
+	log.Trace("Found %d repositories to index", len(repos))
+	for _, repo := range repos {
+		StartIndexing(*repo)
 	}
+	log.Trace("Rebuilding search index")
+	return nil
 }
 
 func annexUninit(path string) {
@@ -64,7 +98,7 @@ func annexUninit(path string) {
 	}
 }
 
-func annexAdd(path string) {
+func annexSetup(path string) {
 	log.Trace("Running annex add (with filesize filter) in '%s'", path)
 
 	// Initialise annex in case it's a new repository
@@ -83,9 +117,9 @@ func annexAdd(path string) {
 		log.Error(1, "Failed to set default backend to 'MD5': %v (%s)", err, msg)
 	}
 
-	sizefilterflag := fmt.Sprintf("--largerthan=%d", setting.Repository.Upload.AnnexFileMinSize*gannex.MEGABYTE)
-	if msg, err := gannex.Add(path, sizefilterflag); err != nil {
-		log.Error(1, "Annex add failed with error: %v (%s)", err, msg)
+	// Set size filter in config
+	if msg, err := gannex.SetAnnexSizeFilter(path, setting.Repository.Upload.AnnexFileMinSize*gannex.MEGABYTE); err != nil {
+		log.Error(2, "Failed to set size filter for annex: %v (%s)", err, msg)
 	}
 }
 

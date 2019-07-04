@@ -194,9 +194,7 @@ func (repo *Repository) UpdateRepoFile(doer *User, opts UpdateRepoFileOptions) (
 		return fmt.Errorf("git push origin %s: %v", opts.NewBranch, err)
 	}
 
-	if setting.Search.Do {
-		StartIndexing(doer, repo.MustOwner(), repo)
-	}
+	StartIndexing(*repo)
 	return nil
 }
 
@@ -499,7 +497,7 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 		}
 	}
 
-	annexAdd(localPath) // Running annex add with filter for big files
+	annexSetup(localPath) // Initialise annex and set configuration (with add filter for filesizes)
 	if err = git.AddChanges(localPath, true); err != nil {
 		return fmt.Errorf("git add --all: %v", err)
 	} else if err = git.CommitChanges(localPath, git.CommitChangesOptions{
@@ -522,7 +520,7 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 	if err := annexSync(localPath); err != nil { // Run full annex sync
 		return err
 	}
-	annexUninit(localPath)                      // Uninitialise annex to prepare for deletion
-	StartIndexing(doer, repo.MustOwner(), repo) // Index the new data
+	annexUninit(localPath) // Uninitialise annex to prepare for deletion
+	StartIndexing(*repo)   // Index the new data
 	return DeleteUploads(uploads...)
 }

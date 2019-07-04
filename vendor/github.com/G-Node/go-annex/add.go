@@ -1,6 +1,8 @@
 package gannex
 
 import (
+	"fmt"
+
 	"github.com/G-Node/git-module"
 )
 
@@ -45,5 +47,10 @@ func Add(dir string, args ...string) (string, error) {
 
 func SetAddUnlocked(dir string) (string, error) {
 	cmd := git.NewCommand("config", "annex.addunlocked", "true")
+	return cmd.RunInDir(dir)
+}
+
+func SetAnnexSizeFilter(dir string, size int64) (string, error) {
+	cmd := git.NewCommand("config", "annex.largefiles", fmt.Sprintf("largerthan=%d", size))
 	return cmd.RunInDir(dir)
 }

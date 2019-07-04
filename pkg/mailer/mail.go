@@ -52,7 +52,7 @@ func InitMailRender(dir, appendDir string, funcMap []template.FuncMap) {
 }
 
 func SendTestMail(email string) error {
-	return gomail.Send(&Sender{}, NewMessage([]string{email}, "Gogs Test Email!", "Gogs Test Email!").Message)
+	return gomail.Send(&Sender{}, NewMessage(email, "Gogs Test Email!", "Gogs Test Email!").Message)
 }
 
 /*
@@ -95,7 +95,7 @@ func SendUserMail(c *macaron.Context, u User, tpl, code, subject, info string) {
 		return
 	}
 
-	msg := NewMessage([]string{u.Email()}, subject, body)
+	msg := NewMessage(u.Email(), subject, body)
 	msg.Info = fmt.Sprintf("UID: %d, %s", u.ID(), info)
 
 	Send(msg)
@@ -127,7 +127,7 @@ func SendActivateEmailMail(c *macaron.Context, u User, email string) {
 		return
 	}
 
-	msg := NewMessage([]string{email}, c.Tr("mail.activate_email"), body)
+	msg := NewMessage(email, c.Tr("mail.activate_email"), body)
 	msg.Info = fmt.Sprintf("UID: %d, activate email", u.ID())
 
 	Send(msg)
@@ -144,7 +144,7 @@ func SendRegisterNotifyMail(c *macaron.Context, u User) {
 		return
 	}
 
-	msg := NewMessage([]string{u.Email()}, c.Tr("mail.register_notify"), body)
+	msg := NewMessage(u.Email(), c.Tr("mail.register_notify"), body)
 	msg.Info = fmt.Sprintf("UID: %d, registration notify", u.ID())
 
 	Send(msg)
@@ -165,7 +165,7 @@ func SendCollaboratorMail(u, doer User, repo Repository) {
 		return
 	}
 
-	msg := NewMessage([]string{u.Email()}, subject, body)
+	msg := NewMessage(u.Email(), subject, body)
 	msg.Info = fmt.Sprintf("UID: %d, add collaborator", u.ID())
 
 	Send(msg)
@@ -179,7 +179,7 @@ func composeTplData(subject, body, link string) map[string]interface{} {
 	return data
 }
 
-func composeIssueMessage(issue Issue, repo Repository, doer User, tplName string, tos []string, info string) *Message {
+func composeIssueMessages(issue Issue, repo Repository, doer User, tplName string, tos []string, info string) []*Message {
 	subject := issue.MailSubject()
 	body := string(markup.Markdown([]byte(issue.Content()), repo.HTMLURL(), repo.ComposeMetas()))
 	data := composeTplData(subject, body, issue.HTMLURL())
@@ -189,9 +189,13 @@ func composeIssueMessage(issue Issue, repo Repository, doer User, tplName string
 		log.Error(3, "HTMLString (%s): %v", tplName, err)
 	}
 	from := gomail.NewMessage().FormatAddress(setting.MailService.FromEmail, doer.DisplayName())
-	msg := NewMessageFrom(tos, from, subject, content)
-	msg.Info = fmt.Sprintf("Subject: %s, %s", subject, info)
-	return msg
+	msgs := make([]*Message, len(tos))
+	for idx, to := range tos {
+		msg := NewMessageFrom(to, from, subject, content)
+		msg.Info = fmt.Sprintf("Subject: %s, %s", subject, info)
+		msgs[idx] = msg
+	}
+	return msgs
 }
 
 // SendIssueCommentMail composes and sends issue comment emails to target receivers.
@@ -199,8 +203,10 @@ func SendIssueCommentMail(issue Issue, repo Repository, doer User, tos []string)
 	if len(tos) == 0 {
 		return
 	}
-
-	Send(composeIssueMessage(issue, repo, doer, MAIL_ISSUE_COMMENT, tos, "issue comment"))
+	msgs := composeIssueMessages(issue, repo, doer, MAIL_ISSUE_COMMENT, tos, "issue comment")
+	for _, msg := range msgs {
+		Send(msg)
+	}
 }
 
 // SendIssueMentionMail composes and sends issue mention emails to target receivers.
@@ -208,5 +214,8 @@ func SendIssueMentionMail(issue Issue, repo Repository, doer User, tos []string)
 	if len(tos) == 0 {
 		return
 	}
-	Send(composeIssueMessage(issue, repo, doer, MAIL_ISSUE_MENTION, tos, "issue mention"))
+	msgs := composeIssueMessages(issue, repo, doer, MAIL_ISSUE_MENTION, tos, "issue mention")
+	for _, msg := range msgs {
+		Send(msg)
+	}
 }

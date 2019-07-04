@@ -9,11 +9,9 @@ import (
 // NOTE: TEMPORARY COPY FROM gin-dex
 
 type SearchRequest struct {
-	Token  string
-	CsrfT  string
-	UserID int64
-	Query  string
-	SType  int64
+	Keywords string
+	SType    int
+	RepoIDs  []int64
 }
 
 const (
@@ -59,4 +57,10 @@ type IndexCommit struct {
 	Oid          gig.SHA1
 	GinRepoName  string
 	IndexingTime time.Time
+}
+
+type IndexRequest struct {
+	UserID   int64
+	RepoID   int64
+	RepoPath string
 }
