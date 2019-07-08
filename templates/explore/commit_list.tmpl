@@ -1,31 +1,31 @@
 <div class="ui blob-list">
 	{{range .Commits}}
-	<div class="ui segment">
-		<div class="ui header">
-			<div>
-				<a href="{{AppSubURL}}/{{.Source.GinRepoName}}">
-					<span class="octicon octicon-repo"></span>
-					{{.Source.GinRepoName}}
-				</a>
-				<a href="{{AppSubURL}}/{{.Source.GinRepoName}}/commit/{{.Source.Oid}}">
-					<div class="ui sha label">{{ShortSHA1 .Source.Oid.String}}</div>
-				</a>
-				<div class="ui right">
-					<i class="heartbeat icon"></i>
-					{{.Score}}
+		<div class="ui segment">
+			<div class="ui header">
+				<div>
+					<a href="{{AppSubURL}}/{{.Source.GinRepoName}}">
+						<span class="octicon octicon-repo"></span>
+						{{.Source.GinRepoName}}
+					</a>
+					<a href="{{AppSubURL}}/{{.Source.GinRepoName}}/commit/{{.Source.Oid}}">
+						<div class="ui sha label">{{ShortSHA1 .Source.Oid.String}}</div>
+					</a>
+					<div class="ui right">
+						<i class="heartbeat icon"></i>
+						{{.Score}}
+					</div>
 				</div>
 			</div>
-		</div>
-		{{if .Highlight}}
-		<div class="ui divider"></div>
-		<div class="ui divided list">
-			{{range .Highlight.Message}}
-			<div class="item">
-				{{. | Safe}}
-			</div>
+			{{if .Highlight}}
+				<div class="ui divider"></div>
+				<div class="ui divided list">
+					{{range .Highlight.Message}}
+						<div class="item">
+							{{. | Safe}}
+						</div>
+					{{end}}
+				</div>
 			{{end}}
 		</div>
-		{{end}}
-	</div>
 	{{end}}
 </div>
