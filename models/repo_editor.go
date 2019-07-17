@@ -518,7 +518,7 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 	}
 
 	if err := annexSync(localPath); err != nil { // Run full annex sync
-		return err
+		return fmt.Errorf("annex sync %s: %v", localPath, err)
 	}
 	annexUninit(localPath) // Uninitialise annex to prepare for deletion
 	StartIndexing(*repo)   // Index the new data

@@ -19,6 +19,11 @@ func Init(dir string, args ...string) (string, error) {
 	return cmd.AddArguments(args...).RunInDir(dir)
 }
 
+func Upgrade(dir string) (string, error) {
+	cmd := git.NewACommand("upgrade")
+	return cmd.RunInDir(dir)
+}
+
 func Uninit(dir string, args ...string) (string, error) {
 	cmd := git.NewACommand("uninit")
 	return cmd.AddArguments(args...).RunInDir(dir)
