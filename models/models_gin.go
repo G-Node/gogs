@@ -137,5 +137,11 @@ func annexSync(path string) error {
 		log.Error(2, "Annex sync failed: %v (%s)", err, msg)
 		return fmt.Errorf("git annex sync --content [%s]", path)
 	}
+
+	// run twice; required if remote annex is not initialised
+	if msg, err := gannex.ASync(path, "--content"); err != nil {
+		log.Error(2, "Annex sync failed: %v (%s)", err, msg)
+		return fmt.Errorf("git annex sync --content [%s]", path)
+	}
 	return nil
 }
