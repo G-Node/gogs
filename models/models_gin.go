@@ -103,18 +103,24 @@ func annexSetup(path string) {
 
 	// Initialise annex in case it's a new repository
 	if msg, err := gannex.Init(path, "--version=7"); err != nil {
-		log.Error(1, "Annex init failed: %v (%s)", err, msg)
+		log.Error(2, "Annex init failed: %v (%s)", err, msg)
+		return
+	}
+
+	// Upgrade to v7 in case the directory was here before and wasn't cleaned up properly
+	if msg, err := gannex.Upgrade(path); err != nil {
+		log.Error(2, "Annex upgrade failed: %v (%s)", err, msg)
 		return
 	}
 
 	// Enable addunlocked for annex v7
 	if msg, err := gannex.SetAddUnlocked(path); err != nil {
-		log.Error(1, "Failed to set 'addunlocked' annex option: %v (%s)", err, msg)
+		log.Error(2, "Failed to set 'addunlocked' annex option: %v (%s)", err, msg)
 	}
 
 	// Set MD5 as default backend
 	if msg, err := gannex.MD5(path); err != nil {
-		log.Error(1, "Failed to set default backend to 'MD5': %v (%s)", err, msg)
+		log.Error(2, "Failed to set default backend to 'MD5': %v (%s)", err, msg)
 	}
 
 	// Set size filter in config
@@ -128,7 +134,13 @@ func annexSync(path string) error {
 	if msg, err := gannex.ASync(path, "--content"); err != nil {
 		// TODO: This will also DOWNLOAD content, which is unnecessary for a simple upload
 		// TODO: Use gin-cli upload function instead
-		log.Error(1, "Annex sync failed: %v (%s)", err, msg)
+		log.Error(2, "Annex sync failed: %v (%s)", err, msg)
+		return fmt.Errorf("git annex sync --content [%s]", path)
+	}
+
+	// run twice; required if remote annex is not initialised
+	if msg, err := gannex.ASync(path, "--content"); err != nil {
+		log.Error(2, "Annex sync failed: %v (%s)", err, msg)
 		return fmt.Errorf("git annex sync --content [%s]", path)
 	}
 	return nil
