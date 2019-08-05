@@ -494,16 +494,16 @@ func IsUserExist(uid int64, name string) (bool, error) {
 	return x.Where("id != ?", uid).Get(&User{LowerName: strings.ToLower(name)})
 }
 
-func IsBlockedDomain(email string) (bool, error) {
+func IsBlockedDomain(email string) bool {
 	fpath := path.Join(setting.CustomPath, "blocklist")
 	if !com.IsExist(fpath) {
-		return false, nil
+		return false
 	}
 
 	f, err := os.Open(fpath)
 	if err != nil {
 		log.Error(2, "Failed to open file %q: %v", fpath, err)
-		return false, nil
+		return false
 	}
 	defer f.Close()
 
@@ -512,11 +512,11 @@ func IsBlockedDomain(email string) (bool, error) {
 		// Check provided email address against each line as suffix
 		if strings.HasSuffix(email, scanner.Text()) {
 			log.Trace("New user email matched blocked domain: %q", email)
-			return true, nil
+			return true
 		}
 	}
 
-	return false, nil
+	return false
 }
 
 // GetUserSalt returns a ramdom user salt token.
@@ -588,10 +588,7 @@ func CreateUser(u *User) (err error) {
 		return ErrEmailAlreadyUsed{u.Email}
 	}
 
-	isBlocked, err := IsBlockedDomain(u.Email)
-	if err != nil {
-		return err
-	} else if isBlocked {
+	if IsBlockedDomain(u.Email) {
 		return ErrBlockedDomain{u.Email}
 	}
 
