@@ -393,12 +393,12 @@ func inviteWithMail(c *context.Context, mail string) (*models.User, error) {
 }
 func SettingsCollaborationPost(c *context.Context) {
 	var name string
-	new := strings.ToLower(c.Query("invite"))
-	if len(new) > 0 {
-		u, err := inviteWithMail(c, new)
+	email := strings.ToLower(c.Query("invite"))
+	if len(email) > 0 {
+		u, err := inviteWithMail(c, email)
 		if err != nil {
-			log.Info("Problem with inviting user:%s, %+v", new, err)
-			c.Flash.Error(c.Tr("form.user_not_invitable"))
+			log.Info("Problem with inviting user %q: %s", email, err)
+			c.Flash.Error(c.Tr("form.invite_email_blocked"))
 			c.Redirect(setting.AppSubURL + c.Req.URL.Path)
 			return
 		}
