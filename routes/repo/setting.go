@@ -398,7 +398,11 @@ func SettingsCollaborationPost(c *context.Context) {
 		u, err := inviteWithMail(c, email)
 		if err != nil {
 			log.Info("Problem with inviting user %q: %s", email, err)
-			c.Flash.Error(c.Tr("form.invite_email_blocked"))
+			if models.IsErrBlockedDomain(err) {
+				c.Flash.Error(c.Tr("form.invite_email_blocked"))
+			} else if models.IsErrEmailAlreadyUsed(err) {
+				c.Flash.Error(c.Tr("form.email_been_used"))
+			}
 			c.Redirect(setting.AppSubURL + c.Req.URL.Path)
 			return
 		}
