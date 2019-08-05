@@ -5,6 +5,7 @@
 package models
 
 import (
+	"bufio"
 	"bytes"
 	"container/list"
 	"crypto/sha256"
@@ -15,6 +16,7 @@ import (
 	_ "image/jpeg"
 	"image/png"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 	"time"
@@ -492,6 +494,31 @@ func IsUserExist(uid int64, name string) (bool, error) {
 	return x.Where("id != ?", uid).Get(&User{LowerName: strings.ToLower(name)})
 }
 
+func IsBlockedDomain(email string) bool {
+	fpath := path.Join(setting.CustomPath, "blocklist")
+	if !com.IsExist(fpath) {
+		return false
+	}
+
+	f, err := os.Open(fpath)
+	if err != nil {
+		log.Error(2, "Failed to open file %q: %v", fpath, err)
+		return false
+	}
+	defer f.Close()
+
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		// Check provided email address against each line as suffix
+		if strings.HasSuffix(email, scanner.Text()) {
+			log.Trace("New user email matched blocked domain: %q", email)
+			return true
+		}
+	}
+
+	return false
+}
+
 // GetUserSalt returns a ramdom user salt token.
 func GetUserSalt() (string, error) {
 	return tool.RandomString(10)
@@ -559,6 +586,10 @@ func CreateUser(u *User) (err error) {
 		return err
 	} else if isExist {
 		return ErrEmailAlreadyUsed{u.Email}
+	}
+
+	if IsBlockedDomain(u.Email) {
+		return ErrBlockedDomain{u.Email}
 	}
 
 	u.LowerName = strings.ToLower(u.Name)

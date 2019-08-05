@@ -34,6 +34,21 @@ func (err ErrNamePatternNotAllowed) Error() string {
 	return fmt.Sprintf("name pattern is not allowed [pattern: %s]", err.Pattern)
 }
 
+type ErrBlockedDomain struct {
+	Email string
+}
+
+func IsErrBlockedDomain(err error) bool {
+	_, ok := err.(ErrBlockedDomain)
+	fmt.Printf("Error type is BlockedDomain: %t\n", ok)
+	return ok
+}
+
+func (err ErrBlockedDomain) Error() string {
+	// don't inform the user of the blocked domain
+	return fmt.Sprintf("user sign up failed")
+}
+
 //  ____ ___
 // |    |   \______ ___________
 // |    |   /  ___// __ \_  __ \
