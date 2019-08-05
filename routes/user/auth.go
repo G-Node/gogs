@@ -352,6 +352,8 @@ func SignUpPost(c *context.Context, cpt *captcha.Captcha, f form.Register) {
 		case models.IsErrNamePatternNotAllowed(err):
 			c.FormErr("UserName")
 			c.RenderWithErr(c.Tr("user.form.name_pattern_not_allowed", err.(models.ErrNamePatternNotAllowed).Pattern), SIGNUP, &f)
+		case models.IsErrBlockedDomain(err):
+			c.RenderWithErr("Signup failed. Please contact the site administrators.", SIGNUP, &f)
 		default:
 			c.ServerError("CreateUser", err)
 		}
