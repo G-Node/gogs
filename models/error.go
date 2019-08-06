@@ -40,7 +40,6 @@ type ErrBlockedDomain struct {
 
 func IsErrBlockedDomain(err error) bool {
 	_, ok := err.(ErrBlockedDomain)
-	fmt.Printf("Error type is BlockedDomain: %t\n", ok)
 	return ok
 }
 
