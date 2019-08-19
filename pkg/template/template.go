@@ -33,6 +33,9 @@ func NewFuncMap() []template.FuncMap {
 		"GoVer": func() string {
 			return strings.Title(runtime.Version())
 		},
+		"Year": func() int {
+			return time.Now().Year()
+		},
 		"UseHTTPS": func() bool {
 			return strings.HasPrefix(setting.AppURL, "https")
 		},

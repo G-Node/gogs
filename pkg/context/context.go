@@ -328,9 +328,7 @@ func Contexter() macaron.Handler {
 		c.Data["ShowFooterBranding"] = setting.ShowFooterBranding
 		c.Data["ShowFooterVersion"] = setting.ShowFooterVersion
 
-		c.Data["auto_init"] = true
-
-		readNotice(c) // GIN mod: Add notice if notice file exists
+		c.renderNoticeBanner()
 
 		ctx.Map(c)
 	}

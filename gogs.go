@@ -16,17 +16,17 @@ import (
 	"github.com/G-Node/gogs/pkg/setting"
 )
 
-const APP_VER = "0.11.87.0206.gin0001"
+const Version = "0.11.91.0811"
 
 func init() {
-	setting.AppVer = APP_VER
+	setting.AppVer = Version
 }
 
 func main() {
 	app := cli.NewApp()
 	app.Name = "GIN"
 	app.Usage = "Modern Research Data Management for Neuroscience"
-	app.Version = APP_VER
+	app.Version = Version
 	app.Commands = []cli.Command{
 		cmd.Web,
 		cmd.Serv,
