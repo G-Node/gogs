@@ -1,7 +1,9 @@
 {
 	"comment": "",
 	"heroku": {
-		"install": ["."],
+		"install": [
+			"."
+		],
 		"sync": false
 	},
 	"ignore": "test",
@@ -922,6 +924,18 @@
 			"path": "gopkg.in/yaml.v2",
 			"revision": "5420a8b6744d3b0345ab293f6fcba19c978f1183",
 			"revisionTime": "2018-03-28T19:50:20Z"
+		},
+		{
+			"checksumSHA1": "+sBfz5gqV+2+xY2+YWAvd2Cbq9M=",
+			"path": "xorm.io/builder",
+			"revision": "afdec1de32726b981b429cbcc15dcb32af275a86",
+			"revisionTime": "2019-06-18T07:47:00Z"
+		},
+		{
+			"checksumSHA1": "AFmkv1BgRXK0SyrH0zziK+oVnDI=",
+			"path": "xorm.io/core",
+			"revision": "7d1d621d68a90324854beeda1c334b0e4e741529",
+			"revisionTime": "2019-06-20T03:36:10Z"
 		}
 	],
 	"rootPath": "github.com/G-Node/gogs"
