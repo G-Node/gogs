@@ -8,12 +8,11 @@ RUN apt-get update &&                                   \
                        gcc g++ libc6-dev make golang    \
                        git git-annex openssh-server     \
                        python-pip python-setuptools     \
-                       socat tzdata patch    \
+                       socat tzdata patch rsync \
 
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install supervisor pyyaml
-
 ENV GOGS_CUSTOM /data/gogs
 
 # Configure LibC Name Service

@@ -22,7 +22,8 @@ RUN chmod +x /usr/sbin/gosu \
     socat \
     tzdata \
     python \
-    py-pip
+    py-pip \
+    rsync
 
 RUN pip install supervisor pyyaml
 RUN mkdir /git-annex

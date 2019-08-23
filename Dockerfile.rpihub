@@ -1,4 +1,4 @@
-FROM armhf/alpine:3.5
+FROM arm32v7/alpine:latest
 
 ENV GOGS_CUSTOM /data/gogs
 ENV QEMU_EXECVE 1
@@ -30,7 +30,8 @@ RUN chmod +x /usr/sbin/gosu \
     s6 \
     shadow \
     socat \
-    tzdata
+    tzdata \
+    rsync
 
 # Configure LibC Name Service
 COPY docker/nsswitch.conf /etc/nsswitch.conf
