@@ -194,7 +194,6 @@ footer {
 }
 .ginsubtitle {
   font-family: "Kaushan Script", "Helvetica Neue", Helvetica, Arial, cursive;
-  font-size: 16px;
 }
 .supersmall {
   padding-left: 10px;
@@ -228,10 +227,6 @@ figure figcaption {
 }
 #file-buttons {
   padding-right: 5px;
-}
-.ginsubtitle {
-  font-family: "Kaushan Script", "Helvetica Neue", Helvetica, Arial, cursive;
-  font-size: 16px;
 }
 .supersmall {
   padding-left: 10px;
