@@ -29,6 +29,8 @@ func RequestDOI(c *context.Context) {
 		"repository": repo,
 		"email":      email,
 	}
+
+	log.Trace("Encrypting data for DOI: %+v", data)
 	dataj, _ := json.Marshal(data)
 	regrequest, err := libgin.EncryptURLString([]byte(setting.DOI.Key), string(dataj))
 	if err != nil {
