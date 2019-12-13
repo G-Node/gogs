@@ -23,11 +23,11 @@ func RequestDOI(c *context.Context) {
 	repo := c.Repo.Repository.FullName()
 	email := c.User.Email
 
-	data := map[string]string{
-		"username":   username,
-		"realname":   realname,
-		"repository": repo,
-		"email":      email,
+	data := libgin.DOIRequestData{
+		Username:   username,
+		Realname:   realname,
+		Repository: repo,
+		Email:      email,
 	}
 
 	log.Trace("Encrypting data for DOI: %+v", data)

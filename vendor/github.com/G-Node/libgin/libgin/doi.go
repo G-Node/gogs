@@ -34,6 +34,15 @@ func RepoPathToUUID(URI string) string {
 	return hex.EncodeToString(currMd5[:])
 }
 
+// DOIRequestData is used to transmit data from GIN to DOI when a registration
+// request is triggered.
+type DOIRequestData struct {
+	Username   string
+	Realname   string
+	Repository string
+	Email      string
+}
+
 // DOIRegInfo holds all the metadata and information necessary for a DOI registration request.
 type DOIRegInfo struct {
 	Missing      []string
