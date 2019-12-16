@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/url"
 
@@ -17,9 +18,21 @@ func RequestDOI(c *context.Context) {
 		return
 	}
 
-	repo := c.Repo.Repository.FullName()
 	username := c.User.Name
-	verification, err := libgin.EncryptURLString([]byte(setting.DOI.Key), repo+username)
+	realname := c.User.FullName
+	repo := c.Repo.Repository.FullName()
+	email := c.User.Email
+
+	data := libgin.DOIRequestData{
+		Username:   username,
+		Realname:   realname,
+		Repository: repo,
+		Email:      email,
+	}
+
+	log.Trace("Encrypting data for DOI: %+v", data)
+	dataj, _ := json.Marshal(data)
+	regrequest, err := libgin.EncryptURLString([]byte(setting.DOI.Key), string(dataj))
 	if err != nil {
 		log.Error(2, "Could not encrypt secret key: %s", err)
 		c.Status(http.StatusInternalServerError)
@@ -31,9 +44,7 @@ func RequestDOI(c *context.Context) {
 	}
 
 	params := url.Values{}
-	params.Add("repo", repo)
-	params.Add("user", username)
-	params.Add("verification", verification)
+	params.Add("regrequest", regrequest)
 	doiurl.RawQuery = params.Encode()
 	target, _ := url.PathUnescape(doiurl.String())
 	log.Trace(target)
