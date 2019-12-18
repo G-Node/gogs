@@ -33,6 +33,7 @@ import (
 
 	"github.com/G-Node/gogs/internal/bindata"
 	"github.com/G-Node/gogs/internal/context"
+	"github.com/G-Node/gogs/internal/dav"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/form"
 	"github.com/G-Node/gogs/internal/mailer"
@@ -196,12 +197,12 @@ func runWeb(c *cli.Context) error {
 		m.Get("", func(c *context.Context) {
 			c.Redirect(setting.AppSubURL + "/explore/repos")
 		})
-		m.Get("/data", routes.ExploreData)
-		m.Get("/commits", routes.ExploreCommits)
-		m.Get("/repos", routes.ExploreRepos)
-		m.Get("/users", routes.ExploreUsers)
-		m.Get("/organizations", routes.ExploreOrganizations)
-		m.Get("/_suggest/:keywords", routes.ExploreSuggest)
+		m.Get("/data", route.ExploreData)
+		m.Get("/commits", route.ExploreCommits)
+		m.Get("/repos", route.ExploreRepos)
+		m.Get("/users", route.ExploreUsers)
+		m.Get("/organizations", route.ExploreOrganizations)
+		m.Get("/_suggest/:keywords", route.ExploreSuggest)
 	}, ignSignIn)
 	m.Combo("/install", route.InstallInit).Get(route.Install).
 		Post(bindIgnErr(form.Install{}), route.InstallPost)
@@ -500,7 +501,7 @@ func runWeb(c *cli.Context) error {
 		m.Get("/issues/:index", repo.ViewIssue)
 		m.Get("/labels/", repo.RetrieveLabels, repo.Labels)
 		m.Get("/milestones", repo.Milestones)
-		m.Get("/doi", routes.RequestDOI)
+		m.Get("/doi", route.RequestDOI)
 	}, ignSignIn, context.RepoAssignment(true))
 	m.Group("/:username/:reponame", func() {
 		// FIXME: should use different URLs but mostly same logic for comments of issue and pull reuqest.

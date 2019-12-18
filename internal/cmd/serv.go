@@ -310,7 +310,7 @@ func runGit(cmd []string, requestMode db.AccessMode, user *db.User, owner *db.Us
 }
 
 // Make sure git-annex-shell does not make "bad" changes (refectored from repo)
-func secureGitAnnex(path string, user *models.User, repo *models.Repository) error {
+func secureGitAnnex(path string, user *db.User, repo *db.Repository) error {
 	// "If set, disallows running git-shell to handle unknown commands."
 	err := os.Setenv("GIT_ANNEX_SHELL_LIMITED", "True")
 	if err != nil {
@@ -322,14 +322,14 @@ func secureGitAnnex(path string, user *models.User, repo *models.Repository) err
 	if err != nil {
 		return fmt.Errorf("ERROR: Could set annex shell directory.")
 	}
-	mode := models.ACCESS_MODE_NONE
+	mode := db.ACCESS_MODE_NONE
 	if user != nil {
-		mode, err = models.UserAccessMode(user.ID, repo)
+		mode, err = db.UserAccessMode(user.ID, repo)
 		if err != nil {
 			fail("Internal error", "Fail to check access: %v", err)
 		}
 	}
-	if mode < models.ACCESS_MODE_WRITE {
+	if mode < db.ACCESS_MODE_WRITE {
 		err = os.Setenv("GIT_ANNEX_SHELL_READONLY", "True")
 		if err != nil {
 			return fmt.Errorf("ERROR: Could set annex shell to read only.")

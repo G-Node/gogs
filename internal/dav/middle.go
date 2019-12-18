@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"github.com/G-Node/git-module"
-	"github.com/G-Node/gogs/models"
-	"github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/internal/context"
+	"github.com/G-Node/gogs/internal/db"
 	"gopkg.in/macaron.v1"
 )
 
@@ -15,7 +15,7 @@ import (
 func DavMiddle() macaron.Handler {
 	return func(c *context.Context) {
 		var (
-			owner *models.User
+			owner *db.User
 			err   error
 		)
 
@@ -26,7 +26,7 @@ func DavMiddle() macaron.Handler {
 		if c.IsLogged && c.User.LowerName == strings.ToLower(ownerName) {
 			owner = c.User
 		} else {
-			owner, err = models.GetUserByName(ownerName)
+			owner, err = db.GetUserByName(ownerName)
 			if err != nil {
 				Webdav401(c)
 				return
@@ -34,7 +34,7 @@ func DavMiddle() macaron.Handler {
 		}
 		c.Repo.Owner = owner
 
-		repo, err := models.GetRepositoryByName(owner.ID, repoName)
+		repo, err := db.GetRepositoryByName(owner.ID, repoName)
 		if err != nil {
 			Webdav401(c)
 			return
@@ -45,9 +45,9 @@ func DavMiddle() macaron.Handler {
 
 		// Admin has super access.
 		if c.IsLogged && c.User.IsAdmin {
-			c.Repo.AccessMode = models.ACCESS_MODE_OWNER
+			c.Repo.AccessMode = db.ACCESS_MODE_OWNER
 		} else {
-			mode, err := models.UserAccessMode(c.UserID(), repo)
+			mode, err := db.UserAccessMode(c.UserID(), repo)
 			if err != nil {
 				c.WriteHeader(http.StatusInternalServerError)
 				return
@@ -56,14 +56,14 @@ func DavMiddle() macaron.Handler {
 		}
 
 		if repo.IsMirror {
-			c.Repo.Mirror, err = models.GetMirrorByRepoID(repo.ID)
+			c.Repo.Mirror, err = db.GetMirrorByRepoID(repo.ID)
 			if err != nil {
 				c.WriteHeader(http.StatusInternalServerError)
 				return
 			}
 		}
 
-		gitRepo, err := git.OpenRepository(models.RepoPath(ownerName, repoName))
+		gitRepo, err := git.OpenRepository(db.RepoPath(ownerName, repoName))
 		if err != nil {
 			c.WriteHeader(http.StatusInternalServerError)
 			return

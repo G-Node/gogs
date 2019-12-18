@@ -11,13 +11,14 @@ import (
 	"path"
 
 	"github.com/G-Node/git-module"
+	"github.com/go-macaron/captcha"
 
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/tool"
 )
 
-func serveData(c *context.Context, name string, r io.Reader) error {
+func serveData(c *context.Context, name string, r io.Reader, cpt *captcha.Captcha) error {
 	buf := make([]byte, 1024)
 	n, _ := r.Read(buf)
 	if n >= 0 {
@@ -55,7 +56,7 @@ func ServeBlob(c *context.Context, blob *git.Blob, cpt *captcha.Captcha) error {
 	defer r.Close()
 	defer w.Close()
 	go blob.DataPipeline(w, w)
-	return ServeData(c, path.Base(c.Repo.TreePath), io.LimitReader(r, blob.Size()), cpt)
+	return serveData(c, path.Base(c.Repo.TreePath), io.LimitReader(r, blob.Size()), cpt)
 }
 
 func SingleDownload(c *context.Context, cpt *captcha.Captcha) {

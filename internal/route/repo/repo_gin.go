@@ -8,9 +8,9 @@ import (
 
 	"github.com/G-Node/git-module"
 	gannex "github.com/G-Node/go-annex"
-	"github.com/G-Node/gogs/pkg/context"
-	"github.com/G-Node/gogs/pkg/setting"
-	"github.com/G-Node/gogs/pkg/tool"
+	"github.com/G-Node/gogs/internal/context"
+	"github.com/G-Node/gogs/internal/setting"
+	"github.com/G-Node/gogs/internal/tool"
 	"github.com/G-Node/libgin/libgin"
 	"github.com/go-macaron/captcha"
 	log "gopkg.in/clog.v1"

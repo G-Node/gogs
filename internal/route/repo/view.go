@@ -12,10 +12,12 @@ import (
 	"path"
 	"strings"
 
+	"github.com/go-macaron/captcha"
 	"github.com/unknwon/paginater"
 	log "gopkg.in/clog.v1"
 
 	"github.com/G-Node/git-module"
+	gannex "github.com/G-Node/go-annex"
 
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"

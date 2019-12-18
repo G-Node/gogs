@@ -1,10 +1,14 @@
-module gogs.io/gogs
+module github.com/G-Node/gogs
 
 go 1.13
 
 require (
+	github.com/G-Node/git-module v0.8.4-0.20191218161021-3fd4d7aaf932
+	github.com/G-Node/go-annex v0.1.0
+	github.com/G-Node/libgin v0.0.0-20191216094436-47f8aadc0067
 	github.com/bgentry/speakeasy v0.1.0 // indirect
 	github.com/denisenkom/go-mssqldb v0.0.0-20191001013358-cfbb681360f0
+	github.com/dustinkirkland/golang-petname v0.0.0-20191129215211-8e5a1ed0cff0
 	github.com/fatih/color v1.7.0 // indirect
 	github.com/go-macaron/binding v1.0.1
 	github.com/go-macaron/cache v0.0.0-20190810181446-10f7c57e2196
@@ -18,7 +22,6 @@ require (
 	github.com/go-xorm/builder v0.3.4
 	github.com/gogs/chardet v0.0.0-20150115103509-2404f7772561
 	github.com/gogs/cron v0.0.0-20171120032916-9f6c956d3e14
-	github.com/gogs/git-module v0.8.3
 	github.com/gogs/go-gogs-client v0.0.0-20190710002546-4c3c18947c15
 	github.com/gogs/go-libravatar v0.0.0-20191106065024-33a75213d0a0
 	github.com/gogs/minwinsvc v0.0.0-20170301035411-95be6356811a
@@ -46,7 +49,7 @@ require (
 	github.com/saintfish/chardet v0.0.0-20120816061221-3af4cd4741ca // indirect
 	github.com/satori/go.uuid v1.2.0
 	github.com/sergi/go-diff v1.0.0
-	github.com/smartystreets/goconvey v0.0.0-20190731233626-505e41936337
+	github.com/smartystreets/goconvey v1.6.4
 	github.com/ssor/bom v0.0.0-20170718123548-6386211fdfcf // indirect
 	github.com/unknwon/cae v1.0.0
 	github.com/unknwon/com v1.0.1
@@ -64,6 +67,7 @@ require (
 	gopkg.in/ini.v1 v1.49.0
 	gopkg.in/ldap.v2 v2.5.1
 	gopkg.in/macaron.v1 v1.3.4
+	gopkg.in/yaml.v2 v2.2.2
 	xorm.io/core v0.7.2
 	xorm.io/xorm v0.8.0
 )

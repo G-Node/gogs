@@ -13,10 +13,10 @@ import (
 
 	"github.com/G-Node/git-module"
 	gannex "github.com/G-Node/go-annex"
-	"github.com/G-Node/gogs/models"
-	gctx "github.com/G-Node/gogs/pkg/context"
-	"github.com/G-Node/gogs/pkg/setting"
-	"github.com/G-Node/gogs/pkg/tool"
+	gctx "github.com/G-Node/gogs/internal/context"
+	"github.com/G-Node/gogs/internal/db"
+	"github.com/G-Node/gogs/internal/setting"
+	"github.com/G-Node/gogs/internal/tool"
 	"golang.org/x/net/context"
 	"golang.org/x/net/webdav"
 	log "gopkg.in/clog.v1"
@@ -304,7 +304,7 @@ func checkPerms(c *gctx.Context) error {
 	return nil
 }
 
-func getRepo(path string) (*models.Repository, error) {
+func getRepo(path string) (*db.Repository, error) {
 	oID, err := getROwnerID(path)
 	if err != nil {
 		return nil, err
@@ -315,7 +315,7 @@ func getRepo(path string) (*models.Repository, error) {
 		return nil, err
 	}
 
-	return models.GetRepositoryByName(oID, rname)
+	return db.GetRepositoryByName(oID, rname)
 }
 
 func getRName(path string) (string, error) {
@@ -345,7 +345,7 @@ func getFPath(path string) (string, error) {
 func getROwnerID(path string) (int64, error) {
 	name := RE_GETROWN.FindStringSubmatch(path)
 	if len(name) > 1 {
-		models.GetUserByName(name[1])
+		db.GetUserByName(name[1])
 	}
 	return -100, fmt.Errorf("could not determine repo owner")
 }

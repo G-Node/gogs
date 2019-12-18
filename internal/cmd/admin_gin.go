@@ -7,7 +7,7 @@ package cmd
 import (
 	"github.com/urfave/cli"
 
-	"github.com/G-Node/gogs/models"
+	"github.com/G-Node/gogs/internal/db"
 )
 
 var (
@@ -15,7 +15,7 @@ var (
 		Name:  "rebuild-index",
 		Usage: "Rebuild the search index for all repositories",
 		Action: adminDashboardOperation(
-			models.RebuildIndex,
+			db.RebuildIndex,
 			"Sending all existing repositories to the gin-dex server for reindexing",
 		),
 		Flags: []cli.Flag{

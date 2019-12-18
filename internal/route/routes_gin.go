@@ -1,10 +1,10 @@
-package routes
+package route
 
-import "github.com/G-Node/gogs/models"
+import "github.com/G-Node/gogs/internal/db"
 
-func filterUnlistedRepos(repos []*models.Repository) []*models.Repository {
+func filterUnlistedRepos(repos []*db.Repository) []*db.Repository {
 	// Filter out Unlisted repositories
-	var showRep []*models.Repository
+	var showRep []*db.Repository
 	for _, repo := range repos {
 		if !repo.Unlisted {
 			showRep = append(showRep, repo)

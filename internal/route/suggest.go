@@ -1,7 +1,7 @@
-package routes
+package route
 
 import (
-	"github.com/G-Node/gogs/pkg/context"
+	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/libgin/libgin"
 	log "gopkg.in/clog.v1"
 )

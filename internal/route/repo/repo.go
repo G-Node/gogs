@@ -283,15 +283,15 @@ func Download(c *context.Context) {
 	case strings.HasSuffix(uri, ".gin.zip"):
 		ext = ".gin.zip"
 		archivePath = path.Join(c.Repo.GitRepo.Path, "archives/gin")
-		archiveType = git.GIN
+		archiveType = git.ArchiveGIN
 	case strings.HasSuffix(uri, ".zip"):
 		ext = ".zip"
 		archivePath = path.Join(c.Repo.GitRepo.Path, "archives/zip")
-		archiveType = git.ZIP
+		archiveType = git.ArchiveZip
 	case strings.HasSuffix(uri, ".tar.gz"):
 		ext = ".tar.gz"
 		archivePath = path.Join(c.Repo.GitRepo.Path, "archives/targz")
-		archiveType = git.TARGZ
+		archiveType = git.ArchiveTarGz
 
 	default:
 		log.Trace("Unknown format: %s", uri)

@@ -1,4 +1,4 @@
-package routes
+package route
 
 import (
 	"encoding/json"
@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/G-Node/gogs/models"
-	"github.com/G-Node/gogs/pkg/context"
-	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/gogs/internal/context"
+	"github.com/G-Node/gogs/internal/db"
+	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/libgin/libgin"
 	log "gopkg.in/clog.v1"
 )
@@ -51,7 +51,7 @@ func (s set) asSlice() []int64 {
 func collectSearchableRepoIDs(c *context.Context) ([]int64, error) {
 	repoIDSet := newset()
 
-	updateSet := func(repos []*models.Repository) {
+	updateSet := func(repos []*db.Repository) {
 		for _, r := range repos {
 			repoIDSet.add(r.ID)
 		}
@@ -67,7 +67,7 @@ func collectSearchableRepoIDs(c *context.Context) ([]int64, error) {
 
 	// Run a full repository search (with no keywords) to get public
 	// repositories and then filter out the unlisted ones.
-	repos, _, err := models.SearchRepositoryByName(&models.SearchRepoOptions{
+	repos, _, err := db.SearchRepositoryByName(&db.SearchRepoOptions{
 		Keyword:  "",
 		UserID:   c.UserID(),
 		OrderBy:  "updated_unix DESC",

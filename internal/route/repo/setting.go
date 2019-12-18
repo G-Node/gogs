@@ -21,6 +21,7 @@ import (
 	"github.com/G-Node/gogs/internal/mailer"
 	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/tool"
+	petname "github.com/dustinkirkland/golang-petname"
 )
 
 const (
@@ -369,15 +370,15 @@ func SettingsCollaboration(c *context.Context) {
 	c.HTML(200, SETTINGS_COLLABORATION)
 }
 
-func inviteWithMail(c *context.Context, mail string) (*models.User, error) {
+func inviteWithMail(c *context.Context, mail string) (*db.User, error) {
 	name := petname.Generate(2, "_")
 	pw := petname.Generate(3, "")
-	user := models.User{
+	user := db.User{
 		Name:     name,
 		Passwd:   pw,
 		Email:    mail,
 		IsActive: true}
-	err := models.CreateUser(&user)
+	err := db.CreateUser(&user)
 	if err != nil {
 		return nil, err
 	}
@@ -385,7 +386,7 @@ func inviteWithMail(c *context.Context, mail string) (*models.User, error) {
 	c.Context.Data["Account"] = user.Name
 	c.Context.Data["Inviter"] = c.User.Name
 	c.Context.Data["Pw"] = pw
-	mailer.SendInviteMail(c.Context, models.NewMailerUser(&user))
+	mailer.SendInviteMail(c.Context, db.NewMailerUser(&user))
 	return &user, nil
 }
 func SettingsCollaborationPost(c *context.Context) {
@@ -395,9 +396,9 @@ func SettingsCollaborationPost(c *context.Context) {
 		u, err := inviteWithMail(c, email)
 		if err != nil {
 			log.Info("Problem with inviting user %q: %s", email, err)
-			if models.IsErrBlockedDomain(err) {
+			if db.IsErrBlockedDomain(err) {
 				c.Flash.Error(c.Tr("form.invite_email_blocked"))
-			} else if models.IsErrEmailAlreadyUsed(err) {
+			} else if db.IsErrEmailAlreadyUsed(err) {
 				c.Flash.Error(c.Tr("form.email_been_used"))
 			}
 			c.Redirect(setting.AppSubURL + c.Req.URL.Path)

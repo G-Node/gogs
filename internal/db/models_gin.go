@@ -1,4 +1,4 @@
-package models
+package db
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	gannex "github.com/G-Node/go-annex"
-	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/libgin/libgin"
 	log "gopkg.in/clog.v1"
 )

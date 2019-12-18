@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/G-Node/gogs/pkg/context"
-	"github.com/G-Node/gogs/pkg/setting"
+	"github.com/G-Node/gogs/internal/context"
+	"github.com/G-Node/gogs/internal/setting"
 	log "gopkg.in/clog.v1"
 )
 

@@ -15,10 +15,12 @@ import (
 	log "gopkg.in/clog.v1"
 
 	"github.com/G-Node/git-module"
+	"github.com/G-Node/gogs/internal/bindata"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
 	"github.com/G-Node/gogs/internal/form"
+	"github.com/G-Node/gogs/internal/markup"
 	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/template"
 	"github.com/G-Node/gogs/internal/tool"
@@ -590,7 +592,7 @@ func CreateDatacite(c *context.Context) {
 	c.RequireSimpleMDE()
 
 	c.Data["IsYAML"] = true
-	// safe to ignore error since we check for the asseet at startup
+	// safe to ignore error since we check for the asset at startup
 	data, _ := bindata.Asset(dcname)
 	c.Data["FileContent"] = string(data)
 	c.Data["ParentTreePath"] = path.Dir(c.Repo.TreePath)
