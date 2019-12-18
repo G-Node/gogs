@@ -1,11 +1,10 @@
-Gogs [![Build Status](https://travis-ci.org/gogs/gogs.svg?branch=master)](https://travis-ci.org/gogs/gogs) [![Build status](https://ci.appveyor.com/api/projects/status/b9uu5ejl933e2wlt/branch/master?svg=true)](https://ci.appveyor.com/project/Unknwon/gogs/branch/master)
-=====================
+# Gogs
 
 Gogs 是一款极易搭建的自助 Git 服务。
 
 ## 项目愿景
 
-本项目旨在打造一个以最简便的方式搭建简单、稳定和可扩展的自助 Git 服务。使用 Go 语言开发使得 Gogs 能够通过独立的二进制分发，并且支持 Go 语言支持的 **所有平台**，包括 Linux、macOS、Windows 以及 ARM 平台。
+Gogs（`/gɔgs/`）项目旨在打造一个以最简便的方式搭建简单、稳定和可扩展的自助 Git 服务。使用 Go 语言开发使得 Gogs 能够通过独立的二进制分发，并且支持 Go 语言支持的 **所有平台**，包括 Linux、macOS、Windows 以及 ARM 平台。
 
 ## 项目概览
 
@@ -90,7 +89,7 @@ Gogs 是一款极易搭建的自助 Git 服务。
 ### 产品支持
 
 - [Synology](https://www.synology.com)（Docker）
-- [One Space](http://www.onespace.cc)（应用商店）
+- [Syncloud](https://syncloud.org/)（应用商店）
 
 ## 特别鸣谢
 

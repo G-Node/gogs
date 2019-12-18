@@ -6,10 +6,10 @@
 </head>
 
 <body>
-<p>Hi <b>{{.Username}}</b>,</p>
-<p>Please click the following link to verify your email address within <b>{{.ResetPwdCodeLives}} hours</b>:</p>
-<p><a href="{{AppURL}}user/reset_password?code={{.Code}}">{{AppURL}}user/reset_password?code={{.Code}}</a></p>
-<p>Not working? Try copying and pasting it to your browser.</p>
-<p>© 2019 <a target="_blank" href="{{AppURL}}">{{AppName}}</a></p>
+	<p>Hi <b>{{.Username}}</b>,</p>
+	<p>Please click the following link to verify your email address within <b>{{.ResetPwdCodeLives}} hours</b>:</p>
+	<p><a href="{{AppURL}}user/reset_password?code={{.Code}}">{{AppURL}}user/reset_password?code={{.Code}}</a></p>
+	<p>Not working? Try copying and pasting it to your browser.</p>
+	<p>© {{Year}} <a target="_blank" rel="noopener noreferrer" href="{{AppURL}}">{{AppName}}</a></p>
 </body>
 </html>
