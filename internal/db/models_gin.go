@@ -8,9 +8,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	gannex "github.com/G-Node/go-annex"
 	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/libgin/libgin"
+	"github.com/G-Node/libgin/libgin/annex"
 	log "gopkg.in/clog.v1"
 )
 
@@ -90,7 +90,7 @@ func annexUninit(path string) {
 	}
 
 	log.Trace("Uninit annex at '%s'", path)
-	if msg, err := gannex.Uninit(path); err != nil {
+	if msg, err := annex.Uninit(path); err != nil {
 		log.Error(3, "uninit failed: %v (%s)", err, msg)
 		if werr := filepath.Walk(path, walker); werr != nil {
 			log.Error(3, "file permission change failed: %v", werr)
@@ -102,36 +102,36 @@ func annexSetup(path string) {
 	log.Trace("Running annex add (with filesize filter) in '%s'", path)
 
 	// Initialise annex in case it's a new repository
-	if msg, err := gannex.Init(path, "--version=7"); err != nil {
+	if msg, err := annex.Init(path, "--version=7"); err != nil {
 		log.Error(2, "Annex init failed: %v (%s)", err, msg)
 		return
 	}
 
 	// Upgrade to v7 in case the directory was here before and wasn't cleaned up properly
-	if msg, err := gannex.Upgrade(path); err != nil {
+	if msg, err := annex.Upgrade(path); err != nil {
 		log.Error(2, "Annex upgrade failed: %v (%s)", err, msg)
 		return
 	}
 
 	// Enable addunlocked for annex v7
-	if msg, err := gannex.SetAddUnlocked(path); err != nil {
+	if msg, err := annex.SetAddUnlocked(path); err != nil {
 		log.Error(2, "Failed to set 'addunlocked' annex option: %v (%s)", err, msg)
 	}
 
 	// Set MD5 as default backend
-	if msg, err := gannex.MD5(path); err != nil {
+	if msg, err := annex.MD5(path); err != nil {
 		log.Error(2, "Failed to set default backend to 'MD5': %v (%s)", err, msg)
 	}
 
 	// Set size filter in config
-	if msg, err := gannex.SetAnnexSizeFilter(path, setting.Repository.Upload.AnnexFileMinSize*gannex.MEGABYTE); err != nil {
+	if msg, err := annex.SetAnnexSizeFilter(path, setting.Repository.Upload.AnnexFileMinSize*annex.MEGABYTE); err != nil {
 		log.Error(2, "Failed to set size filter for annex: %v (%s)", err, msg)
 	}
 }
 
 func annexSync(path string) error {
 	log.Trace("Synchronising annexed data")
-	if msg, err := gannex.ASync(path, "--content"); err != nil {
+	if msg, err := annex.ASync(path, "--content"); err != nil {
 		// TODO: This will also DOWNLOAD content, which is unnecessary for a simple upload
 		// TODO: Use gin-cli upload function instead
 		log.Error(2, "Annex sync failed: %v (%s)", err, msg)
@@ -139,7 +139,7 @@ func annexSync(path string) error {
 	}
 
 	// run twice; required if remote annex is not initialised
-	if msg, err := gannex.ASync(path, "--content"); err != nil {
+	if msg, err := annex.ASync(path, "--content"); err != nil {
 		log.Error(2, "Annex sync failed: %v (%s)", err, msg)
 		return fmt.Errorf("git annex sync --content [%s]", path)
 	}

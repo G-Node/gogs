@@ -17,7 +17,7 @@ import (
 	log "gopkg.in/clog.v1"
 
 	"github.com/G-Node/git-module"
-	gannex "github.com/G-Node/go-annex"
+	"github.com/G-Node/libgin/libgin/annex"
 
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
@@ -256,16 +256,16 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			c.Data["EditFileTooltip"] = c.Tr("repo.editor.fork_before_edit")
 		}
 
-	case tool.IsPDFFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*gannex.MEGABYTE ||
+	case tool.IsPDFFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
 		c.IsLogged):
 		c.Data["IsPDFFile"] = true
-	case tool.IsVideoFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*gannex.MEGABYTE ||
+	case tool.IsVideoFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
 		c.IsLogged):
 		c.Data["IsVideoFile"] = true
-	case tool.IsImageFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*gannex.MEGABYTE ||
+	case tool.IsImageFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
 		c.IsLogged):
 		c.Data["IsImageFile"] = true
-	case tool.IsAnnexedFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*gannex.MEGABYTE ||
+	case tool.IsAnnexedFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
 		c.IsLogged):
 		c.Data["IsAnnexedFile"] = true
 	}

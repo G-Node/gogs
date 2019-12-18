@@ -12,11 +12,11 @@ import (
 	"io/ioutil"
 
 	"github.com/G-Node/git-module"
-	gannex "github.com/G-Node/go-annex"
 	gctx "github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/tool"
+	"github.com/G-Node/libgin/libgin/annex"
 	"golang.org/x/net/context"
 	"golang.org/x/net/webdav"
 	log "gopkg.in/clog.v1"
@@ -153,7 +153,7 @@ func (f *GinFile) Read(p []byte) (int, error) {
 
 	annexed := tool.IsAnnexedFile(tmp)
 	if annexed {
-		af, err := gannex.NewAFile(f.rpath, "annex", f.trentry.Name(), tmp)
+		af, err := annex.NewAFile(f.rpath, "annex", f.trentry.Name(), tmp)
 		if err != nil {
 			return n, err
 		}
@@ -265,7 +265,7 @@ func (f GinFile) Stat() (os.FileInfo, error) {
 	}
 	peek = peek[:n]
 	if tool.IsAnnexedFile(peek) {
-		af, err := gannex.NewAFile(f.rpath, "annex", f.trentry.Name(), peek)
+		af, err := annex.NewAFile(f.rpath, "annex", f.trentry.Name(), peek)
 		if err != nil {
 			return nil, err
 		}

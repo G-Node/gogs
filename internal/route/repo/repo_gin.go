@@ -7,22 +7,22 @@ import (
 	"io/ioutil"
 
 	"github.com/G-Node/git-module"
-	gannex "github.com/G-Node/go-annex"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/tool"
 	"github.com/G-Node/libgin/libgin"
+	"github.com/G-Node/libgin/libgin/annex"
 	"github.com/go-macaron/captcha"
 	log "gopkg.in/clog.v1"
 	"gopkg.in/yaml.v2"
 )
 
 func serveAnnexedData(ctx *context.Context, name string, cpt *captcha.Captcha, buf []byte) error {
-	annexFile, err := gannex.NewAFile(ctx.Repo.Repository.RepoPath(), "annex", name, buf)
+	annexFile, err := annex.NewAFile(ctx.Repo.Repository.RepoPath(), "annex", name, buf)
 	if err != nil {
 		return err
 	}
-	if cpt != nil && annexFile.Info.Size() > gannex.MEGABYTE*setting.Repository.RawCaptchaMinFileSize && !cpt.VerifyReq(ctx.Req) &&
+	if cpt != nil && annexFile.Info.Size() > annex.MEGABYTE*setting.Repository.RawCaptchaMinFileSize && !cpt.VerifyReq(ctx.Req) &&
 		!ctx.IsLogged {
 		ctx.Data["EnableCaptcha"] = true
 		ctx.HTML(200, "repo/download")
@@ -104,7 +104,7 @@ func resolveAnnexedContent(c *context.Context, buf []byte, dataRc io.Reader) ([]
 		return buf, dataRc, nil
 	}
 	log.Trace("Annexed file requested: Resolving content for [%s]", bytes.TrimSpace(buf))
-	af, err := gannex.NewAFile(c.Repo.Repository.RepoPath(), "annex", "", buf)
+	af, err := annex.NewAFile(c.Repo.Repository.RepoPath(), "annex", "", buf)
 	if err != nil {
 		log.Trace("Could not get annex file: %v", err)
 		c.Data["IsAnnexedFile"] = true
