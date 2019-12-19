@@ -53,17 +53,15 @@
 					<div class="inline field {{if .Err_Description}}error{{end}}">
 						<label for="description">{{.i18n.Tr "repo.repo_desc"}}</label>
 						<textarea class="autosize" id="description" name="description" rows="3">{{.description}}</textarea>
-						<span class="help">{{.i18n.Tr "repo.repo_desc_helper" | Safe}}</span>
-
+						<span class="help">{{.i18n.Tr "repo.repo_description_helper" | Safe}}</span>
+						<span class="help">{{.i18n.Tr "repo.repo_description_length"}}: <span id="descLength"></span></span>
 					</div>
 
 					<div class="ui divider"></div>
 
-					<div class="ui inline field" data-tooltip="In the case of data repositories you probably don't need this">
+					<div class="inline field" data-tooltip="In the case of data repositories you probably don't need this">
 						<label>.gitignore</label>
-						<a target="_blank"
-							 href="https://git-scm.com/docs/gitignore"><span
-							class="octicon octicon-question"></span></a>
+						<a target="_blank" href="https://git-scm.com/docs/gitignore"><span class="octicon octicon-question"></span></a>
 						<div class="ui multiple search normal selection dropdown">
 							<input type="hidden" name="gitignores" value="{{.gitignores}}">
 							<div class="default text">{{.i18n.Tr "repo.repo_gitignore_helper"}}</div>
@@ -74,12 +72,9 @@
 							</div>
 						</div>
 					</div>
-					<div class="ui inline field"
-							 data-tooltip="You can choose a license now, or add a licensefile to the repository later">
+					<div class="inline field" data-tooltip="You can choose a license now, or add one to the repository later">
 						<label>{{.i18n.Tr "repo.license"}}</label>
-						<a target="_blank"
-							 href="/G-Node/Info/wiki/Licensing"><span
-							class="octicon octicon-question"></span></a>
+						<a target="_blank" href="/G-Node/Info/wiki/Licensing"><span class="octicon octicon-question"></span></a>
 						<div class="ui search selection dropdown">
 							<input type="hidden" name="license" value="{{index .Licenses 0}}">
 							<div class="default text">{{.i18n.Tr "repo.license_helper"}}</div>
