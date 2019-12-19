@@ -8,14 +8,14 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mcuadros/go-version"
+	goversion "github.com/mcuadros/go-version"
 )
 
-const TAG_PREFIX = "refs/tags/"
+const TagPrefix = "refs/tags/"
 
 // IsTagExist returns true if given tag exists in the repository.
 func IsTagExist(repoPath, name string) bool {
-	return IsReferenceExist(repoPath, TAG_PREFIX+name)
+	return IsReferenceExist(repoPath, TagPrefix+name)
 }
 
 func (repo *Repository) IsTagExist(name string) bool {
@@ -42,11 +42,11 @@ func (repo *Repository) getTag(id sha1) (*Tag, error) {
 	tp = strings.TrimSpace(tp)
 
 	// Tag is a commit.
-	if ObjectType(tp) == OBJECT_COMMIT {
+	if ObjectType(tp) == ObjectCommit {
 		tag := &Tag{
 			ID:     id,
 			Object: id,
-			Type:   string(OBJECT_COMMIT),
+			Type:   string(ObjectCommit),
 			repo:   repo,
 		}
 
@@ -95,7 +95,7 @@ func (repo *Repository) GetTag(name string) (*Tag, error) {
 // GetTags returns all tags of the repository.
 func (repo *Repository) GetTags() ([]string, error) {
 	cmd := NewCommand("tag", "-l")
-	if version.Compare(gitVersion, "2.4.9", ">=") {
+	if goversion.Compare(gitVersion, "2.4.9", ">=") {
 		cmd.AddArguments("--sort=-creatordate")
 	}
 
@@ -107,8 +107,8 @@ func (repo *Repository) GetTags() ([]string, error) {
 	tags := strings.Split(stdout, "\n")
 	tags = tags[:len(tags)-1]
 
-	if version.Compare(gitVersion, "2.4.9", "<") {
-		version.Sort(tags)
+	if goversion.Compare(gitVersion, "2.4.9", "<") {
+		goversion.Sort(tags)
 
 		// Reverse order
 		for i := 0; i < len(tags)/2; i++ {

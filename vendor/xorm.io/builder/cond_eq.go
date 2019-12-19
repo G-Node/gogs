@@ -20,7 +20,8 @@ type Eq map[string]interface{}
 
 var _ Cond = Eq{}
 
-func (eq Eq) opWriteTo(op string, w Writer) error {
+// OpWriteTo writes conditions with special operator
+func (eq Eq) OpWriteTo(op string, w Writer) error {
 	var i = 0
 	for _, k := range eq.sortedKeys() {
 		v := eq[k]
@@ -81,7 +82,7 @@ func (eq Eq) opWriteTo(op string, w Writer) error {
 
 // WriteTo writes SQL to Writer
 func (eq Eq) WriteTo(w Writer) error {
-	return eq.opWriteTo(" AND ", w)
+	return eq.OpWriteTo(" AND ", w)
 }
 
 // And implements And with other conditions
