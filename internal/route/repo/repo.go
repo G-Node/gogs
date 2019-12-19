@@ -72,7 +72,6 @@ func Create(c *context.Context) {
 	// Give default value for template to render.
 	c.Data["Gitignores"] = db.Gitignores
 	c.Data["Licenses"] = db.Licenses
-	c.Data["license"] = db.Licenses[0]
 	c.Data["Readmes"] = db.Readmes
 	c.Data["readme"] = "Default"
 	c.Data["private"] = c.User.LastRepoVisibility

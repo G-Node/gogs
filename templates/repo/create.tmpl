@@ -81,7 +81,7 @@
 							 href="/G-Node/Info/wiki/Licensing"><span
 							class="octicon octicon-question"></span></a>
 						<div class="ui search selection dropdown">
-							<input type="hidden" name="license" value="{{.license}}">
+							<input type="hidden" name="license" value="{{index .Licenses 0}}">
 							<div class="default text">{{.i18n.Tr "repo.license_helper"}}</div>
 							<div class="menu">
 								{{range .Licenses}}
