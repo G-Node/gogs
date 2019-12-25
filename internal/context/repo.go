@@ -6,10 +6,11 @@ package context
 
 import (
 	"fmt"
-	"gopkg.in/editorconfig/editorconfig-core-go.v1"
-	"gopkg.in/macaron.v1"
 	"io/ioutil"
 	"strings"
+
+	"github.com/editorconfig/editorconfig-core-go/v2"
+	"gopkg.in/macaron.v1"
 
 	"github.com/G-Node/git-module"
 	"github.com/G-Node/gogs/internal/db"

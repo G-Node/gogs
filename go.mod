@@ -8,6 +8,7 @@ require (
 	github.com/bgentry/speakeasy v0.1.0 // indirect
 	github.com/denisenkom/go-mssqldb v0.0.0-20191001013358-cfbb681360f0
 	github.com/dustinkirkland/golang-petname v0.0.0-20191129215211-8e5a1ed0cff0
+	github.com/editorconfig/editorconfig-core-go/v2 v2.2.1
 	github.com/fatih/color v1.7.0 // indirect
 	github.com/go-macaron/binding v1.0.1
 	github.com/go-macaron/cache v0.0.0-20190810181446-10f7c57e2196
@@ -60,7 +61,6 @@ require (
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/asn1-ber.v1 v1.0.0-20181015200546-f715ec2f112d // indirect
 	gopkg.in/clog.v1 v1.2.0
-	gopkg.in/editorconfig/editorconfig-core-go.v1 v1.3.1
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gopkg.in/ini.v1 v1.49.0
 	gopkg.in/ldap.v2 v2.5.1
