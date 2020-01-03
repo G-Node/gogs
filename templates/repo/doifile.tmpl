@@ -1,70 +1,70 @@
 <div id = "cloudberry-view" class="tab-size-8">
-		<table class="ui fixed single line table">
+	<table class="ui fixed single line table">
 		<thead>
-    		<tr>
-    			<th class="two wide">
-			<i class="octicon octicon-squirrel"></i>
-						<strong>Datacite.yml</strong>
-    			</th>
-    			<th class="fourteen wide">
-    			</th>
-    		</tr>
-    	</thead>
-				<tbody>
+			<tr>
+				<th class="two wide">
+					<i class="octicon octicon-squirrel"></i>
+					<strong>Datacite.yml</strong>
+				</th>
+				<th class="fourteen wide">
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Title</td>
+				<td>{{.DOIInfo.Title}}</td>
+			</tr>
+			<tr>
+				<td>Authors</td>
+				<td>
+					{{range $index, $auth := .DOIInfo.Authors}}
+						{{ $auth.RenderAuthor }}
+						<br>
+					{{end}}
+				</td>
+			</tr>
+			{{if .DOIInfo.Description}}
 				<tr>
-						<td>Title</td>
-						<td>{{.DOIInfo.Title}}</td>
+					<td>Description</td>
+					<td>{{.DOIInfo.Description}}
+					</td>
 				</tr>
+			{{end}}
+			{{if .DOIInfo.License}}
 				<tr>
-						<td>Authors</td>
-						<td>
-								{{range $index, $auth := .DOIInfo.Authors}}
-								{{ $auth.RenderAuthor }}
-								<br>
-								{{end}}
-						</td>
+					<td>License</td>
+					<td>{{.DOIInfo.License.Name}} ({{.DOIInfo.License.URL}})
+					</td>
 				</tr>
-				{{if .DOIInfo.Description}}
+			{{end}}
+			<tr>
+				<td>References</td>
+				<td>
+					{{range $index, $ref := .DOIInfo.References}}
+						{{ $ref.Name }} [{{ $ref.ID }}] ({{ $ref.Reftype }})
+						<br>
+					{{end}}
+				</td>
+			</tr>
+			<tr>
+				<td>Funding</td>
+				<td>
+					{{range $index, $ref := .DOIInfo.Funding}}
+						{{ $ref}}
+						<br>
+					{{end}}
+				</td>
+			</tr>
+			{{if .DOIInfo.Keywords}}
 				<tr>
-						<td>Description</td>
-						<td>{{.DOIInfo.Description}}
-						</td>
-				</tr>
-				{{end}}
-				{{if .DOIInfo.License}}
-				<tr>
-						<td>License</td>
-						<td>{{.DOIInfo.License.Name}} ({{.DOIInfo.License.URL}})
-						</td>
-				</tr>
-				{{end}}
-				<tr>
-						<td>References</td>
-						<td>
-								{{range $index, $ref := .DOIInfo.References}}
-								{{ $ref.Name }} [{{ $ref.ID }}] ({{ $ref.Reftype }})
-								<br>
-								{{end}}
-						</td>
-				</tr>
-				<tr>
-						<td>Funding</td>
-						<td>
-								{{range $index, $ref := .DOIInfo.Funding}}
-								{{ $ref}}
-								<br>
-								{{end}}
-						</td>
-				</tr>
-				{{if .DOIInfo.Keywords}}
-				<tr>
-						<td>Keywords</td>
-						<td>
-								{{range $index, $sub := .DOIInfo.Keywords}}
-								{{ $sub }}
-								<br>
-								{{end}}
-						</td>
+					<td>Keywords</td>
+					<td>
+						{{range $index, $sub := .DOIInfo.Keywords}}
+							{{ $sub }}
+							<br>
+						{{end}}
+					</td>
 				</tr>
 				<tr>
 					<td>Resource Type</td>
@@ -72,8 +72,8 @@
 						<i>{{.DOIInfo.GetType}}</i><br>
 					</td>
 				</tr>
-				{{end}}
-				</tbody>
-		</table>
-		</div>
+			{{end}}
+		</tbody>
+	</table>
+</div>
 </div>
