@@ -101,10 +101,11 @@
 							<div class="content">
 								<div class="ui header">So you want to download data without special tooling (e.g. git, git-annex or GIN)?</div>
 								<p>Here is what you can do:</p>
-								<p>Download the small files and the file structure as an archive (zip or tar). The big files will be
-									included namewise but the data will not be there. To get the content of the big files you need to download them individually from the web interface. This way you can get the file structure but the heavy loads only on demand!</p>
-								<p>Download the small files as GIN archive(*.gin.zip). This is comparable to the situation above, however,
-									you also get the history of the files and the possibility  to request the big  files via git-annex or the GIN-client.</p>
+								<p>Download the small files and the file structure as an archive (.zip or .tar.gz). Annexed files (by default, files larger than 10 MB) will be
+								included as pointer files (stubs) but the data will not be included. To get the content of the big files you need to download them individually
+								from this web page.</p>
+								<p>Download the small files as a GIN archive (.gin.zip). This includes all the git information,
+								including the history of the repository and the possibility to download the content of large files using git annex or the GIN client.</p>
 							</div>
 							<div class="actions">
 								<a class="ui positive button" href="{{$.RepoLink}}/archive/{{EscapePound $.BranchName}}.zip"><i class="octicon octicon-file-zip"></i> Download zip</a>
