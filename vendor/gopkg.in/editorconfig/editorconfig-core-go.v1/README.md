@@ -1,3 +1,5 @@
+<!-- Currently tests against core-test are not done so hide build status badge for now -->
+<!-- [![Build Status](https://travis-ci.org/editorconfig/editorconfig-core-go.svg?branch=master)](https://travis-ci.org/editorconfig/editorconfig-core-go) -->
 [![GoDoc](https://godoc.org/gopkg.in/editorconfig/editorconfig-core-go.v1?status.svg)](https://godoc.org/gopkg.in/editorconfig/editorconfig-core-go.v1)
 [![Go Report Card](https://goreportcard.com/badge/gopkg.in/editorconfig/editorconfig-core-go.v1)](https://goreportcard.com/report/gopkg.in/editorconfig/editorconfig-core-go.v1)
 
@@ -5,7 +7,8 @@
 
 A [Editorconfig][editorconfig] file parser and manipulator for Go.
 
-> This package is already working, but still under testing.
+> Currently this package does some basic work but does not fully support
+> EditorConfig specs, so using it in "real world" is not recommended.
 
 ## Installing
 
@@ -15,7 +18,7 @@ We recommend the use of [gopkg.in][gopkg] for this package:
 go get -u gopkg.in/editorconfig/editorconfig-core-go.v1
 ```
 
-Import by the same path. Tha package name you will use to access it is
+Import by the same path. The package name you will use to access it is
 `editorconfig`.
 
 ```go
@@ -69,6 +72,7 @@ type Definition struct {
 	EndOfLine              string
 	TrimTrailingWhitespace bool
 	InsertFinalNewline     bool
+	Raw                    map[string]string
 }
 ```
 

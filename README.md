@@ -11,7 +11,7 @@ Management of scientific data, including consistent organization, annotation and
 
 To minimize the time and effort scientists have to spend on these tasks, we develop the GIN (G-Node Infrastructure) services, a free data management system designed for comprehensive and reproducible management of scientific data.
 
-## Why should I use gin?
+## Why should I use GIN?
 ### Manage your data from anywhere
 * Upload your data on a repository based structure: you can create as many repositories as you like.
 * Access your data from anywhere: once the data is at the main repository service you can securely access your data from anywhere you like.
@@ -35,7 +35,7 @@ To minimize the time and effort scientists have to spend on these tasks, we deve
 By indexing the repository contents it's easy to find the files you are looking for. When using the [NIX](http://www.g-node.org/nix) data format for scientific data and metadata, even the contents of these files will be indexed and searchable, making it easy for you to identify the data you are looking for.
 
 ## Acknowledgments
-Gin Gogs is largly based on [Gogs](https://github.com/gogits/gogs)
+GIN is based on [Gogs](https://github.com/gogits/gogs)
 
 ## License
 

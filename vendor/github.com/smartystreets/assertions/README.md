@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/smartystreets/assertions.svg?branch=master)](https://travis-ci.org/smartystreets/assertions)
-
 # assertions
 --
     import "github.com/smartystreets/assertions"

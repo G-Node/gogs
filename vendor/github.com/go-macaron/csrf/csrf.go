@@ -20,12 +20,12 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Unknwon/com"
+	"github.com/unknwon/com"
 	"github.com/go-macaron/session"
 	"gopkg.in/macaron.v1"
 )
 
-const _VERSION = "0.1.0"
+const _VERSION = "0.1.1"
 
 func Version() string {
 	return _VERSION
@@ -41,6 +41,8 @@ type CSRF interface {
 	GetCookieName() string
 	// Return cookie path
 	GetCookiePath() string
+	// Return the flag value used for the csrf token.
+	GetCookieHttpOnly() bool
 	// Return the token.
 	GetToken() string
 	// Validate by token.
@@ -56,8 +58,12 @@ type csrf struct {
 	Form string
 	// Cookie name value for setting and getting csrf token.
 	Cookie string
+	//Cookie domain
+	CookieDomain string
 	//Cookie path
 	CookiePath string
+	// Cookie HttpOnly flag value used for the csrf token.
+	CookieHttpOnly bool
 	// Token generated to pass via header, cookie, or hidden form value.
 	Token string
 	// This value must be unique per user.
@@ -88,6 +94,11 @@ func (c *csrf) GetCookiePath() string {
 	return c.CookiePath
 }
 
+// GetCookieHttpOnly returns the flag value used for the csrf token.
+func (c *csrf) GetCookieHttpOnly() bool {
+	return c.CookieHttpOnly
+}
+
 // GetToken returns the current token. This is typically used
 // to populate a hidden form in an HTML template.
 func (c *csrf) GetToken() string {
@@ -114,8 +125,11 @@ type Options struct {
 	Form string
 	// Cookie value used to set and get token.
 	Cookie string
+	// Cookie domain.
+	CookieDomain string
 	// Cookie path.
-	CookiePath string
+	CookiePath     string
+	CookieHttpOnly bool
 	// Key used for getting the unique ID per user.
 	SessionKey string
 	// oldSeesionKey saves old value corresponding to SessionKey.
@@ -173,12 +187,14 @@ func Generate(options ...Options) macaron.Handler {
 	opt := prepareOptions(options)
 	return func(ctx *macaron.Context, sess session.Store) {
 		x := &csrf{
-			Secret:     opt.Secret,
-			Header:     opt.Header,
-			Form:       opt.Form,
-			Cookie:     opt.Cookie,
-			CookiePath: opt.CookiePath,
-			ErrorFunc:  opt.ErrorFunc,
+			Secret:         opt.Secret,
+			Header:         opt.Header,
+			Form:           opt.Form,
+			Cookie:         opt.Cookie,
+			CookieDomain:   opt.CookieDomain,
+			CookiePath:     opt.CookiePath,
+			CookieHttpOnly: opt.CookieHttpOnly,
+			ErrorFunc:      opt.ErrorFunc,
 		}
 		ctx.MapTo(x, (*CSRF)(nil))
 
@@ -211,7 +227,7 @@ func Generate(options ...Options) macaron.Handler {
 			// FIXME: actionId.
 			x.Token = GenerateToken(x.Secret, x.ID, "POST")
 			if opt.SetCookie {
-				ctx.SetCookie(opt.Cookie, x.Token, 0, opt.CookiePath, "", false, true, time.Now().AddDate(0, 0, 1))
+				ctx.SetCookie(opt.Cookie, x.Token, 0, opt.CookiePath, opt.CookieDomain, opt.Secure, opt.CookieHttpOnly, time.Now().AddDate(0, 0, 1))
 			}
 		}
 

@@ -7,11 +7,9 @@ package git
 import (
 	"fmt"
 	"strings"
-
-	"github.com/mcuadros/go-version"
 )
 
-const BRANCH_PREFIX = "refs/heads/"
+const BranchPrefix = "refs/heads/"
 
 // IsReferenceExist returns true if given reference exists in the repository.
 func IsReferenceExist(repoPath, name string) bool {
@@ -21,7 +19,7 @@ func IsReferenceExist(repoPath, name string) bool {
 
 // IsBranchExist returns true if given branch exists in the repository.
 func IsBranchExist(repoPath, name string) bool {
-	return IsReferenceExist(repoPath, BRANCH_PREFIX+name)
+	return IsReferenceExist(repoPath, BranchPrefix+name)
 }
 
 func (repo *Repository) IsBranchExist(name string) bool {
@@ -42,23 +40,19 @@ func (repo *Repository) GetHEADBranch() (*Branch, error) {
 	}
 	stdout = strings.TrimSpace(stdout)
 
-	if !strings.HasPrefix(stdout, BRANCH_PREFIX) {
+	if !strings.HasPrefix(stdout, BranchPrefix) {
 		return nil, fmt.Errorf("invalid HEAD branch: %v", stdout)
 	}
 
 	return &Branch{
-		Name: stdout[len(BRANCH_PREFIX):],
+		Name: stdout[len(BranchPrefix):],
 		Path: stdout,
 	}, nil
 }
 
 // SetDefaultBranch sets default branch of repository.
 func (repo *Repository) SetDefaultBranch(name string) error {
-	if version.Compare(gitVersion, "1.7.10", "<") {
-		return ErrUnsupportedVersion{"1.7.10"}
-	}
-
-	_, err := NewCommand("symbolic-ref", "HEAD", BRANCH_PREFIX+name).RunInDir(repo.Path)
+	_, err := NewCommand("symbolic-ref", "HEAD", BranchPrefix+name).RunInDir(repo.Path)
 	return err
 }
 
@@ -76,7 +70,7 @@ func (repo *Repository) GetBranches() ([]string, error) {
 		if len(fields) != 2 {
 			continue // NOTE: I should believe git will not give me wrong string.
 		}
-		branches[i] = strings.TrimPrefix(fields[1], BRANCH_PREFIX)
+		branches[i] = strings.TrimPrefix(fields[1], BranchPrefix)
 	}
 	return branches, nil
 }

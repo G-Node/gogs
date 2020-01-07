@@ -29,19 +29,13 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/Unknwon/com"
+	"github.com/unknwon/com"
 	"gopkg.in/macaron.v1"
 )
 
-const _VERSION = "0.6.0"
-
-func Version() string {
-	return _VERSION
-}
-
 func bind(ctx *macaron.Context, obj interface{}, ifacePtr ...interface{}) {
 	contentType := ctx.Req.Header.Get("Content-Type")
-	if ctx.Req.Method == "POST" || ctx.Req.Method == "PUT" || len(contentType) > 0 {
+	if ctx.Req.Method == "POST" || ctx.Req.Method == "PUT" || ctx.Req.Method == "PATCH" {
 		switch {
 		case strings.Contains(contentType, "form-urlencoded"):
 			ctx.Invoke(Form(obj, ifacePtr...))

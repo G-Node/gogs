@@ -763,7 +763,7 @@ function initEditor() {
         var val = $editFilename.val(), m, mode, spec, extension, extWithDot, previewLink, dataUrl, apiCall;
         extension = extWithDot = "";
         if (m = /.+\.([^.]+)$/.exec(val)) {
-            extension = m[1];
+            extension = m[1].toLowerCase();
             extWithDot = "." + extension;
         }
 

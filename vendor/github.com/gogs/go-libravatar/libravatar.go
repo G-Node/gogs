@@ -16,6 +16,7 @@ import (
 	"net/mail"
 	"net/url"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -63,6 +64,7 @@ type Libravatar struct {
 	useHTTPS           bool
 	nameCache          map[cacheKey]cacheValue
 	nameCacheDuration  time.Duration
+	nameCacheMutex     *sync.Mutex
 	minSize            uint   // smallest image dimension allowed
 	maxSize            uint   // largest image dimension allowed
 	size               uint   // what dimension should be used
@@ -84,6 +86,7 @@ func New() *Libravatar {
 		secureServiceBase:  `avatars-sec`,
 		nameCache:          make(map[cacheKey]cacheValue),
 		nameCacheDuration:  24 * time.Hour,
+		nameCacheMutex:     &sync.Mutex{},
 	}
 }
 
@@ -183,7 +186,9 @@ func (v *Libravatar) baseURL(email *mail.Address, openid *url.URL) (string, erro
 	host := v.getDomain(email, openid)
 	key := cacheKey{service, host}
 	now := time.Now()
+	v.nameCacheMutex.Lock()
 	val, found := v.nameCache[key]
+	v.nameCacheMutex.Unlock()
 	if found && now.Sub(val.checkedAt) <= v.nameCacheDuration {
 		return protocol + val.target, nil
 	}
@@ -248,7 +253,9 @@ func (v *Libravatar) baseURL(email *mail.Address, openid *url.URL) (string, erro
 		domain = fmt.Sprintf("%s:%d", topRecord.Target, topRecord.Port)
 	}
 
+	v.nameCacheMutex.Lock()
 	v.nameCache[key] = cacheValue{checkedAt: now, target: domain}
+	v.nameCacheMutex.Unlock()
 	return protocol + domain, nil
 }
 

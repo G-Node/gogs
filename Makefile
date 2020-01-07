@@ -3,7 +3,7 @@ LDFLAGS += -X "github.com/G-Node/gogs/pkg/setting.BuildGitHash=$(shell git rev-p
 
 DATA_FILES := $(shell find conf | sed 's/ /\\ /g')
 LESS_FILES := $(wildcard public/less/gogs.less public/less/_*.less)
-GENERATED  := pkg/bindata/bindata.go public/css/gogs.css
+GENERATED  := internal/bindata/bindata.go public/css/gogs.css
 
 OS := $(shell uname)
 
@@ -33,16 +33,14 @@ govet:
 	$(GOVET) models pkg routes
 
 build: $(GENERATED)
-	go install $(BUILD_FLAGS) -ldflags '$(LDFLAGS)' -tags '$(TAGS)'
-	cp '$(GOPATH)/bin/gogs' .
+	go build $(BUILD_FLAGS) -ldflags '$(LDFLAGS)' -tags '$(TAGS)' -trimpath -o gogs
 
 build-dev: $(GENERATED) govet
-	go install $(BUILD_FLAGS) -tags '$(TAGS)'
+	go build $(BUILD_FLAGS) -tags '$(TAGS)' -trimpath -o gogs
 	cp '$(GOPATH)/bin/gogs' .
 
 build-dev-race: $(GENERATED) govet
-	go install $(BUILD_FLAGS) -race -tags '$(TAGS)'
-	cp '$(GOPATH)/bin/gogs' .
+	go build $(BUILD_FLAGS) -race -tags '$(TAGS)' -trimpath -o gogs
 
 pack:
 	rm -rf $(RELEASE_GOGS)
@@ -53,9 +51,9 @@ pack:
 
 release: build pack
 
-bindata: pkg/bindata/bindata.go
+bindata: internal/bindata/bindata.go
 
-pkg/bindata/bindata.go: $(DATA_FILES)
+internal/bindata/bindata.go: $(DATA_FILES)
 	go-bindata -o=$@ -ignore="\\.DS_Store|README.md|TRANSLATORS|auth.d" -pkg=bindata conf/...
 
 less: public/css/gogs.css

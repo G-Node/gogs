@@ -21,7 +21,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Unknwon/com"
+	"github.com/unknwon/com"
 	"gopkg.in/ini.v1"
 	"gopkg.in/redis.v2"
 
@@ -158,7 +158,7 @@ func (p *RedisProvider) Init(maxlifetime int64, configs string) (err error) {
 func (p *RedisProvider) Read(sid string) (session.RawStore, error) {
 	psid := p.prefix + sid
 	if !p.Exist(sid) {
-		if err := p.c.Set(psid, "").Err(); err != nil {
+		if err := p.c.SetEx(psid, p.duration, "").Err(); err != nil {
 			return nil, err
 		}
 	}

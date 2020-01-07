@@ -1,4 +1,4 @@
-# i18n [![Build Status](https://travis-ci.org/go-macaron/i18n.svg?branch=master)](https://travis-ci.org/go-macaron/i18n) [![](http://gocover.io/_badge/github.com/go-macaron/i18n)](http://gocover.io/github.com/go-macaron/i18n)
+# i18n [![Build Status](https://travis-ci.org/go-macaron/i18n.svg?branch=master)](https://travis-ci.org/go-macaron/i18n)
 
 Middleware i18n provides app Internationalization and Localization for [Macaron](https://github.com/go-macaron/macaron).
 

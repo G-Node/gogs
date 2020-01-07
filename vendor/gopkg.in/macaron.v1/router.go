@@ -18,26 +18,18 @@ import (
 	"net/http"
 	"strings"
 	"sync"
-	log "gopkg.in/clog.v1"
 )
 
 var (
 	// Known HTTP methods.
 	_HTTP_METHODS = map[string]bool{
-		"GET":       true,
-		"POST":      true,
-		"PUT":       true,
-		"DELETE":    true,
-		"PATCH":     true,
-		"OPTIONS":   true,
-		"HEAD":      true,
-		"MKCOL":     true,
-		"COPY":      true,
-		"MOVE":      true,
-		"LOCK":      true,
-		"UNLOCK":    true,
-		"PROPFIND":  true,
-		"PROPPATCH": true,
+		"GET":     true,
+		"POST":    true,
+		"PUT":     true,
+		"DELETE":  true,
+		"PATCH":   true,
+		"OPTIONS": true,
+		"HEAD":    true,
 	}
 )
 
@@ -150,7 +142,6 @@ func (r *Router) handle(method, pattern string, handle Handle) *Route {
 	methods := make(map[string]bool)
 	if method == "*" {
 		for m := range _HTTP_METHODS {
-			log.Trace("Register Methods:%s", m)
 			methods[m] = true
 		}
 	} else {

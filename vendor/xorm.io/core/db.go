@@ -15,6 +15,7 @@ import (
 )
 
 var (
+	// DefaultCacheSize sets the default cache size
 	DefaultCacheSize = 200
 )
 
@@ -198,6 +199,7 @@ var (
 	re = regexp.MustCompile(`[?](\w+)`)
 )
 
+// ExecMapContext exec map with context.Context
 // insert into (name) values (?)
 // insert into (name) values (?name)
 func (db *DB) ExecMapContext(ctx context.Context, query string, mp interface{}) (sql.Result, error) {

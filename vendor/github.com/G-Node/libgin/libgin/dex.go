@@ -3,7 +3,7 @@ package libgin
 import (
 	"time"
 
-	"github.com/G-Node/gig"
+	"github.com/G-Node/libgin/libgin/gig"
 )
 
 // NOTE: TEMPORARY COPY FROM gin-dex
