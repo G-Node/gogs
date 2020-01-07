@@ -69,7 +69,7 @@
 					</div>
 				{{end}}
 
-				<!-- Only show colne panel in repository home page -->
+				<!-- Only show clone panel in repository home page -->
 				{{ $n := len .TreeNames}}
 				{{ $l := Subtract $n 1}}
 				{{if eq $n 0}}
@@ -95,7 +95,7 @@
 						<i class="download icon"></i>
 						</div>
 
-						<!-- Download moddal -->
+						<!-- Download modal -->
 						<div id="download_modal" class="ui modal warning">
 							<i class="close icon"></i>
 							<div class="content">
