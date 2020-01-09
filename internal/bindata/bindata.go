@@ -316,12 +316,12 @@ func confAppIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/app.ini", size: 17775, mode: os.FileMode(432), modTime: time.Unix(1576589367, 0)}
+	info := bindataFileInfo{name: "conf/app.ini", size: 17775, mode: os.FileMode(432), modTime: time.Unix(1577104923, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
 
-var _confDataciteDataciteYml = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x9c\x55\x4f\x6f\xdb\xb8\x13\xbd\xeb\x53\x3c\x38\x97\x5f\x01\x45\x96\xf3\xa7\xed\x4f\xb7\xd6\x4a\x0a\x03\x6d\x13\x24\x29\xd0\x2b\x25\x8e\xac\x41\x28\x52\x4b\x52\xae\x1d\xec\x87\x5f\x90\x92\x13\x65\x17\x9b\x02\xeb\x9b\x48\xce\x9b\x99\x37\x6f\x9e\x4f\xf0\x8d\xbc\x90\xc2\x0b\x34\xc6\xa2\xbc\xd9\xc0\xd2\x96\x9d\xb7\xc2\xb3\xd1\x10\x75\x6d\xac\x64\xbd\x85\x37\x28\x85\x17\x6b\xf6\xf4\x12\x73\x5f\xb7\xd4\x09\x5c\x64\xab\x2c\x39\xc1\xb5\xb1\x90\xe4\x05\x2b\x92\x70\xe3\x95\x24\x57\x5b\xee\x23\x98\x23\x42\xeb\x7d\xef\x8a\xe5\x52\x1a\xce\x8c\xdd\x2e\x57\x79\x76\x79\x71\xfe\x71\x99\xe7\xab\x8b\x24\x39\x39\xc1\x1d\xfd\x31\xb0\x25\x89\x86\x49\x49\x97\x24\x27\x78\x68\x09\x9d\x60\x0d\x4b\x8e\x84\xad\x5b\xb2\x0e\xac\x77\x46\xed\x48\x66\xd8\xe8\x5a\x0d\x92\x20\x79\xcb\x5e\x28\xb0\x24\xed\xb9\x61\xb2\xf8\x1f\x65\xdb\x2c\xc5\xcd\xdd\x7a\x53\xbe\x4b\x4e\xc0\x0d\x7a\xe3\x1c\x57\x8a\x52\x70\x8c\x8b\xbd\xb5\x84\xde\x52\xc3\xfb\xd0\x26\x6b\xc9\xb5\xf0\x04\xf6\x0e\xfe\xd0\x53\x96\x88\xc1\xb7\xc6\xba\x22\x01\x4e\x13\x00\x68\xd8\x3a\xaf\x45\x47\x05\x16\x5f\x78\x47\xfa\xbb\xe8\x68\xb5\x88\x77\x4a\x3c\x5f\x5d\x8b\x8e\xd5\x61\x76\x27\x9a\x86\x15\x47\x6e\x0b\x2c\x3e\xbd\x7c\x4d\xf7\x2c\x0b\x2c\x62\xb9\x45\x9e\xe7\xf9\x69\x9e\xe7\xab\xd3\xb3\xf3\x8b\xcb\xd3\xf7\x1f\x3e\xfe\x7f\xf1\x76\xfe\xb3\x37\xf2\x9f\xfd\x26\xff\xd9\x2c\xff\xdd\x33\xcd\x9b\xb2\xf8\x79\xba\x3a\x3b\xbf\x38\xbd\x7c\xff\xe1\xe3\x6f\xd2\x9f\xbf\x91\xfe\x7c\x11\x06\xf9\x09\x9e\xbd\xa2\x40\xf2\xa8\x8b\x8a\x46\xee\x87\x4a\xb1\x6b\x49\x86\x09\x9b\xc1\xd6\x94\x25\xf1\x65\x81\xc5\xd5\x5e\x74\xbd\x22\x3c\x84\xef\x11\x45\x4a\x0e\x25\x87\x51\xeb\xc6\xd8\x6e\x92\x6a\x65\x06\x1f\xe1\x8e\x20\x29\xc6\xf1\x0b\x54\x96\xa9\x81\xa8\x82\xae\x6b\x9f\x25\x33\x55\x16\xf8\x33\x01\x8e\x59\x66\x17\x09\xe0\x5b\xe1\x51\x0b\x8d\xda\x68\x1f\x04\xa8\x58\x53\x65\x49\x3c\xba\x04\xa8\x06\x8f\x56\xb8\xd0\x4d\x50\x67\x7c\xc0\x3a\x88\x2f\x16\x94\x85\x5a\xbf\xb2\x87\x69\xf0\x48\x87\x5f\xc6\x4a\xf7\xaa\x3c\xb8\xd6\x0c\x4a\xa2\x22\x08\xe7\x4c\xcd\xc2\x93\xc4\x2f\xf6\x6d\x58\xa6\x40\x2b\x84\x43\x27\xf4\xe1\x25\x5e\xb8\x99\x80\x63\xe2\x47\x7a\x0d\xda\xb0\x96\xa2\x52\x94\x25\xc7\xa0\xa8\x5a\x7c\xa7\xc1\x1a\x57\x33\xe9\x9a\xe2\xc1\x95\xa2\xda\x5b\xd3\xb7\x07\xc7\x46\x99\xed\x61\xac\xb7\x26\xed\xe8\x15\xb1\xc1\x18\x7c\xcb\xee\x65\x38\xb8\x55\x24\x5c\xd8\x19\xb3\x63\x39\x16\xa0\xa6\xc8\x30\x7a\x08\x2d\x97\xc6\x42\x04\xc2\x1e\x43\x9d\xb3\x17\xa1\xb9\x29\x5e\x48\x09\xa1\x9c\x81\x40\x6d\xac\x25\xd7\x1b\x1d\x17\xf2\xeb\x66\x7d\xf5\xfd\xfe\x0a\x0d\x8f\x6a\x19\x3b\xec\x8d\x63\x6f\xec\x21\x4b\x26\xa8\xd0\xd9\x24\xb5\xb5\x25\xe1\x03\x65\x6b\xd3\x75\x46\x3b\xac\xd7\x39\x56\x59\x8e\xdb\xa0\xad\x1a\xa5\x89\x0e\x52\x52\xdc\x6d\x36\x3a\x88\x75\xb0\xaa\xc0\xe2\x68\x49\xf5\x04\x51\x8f\x08\xd1\x9e\xa2\x32\x6b\x19\x83\x97\x4f\x64\xcd\x72\x95\xe5\xcb\x45\x92\x44\xaf\xba\xe9\x27\x1d\x5e\x3f\x7b\xd5\xf5\x30\x76\xf0\x36\x81\xc9\x09\xee\xa9\x17\x36\xb8\x4c\x33\x68\x49\xf6\x99\x37\x6c\xad\xd0\x1e\x7a\xe8\x2a\xb2\xa8\x0e\x08\xe5\x88\x2c\x69\x46\xe0\x71\x98\x8b\xf2\xfa\x4b\x8a\xf2\xfa\x4b\x16\x96\xf3\x72\x31\x1e\x5e\xfd\x48\x71\xf5\xe3\x78\x14\xaa\xb9\x23\x15\x45\x35\xb6\x11\xab\x71\x19\x2c\x35\xc1\xd6\xd0\xf1\xb6\xf5\xa8\xa8\xc0\xc6\xdd\x0f\x7d\xaf\xa8\x23\xed\x1f\x4c\x8a\x8d\x2b\xa7\xfd\x94\x9f\x0f\xe1\xf3\x8e\x1a\xb2\x41\x3a\xf2\xf3\x61\x36\xc0\xa3\x00\xfe\xdd\x7a\xcb\x9b\xcd\xbb\xb9\xed\x66\xe3\x02\x43\xcc\x0c\x37\x4c\x77\x53\xa6\x70\x13\x25\x32\xb4\x1d\x24\xa1\x8c\x4e\x5f\x39\x72\x78\x39\xa3\x70\xe8\x7b\x63\xc3\xfb\xf1\xcc\x41\x58\x2a\x42\xca\x14\xc2\xfe\xe4\x5d\x8a\xdb\x6f\x9b\x32\xb1\xc7\xe2\x67\x06\x1e\x8d\x4e\x1a\x2e\x56\x79\xb6\xdf\xef\x97\x4f\x4f\x4f\x4f\xa3\x7f\x4d\xec\x14\x58\xbc\x66\x65\xbc\x9d\xe4\x76\xfb\x42\xe8\xb3\xbb\xcf\x80\x85\xdd\xf3\xae\xe8\xba\xae\xcb\xb4\xd6\xfa\xbf\x03\x9f\xfd\x0d\xb8\xef\x58\x16\x7a\xfa\xfd\x13\x76\x3e\xa6\xb7\x60\xcf\x8f\xf2\x98\x4c\x23\xfe\xcb\xa1\xa4\x46\x0c\xca\x83\x5d\xfc\xab\x77\xe4\x53\x18\xdf\x92\x7d\x9e\x1e\x76\x42\x0d\x23\xcf\xb8\x37\x8d\xff\x25\x2c\xa5\xf1\xf1\xad\xe8\xc9\xa6\xd8\x74\x62\x4b\x29\x1e\x68\xef\xb3\xe4\x28\xf7\xb1\xbc\x09\x32\xf9\x2b\x00\x00\xff\xff\x5c\x1f\x88\x4f\x73\x08\x00\x00")
+var _confDataciteDataciteYml = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x9c\x56\x4d\x6f\xdb\xba\x12\xdd\xeb\x57\x1c\xd8\x9b\x57\x40\x91\x65\x27\x69\xfb\xb4\x6b\xad\xa4\x30\xd0\x36\x41\x92\x02\xdd\xd2\xe2\xc8\x9a\x17\x8a\xd4\x23\x29\xc7\x0e\xee\x8f\xbf\x20\x25\x27\xf6\x2d\x9a\x02\x37\xab\x48\xe4\x9c\xf9\x38\x67\x8e\x3c\xc5\x37\xf2\x42\x0a\x2f\x50\x1b\x8b\xf2\x66\x05\x4b\x1b\x76\xde\x0a\xcf\x46\x43\x54\x95\xb1\x92\xf5\x06\xde\xa0\x14\x5e\x2c\xd9\xd3\x6b\xcc\x7d\xd5\x50\x2b\x70\x91\xcd\xb3\x64\x8a\x6b\x63\x21\xc9\x0b\x56\x24\xe1\x86\x23\x49\xae\xb2\xdc\x45\x30\x47\x84\xc6\xfb\xce\x15\xb3\x99\x34\x9c\x19\xbb\x99\xcd\xf3\xec\xf2\xe2\xfc\xe3\x2c\xcf\xe7\x17\x49\x32\x9d\xe2\x8e\xfe\xdf\xb3\x25\x89\x9a\x49\x49\x97\x24\x53\x3c\x34\x84\x56\xb0\x86\x25\x47\xc2\x56\x0d\x59\x07\xd6\x5b\xa3\xb6\x24\x33\xac\x74\xa5\x7a\x49\x90\xbc\x61\x2f\x14\x58\x92\xf6\x5c\x33\x59\xfc\x87\xb2\x4d\x96\xe2\xe6\x6e\xb9\x2a\xdf\x25\x53\x70\x8d\xce\x38\xc7\x6b\x45\x29\x38\xc6\xc5\xde\x1a\x42\x67\xa9\xe6\x5d\x68\x93\xb5\xe4\x4a\x78\x02\x7b\x07\xbf\xef\x28\x4b\x44\xef\x1b\x63\x5d\x91\x00\x67\x09\x00\xd4\x6c\x9d\xd7\xa2\xa5\x02\x93\x2f\xbc\x25\xfd\x5d\xb4\x34\x9f\xc4\x33\x25\x5e\x8e\xae\x45\xcb\x6a\x7f\x74\x26\xea\x9a\x15\xc7\xd9\x16\x98\x7c\x7a\x7d\x1a\xcf\x59\x16\x98\xc4\x72\x8b\x3c\xcf\xf3\xb3\x3c\xcf\xe7\x67\x8b\xf3\x8b\xcb\xb3\xf7\x1f\x3e\xfe\x77\xf2\x76\xfe\xc5\x1b\xf9\x17\x7f\xc8\xbf\x38\xca\x7f\xf7\x32\xe6\x55\x59\xfc\x3c\x9b\x2f\xce\x2f\xce\x2e\xdf\x7f\xf8\xf8\x87\xf4\xe7\x6f\xa4\x3f\x9f\x04\x22\x3f\xc1\xb3\x57\x14\x86\x3c\xe8\x62\x4d\xc3\xec\xfb\xb5\x62\xd7\x90\x0c\x0c\x9b\xde\x56\x94\x25\xf1\x66\x81\xc9\xd5\x4e\xb4\x9d\x22\x3c\x84\xe7\x01\x45\x4a\x0e\x25\x07\xaa\x75\x6d\x6c\x3b\x4a\x75\x6d\x7a\x1f\xe1\x0e\x20\x29\x06\xfa\x05\xd6\x96\xa9\x86\x58\x07\x5d\x57\x3e\x4b\x8e\x54\x59\xe0\xaf\x04\x38\x64\x39\x3a\x48\x00\xdf\x08\x8f\x4a\x68\x54\x46\xfb\x20\x40\xc5\x9a\xd6\x96\xc4\xa3\x4b\x80\x75\xef\xd1\x08\x17\xba\x09\xea\x8c\x17\x58\x07\xf1\xc5\x82\xb2\x50\xeb\x57\xf6\x30\x35\x1e\x69\xff\x64\xac\x74\x27\xe5\xc1\x35\xa6\x57\x12\x6b\x82\x70\xce\x54\x2c\x3c\x49\x3c\xb1\x6f\xc2\x32\x85\xb1\x42\x38\xb4\x42\xef\x5f\xe3\x85\x3b\x12\x70\x4c\xfc\x48\xa7\xa0\x35\x6b\x29\xd6\x8a\xb2\xe4\x10\x14\x55\x8b\xef\xd4\x5b\xe3\x2a\x26\x5d\x51\x7c\x71\xa5\xa8\xf2\xd6\x74\xcd\xde\xb1\x51\x66\xb3\x1f\xea\xad\x48\x3b\x3a\x19\x6c\x30\x06\xdf\xb0\x7b\x25\x07\xb7\x8a\x84\x0b\x3b\x63\xb6\x2c\x87\x02\xd4\x18\x19\xa8\x87\xd0\x72\x66\x2c\x44\x18\xd8\x63\xa8\xf3\xe8\x46\x68\x6e\x8c\x17\x52\x42\x28\x67\x20\x50\x19\x6b\xc9\x75\x46\xc7\x85\xfc\xba\x5a\x5e\x7d\xbf\xbf\x42\xcd\x83\x5a\x86\x0e\x3b\xe3\xd8\x1b\xbb\xcf\x92\x11\x2a\x74\x36\x4a\x6d\x69\x49\xf8\x30\xb2\xa5\x69\x5b\xa3\x1d\x96\xcb\x1c\xf3\x2c\xc7\x6d\xd0\x56\x85\xd2\x44\x07\x29\x29\xee\x36\x1b\x1d\xc4\xda\x5b\x55\x60\x72\xb0\xa4\x6a\x84\xa8\x06\x84\x68\x4f\x51\x99\x95\x8c\xc1\xb3\x67\xb2\x66\x36\xcf\xf2\xd9\x24\x49\xa2\x57\xdd\x74\xa3\x0e\xaf\x5f\xbc\xea\xba\x1f\x3a\x78\x7b\x80\xc9\x14\xf7\xd4\x09\x1b\x5c\xa6\xee\xb5\x24\xfb\x32\x37\x6c\xac\xd0\x1e\xba\x6f\xd7\x64\xb1\xde\x23\x94\x23\xb2\xa4\x1e\x80\x07\x32\x27\xe5\xf5\x97\x14\xe5\xf5\x97\x2c\x2c\xe7\xe5\x64\x78\x79\xf5\x23\xc5\xd5\x8f\xc3\xab\x50\xcd\x1d\xa9\x28\xaa\xa1\x8d\x58\x8d\xcb\x60\xa9\x0e\xb6\x86\x96\x37\x8d\xc7\x9a\x0a\xac\xdc\x7d\xdf\x75\x8a\x5a\xd2\xfe\xc1\xa4\x58\xb9\x72\xdc\x4f\xf9\x79\x1f\x1e\xef\xa8\x26\x1b\xa4\x23\x3f\xef\x8f\x08\x3c\x08\xe0\xf7\xd6\x5b\xde\xac\xde\x1d\xdb\x6e\x36\x2c\x30\xc4\x91\xe1\x06\x76\x57\x65\x0a\x37\x8e\x44\x86\xb6\x83\x24\x94\xd1\xe9\x89\x23\x87\x9b\x47\x23\xec\xbb\xce\xd8\x70\x7f\x78\xe7\x20\x2c\x15\x21\x65\x0a\x61\x7f\xf2\x36\xc5\xed\xb7\x55\x99\x4c\xb1\xd2\x31\xb4\x62\x3f\x32\x12\xf8\x4a\xd1\xfd\x2a\xe3\xba\x57\x2a\x0c\x68\xe8\xf6\xe4\x23\x11\x0c\x28\xc5\xf8\x29\x48\xf1\x3f\xd3\xdb\xc0\x3d\xf9\x2a\x4b\x5e\x22\x8e\xbe\x11\xd1\x4b\xa5\xe1\x62\x9e\x67\xbb\xdd\x6e\xf6\xfc\xfc\xfc\x3c\x58\xe4\x48\x40\x81\xc9\xe9\xe0\x87\xd3\x43\x95\x41\xd5\xe3\xbf\xf3\xc9\x29\xaa\xb0\x3b\xde\x16\x6d\xdb\xb6\x99\xd6\x5a\xff\x4b\xd4\xc5\x3f\x50\xbb\x96\x65\xa1\xc7\xbf\x5f\x31\x8f\x35\xf0\x5b\xcc\xf3\x83\xf0\x46\x3b\x8a\xdf\x4f\x94\x54\x8b\x5e\x79\xb0\x8b\x3f\x22\x1c\xf9\x14\xc6\x37\x64\x5f\x74\x81\xad\x50\xfd\xc0\x20\xee\x4d\xed\x9f\x84\xa5\x34\x5e\xbe\x15\x1d\xd9\x14\xab\x56\x6c\x28\xc5\x03\xed\x7c\x18\xf7\x00\x3f\xd4\x36\x42\x86\xbc\xa5\x81\x36\x1e\x24\x83\xef\x5a\x58\x6a\xcd\x76\x24\xd6\x28\x65\x9e\x02\x91\xc1\xc4\x13\x4f\x6d\x17\x76\x63\x4b\xd6\xc5\x0e\xe6\xd9\x22\xf9\x3b\x00\x00\xff\xff\x36\x4c\x85\xec\x0e\x09\x00\x00")
 
 func confDataciteDataciteYmlBytes() ([]byte, error) {
 	return bindataRead(
@@ -336,7 +336,7 @@ func confDataciteDataciteYml() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/datacite/datacite.yml", size: 2163, mode: os.FileMode(432), modTime: time.Unix(1576589367, 0)}
+	info := bindataFileInfo{name: "conf/datacite/datacite.yml", size: 2318, mode: os.FileMode(432), modTime: time.Unix(1578063794, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1436,7 +1436,7 @@ func confGitignoreGo() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Go", size: 266, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Go", size: 266, mode: os.FileMode(432), modTime: time.Unix(1577112094, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4036,7 +4036,7 @@ func confLicenseCreativeCommonsCc010PublicDomainDedication() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/Creative Commons CC0 1.0 Public Domain Dedication", size: 6894, mode: os.FileMode(432), modTime: time.Unix(1576589367, 0)}
+	info := bindataFileInfo{name: "conf/license/Creative Commons CC0 1.0 Public Domain Dedication", size: 6894, mode: os.FileMode(432), modTime: time.Unix(1577104923, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4416,7 +4416,7 @@ func confLocaleLocale_bgBgIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_bg-BG.ini", size: 96539, mode: os.FileMode(432), modTime: time.Unix(1576589429, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_bg-BG.ini", size: 96539, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4436,7 +4436,7 @@ func confLocaleLocale_csCzIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_cs-CZ.ini", size: 70498, mode: os.FileMode(432), modTime: time.Unix(1576589430, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_cs-CZ.ini", size: 70498, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4456,7 +4456,7 @@ func confLocaleLocale_deDeIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_de-DE.ini", size: 71113, mode: os.FileMode(432), modTime: time.Unix(1576589430, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_de-DE.ini", size: 71113, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4476,7 +4476,7 @@ func confLocaleLocale_enGbIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_en-GB.ini", size: 63919, mode: os.FileMode(432), modTime: time.Unix(1576775257, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_en-GB.ini", size: 63919, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4496,7 +4496,7 @@ func confLocaleLocale_enUsIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_en-US.ini", size: 67051, mode: os.FileMode(432), modTime: time.Unix(1576775001, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_en-US.ini", size: 67051, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4516,7 +4516,7 @@ func confLocaleLocale_esEsIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_es-ES.ini", size: 71914, mode: os.FileMode(432), modTime: time.Unix(1576592940, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_es-ES.ini", size: 71914, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4536,7 +4536,7 @@ func confLocaleLocale_faIrIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_fa-IR.ini", size: 90359, mode: os.FileMode(432), modTime: time.Unix(1576589429, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_fa-IR.ini", size: 90359, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4556,7 +4556,7 @@ func confLocaleLocale_fiFiIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_fi-FI.ini", size: 68016, mode: os.FileMode(432), modTime: time.Unix(1576589430, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_fi-FI.ini", size: 68016, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4576,7 +4576,7 @@ func confLocaleLocale_frFrIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_fr-FR.ini", size: 72343, mode: os.FileMode(432), modTime: time.Unix(1576589430, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_fr-FR.ini", size: 72343, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4596,7 +4596,7 @@ func confLocaleLocale_glEsIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_gl-ES.ini", size: 69771, mode: os.FileMode(432), modTime: time.Unix(1576589430, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_gl-ES.ini", size: 69771, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4616,7 +4616,7 @@ func confLocaleLocale_huHuIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_hu-HU.ini", size: 71018, mode: os.FileMode(432), modTime: time.Unix(1576589430, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_hu-HU.ini", size: 71018, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4636,7 +4636,7 @@ func confLocaleLocale_idIdIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_id-ID.ini", size: 66323, mode: os.FileMode(432), modTime: time.Unix(1576589429, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_id-ID.ini", size: 66323, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4656,7 +4656,7 @@ func confLocaleLocale_itItIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_it-IT.ini", size: 68598, mode: os.FileMode(432), modTime: time.Unix(1576589430, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_it-IT.ini", size: 68598, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4676,7 +4676,7 @@ func confLocaleLocale_jaJpIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_ja-JP.ini", size: 81009, mode: os.FileMode(432), modTime: time.Unix(1576589430, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_ja-JP.ini", size: 81009, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4696,7 +4696,7 @@ func confLocaleLocale_koKrIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_ko-KR.ini", size: 71166, mode: os.FileMode(432), modTime: time.Unix(1576589429, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_ko-KR.ini", size: 71166, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4716,7 +4716,7 @@ func confLocaleLocale_lvLvIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_lv-LV.ini", size: 71069, mode: os.FileMode(432), modTime: time.Unix(1576589430, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_lv-LV.ini", size: 71069, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4736,7 +4736,7 @@ func confLocaleLocale_nlNlIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_nl-NL.ini", size: 66875, mode: os.FileMode(432), modTime: time.Unix(1576589430, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_nl-NL.ini", size: 66875, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4756,7 +4756,7 @@ func confLocaleLocale_plPlIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_pl-PL.ini", size: 69359, mode: os.FileMode(432), modTime: time.Unix(1576589430, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_pl-PL.ini", size: 69359, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4776,7 +4776,7 @@ func confLocaleLocale_ptBrIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_pt-BR.ini", size: 69490, mode: os.FileMode(432), modTime: time.Unix(1576589430, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_pt-BR.ini", size: 69490, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4796,7 +4796,7 @@ func confLocaleLocale_ptPtIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_pt-PT.ini", size: 70307, mode: os.FileMode(432), modTime: time.Unix(1576589429, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_pt-PT.ini", size: 70307, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4816,7 +4816,7 @@ func confLocaleLocale_ruRuIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_ru-RU.ini", size: 101278, mode: os.FileMode(432), modTime: time.Unix(1576592955, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_ru-RU.ini", size: 101278, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4836,7 +4836,7 @@ func confLocaleLocale_skSkIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_sk-SK.ini", size: 70596, mode: os.FileMode(432), modTime: time.Unix(1576589429, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_sk-SK.ini", size: 70596, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4856,7 +4856,7 @@ func confLocaleLocale_srSpIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_sr-SP.ini", size: 93153, mode: os.FileMode(432), modTime: time.Unix(1576589430, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_sr-SP.ini", size: 93153, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4876,7 +4876,7 @@ func confLocaleLocale_svSeIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_sv-SE.ini", size: 66876, mode: os.FileMode(432), modTime: time.Unix(1576589430, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_sv-SE.ini", size: 66876, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4896,7 +4896,7 @@ func confLocaleLocale_trTrIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_tr-TR.ini", size: 69816, mode: os.FileMode(432), modTime: time.Unix(1576589430, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_tr-TR.ini", size: 69816, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4916,7 +4916,7 @@ func confLocaleLocale_ukUaIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_uk-UA.ini", size: 98784, mode: os.FileMode(432), modTime: time.Unix(1576589430, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_uk-UA.ini", size: 98784, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4936,7 +4936,7 @@ func confLocaleLocale_viVnIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_vi-VN.ini", size: 75198, mode: os.FileMode(432), modTime: time.Unix(1576589429, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_vi-VN.ini", size: 75198, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4956,7 +4956,7 @@ func confLocaleLocale_zhCnIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_zh-CN.ini", size: 62875, mode: os.FileMode(432), modTime: time.Unix(1576589429, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_zh-CN.ini", size: 62875, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4976,7 +4976,7 @@ func confLocaleLocale_zhHkIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_zh-HK.ini", size: 63260, mode: os.FileMode(432), modTime: time.Unix(1576589429, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_zh-HK.ini", size: 63260, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4996,7 +4996,7 @@ func confLocaleLocale_zhTwIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_zh-TW.ini", size: 62498, mode: os.FileMode(432), modTime: time.Unix(1576592979, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_zh-TW.ini", size: 62498, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }

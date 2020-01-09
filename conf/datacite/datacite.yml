@@ -56,20 +56,24 @@ funding:
 # Please provide digital identifier (e.g., DOI) if possible.
 # Add a prefix to the ID, separated by a colon, to indicate the source.
 # Supported sources are: DOI, arXiv, PMID
+# In the citation field, please provide the full reference, including title, authors, journal etc.
 references:
   -
     id: "doi:10.xxx/zzzz"
     reftype: "IsSupplementTo"
-    name: "PublicationName1"
+    citation: "Citation1"
   -
     id: "arxiv:mmmm.nnnn"
     reftype: "IsSupplementTo"
-    name: "PublicationName2"
+    citation: "Citation2"
   -
     id: "pmid:nnnnnnnn"
     reftype: "IsReferencedBy"
-    name: "PublicationName3"
+    citation: "Citation3"
 
 
 # Resource type. Default is Dataset, other possible values are Software, DataPaper, Image, Text.
 resourcetype: Dataset
+
+# Do not edit or remove the following line
+templateversion: 1.2
