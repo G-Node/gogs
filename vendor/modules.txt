@@ -1,6 +1,6 @@
 # github.com/G-Node/git-module v0.8.4-gnode
 github.com/G-Node/git-module
-# github.com/G-Node/libgin v0.3.1
+# github.com/G-Node/libgin v0.3.2
 github.com/G-Node/libgin/libgin
 github.com/G-Node/libgin/libgin/annex
 github.com/G-Node/libgin/libgin/gig

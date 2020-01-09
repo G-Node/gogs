@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/G-Node/git-module v0.8.4-gnode
-	github.com/G-Node/libgin v0.3.1
+	github.com/G-Node/libgin v0.3.2
 	github.com/bgentry/speakeasy v0.1.0 // indirect
 	github.com/denisenkom/go-mssqldb v0.0.0-20191001013358-cfbb681360f0
 	github.com/dustinkirkland/golang-petname v0.0.0-20191129215211-8e5a1ed0cff0
@@ -70,5 +70,3 @@ require (
 	xorm.io/core v0.7.2
 	xorm.io/xorm v0.8.0
 )
-
-// +heroku goVersion go1.13beta1
