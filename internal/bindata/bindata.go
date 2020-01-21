@@ -316,12 +316,12 @@ func confAppIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/app.ini", size: 17775, mode: os.FileMode(432), modTime: time.Unix(1577104923, 0)}
+	info := bindataFileInfo{name: "conf/app.ini", size: 17775, mode: os.FileMode(436), modTime: time.Unix(1577104923, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
 
-var _confDataciteDataciteYml = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x9c\x56\x4d\x6f\xdb\xba\x12\xdd\xeb\x57\x1c\xd8\x9b\x57\x40\x91\x65\x27\x69\xfb\xb4\x6b\xad\xa4\x30\xd0\x36\x41\x92\x02\xdd\xd2\xe2\xc8\x9a\x17\x8a\xd4\x23\x29\xc7\x0e\xee\x8f\xbf\x20\x25\x27\xf6\x2d\x9a\x02\x37\xab\x48\xe4\x9c\xf9\x38\x67\x8e\x3c\xc5\x37\xf2\x42\x0a\x2f\x50\x1b\x8b\xf2\x66\x05\x4b\x1b\x76\xde\x0a\xcf\x46\x43\x54\x95\xb1\x92\xf5\x06\xde\xa0\x14\x5e\x2c\xd9\xd3\x6b\xcc\x7d\xd5\x50\x2b\x70\x91\xcd\xb3\x64\x8a\x6b\x63\x21\xc9\x0b\x56\x24\xe1\x86\x23\x49\xae\xb2\xdc\x45\x30\x47\x84\xc6\xfb\xce\x15\xb3\x99\x34\x9c\x19\xbb\x99\xcd\xf3\xec\xf2\xe2\xfc\xe3\x2c\xcf\xe7\x17\x49\x32\x9d\xe2\x8e\xfe\xdf\xb3\x25\x89\x9a\x49\x49\x97\x24\x53\x3c\x34\x84\x56\xb0\x86\x25\x47\xc2\x56\x0d\x59\x07\xd6\x5b\xa3\xb6\x24\x33\xac\x74\xa5\x7a\x49\x90\xbc\x61\x2f\x14\x58\x92\xf6\x5c\x33\x59\xfc\x87\xb2\x4d\x96\xe2\xe6\x6e\xb9\x2a\xdf\x25\x53\x70\x8d\xce\x38\xc7\x6b\x45\x29\x38\xc6\xc5\xde\x1a\x42\x67\xa9\xe6\x5d\x68\x93\xb5\xe4\x4a\x78\x02\x7b\x07\xbf\xef\x28\x4b\x44\xef\x1b\x63\x5d\x91\x00\x67\x09\x00\xd4\x6c\x9d\xd7\xa2\xa5\x02\x93\x2f\xbc\x25\xfd\x5d\xb4\x34\x9f\xc4\x33\x25\x5e\x8e\xae\x45\xcb\x6a\x7f\x74\x26\xea\x9a\x15\xc7\xd9\x16\x98\x7c\x7a\x7d\x1a\xcf\x59\x16\x98\xc4\x72\x8b\x3c\xcf\xf3\xb3\x3c\xcf\xe7\x67\x8b\xf3\x8b\xcb\xb3\xf7\x1f\x3e\xfe\x77\xf2\x76\xfe\xc5\x1b\xf9\x17\x7f\xc8\xbf\x38\xca\x7f\xf7\x32\xe6\x55\x59\xfc\x3c\x9b\x2f\xce\x2f\xce\x2e\xdf\x7f\xf8\xf8\x87\xf4\xe7\x6f\xa4\x3f\x9f\x04\x22\x3f\xc1\xb3\x57\x14\x86\x3c\xe8\x62\x4d\xc3\xec\xfb\xb5\x62\xd7\x90\x0c\x0c\x9b\xde\x56\x94\x25\xf1\x66\x81\xc9\xd5\x4e\xb4\x9d\x22\x3c\x84\xe7\x01\x45\x4a\x0e\x25\x07\xaa\x75\x6d\x6c\x3b\x4a\x75\x6d\x7a\x1f\xe1\x0e\x20\x29\x06\xfa\x05\xd6\x96\xa9\x86\x58\x07\x5d\x57\x3e\x4b\x8e\x54\x59\xe0\xaf\x04\x38\x64\x39\x3a\x48\x00\xdf\x08\x8f\x4a\x68\x54\x46\xfb\x20\x40\xc5\x9a\xd6\x96\xc4\xa3\x4b\x80\x75\xef\xd1\x08\x17\xba\x09\xea\x8c\x17\x58\x07\xf1\xc5\x82\xb2\x50\xeb\x57\xf6\x30\x35\x1e\x69\xff\x64\xac\x74\x27\xe5\xc1\x35\xa6\x57\x12\x6b\x82\x70\xce\x54\x2c\x3c\x49\x3c\xb1\x6f\xc2\x32\x85\xb1\x42\x38\xb4\x42\xef\x5f\xe3\x85\x3b\x12\x70\x4c\xfc\x48\xa7\xa0\x35\x6b\x29\xd6\x8a\xb2\xe4\x10\x14\x55\x8b\xef\xd4\x5b\xe3\x2a\x26\x5d\x51\x7c\x71\xa5\xa8\xf2\xd6\x74\xcd\xde\xb1\x51\x66\xb3\x1f\xea\xad\x48\x3b\x3a\x19\x6c\x30\x06\xdf\xb0\x7b\x25\x07\xb7\x8a\x84\x0b\x3b\x63\xb6\x2c\x87\x02\xd4\x18\x19\xa8\x87\xd0\x72\x66\x2c\x44\x18\xd8\x63\xa8\xf3\xe8\x46\x68\x6e\x8c\x17\x52\x42\x28\x67\x20\x50\x19\x6b\xc9\x75\x46\xc7\x85\xfc\xba\x5a\x5e\x7d\xbf\xbf\x42\xcd\x83\x5a\x86\x0e\x3b\xe3\xd8\x1b\xbb\xcf\x92\x11\x2a\x74\x36\x4a\x6d\x69\x49\xf8\x30\xb2\xa5\x69\x5b\xa3\x1d\x96\xcb\x1c\xf3\x2c\xc7\x6d\xd0\x56\x85\xd2\x44\x07\x29\x29\xee\x36\x1b\x1d\xc4\xda\x5b\x55\x60\x72\xb0\xa4\x6a\x84\xa8\x06\x84\x68\x4f\x51\x99\x95\x8c\xc1\xb3\x67\xb2\x66\x36\xcf\xf2\xd9\x24\x49\xa2\x57\xdd\x74\xa3\x0e\xaf\x5f\xbc\xea\xba\x1f\x3a\x78\x7b\x80\xc9\x14\xf7\xd4\x09\x1b\x5c\xa6\xee\xb5\x24\xfb\x32\x37\x6c\xac\xd0\x1e\xba\x6f\xd7\x64\xb1\xde\x23\x94\x23\xb2\xa4\x1e\x80\x07\x32\x27\xe5\xf5\x97\x14\xe5\xf5\x97\x2c\x2c\xe7\xe5\x64\x78\x79\xf5\x23\xc5\xd5\x8f\xc3\xab\x50\xcd\x1d\xa9\x28\xaa\xa1\x8d\x58\x8d\xcb\x60\xa9\x0e\xb6\x86\x96\x37\x8d\xc7\x9a\x0a\xac\xdc\x7d\xdf\x75\x8a\x5a\xd2\xfe\xc1\xa4\x58\xb9\x72\xdc\x4f\xf9\x79\x1f\x1e\xef\xa8\x26\x1b\xa4\x23\x3f\xef\x8f\x08\x3c\x08\xe0\xf7\xd6\x5b\xde\xac\xde\x1d\xdb\x6e\x36\x2c\x30\xc4\x91\xe1\x06\x76\x57\x65\x0a\x37\x8e\x44\x86\xb6\x83\x24\x94\xd1\xe9\x89\x23\x87\x9b\x47\x23\xec\xbb\xce\xd8\x70\x7f\x78\xe7\x20\x2c\x15\x21\x65\x0a\x61\x7f\xf2\x36\xc5\xed\xb7\x55\x99\x4c\xb1\xd2\x31\xb4\x62\x3f\x32\x12\xf8\x4a\xd1\xfd\x2a\xe3\xba\x57\x2a\x0c\x68\xe8\xf6\xe4\x23\x11\x0c\x28\xc5\xf8\x29\x48\xf1\x3f\xd3\xdb\xc0\x3d\xf9\x2a\x4b\x5e\x22\x8e\xbe\x11\xd1\x4b\xa5\xe1\x62\x9e\x67\xbb\xdd\x6e\xf6\xfc\xfc\xfc\x3c\x58\xe4\x48\x40\x81\xc9\xe9\xe0\x87\xd3\x43\x95\x41\xd5\xe3\xbf\xf3\xc9\x29\xaa\xb0\x3b\xde\x16\x6d\xdb\xb6\x99\xd6\x5a\xff\x4b\xd4\xc5\x3f\x50\xbb\x96\x65\xa1\xc7\xbf\x5f\x31\x8f\x35\xf0\x5b\xcc\xf3\x83\xf0\x46\x3b\x8a\xdf\x4f\x94\x54\x8b\x5e\x79\xb0\x8b\x3f\x22\x1c\xf9\x14\xc6\x37\x64\x5f\x74\x81\xad\x50\xfd\xc0\x20\xee\x4d\xed\x9f\x84\xa5\x34\x5e\xbe\x15\x1d\xd9\x14\xab\x56\x6c\x28\xc5\x03\xed\x7c\x18\xf7\x00\x3f\xd4\x36\x42\x86\xbc\xa5\x81\x36\x1e\x24\x83\xef\x5a\x58\x6a\xcd\x76\x24\xd6\x28\x65\x9e\x02\x91\xc1\xc4\x13\x4f\x6d\x17\x76\x63\x4b\xd6\xc5\x0e\xe6\xd9\x22\xf9\x3b\x00\x00\xff\xff\x36\x4c\x85\xec\x0e\x09\x00\x00")
+var _confDataciteDataciteYml = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x9c\x56\x4d\x6f\xdb\x3a\x16\xdd\xeb\x57\x1c\xd8\x9b\x29\x20\xcb\xb2\x9d\xb4\x1d\xed\x5a\x3b\x29\x8c\x69\x9b\x20\x49\x81\x6e\x69\xf1\xca\xba\x13\x8a\xd4\x90\x94\x63\x07\xf3\xe3\x1f\x48\xc9\x89\xfd\x8a\xa6\xc0\xcb\x2a\x12\x79\xcf\xfd\x38\xe7\x1e\x79\x8c\x6f\xe4\x85\x14\x5e\xa0\x32\x16\xab\x9b\x35\x2c\x6d\xd9\x79\x2b\x3c\x1b\x0d\x51\x96\xc6\x4a\xd6\x5b\x78\x83\x95\xf0\x62\xc9\x9e\x5e\x63\xee\xcb\x9a\x1a\x81\x8b\x6c\x96\x25\x63\x5c\x1b\x0b\x49\x5e\xb0\x22\x09\xd7\x1f\x49\x72\xa5\xe5\x36\x82\x39\x22\xd4\xde\xb7\xae\x98\x4e\xa5\xe1\xcc\xd8\xed\x74\x96\x67\x97\x17\x8b\x8f\xd3\x3c\x9f\x5d\x24\xc9\x78\x8c\x3b\xfa\x5f\xc7\x96\x24\x2a\x26\x25\x5d\x92\x8c\xf1\x50\x13\x1a\xc1\x1a\x96\x1c\x09\x5b\xd6\x64\x1d\x58\xef\x8c\xda\x91\xcc\xb0\xd6\xa5\xea\x24\x41\xf2\x96\xbd\x50\x60\x49\xda\x73\xc5\x64\xf1\x2f\xca\xb6\x59\x8a\x9b\xbb\xe5\x7a\xf5\x2e\x19\x83\x2b\xb4\xc6\x39\xde\x28\x4a\xc1\x31\x2e\xf6\x56\x13\x5a\x4b\x15\xef\x43\x9b\xac\x25\x97\xc2\x13\xd8\x3b\xf8\x43\x4b\x59\x22\x3a\x5f\x1b\xeb\x8a\x04\x98\x24\x00\x50\xb1\x75\x5e\x8b\x86\x0a\x8c\xbe\xf0\x8e\xf4\x77\xd1\xd0\x6c\x14\xcf\x94\x78\x39\xba\x16\x0d\xab\xc3\xc9\x99\xa8\x2a\x56\x1c\x67\x5b\x60\xf4\xe9\xf5\x69\x38\x67\x59\x60\x14\xcb\x2d\xf2\x3c\xcf\x27\x79\x9e\xcf\x26\xf3\xc5\xc5\xe5\xe4\xfd\x87\x8f\xff\x1e\xbd\x9d\x7f\xfe\x46\xfe\xf9\x1f\xf2\xcf\x4f\xf2\xdf\xbd\x8c\x79\xbd\x2a\x7e\x4e\x66\xf3\xc5\xc5\xe4\xf2\xfd\x87\x8f\x7f\x48\xbf\x78\x23\xfd\x62\x14\x88\xfc\x04\xcf\x5e\x51\x18\x72\xaf\x8b\x0d\xf5\xb3\xef\x36\x8a\x5d\x4d\x32\x30\x6c\x3a\x5b\x52\x96\xc4\x9b\x05\x46\x57\x7b\xd1\xb4\x8a\xf0\x10\x9e\x7b\x14\x29\x39\x94\x1c\xa8\xd6\x95\xb1\xcd\x20\xd5\x8d\xe9\x7c\x84\x3b\x82\xa4\xe8\xe9\x17\xd8\x58\xa6\x0a\x62\x13\x74\x5d\xfa\x2c\x39\x51\x65\x81\xff\x27\xc0\x31\xcb\xc9\x41\x02\xf8\x5a\x78\x94\x42\xa3\x34\xda\x07\x01\x2a\xd6\xb4\xb1\x24\x1e\x5d\x02\x6c\x3a\x8f\x5a\xb8\xd0\x4d\x50\x67\xbc\xc0\x3a\x88\x2f\x16\x94\x85\x5a\xbf\xb2\x87\xa9\xf0\x48\x87\x27\x63\xa5\x3b\x2b\x0f\xae\x36\x9d\x92\xd8\x10\x84\x73\xa6\x64\xe1\x49\xe2\x89\x7d\x1d\x96\x29\x8c\x15\xc2\xa1\x11\xfa\xf0\x1a\x2f\xdc\x89\x80\x63\xe2\x47\x3a\x07\xad\x58\x4b\xb1\x51\x94\x25\xc7\xa0\xa8\x5a\x7c\xa7\xce\x1a\x57\x32\xe9\x92\xe2\x8b\xff\xf4\xc7\xf3\xd3\x87\x45\x5f\x73\x49\xda\xd1\xd9\x70\x83\x39\xf8\x9a\xdd\x2b\x41\xb8\x55\x24\x5c\xd8\x1b\xb3\x63\xd9\x17\xa1\x86\xc8\x40\x3f\x84\x96\x53\x63\x21\xc2\xd0\x1e\x43\xad\x27\x37\x42\x83\x43\xbc\x90\x12\x42\x39\x03\x81\xd2\x58\x4b\xae\x35\x3a\x2e\xe5\xd7\xf5\xf2\xea\xfb\xfd\x15\x2a\xee\x15\xd3\x77\xd9\x1a\xc7\xde\xd8\x43\x96\x0c\x50\xa1\xbb\x41\x6e\x4b\x4b\xc2\x87\xb1\x2d\x4d\xd3\x18\xed\xb0\x5c\xe6\x98\x65\x39\x6e\x83\xbe\x4a\xac\x4c\x74\x91\x15\xc5\xfd\x66\xa3\x83\x60\x3b\xab\x0a\x8c\x8e\xb6\x54\x0e\x10\x65\x8f\x10\x2d\x2a\xaa\xb3\x94\x31\x78\xfa\x4c\xd6\x4c\x67\x59\x3e\x1d\x25\x49\xf4\xab\x9b\x76\xd0\xe2\xf5\x8b\x5f\x5d\x77\x7d\x07\x6f\x0f\x30\x19\xe3\x9e\x5a\x61\x83\xd3\x54\x9d\x96\x64\x5f\xe6\x86\xad\x15\xda\x43\x77\xcd\x86\x2c\x36\x07\x84\x72\x44\x96\x54\x3d\x70\x4f\xe8\x68\x75\xfd\x25\xc5\xa7\xcf\x61\x3d\xa7\x97\x93\xf7\xa3\xfe\xed\xd5\x8f\x14\x57\x3f\xb2\xf0\xf6\x32\xd4\x18\x1c\x55\x45\x65\xf5\x7d\xc4\x72\x5c\x06\x4b\x55\xf0\x36\x34\xbc\xad\x3d\x36\x54\x60\xed\xee\xbb\xb6\x55\xd4\x90\xf6\x0f\x26\xc5\xda\xad\x86\x25\x95\x9f\x0f\xe1\xf1\x8e\x2a\xb2\x41\x3f\xf2\xf3\xe1\x84\xc1\xa3\x02\x7e\xef\xbf\xab\x9b\xf5\xbb\x53\xef\xcd\xfa\x2d\x86\x38\x71\xdd\x40\xef\x7a\x95\xc2\x0d\x33\x91\xa1\xef\xa0\x09\x65\x74\x7a\x66\xcb\xe1\xe6\xc9\x0c\xbb\xb6\x35\x36\xdc\xef\xdf\x39\x08\x4b\x45\x48\x99\x42\xd8\x9f\xbc\x4b\x71\xfb\x6d\xbd\x4a\xc6\x58\xeb\x18\x5a\xb2\x1f\x28\x09\x84\xa5\x68\x7f\xd5\x71\xd5\x29\x15\x06\xd4\x77\x7b\xf6\xa5\x08\x2e\x94\x62\xf8\x1e\xa4\xf8\xaf\xe9\x6c\x20\x9f\x7c\x99\x25\x2f\x11\x27\x1f\x8a\x68\xa8\xd2\x70\x31\xcb\xb3\xfd\x7e\x3f\x7d\x7e\x7e\x7e\xee\x7d\x72\x20\xa0\xc0\xe8\x7c\xf0\xfd\xe9\xb1\xca\x20\xeb\xe1\xdf\xd9\xe8\x1c\x55\xd8\x3d\xef\x8a\xa6\x69\x9a\x4c\x6b\xad\xff\x21\xea\xfc\x6f\xa8\x6d\xc3\xb2\xd0\xc3\xdf\xaf\x98\xa7\x1a\xf8\x2d\xe6\xe2\x28\xbc\xc1\x93\xe2\x47\x14\x2b\xaa\x44\xa7\x3c\xd8\xc5\x5f\x12\x8e\x7c\x0a\xe3\x6b\xb2\x2f\xba\xc0\x4e\xa8\xae\x67\x10\xf7\xa6\xf2\x4f\xc2\x52\x1a\x2f\xdf\x8a\x96\x6c\x8a\x75\x23\xb6\x94\xe2\x81\xf6\x3e\x8c\xbb\x87\xef\x6b\x1b\x20\x43\xde\x95\x81\x36\x1e\x24\x83\xf9\x5a\x58\x6a\xcc\x6e\x20\xd6\x28\x65\x9e\x02\x91\xc1\xc9\x13\x4f\x4d\x1b\x76\x63\x47\xd6\xc5\x0e\x66\xd9\x3c\xf9\x2b\x00\x00\xff\xff\x68\x68\xc6\x8a\x13\x09\x00\x00")
 
 func confDataciteDataciteYmlBytes() ([]byte, error) {
 	return bindataRead(
@@ -336,7 +336,7 @@ func confDataciteDataciteYml() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/datacite/datacite.yml", size: 2318, mode: os.FileMode(432), modTime: time.Unix(1578063794, 0)}
+	info := bindataFileInfo{name: "conf/datacite/datacite.yml", size: 2323, mode: os.FileMode(420), modTime: time.Unix(1579617589, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -356,7 +356,7 @@ func confGitignoreActionscript() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Actionscript", size: 300, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Actionscript", size: 300, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -376,7 +376,7 @@ func confGitignoreAda() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Ada", size: 51, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Ada", size: 51, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -396,7 +396,7 @@ func confGitignoreAgda() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Agda", size: 8, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Agda", size: 8, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -416,7 +416,7 @@ func confGitignoreAndroid() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Android", size: 394, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Android", size: 394, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -436,7 +436,7 @@ func confGitignoreAnjuta() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Anjuta", size: 78, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Anjuta", size: 78, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -456,7 +456,7 @@ func confGitignoreAppengine() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/AppEngine", size: 58, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/AppEngine", size: 58, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -476,7 +476,7 @@ func confGitignoreAppceleratortitanium() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/AppceleratorTitanium", size: 45, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/AppceleratorTitanium", size: 45, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -496,7 +496,7 @@ func confGitignoreArchlinuxpackages() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/ArchLinuxPackages", size: 75, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/ArchLinuxPackages", size: 75, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -516,7 +516,7 @@ func confGitignoreArchives() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Archives", size: 295, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Archives", size: 295, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -536,7 +536,7 @@ func confGitignoreAutotools() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Autotools", size: 181, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Autotools", size: 181, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -556,7 +556,7 @@ func confGitignoreBricxcc() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/BricxCC", size: 72, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/BricxCC", size: 72, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -576,7 +576,7 @@ func confGitignoreC() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/C", size: 246, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/C", size: 246, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -596,7 +596,7 @@ func confGitignoreCSharp() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/C Sharp", size: 1521, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/C Sharp", size: 1521, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -616,7 +616,7 @@ func confGitignoreC2() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/C++", size: 242, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/C++", size: 242, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -636,7 +636,7 @@ func confGitignoreCfwheels() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/CFWheels", size: 205, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/CFWheels", size: 205, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -656,7 +656,7 @@ func confGitignoreCmake() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/CMake", size: 89, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/CMake", size: 89, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -676,7 +676,7 @@ func confGitignoreCuda() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/CUDA", size: 38, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/CUDA", size: 38, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -696,7 +696,7 @@ func confGitignoreCvs() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/CVS", size: 39, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/CVS", size: 39, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -716,7 +716,7 @@ func confGitignoreCakephp() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/CakePHP", size: 136, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/CakePHP", size: 136, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -736,7 +736,7 @@ func confGitignoreChefcookbook() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/ChefCookbook", size: 77, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/ChefCookbook", size: 77, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -756,7 +756,7 @@ func confGitignoreCloud9() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Cloud9", size: 45, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Cloud9", size: 45, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -776,7 +776,7 @@ func confGitignoreCodeigniter() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/CodeIgniter", size: 106, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/CodeIgniter", size: 106, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -796,7 +796,7 @@ func confGitignoreCodekit() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/CodeKit", size: 54, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/CodeKit", size: 54, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -816,7 +816,7 @@ func confGitignoreCommonlisp() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/CommonLisp", size: 26, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/CommonLisp", size: 26, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -836,7 +836,7 @@ func confGitignoreComposer() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Composer", size: 250, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Composer", size: 250, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -856,7 +856,7 @@ func confGitignoreConcrete5() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Concrete5", size: 42, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Concrete5", size: 42, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -876,7 +876,7 @@ func confGitignoreCoq() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Coq", size: 18, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Coq", size: 18, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -896,7 +896,7 @@ func confGitignoreCraftcms() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/CraftCMS", size: 120, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/CraftCMS", size: 120, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -916,7 +916,7 @@ func confGitignoreDm() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/DM", size: 29, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/DM", size: 29, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -936,7 +936,7 @@ func confGitignoreDart() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Dart", size: 234, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Dart", size: 234, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -956,7 +956,7 @@ func confGitignoreDarteditor() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/DartEditor", size: 19, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/DartEditor", size: 19, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -976,7 +976,7 @@ func confGitignoreDelphi() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Delphi", size: 1347, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Delphi", size: 1347, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -996,7 +996,7 @@ func confGitignoreDreamweaver() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Dreamweaver", size: 47, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Dreamweaver", size: 47, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1016,7 +1016,7 @@ func confGitignoreDrupal() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Drupal", size: 605, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Drupal", size: 605, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1036,7 +1036,7 @@ func confGitignoreEpiserver() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/EPiServer", size: 81, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/EPiServer", size: 81, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1056,7 +1056,7 @@ func confGitignoreEagle() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Eagle", size: 401, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Eagle", size: 401, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1076,7 +1076,7 @@ func confGitignoreEclipse() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Eclipse", size: 458, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Eclipse", size: 458, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1096,7 +1096,7 @@ func confGitignoreEiffelstudio() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/EiffelStudio", size: 35, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/EiffelStudio", size: 35, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1116,7 +1116,7 @@ func confGitignoreElisp() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Elisp", size: 36, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Elisp", size: 36, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1136,7 +1136,7 @@ func confGitignoreElixir() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Elixir", size: 34, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Elixir", size: 34, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1156,7 +1156,7 @@ func confGitignoreEmacs() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Emacs", size: 320, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Emacs", size: 320, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1176,7 +1176,7 @@ func confGitignoreEnsime() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Ensime", size: 57, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Ensime", size: 57, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1196,7 +1196,7 @@ func confGitignoreErlang() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Erlang", size: 95, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Erlang", size: 95, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1216,7 +1216,7 @@ func confGitignoreEspresso() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Espresso", size: 9, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Espresso", size: 9, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1236,7 +1236,7 @@ func confGitignoreExpressionengine() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/ExpressionEngine", size: 342, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/ExpressionEngine", size: 342, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1256,7 +1256,7 @@ func confGitignoreExtjs() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/ExtJs", size: 38, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/ExtJs", size: 38, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1276,7 +1276,7 @@ func confGitignoreFancy() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Fancy", size: 12, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Fancy", size: 12, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1296,7 +1296,7 @@ func confGitignoreFinale() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Finale", size: 184, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Finale", size: 184, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1316,7 +1316,7 @@ func confGitignoreFlexbuilder() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/FlexBuilder", size: 29, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/FlexBuilder", size: 29, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1336,7 +1336,7 @@ func confGitignoreForcedotcom() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/ForceDotCom", size: 57, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/ForceDotCom", size: 57, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1356,7 +1356,7 @@ func confGitignoreFuelphp() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/FuelPHP", size: 39, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/FuelPHP", size: 39, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1376,7 +1376,7 @@ func confGitignoreGwt() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/GWT", size: 395, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/GWT", size: 395, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1396,7 +1396,7 @@ func confGitignoreGcov() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Gcov", size: 56, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Gcov", size: 56, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1416,7 +1416,7 @@ func confGitignoreGitbook() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/GitBook", size: 353, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/GitBook", size: 353, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1436,7 +1436,7 @@ func confGitignoreGo() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Go", size: 266, mode: os.FileMode(432), modTime: time.Unix(1577112094, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Go", size: 266, mode: os.FileMode(436), modTime: time.Unix(1577112094, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1456,7 +1456,7 @@ func confGitignoreGradle() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Gradle", size: 157, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Gradle", size: 157, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1476,7 +1476,7 @@ func confGitignoreGrails() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Grails", size: 583, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Grails", size: 583, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1496,7 +1496,7 @@ func confGitignoreHaskell() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Haskell", size: 135, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Haskell", size: 135, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1516,7 +1516,7 @@ func confGitignoreIgorpro() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/IGORPro", size: 121, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/IGORPro", size: 121, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1536,7 +1536,7 @@ func confGitignoreIpythonnotebook() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/IPythonNotebook", size: 37, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/IPythonNotebook", size: 37, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1556,7 +1556,7 @@ func confGitignoreIdris() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Idris", size: 10, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Idris", size: 10, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1576,7 +1576,7 @@ func confGitignoreJdeveloper() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/JDeveloper", size: 255, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/JDeveloper", size: 255, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1596,7 +1596,7 @@ func confGitignoreJava() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Java", size: 189, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Java", size: 189, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1616,7 +1616,7 @@ func confGitignoreJboss() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Jboss", size: 509, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Jboss", size: 509, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1636,7 +1636,7 @@ func confGitignoreJekyll() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Jekyll", size: 37, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Jekyll", size: 37, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1656,7 +1656,7 @@ func confGitignoreJetbrains() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/JetBrains", size: 860, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/JetBrains", size: 860, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1676,7 +1676,7 @@ func confGitignoreJoomla() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Joomla", size: 22387, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Joomla", size: 22387, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1696,7 +1696,7 @@ func confGitignoreKdevelop4() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/KDevelop4", size: 16, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/KDevelop4", size: 16, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1716,7 +1716,7 @@ func confGitignoreKate() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Kate", size: 34, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Kate", size: 34, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1736,7 +1736,7 @@ func confGitignoreKicad() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/KiCAD", size: 208, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/KiCAD", size: 208, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1756,7 +1756,7 @@ func confGitignoreKohana() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Kohana", size: 39, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Kohana", size: 39, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1776,7 +1776,7 @@ func confGitignoreLabview() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/LabVIEW", size: 142, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/LabVIEW", size: 142, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1796,7 +1796,7 @@ func confGitignoreLaravel() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Laravel", size: 49, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Laravel", size: 49, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1816,7 +1816,7 @@ func confGitignoreLazarus() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Lazarus", size: 407, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Lazarus", size: 407, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1836,7 +1836,7 @@ func confGitignoreLeiningen() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Leiningen", size: 138, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Leiningen", size: 138, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1856,7 +1856,7 @@ func confGitignoreLemonstand() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/LemonStand", size: 348, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/LemonStand", size: 348, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1876,7 +1876,7 @@ func confGitignoreLibreoffice() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/LibreOffice", size: 30, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/LibreOffice", size: 30, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1896,7 +1896,7 @@ func confGitignoreLilypond() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Lilypond", size: 33, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Lilypond", size: 33, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1916,7 +1916,7 @@ func confGitignoreLinux() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Linux", size: 118, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Linux", size: 118, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1936,7 +1936,7 @@ func confGitignoreLithium() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Lithium", size: 28, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Lithium", size: 28, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1956,7 +1956,7 @@ func confGitignoreLua() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Lua", size: 324, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Lua", size: 324, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1976,7 +1976,7 @@ func confGitignoreLyx() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/LyX", size: 75, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/LyX", size: 75, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1996,7 +1996,7 @@ func confGitignoreMagento() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Magento", size: 2599, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Magento", size: 2599, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2016,7 +2016,7 @@ func confGitignoreMatlab() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Matlab", size: 360, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Matlab", size: 360, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2036,7 +2036,7 @@ func confGitignoreMaven() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Maven", size: 170, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Maven", size: 170, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2056,7 +2056,7 @@ func confGitignoreMercurial() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Mercurial", size: 50, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Mercurial", size: 50, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2076,7 +2076,7 @@ func confGitignoreMercury() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Mercury", size: 93, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Mercury", size: 93, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2096,7 +2096,7 @@ func confGitignoreMetaprogrammingsystem() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/MetaProgrammingSystem", size: 391, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/MetaProgrammingSystem", size: 391, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2116,7 +2116,7 @@ func confGitignoreMicrosoftoffice() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/MicrosoftOffice", size: 88, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/MicrosoftOffice", size: 88, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2136,7 +2136,7 @@ func confGitignoreModelsim() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/ModelSim", size: 282, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/ModelSim", size: 282, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2156,7 +2156,7 @@ func confGitignoreMomentics() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Momentics", size: 76, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Momentics", size: 76, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2176,7 +2176,7 @@ func confGitignoreMonodevelop() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/MonoDevelop", size: 93, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/MonoDevelop", size: 93, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2196,7 +2196,7 @@ func confGitignoreNanoc() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Nanoc", size: 197, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Nanoc", size: 197, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2216,7 +2216,7 @@ func confGitignoreNetbeans() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/NetBeans", size: 96, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/NetBeans", size: 96, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2236,7 +2236,7 @@ func confGitignoreNim() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Nim", size: 10, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Nim", size: 10, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2256,7 +2256,7 @@ func confGitignoreNinja() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Ninja", size: 23, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Ninja", size: 23, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2276,7 +2276,7 @@ func confGitignoreNode() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Node", size: 529, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Node", size: 529, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2296,7 +2296,7 @@ func confGitignoreNotepadpp() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/NotepadPP", size: 30, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/NotepadPP", size: 30, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2316,7 +2316,7 @@ func confGitignoreOcaml() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/OCaml", size: 178, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/OCaml", size: 178, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2336,7 +2336,7 @@ func confGitignoreObjectiveC() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Objective-C", size: 837, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Objective-C", size: 837, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2356,7 +2356,7 @@ func confGitignoreOpa() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Opa", size: 90, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Opa", size: 90, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2376,7 +2376,7 @@ func confGitignoreOpencart() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/OpenCart", size: 115, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/OpenCart", size: 115, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2396,7 +2396,7 @@ func confGitignoreOracleforms() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/OracleForms", size: 100, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/OracleForms", size: 100, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2416,7 +2416,7 @@ func confGitignorePacker() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Packer", size: 55, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Packer", size: 55, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2436,7 +2436,7 @@ func confGitignorePerl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Perl", size: 191, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Perl", size: 191, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2456,7 +2456,7 @@ func confGitignorePhalcon() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Phalcon", size: 29, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Phalcon", size: 29, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2476,7 +2476,7 @@ func confGitignorePhpstorm() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/PhpStorm", size: 1226, mode: os.FileMode(432), modTime: time.Unix(1570186337, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/PhpStorm", size: 1226, mode: os.FileMode(436), modTime: time.Unix(1570186337, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2496,7 +2496,7 @@ func confGitignorePlayframework() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/PlayFramework", size: 170, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/PlayFramework", size: 170, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2516,7 +2516,7 @@ func confGitignorePlone() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Plone", size: 137, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Plone", size: 137, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2536,7 +2536,7 @@ func confGitignorePrestashop() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Prestashop", size: 483, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Prestashop", size: 483, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2556,7 +2556,7 @@ func confGitignoreProcessing() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Processing", size: 120, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Processing", size: 120, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2576,7 +2576,7 @@ func confGitignorePython() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Python", size: 713, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Python", size: 713, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2596,7 +2596,7 @@ func confGitignoreQooxdoo() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Qooxdoo", size: 58, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Qooxdoo", size: 58, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2616,7 +2616,7 @@ func confGitignoreQt() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Qt", size: 292, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Qt", size: 292, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2636,7 +2636,7 @@ func confGitignoreR() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/R", size: 255, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/R", size: 255, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2656,7 +2656,7 @@ func confGitignoreRos() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/ROS", size: 493, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/ROS", size: 493, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2676,7 +2676,7 @@ func confGitignoreRails() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Rails", size: 707, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Rails", size: 707, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2696,7 +2696,7 @@ func confGitignoreRedcar() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Redcar", size: 8, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Redcar", size: 8, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2716,7 +2716,7 @@ func confGitignoreRedis() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Redis", size: 51, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Redis", size: 51, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2736,7 +2736,7 @@ func confGitignoreRhodesrhomobile() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/RhodesRhomobile", size: 77, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/RhodesRhomobile", size: 77, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2756,7 +2756,7 @@ func confGitignoreRuby() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Ruby", size: 607, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Ruby", size: 607, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2776,7 +2776,7 @@ func confGitignoreRust() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Rust", size: 91, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Rust", size: 91, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2796,7 +2796,7 @@ func confGitignoreSbt() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/SBT", size: 186, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/SBT", size: 186, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2816,7 +2816,7 @@ func confGitignoreScons() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/SCons", size: 90, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/SCons", size: 90, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2836,7 +2836,7 @@ func confGitignoreSvn() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/SVN", size: 6, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/SVN", size: 6, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2856,7 +2856,7 @@ func confGitignoreSass() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Sass", size: 23, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Sass", size: 23, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2876,7 +2876,7 @@ func confGitignoreScala() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Scala", size: 185, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Scala", size: 185, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2896,7 +2896,7 @@ func confGitignoreScrivener() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Scrivener", size: 140, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Scrivener", size: 140, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2916,7 +2916,7 @@ func confGitignoreSdcc() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Sdcc", size: 55, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Sdcc", size: 55, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2936,7 +2936,7 @@ func confGitignoreSeamgen() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/SeamGen", size: 961, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/SeamGen", size: 961, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2956,7 +2956,7 @@ func confGitignoreSketchup() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/SketchUp", size: 6, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/SketchUp", size: 6, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2976,7 +2976,7 @@ func confGitignoreSlickedit() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/SlickEdit", size: 323, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/SlickEdit", size: 323, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -2996,7 +2996,7 @@ func confGitignoreStella() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Stella", size: 207, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Stella", size: 207, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3016,7 +3016,7 @@ func confGitignoreSublimetext() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/SublimeText", size: 354, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/SublimeText", size: 354, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3036,7 +3036,7 @@ func confGitignoreSugarcrm() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/SugarCRM", size: 734, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/SugarCRM", size: 734, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3056,7 +3056,7 @@ func confGitignoreSwift() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Swift", size: 837, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Swift", size: 837, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3076,7 +3076,7 @@ func confGitignoreSymfony() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Symfony", size: 531, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Symfony", size: 531, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3096,7 +3096,7 @@ func confGitignoreSymphonycms() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/SymphonyCMS", size: 90, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/SymphonyCMS", size: 90, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3116,7 +3116,7 @@ func confGitignoreSynopsysvcs() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/SynopsysVCS", size: 971, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/SynopsysVCS", size: 971, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3136,7 +3136,7 @@ func confGitignoreTags() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Tags", size: 177, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Tags", size: 177, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3156,7 +3156,7 @@ func confGitignoreTex() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/TeX", size: 1328, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/TeX", size: 1328, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3176,7 +3176,7 @@ func confGitignoreTextmate() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/TextMate", size: 28, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/TextMate", size: 28, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3196,7 +3196,7 @@ func confGitignoreTextpattern() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Textpattern", size: 177, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Textpattern", size: 177, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3216,7 +3216,7 @@ func confGitignoreTortoisegit() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/TortoiseGit", size: 38, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/TortoiseGit", size: 38, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3236,7 +3236,7 @@ func confGitignoreTurbogears2() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/TurboGears2", size: 202, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/TurboGears2", size: 202, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3256,7 +3256,7 @@ func confGitignoreTypo3() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Typo3", size: 466, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Typo3", size: 466, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3276,7 +3276,7 @@ func confGitignoreUmbraco() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Umbraco", size: 536, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Umbraco", size: 536, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3296,7 +3296,7 @@ func confGitignoreUnity() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Unity", size: 267, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Unity", size: 267, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3316,7 +3316,7 @@ func confGitignoreUnrealengine() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/UnrealEngine", size: 948, mode: os.FileMode(432), modTime: time.Unix(1570186337, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/UnrealEngine", size: 948, mode: os.FileMode(436), modTime: time.Unix(1570186337, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3336,7 +3336,7 @@ func confGitignoreVvvv() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/VVVV", size: 57, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/VVVV", size: 57, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3356,7 +3356,7 @@ func confGitignoreVagrant() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Vagrant", size: 10, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Vagrant", size: 10, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3376,7 +3376,7 @@ func confGitignoreVim() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Vim", size: 66, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Vim", size: 66, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3396,7 +3396,7 @@ func confGitignoreVirtualenv() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/VirtualEnv", size: 151, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/VirtualEnv", size: 151, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3416,7 +3416,7 @@ func confGitignoreVisualstudio() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/VisualStudio", size: 3412, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/VisualStudio", size: 3412, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3436,7 +3436,7 @@ func confGitignoreVisualstudiocode() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/VisualStudioCode", size: 11, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/VisualStudioCode", size: 11, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3456,7 +3456,7 @@ func confGitignoreWaf() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Waf", size: 87, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Waf", size: 87, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3476,7 +3476,7 @@ func confGitignoreWebmethods() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/WebMethods", size: 424, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/WebMethods", size: 424, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3496,7 +3496,7 @@ func confGitignoreWebstorm() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/WebStorm", size: 1226, mode: os.FileMode(432), modTime: time.Unix(1570186337, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/WebStorm", size: 1226, mode: os.FileMode(436), modTime: time.Unix(1570186337, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3516,7 +3516,7 @@ func confGitignoreWindows() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Windows", size: 211, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Windows", size: 211, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3536,7 +3536,7 @@ func confGitignoreWordpress() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/WordPress", size: 297, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/WordPress", size: 297, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3556,7 +3556,7 @@ func confGitignoreXcode() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Xcode", size: 361, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Xcode", size: 361, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3576,7 +3576,7 @@ func confGitignoreXilinxise() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/XilinxISE", size: 566, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/XilinxISE", size: 566, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3596,7 +3596,7 @@ func confGitignoreXojo() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Xojo", size: 160, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Xojo", size: 160, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3616,7 +3616,7 @@ func confGitignoreYeoman() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Yeoman", size: 52, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Yeoman", size: 52, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3636,7 +3636,7 @@ func confGitignoreYii() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Yii", size: 120, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Yii", size: 120, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3656,7 +3656,7 @@ func confGitignoreZendframework() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/ZendFramework", size: 217, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/ZendFramework", size: 217, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3676,7 +3676,7 @@ func confGitignoreZephir() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/Zephir", size: 387, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/Zephir", size: 387, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3696,7 +3696,7 @@ func confGitignoreMacos() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/gitignore/macOS", size: 380, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/gitignore/macOS", size: 380, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3716,7 +3716,7 @@ func confLabelDefault() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/label/Default", size: 119, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/label/Default", size: 119, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3736,7 +3736,7 @@ func confLicenseAbstylesLicense() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/Abstyles License", size: 730, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/Abstyles License", size: 730, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3756,7 +3756,7 @@ func confLicenseAcademicFreeLicenseV11() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/Academic Free License v1.1", size: 4660, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/Academic Free License v1.1", size: 4660, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3776,7 +3776,7 @@ func confLicenseAcademicFreeLicenseV12() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/Academic Free License v1.2", size: 4949, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/Academic Free License v1.2", size: 4949, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3796,7 +3796,7 @@ func confLicenseAcademicFreeLicenseV20() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/Academic Free License v2.0", size: 8937, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/Academic Free License v2.0", size: 8937, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3816,7 +3816,7 @@ func confLicenseAcademicFreeLicenseV21() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/Academic Free License v2.1", size: 8922, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/Academic Free License v2.1", size: 8922, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3836,7 +3836,7 @@ func confLicenseAcademicFreeLicenseV30() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/Academic Free License v3.0", size: 10306, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/Academic Free License v3.0", size: 10306, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3856,7 +3856,7 @@ func confLicenseAfferoGeneralPublicLicenseV10() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/Affero General Public License v1.0", size: 15837, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/Affero General Public License v1.0", size: 15837, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3876,7 +3876,7 @@ func confLicenseApacheLicense10() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/Apache License 1.0", size: 2475, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/Apache License 1.0", size: 2475, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3896,7 +3896,7 @@ func confLicenseApacheLicense11() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/Apache License 1.1", size: 2508, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/Apache License 1.1", size: 2508, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3916,7 +3916,7 @@ func confLicenseApacheLicense20() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/Apache License 2.0", size: 10261, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/Apache License 2.0", size: 10261, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3936,7 +3936,7 @@ func confLicenseArtisticLicense10() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/Artistic License 1.0", size: 4789, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/Artistic License 1.0", size: 4789, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3956,7 +3956,7 @@ func confLicenseArtisticLicense20() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/Artistic License 2.0", size: 8661, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/Artistic License 2.0", size: 8661, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3976,7 +3976,7 @@ func confLicenseBsd2ClauseLicense() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/BSD 2-clause License", size: 1286, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/BSD 2-clause License", size: 1286, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -3996,7 +3996,7 @@ func confLicenseBsd3ClauseLicense() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/BSD 3-clause License", size: 1480, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/BSD 3-clause License", size: 1480, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4016,7 +4016,7 @@ func confLicenseBsd4ClauseLicense() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/BSD 4-clause License", size: 1624, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/BSD 4-clause License", size: 1624, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4036,7 +4036,7 @@ func confLicenseCreativeCommonsCc010PublicDomainDedication() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/Creative Commons CC0 1.0 Public Domain Dedication", size: 6894, mode: os.FileMode(432), modTime: time.Unix(1577104923, 0)}
+	info := bindataFileInfo{name: "conf/license/Creative Commons CC0 1.0 Public Domain Dedication", size: 6894, mode: os.FileMode(436), modTime: time.Unix(1577104923, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4056,7 +4056,7 @@ func confLicenseEclipsePublicLicense10() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/Eclipse Public License 1.0", size: 11248, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/Eclipse Public License 1.0", size: 11248, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4076,7 +4076,7 @@ func confLicenseEducationalCommunityLicenseV10() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/Educational Community License v1.0", size: 2394, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/Educational Community License v1.0", size: 2394, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4096,7 +4096,7 @@ func confLicenseEducationalCommunityLicenseV20() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/Educational Community License v2.0", size: 11085, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/Educational Community License v2.0", size: 11085, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4116,7 +4116,7 @@ func confLicenseGnuAfferoGeneralPublicLicenseV30() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/GNU Affero General Public License v3.0", size: 33818, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/GNU Affero General Public License v3.0", size: 33818, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4136,7 +4136,7 @@ func confLicenseGnuFreeDocumentationLicenseV11() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/GNU Free Documentation License v1.1", size: 17912, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/GNU Free Documentation License v1.1", size: 17912, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4156,7 +4156,7 @@ func confLicenseGnuFreeDocumentationLicenseV12() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/GNU Free Documentation License v1.2", size: 20209, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/GNU Free Documentation License v1.2", size: 20209, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4176,7 +4176,7 @@ func confLicenseGnuFreeDocumentationLicenseV13() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/GNU Free Documentation License v1.3", size: 22732, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/GNU Free Documentation License v1.3", size: 22732, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4196,7 +4196,7 @@ func confLicenseGnuGeneralPublicLicenseV10() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/GNU General Public License v1.0", size: 12165, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/GNU General Public License v1.0", size: 12165, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4216,7 +4216,7 @@ func confLicenseGnuGeneralPublicLicenseV20() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/GNU General Public License v2.0", size: 17277, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/GNU General Public License v2.0", size: 17277, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4236,7 +4236,7 @@ func confLicenseGnuGeneralPublicLicenseV30() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/GNU General Public License v3.0", size: 34570, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/GNU General Public License v3.0", size: 34570, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4256,7 +4256,7 @@ func confLicenseGnuLesserGeneralPublicLicenseV21() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/GNU Lesser General Public License v2.1", size: 25885, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/GNU Lesser General Public License v2.1", size: 25885, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4276,7 +4276,7 @@ func confLicenseGnuLesserGeneralPublicLicenseV30() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/GNU Lesser General Public License v3.0", size: 7355, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/GNU Lesser General Public License v3.0", size: 7355, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4296,7 +4296,7 @@ func confLicenseGnuLibraryGeneralPublicLicenseV20() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/GNU Library General Public License v2.0", size: 24758, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/GNU Library General Public License v2.0", size: 24758, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4316,7 +4316,7 @@ func confLicenseIscLicense() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/ISC license", size: 745, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/ISC license", size: 745, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4336,7 +4336,7 @@ func confLicenseMitLicense() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/MIT License", size: 1077, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/MIT License", size: 1077, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4356,7 +4356,7 @@ func confLicenseMozillaPublicLicense10() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/Mozilla Public License 1.0", size: 18026, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/Mozilla Public License 1.0", size: 18026, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4376,7 +4376,7 @@ func confLicenseMozillaPublicLicense11() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/Mozilla Public License 1.1", size: 23361, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/Mozilla Public License 1.1", size: 23361, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4396,7 +4396,7 @@ func confLicenseMozillaPublicLicense20() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/license/Mozilla Public License 2.0", size: 14827, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/license/Mozilla Public License 2.0", size: 14827, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4416,7 +4416,7 @@ func confLocaleLocale_bgBgIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_bg-BG.ini", size: 96539, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_bg-BG.ini", size: 96539, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4436,7 +4436,7 @@ func confLocaleLocale_csCzIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_cs-CZ.ini", size: 70498, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_cs-CZ.ini", size: 70498, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4456,7 +4456,7 @@ func confLocaleLocale_deDeIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_de-DE.ini", size: 71113, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_de-DE.ini", size: 71113, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4476,7 +4476,7 @@ func confLocaleLocale_enGbIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_en-GB.ini", size: 63919, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_en-GB.ini", size: 63919, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4496,7 +4496,7 @@ func confLocaleLocale_enUsIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_en-US.ini", size: 67051, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_en-US.ini", size: 67051, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4516,7 +4516,7 @@ func confLocaleLocale_esEsIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_es-ES.ini", size: 71914, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_es-ES.ini", size: 71914, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4536,7 +4536,7 @@ func confLocaleLocale_faIrIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_fa-IR.ini", size: 90359, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_fa-IR.ini", size: 90359, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4556,7 +4556,7 @@ func confLocaleLocale_fiFiIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_fi-FI.ini", size: 68016, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_fi-FI.ini", size: 68016, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4576,7 +4576,7 @@ func confLocaleLocale_frFrIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_fr-FR.ini", size: 72343, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_fr-FR.ini", size: 72343, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4596,7 +4596,7 @@ func confLocaleLocale_glEsIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_gl-ES.ini", size: 69771, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_gl-ES.ini", size: 69771, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4616,7 +4616,7 @@ func confLocaleLocale_huHuIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_hu-HU.ini", size: 71018, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_hu-HU.ini", size: 71018, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4636,7 +4636,7 @@ func confLocaleLocale_idIdIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_id-ID.ini", size: 66323, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_id-ID.ini", size: 66323, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4656,7 +4656,7 @@ func confLocaleLocale_itItIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_it-IT.ini", size: 68598, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_it-IT.ini", size: 68598, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4676,7 +4676,7 @@ func confLocaleLocale_jaJpIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_ja-JP.ini", size: 81009, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_ja-JP.ini", size: 81009, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4696,7 +4696,7 @@ func confLocaleLocale_koKrIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_ko-KR.ini", size: 71166, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_ko-KR.ini", size: 71166, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4716,7 +4716,7 @@ func confLocaleLocale_lvLvIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_lv-LV.ini", size: 71069, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_lv-LV.ini", size: 71069, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4736,7 +4736,7 @@ func confLocaleLocale_nlNlIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_nl-NL.ini", size: 66875, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_nl-NL.ini", size: 66875, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4756,7 +4756,7 @@ func confLocaleLocale_plPlIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_pl-PL.ini", size: 69359, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_pl-PL.ini", size: 69359, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4776,7 +4776,7 @@ func confLocaleLocale_ptBrIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_pt-BR.ini", size: 69490, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_pt-BR.ini", size: 69490, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4796,7 +4796,7 @@ func confLocaleLocale_ptPtIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_pt-PT.ini", size: 70307, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_pt-PT.ini", size: 70307, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4816,7 +4816,7 @@ func confLocaleLocale_ruRuIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_ru-RU.ini", size: 101278, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_ru-RU.ini", size: 101278, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4836,7 +4836,7 @@ func confLocaleLocale_skSkIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_sk-SK.ini", size: 70596, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_sk-SK.ini", size: 70596, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4856,7 +4856,7 @@ func confLocaleLocale_srSpIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_sr-SP.ini", size: 93153, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_sr-SP.ini", size: 93153, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4876,7 +4876,7 @@ func confLocaleLocale_svSeIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_sv-SE.ini", size: 66876, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_sv-SE.ini", size: 66876, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4896,7 +4896,7 @@ func confLocaleLocale_trTrIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_tr-TR.ini", size: 69816, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_tr-TR.ini", size: 69816, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4916,7 +4916,7 @@ func confLocaleLocale_ukUaIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_uk-UA.ini", size: 98784, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_uk-UA.ini", size: 98784, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4936,7 +4936,7 @@ func confLocaleLocale_viVnIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_vi-VN.ini", size: 75198, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_vi-VN.ini", size: 75198, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4956,7 +4956,7 @@ func confLocaleLocale_zhCnIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_zh-CN.ini", size: 62875, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_zh-CN.ini", size: 62875, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4976,7 +4976,7 @@ func confLocaleLocale_zhHkIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_zh-HK.ini", size: 63260, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_zh-HK.ini", size: 63260, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -4996,7 +4996,7 @@ func confLocaleLocale_zhTwIni() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/locale/locale_zh-TW.ini", size: 62498, mode: os.FileMode(432), modTime: time.Unix(1577105123, 0)}
+	info := bindataFileInfo{name: "conf/locale/locale_zh-TW.ini", size: 62498, mode: os.FileMode(420), modTime: time.Unix(1578662391, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -5016,7 +5016,7 @@ func confReadmeDefault() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/readme/Default", size: 23, mode: os.FileMode(432), modTime: time.Unix(1561643584, 0)}
+	info := bindataFileInfo{name: "conf/readme/Default", size: 23, mode: os.FileMode(436), modTime: time.Unix(1561643584, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
