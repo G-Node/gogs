@@ -325,6 +325,11 @@ func getTextFile(h serviceHandler) {
 	h.sendFile("text/plain")
 }
 
+func getBinaryFile(h serviceHandler) {
+	h.setHeaderNoCache()
+	h.sendFile("application/octet-stream")
+}
+
 func getInfoPacks(h serviceHandler) {
 	h.setHeaderCacheForever()
 	h.sendFile("text/plain; charset=utf-8")
@@ -366,7 +371,7 @@ var routes = []struct {
 	// TODO: we probably just need to provide some getBinaryFile
 	// Note: code below treats HEAD (used by git annex drop to sense presence)
 	// as "GET" for the purpose of allowing or not the route
-	{regexp.MustCompile("(.*?)/annex/objects/.*/.*-s[0-9]*--.*"), "GET", getTextFile},
+	{regexp.MustCompile("(.*?)/annex/objects/.*/.*-s[0-9]*--.*"), "GET", getBinaryFile},
 }
 
 func getGitRepoPath(dir string) (string, error) {
