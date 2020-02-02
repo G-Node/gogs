@@ -666,10 +666,10 @@ func runWeb(c *cli.Context) error {
 		m.Group("/:reponame([\\d\\w-_\\.]+\\.git$)", func() {
 			m.Get("", ignSignIn, context.RepoAssignment(), context.RepoRef(), repo.Home)
 			m.Options("/*", ignSignInAndCsrf, repo.HTTPContexter(), repo.HTTP)
-			m.Route("/*", "GET,POST", ignSignInAndCsrf, repo.HTTPContexter(), repo.HTTP)
+			m.Route("/*", "GET,POST,HEAD", ignSignInAndCsrf, repo.HTTPContexter(), repo.HTTP)
 		})
 		m.Options("/:reponame/*", ignSignInAndCsrf, repo.HTTPContexter(), repo.HTTP)
-		m.Route("/:reponame/*", "GET,POST", ignSignInAndCsrf, repo.HTTPContexter(), repo.HTTP)
+		m.Route("/:reponame/*", "GET,POST,HEAD", ignSignInAndCsrf, repo.HTTPContexter(), repo.HTTP)
 	})
 	// ***** END: Repository *****
 

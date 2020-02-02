@@ -62,7 +62,7 @@ func HTTPContexter() macaron.Handler {
 
 		isPull := c.Query("service") == "git-upload-pack" ||
 			strings.HasSuffix(c.Req.URL.Path, "git-upload-pack") ||
-			c.Req.Method == "GET"
+			c.Req.Method == "GET" || c.Req.Method == "HEAD"
 
 		owner, err := db.GetUserByName(ownerName)
 		if err != nil {
@@ -361,6 +361,12 @@ var routes = []struct {
 	{regexp.MustCompile("(.*?)/objects/[0-9a-f]{2}/[0-9a-f]{38}$"), "GET", getLooseObject},
 	{regexp.MustCompile("(.*?)/objects/pack/pack-[0-9a-f]{40}\\.pack$"), "GET", getPackFile},
 	{regexp.MustCompile("(.*?)/objects/pack/pack-[0-9a-f]{40}\\.idx$"), "GET", getIdxFile},
+	// files neeeded for git-annex access to the repository over http
+	{regexp.MustCompile("(.*?)/config$"), "GET", getTextFile},
+	// TODO: we probably just need to provide some getBinaryFile
+	// Note: code below treats HEAD (used by git annex drop to sense presence)
+	// as "GET" for the purpose of allowing or not the route
+	{regexp.MustCompile("(.*?)/annex/objects/.*/.*-s[0-9]*--.*"), "GET", getTextFile},
 }
 
 func getGitRepoPath(dir string) (string, error) {
@@ -377,8 +383,14 @@ func getGitRepoPath(dir string) (string, error) {
 }
 
 func HTTP(c *HTTPContext) {
+    var reqPath string
 	for _, route := range routes {
-		reqPath := strings.ToLower(c.Req.URL.Path)
+		// Annex keys are case sensitive, so they must not be lower cased
+		if strings.Contains(c.Req.URL.Path, "/annex/objects/") {
+			reqPath = c.Req.URL.Path
+		} else {
+			reqPath = strings.ToLower(c.Req.URL.Path)
+		}
 		m := route.reg.FindStringSubmatch(reqPath)
 		if m == nil {
 			continue
@@ -392,7 +404,10 @@ func HTTP(c *HTTPContext) {
 			return
 		}
 
-		if route.method != c.Req.Method {
+		req_method := c.Req.Method
+		// Treat HEAD (used by e.g. git annex drop) as GET
+		if req_method == "HEAD" { req_method = "GET" }
+		if route.method != req_method {
 			c.NotFound()
 			return
 		}
