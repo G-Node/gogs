@@ -3,8 +3,10 @@ package repo
 import (
 	"bufio"
 	"bytes"
+	"fmt"
 	"io"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"path"
 	"path/filepath"
@@ -34,17 +36,24 @@ func serveAnnexedData(ctx *context.Context, name string, cpt *captcha.Captcha, b
 }
 
 func serveAnnexedKey(ctx *context.Context, name string, contentPath string) error {
-	annexfp, err := os.Open(filepath.Join(ctx.Repo.Repository.RepoPath(), contentPath))
+	fullContentPath := filepath.Join(ctx.Repo.Repository.RepoPath(), contentPath)
+	annexfp, err := os.Open(fullContentPath)
 	if err != nil {
+		log.Error(2, "Failed to open annex file at %q: %s", fullContentPath, err.Error())
 		return err
 	}
 	defer annexfp.Close()
 	annexReader := bufio.NewReader(annexfp)
 
+	info, err := annexfp.Stat()
+	if err != nil {
+		log.Error(2, "Failed to stat file at %q: %s", fullContentPath, err.Error())
+		return err
+	}
+
 	buf, _ := annexReader.Peek(1024)
 
-	// TODO: Add size to header
-
+	ctx.Resp.Header().Set("Content-Length", fmt.Sprintf("%d", info.Size()))
 	if !tool.IsTextFile(buf) {
 		if !tool.IsImageFile(buf) {
 			ctx.Resp.Header().Set("Content-Disposition", "attachment; filename=\""+name+"\"")
@@ -54,8 +63,12 @@ func serveAnnexedKey(ctx *context.Context, name string, contentPath string) erro
 		ctx.Resp.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	}
 
-	// TODO: Skip if request method is HEAD
 	log.Trace("Serving annex content for %q: %q", name, contentPath)
+	if ctx.Req.Method == http.MethodHead {
+		// Skip content copy when request method is HEAD
+		log.Trace("Returning header: %+v", ctx.Resp.Header())
+		return nil
+	}
 	_, err = io.Copy(ctx.Resp, annexReader)
 	return err
 }
