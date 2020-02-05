@@ -155,7 +155,8 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 	n, _ := dataRc.Read(buf)
 	buf = buf[:n]
 
-	// GIN mod: Replace existing buf and reader with annexed content buf and reader
+	// GIN mod: Replace existing buf and reader with annexed content buf and
+	// reader (only if it's an annexed ptr file)
 	buf, dataRc, err = resolveAnnexedContent(c, buf, dataRc)
 	if err != nil {
 		return
