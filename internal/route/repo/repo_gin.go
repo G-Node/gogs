@@ -159,3 +159,22 @@ func resolveAnnexedContent(c *context.Context, buf []byte, dataRc io.Reader) ([]
 	log.Trace("Annexed file size: %d B", info.Size())
 	return annexBuf, annexDataReader, nil
 }
+
+func GitConfig(c *context.Context) {
+	// TODO: Check if file exists and is readable, serve 500 otherwise
+	log.Trace("RepoPath: %+v", c.Repo.Repository.RepoPath())
+	configFilePath := path.Join(c.Repo.Repository.RepoPath(), "config")
+	log.Trace("Serving file %q", configFilePath)
+	c.ServeFileContent(configFilePath, "config")
+}
+
+func AnnexGetKey(c *context.Context) {
+	filename := c.Params(":keyfile")
+	key := c.Params(":key")
+	contentPath := filepath.Join("annex/objects", c.Params(":hashdira"), c.Params(":hashdirb"), key, filename)
+	log.Trace("Git annex requested key %q: %q", key, contentPath)
+	err := serveAnnexedKey(c, filename, contentPath)
+	if err != nil {
+		c.ServerError("AnnexGetKey", err)
+	}
+}
