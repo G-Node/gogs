@@ -20,12 +20,10 @@ To minimize the time and effort scientists have to spend on these tasks, we deve
 ### Version your data
 * When changing your files and uploading them to the server, the history is automatically kept, you can always go back to a previous version.
 
-
 ### Share your data
 * Make your data public: if you want to make your data accessible to the world, just make your repository publicly available. The data will be accessible but only you will be able to change it.
 * Share your data with collaborators: you can also share repositories with other users of the GIN service making it easy to jointly work on a project.
 * Make your data citable: through the gin DOI service you can obtain registered identifiers for your public datasets.
-
 
 ### Choose how you want to use our service
 * Register with the GIN services and use the provided infrastructure.
