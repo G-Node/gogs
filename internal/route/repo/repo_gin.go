@@ -161,10 +161,13 @@ func resolveAnnexedContent(c *context.Context, buf []byte, dataRc io.Reader) ([]
 }
 
 func GitConfig(c *context.Context) {
-	// TODO: Check if file exists and is readable, serve 500 otherwise
 	log.Trace("RepoPath: %+v", c.Repo.Repository.RepoPath())
 	configFilePath := path.Join(c.Repo.Repository.RepoPath(), "config")
 	log.Trace("Serving file %q", configFilePath)
+	if _, err := os.Stat(configFilePath); err != nil {
+		c.ServerError("GitConfig", err)
+		return
+	}
 	c.ServeFileContent(configFilePath, "config")
 }
 
