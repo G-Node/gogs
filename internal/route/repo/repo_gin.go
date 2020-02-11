@@ -3,39 +3,57 @@ package repo
 import (
 	"bufio"
 	"bytes"
+	"fmt"
 	"io"
 	"io/ioutil"
+	"net/http"
+	"os"
+	"path"
+	"path/filepath"
+	"strings"
 
 	"github.com/G-Node/git-module"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/tool"
 	"github.com/G-Node/libgin/libgin"
-	"github.com/G-Node/libgin/libgin/annex"
 	"github.com/go-macaron/captcha"
 	log "gopkg.in/clog.v1"
 	"gopkg.in/yaml.v2"
 )
 
 func serveAnnexedData(ctx *context.Context, name string, cpt *captcha.Captcha, buf []byte) error {
-	annexFile, err := annex.NewAFile(ctx.Repo.Repository.RepoPath(), "annex", name, buf)
+	keyparts := strings.Split(strings.TrimSpace(string(buf)), "/")
+	key := keyparts[len(keyparts)-1]
+	contentPath, err := git.NewCommand("annex", "contentlocation", key).RunInDir(ctx.Repo.Repository.RepoPath())
 	if err != nil {
+		log.Error(2, "Failed to find content location for file %q with key %q", name, key)
 		return err
 	}
-	if cpt != nil && annexFile.Info.Size() > annex.MEGABYTE*setting.Repository.RawCaptchaMinFileSize && !cpt.VerifyReq(ctx.Req) &&
-		!ctx.IsLogged {
-		ctx.Data["EnableCaptcha"] = true
-		ctx.HTML(200, "repo/download")
-		return nil
-	}
-	annexfp, err := annexFile.Open()
+	// always trim space from output for git command
+	contentPath = strings.TrimSpace(contentPath)
+	return serveAnnexedKey(ctx, name, contentPath)
+}
+
+func serveAnnexedKey(ctx *context.Context, name string, contentPath string) error {
+	fullContentPath := filepath.Join(ctx.Repo.Repository.RepoPath(), contentPath)
+	annexfp, err := os.Open(fullContentPath)
 	if err != nil {
+		log.Error(2, "Failed to open annex file at %q: %s", fullContentPath, err.Error())
 		return err
 	}
 	defer annexfp.Close()
 	annexReader := bufio.NewReader(annexfp)
-	buf, _ = annexReader.Peek(1024)
 
+	info, err := annexfp.Stat()
+	if err != nil {
+		log.Error(2, "Failed to stat file at %q: %s", fullContentPath, err.Error())
+		return err
+	}
+
+	buf, _ := annexReader.Peek(1024)
+
+	ctx.Resp.Header().Set("Content-Length", fmt.Sprintf("%d", info.Size()))
 	if !tool.IsTextFile(buf) {
 		if !tool.IsImageFile(buf) {
 			ctx.Resp.Header().Set("Content-Disposition", "attachment; filename=\""+name+"\"")
@@ -45,6 +63,12 @@ func serveAnnexedData(ctx *context.Context, name string, cpt *captcha.Captcha, b
 		ctx.Resp.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	}
 
+	log.Trace("Serving annex content for %q: %q", name, contentPath)
+	if ctx.Req.Method == http.MethodHead {
+		// Skip content copy when request method is HEAD
+		log.Trace("Returning header: %+v", ctx.Resp.Header())
+		return nil
+	}
 	_, err = io.Copy(ctx.Resp, annexReader)
 	return err
 }
@@ -103,17 +127,27 @@ func resolveAnnexedContent(c *context.Context, buf []byte, dataRc io.Reader) ([]
 		// not an annex pointer file; return as is
 		return buf, dataRc, nil
 	}
-	log.Trace("Annexed file requested: Resolving content for [%s]", bytes.TrimSpace(buf))
-	af, err := annex.NewAFile(c.Repo.Repository.RepoPath(), "annex", "", buf)
+	log.Trace("Annexed file requested: Resolving content for %q", bytes.TrimSpace(buf))
+
+	keyparts := strings.Split(strings.TrimSpace(string(buf)), "/")
+	key := keyparts[len(keyparts)-1]
+	contentPath, err := git.NewCommand("annex", "contentlocation", key).RunInDir(c.Repo.Repository.RepoPath())
 	if err != nil {
-		log.Trace("Could not get annex file: %v", err)
+		log.Error(2, "Failed to find content location for key %q", key)
 		c.Data["IsAnnexedFile"] = true
 		return buf, dataRc, err
 	}
-
-	afp, err := af.Open()
+	// always trim space from output for git command
+	contentPath = strings.TrimSpace(contentPath)
+	afp, err := os.Open(filepath.Join(c.Repo.Repository.RepoPath(), contentPath))
 	if err != nil {
 		log.Trace("Could not open annex file: %v", err)
+		c.Data["IsAnnexedFile"] = true
+		return buf, dataRc, err
+	}
+	info, err := afp.Stat()
+	if err != nil {
+		log.Trace("Could not stat annex file: %v", err)
 		c.Data["IsAnnexedFile"] = true
 		return buf, dataRc, err
 	}
@@ -121,7 +155,29 @@ func resolveAnnexedContent(c *context.Context, buf []byte, dataRc io.Reader) ([]
 	annexBuf := make([]byte, 1024)
 	n, _ := annexDataReader.Read(annexBuf)
 	annexBuf = annexBuf[:n]
-	c.Data["FileSize"] = af.Info.Size()
-	log.Trace("Annexed file size: %d B", af.Info.Size())
+	c.Data["FileSize"] = info.Size()
+	log.Trace("Annexed file size: %d B", info.Size())
 	return annexBuf, annexDataReader, nil
+}
+
+func GitConfig(c *context.Context) {
+	log.Trace("RepoPath: %+v", c.Repo.Repository.RepoPath())
+	configFilePath := path.Join(c.Repo.Repository.RepoPath(), "config")
+	log.Trace("Serving file %q", configFilePath)
+	if _, err := os.Stat(configFilePath); err != nil {
+		c.ServerError("GitConfig", err)
+		return
+	}
+	c.ServeFileContent(configFilePath, "config")
+}
+
+func AnnexGetKey(c *context.Context) {
+	filename := c.Params(":keyfile")
+	key := c.Params(":key")
+	contentPath := filepath.Join("annex/objects", c.Params(":hashdira"), c.Params(":hashdirb"), key, filename)
+	log.Trace("Git annex requested key %q: %q", key, contentPath)
+	err := serveAnnexedKey(c, filename, contentPath)
+	if err != nil {
+		c.ServerError("AnnexGetKey", err)
+	}
 }

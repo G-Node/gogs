@@ -654,6 +654,13 @@ func runWeb(c *cli.Context) error {
 		m.Get("/watchers", repo.Watchers)
 	}, ignSignIn, context.RepoAssignment(), context.RepoRef())
 
+	m.Group("/:username/:reponame", func() {
+		// GIN mod: Annex over HTTP
+		m.Get("/config", repo.GitConfig)
+		m.Get("/annex/objects/:hashdira/:hashdirb/:key/:keyfile", repo.AnnexGetKey)
+		m.Head("/annex/objects/:hashdira/:hashdirb/:key/:keyfile", repo.AnnexGetKey)
+	}, ignSignInAndCsrf, context.RepoAssignment())
+
 	m.Group("/:username", func() {
 		m.Get("/:reponame", ignSignIn, context.RepoAssignment(), context.RepoRef(), repo.Home)
 
@@ -666,10 +673,10 @@ func runWeb(c *cli.Context) error {
 		m.Group("/:reponame([\\d\\w-_\\.]+\\.git$)", func() {
 			m.Get("", ignSignIn, context.RepoAssignment(), context.RepoRef(), repo.Home)
 			m.Options("/*", ignSignInAndCsrf, repo.HTTPContexter(), repo.HTTP)
-			m.Route("/*", "GET,POST,HEAD", ignSignInAndCsrf, repo.HTTPContexter(), repo.HTTP)
+			m.Route("/*", "GET,POST", ignSignInAndCsrf, repo.HTTPContexter(), repo.HTTP)
 		})
 		m.Options("/:reponame/*", ignSignInAndCsrf, repo.HTTPContexter(), repo.HTTP)
-		m.Route("/:reponame/*", "GET,POST,HEAD", ignSignInAndCsrf, repo.HTTPContexter(), repo.HTTP)
+		m.Route("/:reponame/*", "GET,POST", ignSignInAndCsrf, repo.HTTPContexter(), repo.HTTP)
 	})
 	// ***** END: Repository *****
 
