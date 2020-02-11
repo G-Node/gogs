@@ -133,10 +133,10 @@
 						<img src="{{EscapePound $.RawFileLink}}">
 					{{else if .IsAnnexedFile}}
 					<div class="ui piled yellow segment">
-						<b>This is an annexed File.</b> However its full content currently can not be viewed or downloaded
-						with the web interface. This might be the case because the repository is a fork. In this case case the file
-						content can be viewed in the originating repository.
-						Find more information <a href="/G-Node/Info/wiki/Annexed+Files">here</a></div>
+						<strong>File content is not available</strong>
+						This file is a reference to a large file that is not available.
+						Find more information on what this means, how it can happen, and how to potentially resolve the issue see the <a href="/G-Node/Info/wiki/Annexed+Content">Help Page on Annexed Content</a>.
+					</div>
 					{{else if .IsVideoFile}}
 						<video controls src="{{EscapePound $.RawFileLink}}">
 							<strong>{{.i18n.Tr "repo.video_not_supported_in_browser"}}</strong>
