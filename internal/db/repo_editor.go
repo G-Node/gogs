@@ -492,6 +492,10 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 		}
 
 		targetPath := path.Join(dirPath, upload.Name)
+		// GIN: Create subdirectory for dirtree uploads
+		if err = os.MkdirAll(filepath.Dir(targetPath), os.ModePerm); err != nil {
+			return fmt.Errorf("mkdir: %v", err)
+		}
 		if err = com.Copy(tmpPath, targetPath); err != nil {
 			return fmt.Errorf("copy: %v", err)
 		}
