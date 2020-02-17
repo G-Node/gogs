@@ -44,8 +44,6 @@ COPY docker/nsswitch.conf /etc/nsswitch.conf
 
 WORKDIR /app/gogs
 COPY docker ./docker
-COPY templates ./templates
-COPY public ./public
 COPY --from=binarybuilder /go/src/github.com/G-Node/gogs/gogs .
 
 RUN ./docker/finalize.sh

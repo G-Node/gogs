@@ -19,6 +19,7 @@ import (
 	api "github.com/gogs/go-gogs-client"
 
 	"github.com/G-Node/gogs/internal/db/errors"
+	"github.com/G-Node/gogs/internal/osutil"
 	"github.com/G-Node/gogs/internal/process"
 	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/sync"
@@ -406,7 +407,7 @@ func (pr *PullRequest) testPatch() (err error) {
 	}
 
 	// Fast fail if patch does not exist, this assumes data is cruppted.
-	if !com.IsFile(patchPath) {
+	if !osutil.IsFile(patchPath) {
 		log.Trace("PullRequest[%d].testPatch: ignored cruppted data", pr.ID)
 		return nil
 	}
