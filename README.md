@@ -33,7 +33,7 @@ To minimize the time and effort scientists have to spend on these tasks, we deve
 By indexing the repository contents it's easy to find the files you are looking for. When using the [NIX](http://www.g-node.org/nix) data format for scientific data and metadata, even the contents of these files will be indexed and searchable, making it easy for you to identify the data you are looking for.
 
 ## Acknowledgments
-GIN is based on [Gogs](https://github.com/gogits/gogs)
+GIN is based on [Gogs](https://github.com/gogs/gogs)
 
 ## License
 
