@@ -50,6 +50,7 @@ require (
 	github.com/sergi/go-diff v1.0.0
 	github.com/smartystreets/goconvey v1.6.4
 	github.com/ssor/bom v0.0.0-20170718123548-6386211fdfcf // indirect
+	github.com/stretchr/testify v1.4.0
 	github.com/unknwon/cae v1.0.0
 	github.com/unknwon/com v1.0.1
 	github.com/unknwon/i18n v0.0.0-20190805065654-5c6446a380b6
