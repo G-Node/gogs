@@ -21,6 +21,7 @@ import (
 	"github.com/G-Node/gogs/internal/db/errors"
 	"github.com/G-Node/gogs/internal/form"
 	"github.com/G-Node/gogs/internal/markup"
+	"github.com/G-Node/gogs/internal/pathutil"
 	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/template"
 	"github.com/G-Node/gogs/internal/tool"
@@ -148,7 +149,7 @@ func editFilePost(c *context.Context, f form.EditRepoFile, isNewFile bool) {
 		branchName = f.NewBranchName
 	}
 
-	f.TreePath = strings.Trim(path.Clean("/"+f.TreePath), " /")
+	f.TreePath = pathutil.Clean(f.TreePath)
 	treeNames, treePaths := getParentTreeFields(f.TreePath)
 
 	c.Data["ParentTreePath"] = path.Dir(c.Repo.TreePath)
@@ -346,6 +347,8 @@ func DeleteFile(c *context.Context) {
 func DeleteFilePost(c *context.Context, f form.DeleteRepoFile) {
 	c.PageIs("Delete")
 	c.Data["BranchLink"] = c.Repo.RepoLink + "/src/" + c.Repo.BranchName
+
+	c.Repo.TreePath = pathutil.Clean(c.Repo.TreePath)
 	c.Data["TreePath"] = c.Repo.TreePath
 
 	oldBranchName := c.Repo.BranchName
@@ -440,7 +443,7 @@ func UploadFilePost(c *context.Context, f form.UploadRepoFile) {
 		branchName = f.NewBranchName
 	}
 
-	f.TreePath = strings.Trim(path.Clean("/"+f.TreePath), " /")
+	f.TreePath = pathutil.Clean(f.TreePath)
 	treeNames, treePaths := getParentTreeFields(f.TreePath)
 	if len(treeNames) == 0 {
 		// We must at least have one element for user to input.
