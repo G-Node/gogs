@@ -868,7 +868,7 @@ func newCacheService() {
 		log.Fatal(2, "Unknown cache adapter: %s", CacheAdapter)
 	}
 
-	log.Info("Cache service is enabled")
+	log.Trace("Cache service is enabled")
 }
 
 func newSessionService() {
@@ -882,7 +882,7 @@ func newSessionService() {
 	SessionConfig.Maxlifetime = Cfg.Section("session").Key("SESSION_LIFE_TIME").MustInt64(86400)
 	CSRFCookieName = Cfg.Section("session").Key("CSRF_COOKIE_NAME").MustString("_csrf")
 
-	log.Info("Session service is enabled")
+	log.Trace("Session service is enabled")
 }
 
 // Mailer represents mail service.
@@ -942,7 +942,7 @@ func newMailService() {
 	if HookMode {
 		return
 	}
-	log.Info("Mail service is enabled")
+	log.Trace("Mail service is enabled")
 }
 
 func newRegisterMailService() {
@@ -953,7 +953,7 @@ func newRegisterMailService() {
 		return
 	}
 	Service.RegisterEmailConfirm = true
-	log.Info("Email confirmation is enabled")
+	log.Trace("Email confirmation is enabled")
 }
 
 // newNotifyMailService initializes notification email service options from configuration.
@@ -970,7 +970,7 @@ func newNotifyMailService() {
 	if HookMode {
 		return
 	}
-	log.Info("Email notification is enabled")
+	log.Trace("Email notification is enabled")
 }
 
 func NewService() {
