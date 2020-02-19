@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 	"xorm.io/xorm"
 
 	"github.com/G-Node/git-module"

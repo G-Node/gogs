@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 
 	"github.com/G-Node/git-module"
 	"github.com/G-Node/gogs/internal/assets/conf"
@@ -98,7 +98,7 @@ func editFile(c *context.Context, isNewFile bool) {
 		buf = append(buf, d...)
 		if err, content := template.ToUTF8WithErr(buf); err != nil {
 			if err != nil {
-				log.Error(2, "Failed to convert encoding to UTF-8: %v", err)
+				log.Error("Failed to convert encoding to UTF-8: %v", err)
 			}
 			c.Data["FileContent"] = string(buf)
 		} else {
@@ -285,7 +285,7 @@ func editFilePost(c *context.Context, f form.EditRepoFile, isNewFile bool) {
 		Content:      strings.Replace(f.Content, "\r", "", -1),
 		IsNewFile:    isNewFile,
 	}); err != nil {
-		log.Error(2, "Failed to update repo file: %v", err)
+		log.Error("Failed to update repo file: %v", err)
 		c.FormErr("TreePath")
 		c.RenderWithErr(c.Tr("repo.editor.fail_to_update_file", f.TreePath, errors.InternalServerError), EDIT_FILE, &f)
 		return
@@ -392,7 +392,7 @@ func DeleteFilePost(c *context.Context, f form.DeleteRepoFile) {
 		TreePath:     c.Repo.TreePath,
 		Message:      message,
 	}); err != nil {
-		log.Error(2, "Failed to delete repo file: %v", err)
+		log.Error("Failed to delete repo file: %v", err)
 		c.RenderWithErr(c.Tr("repo.editor.fail_to_delete_file", c.Repo.TreePath, errors.InternalServerError), DELETE_FILE, &f)
 		return
 	}
@@ -512,7 +512,7 @@ func UploadFilePost(c *context.Context, f form.UploadRepoFile) {
 		Message:      message,
 		Files:        f.Files,
 	}); err != nil {
-		log.Error(2, "Failed to upload files: %v", err)
+		log.Error("Failed to upload files: %v", err)
 		c.FormErr("TreePath")
 		c.RenderWithErr(c.Tr("repo.editor.unable_to_upload_files", f.TreePath, errors.InternalServerError), UPLOAD_FILE, &f)
 		return

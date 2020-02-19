@@ -14,9 +14,7 @@ import (
 
 	"github.com/unknwon/com"
 	"github.com/urfave/cli"
-	log "gopkg.in/clog.v1"
-
-	"syscall"
+	log "unknwon.dev/clog/v2"
 
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
@@ -44,7 +42,7 @@ func fail(userMessage, logMessage string, args ...interface{}) {
 		if !setting.ProdMode {
 			fmt.Fprintf(os.Stderr, logMessage+"\n", args...)
 		}
-		log.Fatal(3, logMessage, args...)
+		log.Fatal(logMessage, args...)
 	}
 
 	os.Exit(1)
@@ -57,10 +55,14 @@ func setup(c *cli.Context, logPath string, connectDB bool) {
 		setting.CustomConf = c.GlobalString("config")
 	}
 
-	setting.NewContext()
+	setting.Init()
 
-	level := log.TRACE
-	log.New(log.FILE, log.FileConfig{
+	level := log.LevelTrace
+	if setting.ProdMode {
+		level = log.LevelError
+	}
+
+	err := log.NewFile(log.FileConfig{
 		Level:    level,
 		Filename: filepath.Join(setting.LogRootPath, logPath),
 		FileRotationConfig: log.FileRotationConfig{
@@ -69,7 +71,11 @@ func setup(c *cli.Context, logPath string, connectDB bool) {
 			MaxDays: 3,
 		},
 	})
-	log.Delete(log.CONSOLE) // Remove primary logger
+	if err != nil {
+		log.Fatal("Failed to init file logger: %v", err)
+		return
+	}
+	log.Remove(log.DefaultConsoleName) // Remove the primary logger
 
 	if !connectDB {
 		return
@@ -92,15 +98,15 @@ func isAnnexShell(cmd string) bool {
 }
 
 func parseSSHCmd(cmd string) (string, string, []string) {
+	// TODO: Check if extra arg (compared to upstream) is necessary
 	ss := strings.Split(cmd, " ")
 	if len(ss) < 2 {
 		return "", "", nil
 	}
 	if isAnnexShell(ss[0]) {
 		return ss[0], strings.Replace(ss[2], "/", "'", 1), ss
-	} else {
-		return ss[0], strings.Replace(ss[1], "/", "'", 1), ss
 	}
+	return ss[0], strings.Replace(ss[1], "/", "'", 1), ss
 }
 
 func checkDeployKey(key *db.PublicKey, repo *db.Repository) {
@@ -164,7 +170,7 @@ func runServ(c *cli.Context) error {
 		if errors.IsUserNotExist(err) {
 			fail("Repository owner does not exist", "Unregistered owner: %s", ownerName)
 		}
-		fail("Internal error", "Fail to get repository owner '%s': %v", ownerName, err)
+		fail("Internal error", "Failed to get repository owner '%s': %v", ownerName, err)
 	}
 
 	repo, err := db.GetRepositoryByName(owner.ID, repoName)
@@ -172,7 +178,7 @@ func runServ(c *cli.Context) error {
 		if errors.IsRepoNotExist(err) {
 			fail(_ACCESS_DENIED_MESSAGE, "Repository does not exist: %s/%s", owner.Name, repoName)
 		}
-		fail("Internal error", "Fail to get repository: %v", err)
+		fail("Internal error", "Failed to get repository: %v", err)
 	}
 	repo.Owner = owner
 
@@ -210,12 +216,12 @@ func runServ(c *cli.Context) error {
 		} else {
 			user, err = db.GetUserByKeyID(key.ID)
 			if err != nil {
-				fail("Internal error", "Fail to get user by key ID '%d': %v", key.ID, err)
+				fail("Internal error", "Failed to get user by key ID '%d': %v", key.ID, err)
 			}
 
 			mode, err := db.UserAccessMode(user.ID, repo)
 			if err != nil {
-				fail("Internal error", "Fail to check access: %v", err)
+				fail("Internal error", "Failed to check access: %v", err)
 			}
 
 			if mode < requestMode {
@@ -298,12 +304,8 @@ func runGit(cmd []string, requestMode db.AccessMode, user *db.User, owner *db.Us
 	gitCmd.Stdout = os.Stdout
 	gitCmd.Stdin = os.Stdin
 	gitCmd.Stderr = os.Stderr
-	log.Info("args:%s", gitCmd.Args)
-	err := gitCmd.Run()
-	log.Info("err:%s", err)
-	if t, ok := err.(*exec.ExitError); ok {
-		log.Info("t:%s", t)
-		os.Exit(t.Sys().(syscall.WaitStatus).ExitStatus())
+	if err := gitCmd.Run(); err != nil {
+		fail("Internal error", "Failed to execute git command: %v", err)
 	}
 
 	return nil

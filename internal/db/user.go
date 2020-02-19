@@ -25,7 +25,7 @@ import (
 	"github.com/nfnt/resize"
 	"github.com/unknwon/com"
 	"golang.org/x/crypto/pbkdf2"
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 	"xorm.io/xorm"
 
 	"github.com/G-Node/git-module"
@@ -268,7 +268,7 @@ func (u *User) RelAvatarLink() string {
 	case setting.DisableGravatar, setting.OfflineMode:
 		if !com.IsExist(u.CustomAvatarPath()) {
 			if err := u.GenerateRandomAvatar(); err != nil {
-				log.Error(3, "GenerateRandomAvatar: %v", err)
+				log.Error("GenerateRandomAvatar: %v", err)
 			}
 		}
 
@@ -382,7 +382,7 @@ func (u *User) DeleteAvatar() error {
 func (u *User) IsAdminOfRepo(repo *Repository) bool {
 	has, err := HasAccess(u.ID, repo, ACCESS_MODE_ADMIN)
 	if err != nil {
-		log.Error(2, "HasAccess: %v", err)
+		log.Error("HasAccess: %v", err)
 	}
 	return has
 }
@@ -391,7 +391,7 @@ func (u *User) IsAdminOfRepo(repo *Repository) bool {
 func (u *User) IsWriterOfRepo(repo *Repository) bool {
 	has, err := HasAccess(u.ID, repo, ACCESS_MODE_WRITE)
 	if err != nil {
-		log.Error(2, "HasAccess: %v", err)
+		log.Error("HasAccess: %v", err)
 	}
 	return has
 }
@@ -502,7 +502,7 @@ func IsBlockedDomain(email string) bool {
 
 	f, err := os.Open(fpath)
 	if err != nil {
-		log.Error(2, "Failed to open file %q: %v", fpath, err)
+		log.Error("Failed to open file %q: %v", fpath, err)
 		return false
 	}
 	defer f.Close()
@@ -648,7 +648,7 @@ func parseUserFromCode(code string) (user *User) {
 		if user, err = GetUserByName(string(b)); user != nil {
 			return user
 		} else if !errors.IsUserNotExist(err) {
-			log.Error(2, "GetUserByName: %v", err)
+			log.Error("GetUserByName: %v", err)
 		}
 	}
 

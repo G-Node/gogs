@@ -19,7 +19,7 @@ import (
 	"github.com/microcosm-cc/bluemonday"
 	"golang.org/x/net/html/charset"
 	"golang.org/x/text/transform"
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/markup"
@@ -297,7 +297,7 @@ func ActionIcon(opType int) string {
 func ActionContent2Commits(act Actioner) *db.PushCommits {
 	push := db.NewPushCommits()
 	if err := jsoniter.Unmarshal([]byte(act.GetContent()), push); err != nil {
-		log.Error(4, "Unmarshal:\n%s\nERROR: %v", act.GetContent(), err)
+		log.Error("Unmarshal:\n%s\nERROR: %v", act.GetContent(), err)
 	}
 	return push
 }

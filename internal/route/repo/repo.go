@@ -11,7 +11,7 @@ import (
 	"strings"
 
 	"github.com/unknwon/com"
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 
 	"github.com/G-Node/git-module"
 
@@ -140,7 +140,7 @@ func CreatePost(c *context.Context, f form.CreateRepo) {
 
 	if repo != nil {
 		if errDelete := db.DeleteRepository(ctxUser.ID, repo.ID); errDelete != nil {
-			log.Error(4, "DeleteRepository: %v", errDelete)
+			log.Error("DeleteRepository: %v", errDelete)
 		}
 	}
 
@@ -212,7 +212,7 @@ func MigratePost(c *context.Context, f form.MigrateRepo) {
 
 	if repo != nil {
 		if errDelete := db.DeleteRepository(ctxUser.ID, repo.ID); errDelete != nil {
-			log.Error(4, "DeleteRepository: %v", errDelete)
+			log.Error("DeleteRepository: %v", errDelete)
 		}
 	}
 

@@ -14,7 +14,7 @@ import (
 
 	"github.com/go-macaron/captcha"
 	"github.com/unknwon/paginater"
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 
 	"github.com/G-Node/git-module"
 	"github.com/G-Node/libgin/libgin/annex"
@@ -213,7 +213,7 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			var fileContent string
 			if err, content := template.ToUTF8WithErr(buf); err != nil {
 				if err != nil {
-					log.Error(4, "ToUTF8WithErr: %s", err)
+					log.Error("ToUTF8WithErr: %s", err)
 				}
 				fileContent = string(buf)
 			} else {

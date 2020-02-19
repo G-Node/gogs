@@ -12,7 +12,7 @@ import (
 
 	"github.com/G-Node/git-module"
 	"github.com/unknwon/com"
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
@@ -102,7 +102,7 @@ func SettingsPost(c *context.Context, f form.RepoSetting) {
 
 		if isNameChanged {
 			if err := db.RenameRepoAction(c.User, oldRepoName, repo); err != nil {
-				log.Error(2, "RenameRepoAction: %v", err)
+				log.Error("RenameRepoAction: %v", err)
 			}
 		}
 
@@ -448,7 +448,7 @@ func ChangeCollaborationAccessMode(c *context.Context) {
 	if err := c.Repo.Repository.ChangeCollaborationAccessMode(
 		c.QueryInt64("uid"),
 		db.AccessMode(c.QueryInt("mode"))); err != nil {
-		log.Error(2, "ChangeCollaborationAccessMode: %v", err)
+		log.Error("ChangeCollaborationAccessMode: %v", err)
 		return
 	}
 
