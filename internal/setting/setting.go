@@ -54,7 +54,7 @@ var (
 	BuildCommit string
 
 	// App settings
-	AppVer         string
+	AppVersion     string
 	AppName        string
 	AppURL         string
 	AppSubURL      string
@@ -851,7 +851,7 @@ func newLogService() {
 	}
 
 	// Make sure everyone gets version info printed.
-	log.Info("%s %s", AppName, AppVer)
+	log.Info("%s %s", AppName, AppVersion)
 	if !hasConsole {
 		log.Delete(log.CONSOLE)
 	}

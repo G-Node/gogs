@@ -326,7 +326,6 @@ func Contexter() macaron.Handler {
 
 		c.Data["ShowRegistrationButton"] = setting.Service.ShowRegistrationButton
 		c.Data["ShowFooterBranding"] = setting.ShowFooterBranding
-		c.Data["ShowFooterVersion"] = setting.ShowFooterVersion
 
 		c.renderNoticeBanner()
 
