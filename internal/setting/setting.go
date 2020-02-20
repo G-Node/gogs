@@ -320,7 +320,6 @@ var (
 	// Other settings
 	ShowFooterBranding         bool
 	ShowFooterTemplateLoadTime bool
-	SupportMiniWinService      bool
 
 	// Global setting objects
 	Cfg          *ini.File
