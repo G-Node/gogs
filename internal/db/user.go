@@ -32,8 +32,8 @@ import (
 	api "github.com/gogs/go-gogs-client"
 
 	"github.com/G-Node/gogs/internal/avatar"
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db/errors"
-	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/tool"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -155,23 +155,23 @@ func (u *User) HasForkedRepo(repoID int64) bool {
 
 func (u *User) RepoCreationNum() int {
 	if u.MaxRepoCreation <= -1 {
-		return setting.Repository.MaxCreationLimit
+		return conf.Repository.MaxCreationLimit
 	}
 	return u.MaxRepoCreation
 }
 
 func (u *User) CanCreateRepo() bool {
 	if u.MaxRepoCreation <= -1 {
-		if setting.Repository.MaxCreationLimit <= -1 {
+		if conf.Repository.MaxCreationLimit <= -1 {
 			return true
 		}
-		return u.NumRepos < setting.Repository.MaxCreationLimit
+		return u.NumRepos < conf.Repository.MaxCreationLimit
 	}
 	return u.NumRepos < u.MaxRepoCreation
 }
 
 func (u *User) CanCreateOrganization() bool {
-	return !setting.Admin.DisableRegularOrgCreation || u.IsAdmin
+	return !conf.Admin.DisableRegularOrgCreation || u.IsAdmin
 }
 
 // CanEditGitHook returns true if user can edit Git hooks.
@@ -181,31 +181,31 @@ func (u *User) CanEditGitHook() bool {
 
 // CanImportLocal returns true if user can migrate repository by local path.
 func (u *User) CanImportLocal() bool {
-	return setting.Repository.EnableLocalPathMigration && (u.IsAdmin || u.AllowImportLocal)
+	return conf.Repository.EnableLocalPathMigration && (u.IsAdmin || u.AllowImportLocal)
 }
 
 // DashboardLink returns the user dashboard page link.
 func (u *User) DashboardLink() string {
 	if u.IsOrganization() {
-		return setting.AppSubURL + "/org/" + u.Name + "/dashboard/"
+		return conf.Server.Subpath + "/org/" + u.Name + "/dashboard/"
 	}
-	return setting.AppSubURL + "/"
+	return conf.Server.Subpath + "/"
 }
 
 // HomeLink returns the user or organization home page link.
 func (u *User) HomeLink() string {
-	return setting.AppSubURL + "/" + u.Name
+	return conf.Server.Subpath + "/" + u.Name
 }
 
 func (u *User) HTMLURL() string {
-	return setting.AppURL + u.Name
+	return conf.Server.ExternalURL + u.Name
 }
 
 // GenerateEmailActivateCode generates an activate code based on user information and given e-mail.
 func (u *User) GenerateEmailActivateCode(email string) string {
 	code := tool.CreateTimeLimitCode(
 		com.ToStr(u.ID)+email+u.LowerName+u.Passwd+u.Rands,
-		setting.Service.ActiveCodeLives, nil)
+		conf.Service.ActiveCodeLives, nil)
 
 	// Add tail hex username
 	code += hex.EncodeToString([]byte(u.LowerName))
@@ -219,7 +219,7 @@ func (u *User) GenerateActivateCode() string {
 
 // CustomAvatarPath returns user custom avatar file path.
 func (u *User) CustomAvatarPath() string {
-	return filepath.Join(setting.AvatarUploadPath, com.ToStr(u.ID))
+	return filepath.Join(conf.AvatarUploadPath, com.ToStr(u.ID))
 }
 
 // GenerateRandomAvatar generates a random avatar for user.
@@ -254,7 +254,7 @@ func (u *User) GenerateRandomAvatar() error {
 // which includes app sub-url as prefix. However, it is possible
 // to return full URL if user enables Gravatar-like service.
 func (u *User) RelAvatarLink() string {
-	defaultImgUrl := setting.AppSubURL + "/img/avatar_default.png"
+	defaultImgUrl := conf.Server.Subpath + "/img/avatar_default.png"
 	if u.ID == -1 {
 		return defaultImgUrl
 	}
@@ -264,15 +264,15 @@ func (u *User) RelAvatarLink() string {
 		if !com.IsExist(u.CustomAvatarPath()) {
 			return defaultImgUrl
 		}
-		return fmt.Sprintf("%s/%s/%d", setting.AppSubURL, USER_AVATAR_URL_PREFIX, u.ID)
-	case setting.DisableGravatar, setting.OfflineMode:
+		return fmt.Sprintf("%s/%s/%d", conf.Server.Subpath, USER_AVATAR_URL_PREFIX, u.ID)
+	case conf.DisableGravatar:
 		if !com.IsExist(u.CustomAvatarPath()) {
 			if err := u.GenerateRandomAvatar(); err != nil {
 				log.Error("GenerateRandomAvatar: %v", err)
 			}
 		}
 
-		return fmt.Sprintf("%s/%s/%d", setting.AppSubURL, USER_AVATAR_URL_PREFIX, u.ID)
+		return fmt.Sprintf("%s/%s/%d", conf.Server.Subpath, USER_AVATAR_URL_PREFIX, u.ID)
 	}
 	return tool.AvatarLink(u.AvatarEmail)
 }
@@ -281,7 +281,7 @@ func (u *User) RelAvatarLink() string {
 func (u *User) AvatarLink() string {
 	link := u.RelAvatarLink()
 	if link[0] == '/' && link[1] != '/' {
-		return setting.AppURL + strings.TrimPrefix(link, setting.AppSubURL)[1:]
+		return conf.Server.ExternalURL + strings.TrimPrefix(link, conf.Server.Subpath)[1:]
 	}
 	return link
 }
@@ -290,7 +290,7 @@ func (u *User) AvatarLink() string {
 func (u *User) GetFollowers(page int) ([]*User, error) {
 	users := make([]*User, 0, ItemsPerPage)
 	sess := x.Limit(ItemsPerPage, (page-1)*ItemsPerPage).Where("follow.follow_id=?", u.ID)
-	if setting.UsePostgreSQL {
+	if conf.UsePostgreSQL {
 		sess = sess.Join("LEFT", "follow", `"user".id=follow.user_id`)
 	} else {
 		sess = sess.Join("LEFT", "follow", "user.id=follow.user_id")
@@ -306,7 +306,7 @@ func (u *User) IsFollowing(followID int64) bool {
 func (u *User) GetFollowing(page int) ([]*User, error) {
 	users := make([]*User, 0, ItemsPerPage)
 	sess := x.Limit(ItemsPerPage, (page-1)*ItemsPerPage).Where("follow.user_id=?", u.ID)
-	if setting.UsePostgreSQL {
+	if conf.UsePostgreSQL {
 		sess = sess.Join("LEFT", "follow", `"user".id=follow.follow_id`)
 	} else {
 		sess = sess.Join("LEFT", "follow", "user.id=follow.follow_id")
@@ -352,7 +352,7 @@ func (u *User) UploadAvatar(data []byte) error {
 		return fmt.Errorf("decode image: %v", err)
 	}
 
-	os.MkdirAll(setting.AvatarUploadPath, os.ModePerm)
+	_ = os.MkdirAll(conf.AvatarUploadPath, os.ModePerm)
 	fw, err := os.Create(u.CustomAvatarPath())
 	if err != nil {
 		return fmt.Errorf("create custom avatar directory: %v", err)
@@ -495,7 +495,7 @@ func IsUserExist(uid int64, name string) (bool, error) {
 }
 
 func IsBlockedDomain(email string) bool {
-	fpath := path.Join(setting.CustomPath, "blocklist")
+	fpath := path.Join(conf.CustomDir(), "blocklist")
 	if !com.IsExist(fpath) {
 		return false
 	}
@@ -657,7 +657,7 @@ func parseUserFromCode(code string) (user *User) {
 
 // verify active code when active account
 func VerifyUserActiveCode(code string) (user *User) {
-	minutes := setting.Service.ActiveCodeLives
+	minutes := conf.Service.ActiveCodeLives
 
 	if user = parseUserFromCode(code); user != nil {
 		// time limit code
@@ -673,7 +673,7 @@ func VerifyUserActiveCode(code string) (user *User) {
 
 // verify active code when active account
 func VerifyActiveEmailCode(code, email string) *EmailAddress {
-	minutes := setting.Service.ActiveCodeLives
+	minutes := conf.Service.ActiveCodeLives
 
 	if user := parseUserFromCode(code); user != nil {
 		// time limit code
@@ -917,7 +917,7 @@ func DeleteInactivateUsers() (err error) {
 
 // UserPath returns the path absolute path of user repositories.
 func UserPath(userName string) string {
-	return filepath.Join(setting.RepoRootPath, strings.ToLower(userName))
+	return filepath.Join(conf.RepoRootPath, strings.ToLower(userName))
 }
 
 func GetUserByKeyID(keyID int64) (*User, error) {
@@ -1089,8 +1089,8 @@ func SearchUserByName(opts *SearchUserOptions) (users []*User, _ int64, _ error)
 	}
 	opts.Keyword = strings.ToLower(opts.Keyword)
 
-	if opts.PageSize <= 0 || opts.PageSize > setting.UI.ExplorePagingNum {
-		opts.PageSize = setting.UI.ExplorePagingNum
+	if opts.PageSize <= 0 || opts.PageSize > conf.UI.ExplorePagingNum {
+		opts.PageSize = conf.UI.ExplorePagingNum
 	}
 	if opts.Page <= 0 {
 		opts.Page = 1

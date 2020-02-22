@@ -13,12 +13,12 @@ import (
 
 	api "github.com/gogs/go-gogs-client"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
 	"github.com/G-Node/gogs/internal/form"
 	"github.com/G-Node/gogs/internal/route/api/v1/convert"
-	"github.com/G-Node/gogs/internal/setting"
 )
 
 func Search(c *context.APIContext) {
@@ -271,7 +271,7 @@ func Migrate(c *context.APIContext, f form.MigrateRepo) {
 	repo, err := db.MigrateRepository(c.User, ctxUser, db.MigrateRepoOptions{
 		Name:        f.RepoName,
 		Description: f.Description,
-		IsPrivate:   f.Private || setting.Repository.ForcePrivate,
+		IsPrivate:   f.Private || conf.Repository.ForcePrivate,
 		IsMirror:    f.Mirror,
 		RemoteAddr:  remoteAddr,
 	})

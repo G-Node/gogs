@@ -10,10 +10,10 @@ import (
 	api "github.com/gogs/go-gogs-client"
 	"net/http"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
-	"github.com/G-Node/gogs/internal/setting"
 )
 
 func GetUserByParamsName(c *context.APIContext, name string) *db.User {
@@ -31,7 +31,7 @@ func GetUserByParams(c *context.APIContext) *db.User {
 }
 
 func composePublicKeysAPILink() string {
-	return setting.AppURL + "api/v1/user/keys/"
+	return conf.Server.ExternalURL + "api/v1/user/keys/"
 }
 
 func listPublicKeys(c *context.APIContext, uid int64) {

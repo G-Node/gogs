@@ -19,10 +19,10 @@ import (
 	"github.com/G-Node/git-module"
 	"github.com/G-Node/libgin/libgin/annex"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/markup"
-	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/template"
 	"github.com/G-Node/gogs/internal/template/highlight"
 	"github.com/G-Node/gogs/internal/tool"
@@ -49,7 +49,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 	}
 	entries.Sort()
 
-	c.Data["Files"], err = entries.GetCommitsInfoWithCustomConcurrency(c.Repo.Commit, c.Repo.TreePath, setting.Repository.CommitsFetchConcurrency)
+	c.Data["Files"], err = entries.GetCommitsInfoWithCustomConcurrency(c.Repo.Commit, c.Repo.TreePath, conf.Repository.CommitsFetchConcurrency)
 	if err != nil {
 		c.ServerError("GetCommitsInfoWithCustomConcurrency", err)
 		return
@@ -128,7 +128,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 
 	if c.Repo.CanEnableEditor() {
 		c.Data["CanAddFile"] = true
-		c.Data["CanUploadFile"] = setting.Repository.Upload.Enabled
+		c.Data["CanUploadFile"] = conf.Repository.Upload.Enabled
 	}
 }
 
@@ -171,7 +171,7 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 	case isTextFile:
 		// GIN mod: Use c.Data["FileSize"] which is replaced by annexed content
 		// size in resolveAnnexedContent() when necessary
-		if c.Data["FileSize"].(int64) >= setting.UI.MaxDisplayFileSize {
+		if c.Data["FileSize"].(int64) >= conf.UI.MaxDisplayFileSize {
 			c.Data["IsFileTooLarge"] = true
 			break
 		}
@@ -227,7 +227,7 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 				lines = lines[:len(lines)-1]
 			}
 			// > GIN
-			if len(lines) > setting.UI.MaxLineHighlight {
+			if len(lines) > conf.UI.MaxLineHighlight {
 				c.Data["HighlightClass"] = "nohighlight"
 			}
 			// < GIN
@@ -253,16 +253,16 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			c.Data["EditFileTooltip"] = c.Tr("repo.editor.fork_before_edit")
 		}
 
-	case tool.IsPDFFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
+	case tool.IsPDFFile(buf) && (c.Data["FileSize"].(int64) < conf.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
 		c.IsLogged):
 		c.Data["IsPDFFile"] = true
-	case tool.IsVideoFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
+	case tool.IsVideoFile(buf) && (c.Data["FileSize"].(int64) < conf.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
 		c.IsLogged):
 		c.Data["IsVideoFile"] = true
-	case tool.IsImageFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
+	case tool.IsImageFile(buf) && (c.Data["FileSize"].(int64) < conf.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
 		c.IsLogged):
 		c.Data["IsImageFile"] = true
-	case tool.IsAnnexedFile(buf) && (c.Data["FileSize"].(int64) < setting.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
+	case tool.IsAnnexedFile(buf) && (c.Data["FileSize"].(int64) < conf.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
 		c.IsLogged):
 		c.Data["IsAnnexedFile"] = true
 	}

@@ -13,8 +13,8 @@ import (
 	"strings"
 
 	"github.com/G-Node/git-module"
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
-	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/tool"
 	"github.com/G-Node/libgin/libgin"
 	"github.com/go-macaron/captcha"
@@ -59,7 +59,7 @@ func serveAnnexedKey(ctx *context.Context, name string, contentPath string) erro
 			ctx.Resp.Header().Set("Content-Disposition", "attachment; filename=\""+name+"\"")
 			ctx.Resp.Header().Set("Content-Transfer-Encoding", "binary")
 		}
-	} else if !setting.Repository.EnableRawFileRenderMode || !ctx.QueryBool("render") {
+	} else if !conf.Repository.EnableRawFileRenderMode || !ctx.QueryBool("render") {
 		ctx.Resp.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	}
 

@@ -11,10 +11,10 @@ import (
 
 	api "github.com/gogs/go-gogs-client"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
-	"github.com/G-Node/gogs/internal/setting"
 )
 
 func listIssues(c *context.APIContext, opts *db.IssuesOptions) {
@@ -40,7 +40,7 @@ func listIssues(c *context.APIContext, opts *db.IssuesOptions) {
 		apiIssues[i] = issues[i].APIFormat()
 	}
 
-	c.SetLinkHeader(int(count), setting.UI.IssuePagingNum)
+	c.SetLinkHeader(int(count), conf.UI.IssuePagingNum)
 	c.JSONSuccess(&apiIssues)
 }
 

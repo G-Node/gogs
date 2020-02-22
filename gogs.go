@@ -1,4 +1,4 @@
-// +build go1.11
+// +build go1.12
 
 // Copyright 2014 The Gogs Authors. All rights reserved.
 // Use of this source code is governed by a MIT-style
@@ -14,20 +14,18 @@ import (
 	log "unknwon.dev/clog/v2"
 
 	"github.com/G-Node/gogs/internal/cmd"
-	"github.com/G-Node/gogs/internal/setting"
+	"github.com/G-Node/gogs/internal/conf"
 )
 
-const Version = "0.12.0+dev"
-
 func init() {
-	setting.AppVersion = Version
+	conf.App.Version = "0.12.0+dev"
 }
 
 func main() {
 	app := cli.NewApp()
 	app.Name = "GIN"
 	app.Usage = "Modern Research Data Management for Neuroscience"
-	app.Version = Version
+	app.Version = conf.App.Version
 	app.Commands = []cli.Command{
 		cmd.Web,
 		cmd.Serv,

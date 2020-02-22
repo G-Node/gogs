@@ -14,9 +14,10 @@ import (
 	"gopkg.in/macaron.v1"
 
 	"github.com/G-Node/git-module"
+
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
-	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/libgin/libgin"
 )
 
@@ -248,9 +249,9 @@ func RepoAssignment(pages ...bool) macaron.Handler {
 		c.Data["IsRepositoryAdmin"] = c.Repo.IsAdmin()
 		c.Data["IsRepositoryWriter"] = c.Repo.IsWriter()
 
-		c.Data["DisableSSH"] = setting.SSH.Disabled
-		c.Data["DisableHTTP"] = setting.Repository.DisableHTTPGit
-		c.Data["ShowHTTP"] = setting.Repository.ShowHTTPGit
+		c.Data["DisableSSH"] = conf.SSH.Disabled
+		c.Data["DisableHTTP"] = conf.Repository.DisableHTTPGit
+		c.Data["ShowHTTP"] = conf.Repository.ShowHTTPGit
 		c.Data["CloneLink"] = repo.CloneLink()
 		c.Data["WikiCloneLink"] = repo.WikiCloneLink()
 

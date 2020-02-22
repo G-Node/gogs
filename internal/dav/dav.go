@@ -12,9 +12,9 @@ import (
 	"io/ioutil"
 
 	"github.com/G-Node/git-module"
+	"github.com/G-Node/gogs/internal/conf"
 	gctx "github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/tool"
 	"github.com/G-Node/libgin/libgin/annex"
 	"golang.org/x/net/context"
@@ -31,7 +31,7 @@ var (
 const ANNEXPEEKSIZE = 1024
 
 func Dav(c *gctx.Context, handler *webdav.Handler) {
-	if !setting.WebDav.On {
+	if !conf.WebDav.On {
 		c.WriteHeader(http.StatusUnauthorized)
 		return
 	}
@@ -295,7 +295,7 @@ func checkPerms(c *gctx.Context) error {
 	if !c.Repo.HasAccess() {
 		return fmt.Errorf("no access")
 	}
-	if !setting.WebDav.Logged {
+	if !conf.WebDav.Logged {
 		return nil
 	}
 	if !c.IsLogged {
@@ -351,7 +351,7 @@ func getROwnerID(path string) (int64, error) {
 }
 
 func Webdav401(c *gctx.Context) {
-	c.Header().Add("WWW-Authenticate", fmt.Sprintf("Basic realm=\"%s\"", setting.WebDav.AuthRealm))
+	c.Header().Add("WWW-Authenticate", fmt.Sprintf("Basic realm=\"%s\"", conf.WebDav.AuthRealm))
 	c.WriteHeader(http.StatusUnauthorized)
 	return
 }

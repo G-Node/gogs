@@ -9,9 +9,9 @@ import (
 
 	"gopkg.in/macaron.v1"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
-	"github.com/G-Node/gogs/internal/setting"
 )
 
 type Organization struct {
@@ -91,7 +91,7 @@ func HandleOrgAssignment(c *Context, args ...bool) {
 	c.Data["IsOrganizationOwner"] = c.Org.IsOwner
 	c.Data["IsOrganizationMember"] = c.Org.IsMember
 
-	c.Org.OrgLink = setting.AppSubURL + "/org/" + org.Name
+	c.Org.OrgLink = conf.Server.Subpath + "/org/" + org.Name
 	c.Data["OrgLink"] = c.Org.OrgLink
 
 	// Team.

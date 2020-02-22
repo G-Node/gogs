@@ -18,13 +18,13 @@ import (
 
 	"github.com/G-Node/git-module"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db/errors"
 	"github.com/G-Node/gogs/internal/process"
-	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/sync"
 )
 
-var MirrorQueue = sync.NewUniqueQueue(setting.Repository.MirrorQueueLength)
+var MirrorQueue = sync.NewUniqueQueue(conf.Repository.MirrorQueueLength)
 
 // Mirror represents mirror information of a repository.
 type Mirror struct {
@@ -258,7 +258,7 @@ func parseRemoteUpdateOutput(output string) []*mirrorSyncResult {
 func (m *Mirror) runSync() ([]*mirrorSyncResult, bool) {
 	repoPath := m.Repo.RepoPath()
 	wikiPath := m.Repo.WikiPath()
-	timeout := time.Duration(setting.Git.Timeout.Mirror) * time.Second
+	timeout := time.Duration(conf.Git.Timeout.Mirror) * time.Second
 
 	// Do a fast-fail testing against on repository URL to ensure it is accessible under
 	// good condition to prevent long blocking on URL resolution without syncing anything.

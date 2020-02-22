@@ -10,9 +10,9 @@ import (
 
 	api "github.com/gogs/go-gogs-client"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/setting"
 )
 
 func ListEmails(c *context.APIContext) {
@@ -39,7 +39,7 @@ func AddEmail(c *context.APIContext, form api.CreateEmailOption) {
 		emails[i] = &db.EmailAddress{
 			UID:         c.User.ID,
 			Email:       form.Emails[i],
-			IsActivated: !setting.Service.RegisterEmailConfirm,
+			IsActivated: !conf.Service.RegisterEmailConfirm,
 		}
 	}
 

@@ -7,7 +7,7 @@ package mailer
 import (
 	"fmt"
 	"html/template"
-	"path"
+	"path/filepath"
 	"sync"
 	"time"
 
@@ -16,8 +16,8 @@ import (
 	log "unknwon.dev/clog/v2"
 
 	"github.com/G-Node/gogs/internal/assets/templates"
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/markup"
-	"github.com/G-Node/gogs/internal/setting"
 )
 
 const (
@@ -42,15 +42,15 @@ var (
 func render(tpl string, data map[string]interface{}) (string, error) {
 	tplRenderOnce.Do(func() {
 		opt := &macaron.RenderOptions{
-			Directory:         path.Join(setting.StaticRootPath, "templates/mail"),
-			AppendDirectories: []string{path.Join(setting.CustomPath, "templates/mail")},
+			Directory:         filepath.Join(conf.WorkDir(), "templates", "mail"),
+			AppendDirectories: []string{filepath.Join(conf.CustomDir(), "templates", "mail")},
 			Extensions:        []string{".tmpl", ".html"},
 			Funcs: []template.FuncMap{map[string]interface{}{
 				"AppName": func() string {
-					return setting.AppName
+					return conf.App.BrandName
 				},
 				"AppURL": func() string {
-					return setting.AppURL
+					return conf.Server.ExternalURL
 				},
 				"Year": func() int {
 					return time.Now().Year()
@@ -60,7 +60,7 @@ func render(tpl string, data map[string]interface{}) (string, error) {
 				},
 			}},
 		}
-		if !setting.LoadAssetsFromDisk {
+		if !conf.Server.LoadAssetsFromDisk {
 			opt.TemplateFileSystem = templates.NewTemplateFileSystem("mail", opt.AppendDirectories[0])
 		}
 
@@ -106,8 +106,8 @@ type Issue interface {
 func SendUserMail(c *macaron.Context, u User, tpl, code, subject, info string) {
 	data := map[string]interface{}{
 		"Username":          u.DisplayName(),
-		"ActiveCodeLives":   setting.Service.ActiveCodeLives / 60,
-		"ResetPwdCodeLives": setting.Service.ResetPwdCodeLives / 60,
+		"ActiveCodeLives":   conf.Service.ActiveCodeLives / 60,
+		"ResetPwdCodeLives": conf.Service.ResetPwdCodeLives / 60,
 		"Code":              code,
 		"Account":           c.Data["Account"],
 		"Inviter":           c.Data["Inviter"],
@@ -141,7 +141,7 @@ func SendResetPasswordMail(c *macaron.Context, u User) {
 func SendActivateEmailMail(c *macaron.Context, u User, email string) {
 	data := map[string]interface{}{
 		"Username":        u.DisplayName(),
-		"ActiveCodeLives": setting.Service.ActiveCodeLives / 60,
+		"ActiveCodeLives": conf.Service.ActiveCodeLives / 60,
 		"Code":            u.GenerateEmailActivateCode(email),
 		"Email":           email,
 	}
@@ -212,7 +212,8 @@ func composeIssueMessages(issue Issue, repo Repository, doer User, tplName strin
 	if err != nil {
 		log.Error("HTMLString (%s): %v", tplName, err)
 	}
-	from := gomail.NewMessage().FormatAddress(setting.MailService.FromEmail, doer.DisplayName())
+	// GIN: Multiple emails, one per recipient
+	from := gomail.NewMessage().FormatAddress(conf.MailService.FromEmail, doer.DisplayName())
 	msgs := make([]*Message, len(tos))
 	for idx, to := range tos {
 		msg := NewMessageFrom(to, from, subject, content)
