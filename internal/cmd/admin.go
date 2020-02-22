@@ -44,7 +44,7 @@ to make automatic initialization process more smoothly`,
 			stringFlag("password", "", "User password"),
 			stringFlag("email", "", "User email address"),
 			boolFlag("admin", "User is an admin"),
-			stringFlag("config, c", "custom/conf/app.ini", "Custom configuration file path"),
+			stringFlag("config, c", "", "Custom configuration file path"),
 		},
 	}
 
@@ -56,7 +56,7 @@ to make automatic initialization process more smoothly`,
 			"All inactivate accounts have been deleted successfully",
 		),
 		Flags: []cli.Flag{
-			stringFlag("config, c", "custom/conf/app.ini", "Custom configuration file path"),
+			stringFlag("config, c", "", "Custom configuration file path"),
 		},
 	}
 
@@ -68,7 +68,7 @@ to make automatic initialization process more smoothly`,
 			"All repositories archives have been deleted successfully",
 		),
 		Flags: []cli.Flag{
-			stringFlag("config, c", "custom/conf/app.ini", "Custom configuration file path"),
+			stringFlag("config, c", "", "Custom configuration file path"),
 		},
 	}
 
@@ -80,7 +80,7 @@ to make automatic initialization process more smoothly`,
 			"All repositories archives have been deleted successfully",
 		),
 		Flags: []cli.Flag{
-			stringFlag("config, c", "custom/conf/app.ini", "Custom configuration file path"),
+			stringFlag("config, c", "", "Custom configuration file path"),
 		},
 	}
 
@@ -92,7 +92,7 @@ to make automatic initialization process more smoothly`,
 			"All repositories have done garbage collection successfully",
 		),
 		Flags: []cli.Flag{
-			stringFlag("config, c", "custom/conf/app.ini", "Custom configuration file path"),
+			stringFlag("config, c", "", "Custom configuration file path"),
 		},
 	}
 
@@ -104,7 +104,7 @@ to make automatic initialization process more smoothly`,
 			"All public keys have been rewritten successfully",
 		),
 		Flags: []cli.Flag{
-			stringFlag("config, c", "custom/conf/app.ini", "Custom configuration file path"),
+			stringFlag("config, c", "", "Custom configuration file path"),
 		},
 	}
 
@@ -116,7 +116,7 @@ to make automatic initialization process more smoothly`,
 			"All repositories' pre-receive, update and post-receive hooks have been resynced successfully",
 		),
 		Flags: []cli.Flag{
-			stringFlag("config, c", "custom/conf/app.ini", "Custom configuration file path"),
+			stringFlag("config, c", "", "Custom configuration file path"),
 		},
 	}
 
@@ -128,7 +128,7 @@ to make automatic initialization process more smoothly`,
 			"All repository records that lost Git files have been reinitialized successfully",
 		),
 		Flags: []cli.Flag{
-			stringFlag("config, c", "custom/conf/app.ini", "Custom configuration file path"),
+			stringFlag("config, c", "", "Custom configuration file path"),
 		},
 	}
 )
