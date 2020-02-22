@@ -368,7 +368,7 @@ func getGitRepoPath(dir string) (string, error) {
 		dir += ".git"
 	}
 
-	filename := path.Join(conf.RepoRootPath, dir)
+	filename := path.Join(conf.Repository.Root, dir)
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
 		return "", err
 	}

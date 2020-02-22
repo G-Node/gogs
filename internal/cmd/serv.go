@@ -270,7 +270,7 @@ func runServ(c *cli.Context) error {
 	if len(verbs) == 2 {
 		cmd = []string{verbs[0], verbs[1], repoFullName}
 	} else if isAnnexShell(verb) {
-		repoAbsPath := conf.RepoRootPath + "/" + repoFullName
+		repoAbsPath := conf.Repository.Root + "/" + repoFullName
 		if err := secureGitAnnex(repoAbsPath, user, repo); err != nil {
 			fail("Git annex failed", "Git annex failed: %s", err)
 		}
@@ -302,7 +302,7 @@ func runGit(cmd []string, requestMode db.AccessMode, user *db.User, owner *db.Us
 			RepoPath:  repo.RepoPath(),
 		})...)
 	}
-	gitCmd.Dir = conf.RepoRootPath
+	gitCmd.Dir = conf.Repository.Root
 	gitCmd.Stdout = os.Stdout
 	gitCmd.Stdin = os.Stdin
 	gitCmd.Stderr = os.Stderr

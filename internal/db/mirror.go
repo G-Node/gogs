@@ -24,7 +24,7 @@ import (
 	"github.com/G-Node/gogs/internal/sync"
 )
 
-var MirrorQueue = sync.NewUniqueQueue(conf.Repository.MirrorQueueLength)
+var MirrorQueue = sync.NewUniqueQueue(1000)
 
 // Mirror represents mirror information of a repository.
 type Mirror struct {

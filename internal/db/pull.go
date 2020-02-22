@@ -26,7 +26,7 @@ import (
 	"github.com/G-Node/gogs/internal/sync"
 )
 
-var PullRequestQueue = sync.NewUniqueQueue(conf.Repository.PullRequestQueueLength)
+var PullRequestQueue = sync.NewUniqueQueue(1000)
 
 type PullRequestType int
 
