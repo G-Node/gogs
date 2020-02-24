@@ -15,7 +15,7 @@ import (
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
-	"github.com/G-Node/gogs/internal/mailer"
+	"github.com/G-Node/gogs/internal/email"
 	"github.com/G-Node/gogs/internal/route/api/v1/user"
 )
 
@@ -68,8 +68,8 @@ func CreateUser(c *context.APIContext, form api.CreateUserOption) {
 	log.Trace("Account created by admin %q: %s", c.User.Name, u.Name)
 
 	// Send email notification.
-	if form.SendNotify && conf.MailService != nil {
-		mailer.SendRegisterNotifyMail(c.Context.Context, db.NewMailerUser(u))
+	if form.SendNotify && conf.Email.Enabled {
+		email.SendRegisterNotifyMail(c.Context.Context, db.NewMailerUser(u))
 	}
 
 	c.JSON(http.StatusCreated, u.APIFormat())

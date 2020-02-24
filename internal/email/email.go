@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
-package mailer
+package email
 
 import (
 	"fmt"
@@ -213,7 +213,7 @@ func composeIssueMessages(issue Issue, repo Repository, doer User, tplName strin
 		log.Error("HTMLString (%s): %v", tplName, err)
 	}
 	// GIN: Multiple emails, one per recipient
-	from := gomail.NewMessage().FormatAddress(conf.MailService.FromEmail, doer.DisplayName())
+	from := gomail.NewMessage().FormatAddress(conf.Email.FromEmail, doer.DisplayName())
 	msgs := make([]*Message, len(tos))
 	for idx, to := range tos {
 		msg := NewMessageFrom(to, from, subject, content)

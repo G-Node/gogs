@@ -23,8 +23,8 @@ import (
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
+	"github.com/G-Node/gogs/internal/email"
 	"github.com/G-Node/gogs/internal/httplib"
-	"github.com/G-Node/gogs/internal/mailer"
 	"github.com/G-Node/gogs/internal/template"
 )
 
@@ -199,7 +199,7 @@ func runHookPostReceive(c *cli.Context) error {
 	// Post-receive hook does more than just gather Git information,
 	// so we need to setup additional services for email notifications.
 	conf.NewPostReceiveHookServices()
-	mailer.NewContext()
+	email.NewContext()
 
 	isWiki := strings.Contains(os.Getenv(db.ENV_REPO_CUSTOM_HOOKS_PATH), ".wiki.git/")
 

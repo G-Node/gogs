@@ -18,8 +18,8 @@ import (
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
+	"github.com/G-Node/gogs/internal/email"
 	"github.com/G-Node/gogs/internal/form"
-	"github.com/G-Node/gogs/internal/mailer"
 	"github.com/G-Node/gogs/internal/tool"
 	petname "github.com/dustinkirkland/golang-petname"
 )
@@ -370,13 +370,13 @@ func SettingsCollaboration(c *context.Context) {
 	c.HTML(200, SETTINGS_COLLABORATION)
 }
 
-func inviteWithMail(c *context.Context, mail string) (*db.User, error) {
+func inviteWithMail(c *context.Context, address string) (*db.User, error) {
 	name := petname.Generate(2, "_")
 	pw := petname.Generate(3, "")
 	user := db.User{
 		Name:     name,
 		Passwd:   pw,
-		Email:    mail,
+		Email:    address,
 		IsActive: true}
 	err := db.CreateUser(&user)
 	if err != nil {
@@ -386,16 +386,16 @@ func inviteWithMail(c *context.Context, mail string) (*db.User, error) {
 	c.Context.Data["Account"] = user.Name
 	c.Context.Data["Inviter"] = c.User.Name
 	c.Context.Data["Pw"] = pw
-	mailer.SendInviteMail(c.Context, db.NewMailerUser(&user))
+	email.SendInviteMail(c.Context, db.NewMailerUser(&user))
 	return &user, nil
 }
 func SettingsCollaborationPost(c *context.Context) {
 	var name string
-	email := strings.ToLower(c.Query("invite"))
-	if len(email) > 0 {
-		u, err := inviteWithMail(c, email)
+	address := strings.ToLower(c.Query("invite"))
+	if len(address) > 0 {
+		u, err := inviteWithMail(c, address)
 		if err != nil {
-			log.Info("Problem with inviting user %q: %s", email, err)
+			log.Info("Problem with inviting user %q: %s", address, err)
 			if db.IsErrBlockedDomain(err) {
 				c.Flash.Error(c.Tr("form.invite_email_blocked"))
 			} else if db.IsErrEmailAlreadyUsed(err) {
@@ -437,7 +437,7 @@ func SettingsCollaborationPost(c *context.Context) {
 	}
 
 	if conf.Service.EnableNotifyMail {
-		mailer.SendCollaboratorMail(db.NewMailerUser(u), db.NewMailerUser(c.User), db.NewMailerRepo(c.Repo.Repository))
+		email.SendCollaboratorMail(db.NewMailerUser(u), db.NewMailerUser(c.User), db.NewMailerRepo(c.Repo.Repository))
 	}
 
 	c.Flash.Success(c.Tr("repo.settings.add_collaborator_success"))

@@ -24,8 +24,8 @@ import (
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/cron"
 	"github.com/G-Node/gogs/internal/db"
+	"github.com/G-Node/gogs/internal/email"
 	"github.com/G-Node/gogs/internal/form"
-	"github.com/G-Node/gogs/internal/mailer"
 	"github.com/G-Node/gogs/internal/markup"
 	"github.com/G-Node/gogs/internal/osutil"
 	"github.com/G-Node/gogs/internal/ssh"
@@ -63,8 +63,12 @@ func GlobalInit(customConf string) error {
 	log.Trace("Build time: %s", conf.BuildTime)
 	log.Trace("Build commit: %s", conf.BuildCommit)
 
+	if conf.Email.Enabled {
+		log.Trace("Email service is enabled")
+	}
+
 	conf.NewServices()
-	mailer.NewContext()
+	email.NewContext()
 
 	if conf.Security.InstallLock {
 		highlight.NewContext()
@@ -171,10 +175,10 @@ func Install(c *context.Context) {
 	f.LogRootPath = conf.LogRootPath
 
 	// E-mail service settings
-	if conf.MailService != nil {
-		f.SMTPHost = conf.MailService.Host
-		f.SMTPFrom = conf.MailService.From
-		f.SMTPUser = conf.MailService.User
+	if conf.Email.Enabled {
+		f.SMTPHost = conf.Email.Host
+		f.SMTPFrom = conf.Email.From
+		f.SMTPUser = conf.Email.User
 	}
 	f.RegisterConfirm = conf.Service.RegisterEmailConfirm
 	f.MailNotify = conf.Service.EnableNotifyMail
