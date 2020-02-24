@@ -36,6 +36,7 @@ import (
 	"github.com/G-Node/gogs/internal/dav"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/form"
+	"github.com/G-Node/gogs/internal/osutil"
 	"github.com/G-Node/gogs/internal/route"
 	"github.com/G-Node/gogs/internal/route/admin"
 	apiv1 "github.com/G-Node/gogs/internal/route/api/v1"
@@ -713,10 +714,11 @@ func runWeb(c *cli.Context) error {
 	var listenAddr string
 	if conf.Server.Protocol == "unix" {
 		listenAddr = conf.Server.HTTPAddr
+		log.Info("Listen on %v://%s", conf.Server.Protocol, listenAddr)
 	} else {
 		listenAddr = fmt.Sprintf("%s:%s", conf.Server.HTTPAddr, conf.Server.HTTPPort)
+		log.Info("Listen on %v://%s%s", conf.Server.Protocol, listenAddr, conf.Server.Subpath)
 	}
-	log.Info("Listen on %v://%s%s", conf.Server.Protocol, listenAddr, conf.Server.Subpath)
 
 	switch conf.Server.Protocol {
 	case "http":
@@ -755,9 +757,11 @@ func runWeb(c *cli.Context) error {
 		err = fcgi.Serve(nil, m)
 
 	case "unix":
-		err = os.Remove(listenAddr)
-		if err != nil {
-			log.Fatal("Failed to remove existing Unix domain socket: %v", err)
+		if osutil.IsExist(listenAddr) {
+			err = os.Remove(listenAddr)
+			if err != nil {
+				log.Fatal("Failed to remove existing Unix domain socket: %v", err)
+			}
 		}
 
 		var listener *net.UnixListener
