@@ -436,7 +436,7 @@ func SettingsCollaborationPost(c *context.Context) {
 		return
 	}
 
-	if conf.Service.EnableNotifyMail {
+	if conf.User.EnableEmailNotification {
 		email.SendCollaboratorMail(db.NewMailerUser(u), db.NewMailerUser(c.User), db.NewMailerRepo(c.Repo.Repository))
 	}
 

@@ -39,7 +39,7 @@ func AddEmail(c *context.APIContext, form api.CreateEmailOption) {
 		emails[i] = &db.EmailAddress{
 			UID:         c.User.ID,
 			Email:       form.Emails[i],
-			IsActivated: !conf.Service.RegisterEmailConfirm,
+			IsActivated: !conf.Auth.RequireEmailConfirmation,
 		}
 	}
 

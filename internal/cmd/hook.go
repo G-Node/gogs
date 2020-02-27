@@ -198,7 +198,6 @@ func runHookPostReceive(c *cli.Context) error {
 
 	// Post-receive hook does more than just gather Git information,
 	// so we need to setup additional services for email notifications.
-	conf.NewPostReceiveHookServices()
 	email.NewContext()
 
 	isWiki := strings.Contains(os.Getenv(db.ENV_REPO_CUSTOM_HOOKS_PATH), ".wiki.git/")

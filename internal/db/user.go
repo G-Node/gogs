@@ -205,7 +205,7 @@ func (u *User) HTMLURL() string {
 func (u *User) GenerateEmailActivateCode(email string) string {
 	code := tool.CreateTimeLimitCode(
 		com.ToStr(u.ID)+email+u.LowerName+u.Passwd+u.Rands,
-		conf.Service.ActiveCodeLives, nil)
+		conf.Auth.ActivateCodeLives, nil)
 
 	// Add tail hex username
 	code += hex.EncodeToString([]byte(u.LowerName))
@@ -657,7 +657,7 @@ func parseUserFromCode(code string) (user *User) {
 
 // verify active code when active account
 func VerifyUserActiveCode(code string) (user *User) {
-	minutes := conf.Service.ActiveCodeLives
+	minutes := conf.Auth.ActivateCodeLives
 
 	if user = parseUserFromCode(code); user != nil {
 		// time limit code
@@ -673,7 +673,7 @@ func VerifyUserActiveCode(code string) (user *User) {
 
 // verify active code when active account
 func VerifyActiveEmailCode(code, email string) *EmailAddress {
-	minutes := conf.Service.ActiveCodeLives
+	minutes := conf.Auth.ActivateCodeLives
 
 	if user := parseUserFromCode(code); user != nil {
 		// time limit code

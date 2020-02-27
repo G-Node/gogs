@@ -3,9 +3,9 @@ package repo
 import (
 	"fmt"
 
-	"github.com/gogs/git-module"
+	"github.com/G-Node/git-module"
 
-	"gogs.io/gogs/internal/context"
+	"github.com/G-Node/gogs/internal/context"
 )
 
 type repoGitTree struct {
