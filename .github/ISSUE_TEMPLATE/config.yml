@@ -2,4 +2,4 @@ blank_issues_enabled: false
 contact_links:
   - name: Gogs Community Forum
     url: https://discuss.gogs.io/
-    about: Please ask and answer questions about Gogs (not g-node's fork) here.
+    about: Please ask and answer questions about Gogs (not the G-Node's fork) here.
