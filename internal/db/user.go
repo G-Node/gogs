@@ -926,7 +926,7 @@ func GetUserByKeyID(keyID int64) (*User, error) {
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, errors.UserNotKeyOwner{keyID}
+		return nil, errors.UserNotKeyOwner{KeyID: keyID}
 	}
 	return user, nil
 }
@@ -937,7 +937,7 @@ func getUserByID(e Engine, id int64) (*User, error) {
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, errors.UserNotExist{id, ""}
+		return nil, errors.UserNotExist{UserID: id}
 	}
 	return u, nil
 }
@@ -953,7 +953,7 @@ func GetAssigneeByID(repo *Repository, userID int64) (*User, error) {
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, errors.UserNotExist{userID, ""}
+		return nil, errors.UserNotExist{UserID: userID}
 	}
 	return GetUserByID(userID)
 }
@@ -961,14 +961,14 @@ func GetAssigneeByID(repo *Repository, userID int64) (*User, error) {
 // GetUserByName returns a user by given name.
 func GetUserByName(name string) (*User, error) {
 	if len(name) == 0 {
-		return nil, errors.UserNotExist{0, name}
+		return nil, errors.UserNotExist{Name: name}
 	}
 	u := &User{LowerName: strings.ToLower(name)}
 	has, err := x.Get(u)
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, errors.UserNotExist{0, name}
+		return nil, errors.UserNotExist{Name: name}
 	}
 	return u, nil
 }
@@ -1046,7 +1046,7 @@ func ValidateCommitsWithEmails(oldCommits *list.List) *list.List {
 // GetUserByEmail returns the user object by given e-mail if exists.
 func GetUserByEmail(email string) (*User, error) {
 	if len(email) == 0 {
-		return nil, errors.UserNotExist{0, "email"}
+		return nil, errors.UserNotExist{Name: "email"}
 	}
 
 	email = strings.ToLower(email)
@@ -1070,7 +1070,7 @@ func GetUserByEmail(email string) (*User, error) {
 		return GetUserByID(emailAddress.UID)
 	}
 
-	return nil, errors.UserNotExist{0, email}
+	return nil, errors.UserNotExist{Name: email}
 }
 
 type SearchUserOptions struct {

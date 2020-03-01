@@ -143,10 +143,6 @@ func RepoAssignment(pages ...bool) macaron.Handler {
 
 		ownerName := c.Params(":username")
 		repoName := strings.TrimSuffix(c.Params(":reponame"), ".git")
-		refName := c.Params(":branchname")
-		if len(refName) == 0 {
-			refName = c.Params(":path")
-		}
 
 		// Check if the user is the same as the repository owner
 		if c.IsLogged && c.User.LowerName == strings.ToLower(ownerName) {

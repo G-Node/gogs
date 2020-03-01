@@ -136,7 +136,7 @@ func (repo *Repository) UpdateRepoFile(doer *User, opts UpdateRepoFileOptions) (
 	if opts.OldBranch != opts.NewBranch {
 		// Directly return error if new branch already exists in the server
 		if git.IsBranchExist(repoPath, opts.NewBranch) {
-			return errors.BranchAlreadyExists{opts.NewBranch}
+			return errors.BranchAlreadyExists{Name: opts.NewBranch}
 		}
 
 		// Otherwise, delete branch from local copy in case out of sync
