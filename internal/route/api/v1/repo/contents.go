@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/gogs/git-module"
+	"github.com/G-Node/git-module"
 
 	"github.com/G-Node/gogs/internal/context"
 )
