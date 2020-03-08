@@ -6,7 +6,6 @@ package repo
 
 import (
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"path"
 	"path/filepath"
@@ -14,12 +13,12 @@ import (
 
 	log "unknwon.dev/clog/v2"
 
-	"github.com/G-Node/git-module"
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
 	"github.com/G-Node/gogs/internal/form"
+	"github.com/G-Node/gogs/internal/gitutil"
 	"github.com/G-Node/gogs/internal/markup"
 	"github.com/G-Node/gogs/internal/pathutil"
 	"github.com/G-Node/gogs/internal/template"
@@ -57,20 +56,20 @@ func editFile(c *context.Context, isNewFile bool) {
 	treeNames, treePaths := getParentTreeFields(c.Repo.TreePath)
 
 	if !isNewFile {
-		entry, err := c.Repo.Commit.GetTreeEntryByPath(c.Repo.TreePath)
+		entry, err := c.Repo.Commit.TreeEntry(c.Repo.TreePath)
 		if err != nil {
-			c.NotFoundOrServerError("GetTreeEntryByPath", git.IsErrNotExist, err)
+			c.NotFoundOrServerError("get tree entry", gitutil.IsErrRevisionNotExist, err)
 			return
 		}
 
 		// No way to edit a directory online.
-		if entry.IsDir() {
+		if entry.IsTree() {
 			c.NotFound()
 			return
 		}
 
 		blob := entry.Blob()
-		dataRc, err := blob.Data()
+		p, err := blob.Bytes()
 		if err != nil {
 			c.ServerError("blob.Data", err)
 			return
@@ -81,25 +80,19 @@ func editFile(c *context.Context, isNewFile bool) {
 		c.Data["IsJSON"] = markup.IsJSON(blob.Name())
 		c.Data["IsYAML"] = markup.IsYAML(blob.Name())
 
-		buf := make([]byte, 1024)
-		n, _ := dataRc.Read(buf)
-		buf = buf[:n]
-
 		// Only text file are editable online.
-		if !tool.IsTextFile(buf) {
+		if !tool.IsTextFile(p) {
 			c.NotFound()
 			return
 		}
 
-		c.Data["IsODML"] = tool.IsODMLFile(buf)
+		c.Data["IsODML"] = tool.IsODMLFile(p)
 
-		d, _ := ioutil.ReadAll(dataRc)
-		buf = append(buf, d...)
-		if err, content := template.ToUTF8WithErr(buf); err != nil {
+		if err, content := template.ToUTF8WithErr(p); err != nil {
 			if err != nil {
 				log.Error("Failed to convert encoding to UTF-8: %v", err)
 			}
-			c.Data["FileContent"] = string(buf)
+			c.Data["FileContent"] = string(p)
 		} else {
 			c.Data["FileContent"] = content
 		}
@@ -188,9 +181,9 @@ func editFilePost(c *context.Context, f form.EditRepoFile, isNewFile bool) {
 	var newTreePath string
 	for index, part := range treeNames {
 		newTreePath = path.Join(newTreePath, part)
-		entry, err := c.Repo.Commit.GetTreeEntryByPath(newTreePath)
+		entry, err := c.Repo.Commit.TreeEntry(newTreePath)
 		if err != nil {
-			if git.IsErrNotExist(err) {
+			if gitutil.IsErrRevisionNotExist(err) {
 				// Means there is no item with that name, so we're good
 				break
 			}
@@ -199,17 +192,17 @@ func editFilePost(c *context.Context, f form.EditRepoFile, isNewFile bool) {
 			return
 		}
 		if index != len(treeNames)-1 {
-			if !entry.IsDir() {
+			if !entry.IsTree() {
 				c.FormErr("TreePath")
 				c.RenderWithErr(c.Tr("repo.editor.directory_is_a_file", part), EDIT_FILE, &f)
 				return
 			}
 		} else {
-			if entry.IsLink() {
+			if entry.IsSymlink() {
 				c.FormErr("TreePath")
 				c.RenderWithErr(c.Tr("repo.editor.file_is_a_symlink", part), EDIT_FILE, &f)
 				return
-			} else if entry.IsDir() {
+			} else if entry.IsTree() {
 				c.FormErr("TreePath")
 				c.RenderWithErr(c.Tr("repo.editor.filename_is_a_directory", part), EDIT_FILE, &f)
 				return
@@ -218,9 +211,9 @@ func editFilePost(c *context.Context, f form.EditRepoFile, isNewFile bool) {
 	}
 
 	if !isNewFile {
-		_, err := c.Repo.Commit.GetTreeEntryByPath(oldTreePath)
+		_, err := c.Repo.Commit.TreeEntry(oldTreePath)
 		if err != nil {
-			if git.IsErrNotExist(err) {
+			if gitutil.IsErrRevisionNotExist(err) {
 				c.FormErr("TreePath")
 				c.RenderWithErr(c.Tr("repo.editor.file_editing_no_longer_exists", oldTreePath), EDIT_FILE, &f)
 			} else {
@@ -229,7 +222,7 @@ func editFilePost(c *context.Context, f form.EditRepoFile, isNewFile bool) {
 			return
 		}
 		if lastCommit != c.Repo.CommitID {
-			files, err := c.Repo.Commit.GetFilesChangedSinceCommit(lastCommit)
+			files, err := c.Repo.Commit.FilesChangedAfter(lastCommit)
 			if err != nil {
 				c.ServerError("GetFilesChangedSinceCommit", err)
 				return
@@ -246,9 +239,9 @@ func editFilePost(c *context.Context, f form.EditRepoFile, isNewFile bool) {
 
 	if oldTreePath != f.TreePath {
 		// We have a new filename (rename or completely new file) so we need to make sure it doesn't already exist, can't clobber.
-		entry, err := c.Repo.Commit.GetTreeEntryByPath(f.TreePath)
+		entry, err := c.Repo.Commit.TreeEntry(f.TreePath)
 		if err != nil {
-			if !git.IsErrNotExist(err) {
+			if !gitutil.IsErrRevisionNotExist(err) {
 				c.ServerError("GetTreeEntryByPath", err)
 				return
 			}
@@ -308,11 +301,11 @@ func NewFilePost(c *context.Context, f form.EditRepoFile) {
 func DiffPreviewPost(c *context.Context, f form.EditPreviewDiff) {
 	treePath := c.Repo.TreePath
 
-	entry, err := c.Repo.Commit.GetTreeEntryByPath(treePath)
+	entry, err := c.Repo.Commit.TreeEntry(treePath)
 	if err != nil {
 		c.Error(500, "GetTreeEntryByPath: "+err.Error())
 		return
-	} else if entry.IsDir() {
+	} else if entry.IsTree() {
 		c.Error(422)
 		return
 	}
@@ -474,9 +467,9 @@ func UploadFilePost(c *context.Context, f form.UploadRepoFile) {
 	var newTreePath string
 	for _, part := range treeNames {
 		newTreePath = path.Join(newTreePath, part)
-		entry, err := c.Repo.Commit.GetTreeEntryByPath(newTreePath)
+		entry, err := c.Repo.Commit.TreeEntry(newTreePath)
 		if err != nil {
-			if git.IsErrNotExist(err) {
+			if gitutil.IsErrRevisionNotExist(err) {
 				// Means there is no item with that name, so we're good
 				break
 			}
@@ -486,7 +479,7 @@ func UploadFilePost(c *context.Context, f form.UploadRepoFile) {
 		}
 
 		// User can only upload files to a directory.
-		if !entry.IsDir() {
+		if !entry.IsTree() {
 			c.FormErr("TreePath")
 			c.RenderWithErr(c.Tr("repo.editor.directory_is_a_file", part), UPLOAD_FILE, &f)
 			return

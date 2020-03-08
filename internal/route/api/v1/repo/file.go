@@ -5,11 +5,11 @@
 package repo
 
 import (
-	"github.com/G-Node/git-module"
-	"github.com/go-macaron/captcha"
+	"github.com/gogs/git-module"
 
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
+	"github.com/G-Node/gogs/internal/gitutil"
 	"github.com/G-Node/gogs/internal/route/repo"
 )
 
@@ -24,22 +24,21 @@ func GetRawFile(c *context.APIContext) {
 		return
 	}
 
-	blob, err := c.Repo.Commit.GetBlobByPath(c.Repo.TreePath)
+	blob, err := c.Repo.Commit.Blob(c.Repo.TreePath)
 	if err != nil {
-		c.NotFoundOrServerError("GetBlobByPath", git.IsErrNotExist, err)
+		c.NotFoundOrServerError("get blob", gitutil.IsErrRevisionNotExist, err)
 		return
 	}
-	cp := captcha.NewCaptcha(captcha.Options{})
-	if err = repo.ServeBlob(c.Context, blob, cp); err != nil {
+	if err = repo.ServeBlob(c.Context, blob); err != nil {
 		c.ServerError("ServeBlob", err)
 	}
 }
 
 func GetArchive(c *context.APIContext) {
 	repoPath := db.RepoPath(c.Params(":username"), c.Params(":reponame"))
-	gitRepo, err := git.OpenRepository(repoPath)
+	gitRepo, err := git.Open(repoPath)
 	if err != nil {
-		c.ServerError("OpenRepository", err)
+		c.ServerError("open repository", err)
 		return
 	}
 	c.Repo.GitRepo = gitRepo
@@ -48,16 +47,16 @@ func GetArchive(c *context.APIContext) {
 }
 
 func GetEditorconfig(c *context.APIContext) {
-	ec, err := c.Repo.GetEditorconfig()
+	ec, err := c.Repo.Editorconfig()
 	if err != nil {
-		c.NotFoundOrServerError("GetEditorconfig", git.IsErrNotExist, err)
+		c.NotFoundOrServerError("get .editorconfig", gitutil.IsErrRevisionNotExist, err)
 		return
 	}
 
 	fileName := c.Params("filename")
 	def, err := ec.GetDefinitionForFilename(fileName)
 	if err != nil {
-		c.ServerError("GetDefinitionForFilename", err)
+		c.ServerError("get definition for filename", err)
 		return
 	}
 	if def == nil {

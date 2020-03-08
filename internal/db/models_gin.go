@@ -8,10 +8,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/G-Node/git-module"
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/libgin/libgin"
 	"github.com/G-Node/libgin/libgin/annex"
+	"github.com/gogs/git-module"
 	log "gopkg.in/clog.v1"
 )
 
@@ -150,9 +150,9 @@ func annexSync(path string) error {
 func annexAdd(repoPath string, all bool, files ...string) error {
 	cmd := git.NewCommand("annex", "add")
 	if all {
-		cmd.AddArguments(".")
+		cmd.AddArgs(".")
 	}
-	_, err := cmd.AddArguments(files...).RunInDir(repoPath)
+	_, err := cmd.AddArgs(files...).RunInDir(repoPath)
 	return err
 }
 

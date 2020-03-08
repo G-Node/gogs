@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/G-Node/git-module"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
+	"github.com/gogs/git-module"
 	"gopkg.in/macaron.v1"
 )
 
@@ -63,14 +63,14 @@ func DavMiddle() macaron.Handler {
 			}
 		}
 
-		gitRepo, err := git.OpenRepository(db.RepoPath(ownerName, repoName))
+		gitRepo, err := git.Open(db.RepoPath(ownerName, repoName))
 		if err != nil {
 			c.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 		c.Repo.GitRepo = gitRepo
 
-		tags, err := c.Repo.GitRepo.GetTags()
+		tags, err := c.Repo.GitRepo.Tags()
 		if err != nil {
 			c.WriteHeader(http.StatusInternalServerError)
 			return
@@ -82,7 +82,7 @@ func DavMiddle() macaron.Handler {
 			return
 		}
 
-		brs, err := c.Repo.GitRepo.GetBranches()
+		brs, err := c.Repo.GitRepo.Branches()
 		if err != nil {
 			c.WriteHeader(http.StatusInternalServerError)
 			return
@@ -90,7 +90,7 @@ func DavMiddle() macaron.Handler {
 		// If not branch selected, try default one.
 		// If default branch doesn't exists, fall back to some other branch.
 		if len(c.Repo.BranchName) == 0 {
-			if len(c.Repo.Repository.DefaultBranch) > 0 && gitRepo.IsBranchExist(c.Repo.Repository.DefaultBranch) {
+			if len(c.Repo.Repository.DefaultBranch) > 0 && gitRepo.HasBranch(c.Repo.Repository.DefaultBranch) {
 				c.Repo.BranchName = c.Repo.Repository.DefaultBranch
 			} else if len(brs) > 0 {
 				c.Repo.BranchName = brs[0]

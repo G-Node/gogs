@@ -7,10 +7,11 @@ package repo
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"strings"
 	"time"
 
-	"github.com/G-Node/git-module"
+	"github.com/gogs/git-module"
 	"github.com/unknwon/com"
 	log "unknwon.dev/clog/v2"
 
@@ -486,7 +487,7 @@ func SettingsBranches(c *context.Context) {
 	// Filter out deleted branches
 	branches := make([]string, 0, len(protectBranches))
 	for i := range protectBranches {
-		if c.Repo.GitRepo.IsBranchExist(protectBranches[i].Name) {
+		if c.Repo.GitRepo.HasBranch(protectBranches[i].Name) {
 			branches = append(branches, protectBranches[i].Name)
 		}
 	}
@@ -497,15 +498,12 @@ func SettingsBranches(c *context.Context) {
 
 func UpdateDefaultBranch(c *context.Context) {
 	branch := c.Query("branch")
-	if c.Repo.GitRepo.IsBranchExist(branch) &&
+	if c.Repo.GitRepo.HasBranch(branch) &&
 		c.Repo.Repository.DefaultBranch != branch {
 		c.Repo.Repository.DefaultBranch = branch
-		if err := c.Repo.GitRepo.SetDefaultBranch(branch); err != nil {
-			if !git.IsErrUnsupportedVersion(err) {
-				c.Handle(500, "SetDefaultBranch", err)
-				return
-			}
-
+		if _, err := c.Repo.GitRepo.SymbolicRef(git.SymbolicRefOptions{
+			Ref: git.RefsHeads + branch,
+		}); err != nil {
 			c.Flash.Warning(c.Tr("repo.settings.update_default_branch_unsupported"))
 			c.Redirect(c.Repo.RepoLink + "/settings/branches")
 			return
@@ -523,7 +521,7 @@ func UpdateDefaultBranch(c *context.Context) {
 
 func SettingsProtectedBranch(c *context.Context) {
 	branch := c.Params("*")
-	if !c.Repo.GitRepo.IsBranchExist(branch) {
+	if !c.Repo.GitRepo.HasBranch(branch) {
 		c.NotFound()
 		return
 	}
@@ -568,7 +566,7 @@ func SettingsProtectedBranch(c *context.Context) {
 
 func SettingsProtectedBranchPost(c *context.Context, f form.ProtectBranch) {
 	branch := c.Params("*")
-	if !c.Repo.GitRepo.IsBranchExist(branch) {
+	if !c.Repo.GitRepo.HasBranch(branch) {
 		c.NotFound()
 		return
 	}
@@ -608,7 +606,7 @@ func SettingsGitHooks(c *context.Context) {
 	c.Data["Title"] = c.Tr("repo.settings.githooks")
 	c.Data["PageIsSettingsGitHooks"] = true
 
-	hooks, err := c.Repo.GitRepo.Hooks()
+	hooks, err := c.Repo.GitRepo.Hooks("custom_hooks")
 	if err != nil {
 		c.Handle(500, "Hooks", err)
 		return
@@ -624,9 +622,9 @@ func SettingsGitHooksEdit(c *context.Context) {
 	c.Data["RequireSimpleMDE"] = true
 
 	name := c.Params(":name")
-	hook, err := c.Repo.GitRepo.GetHook(name)
+	hook, err := c.Repo.GitRepo.Hook("custom_hooks", git.HookName(name))
 	if err != nil {
-		if err == git.ErrNotValidHook {
+		if err == os.ErrNotExist {
 			c.Handle(404, "GetHook", err)
 		} else {
 			c.Handle(500, "GetHook", err)
@@ -639,17 +637,16 @@ func SettingsGitHooksEdit(c *context.Context) {
 
 func SettingsGitHooksEditPost(c *context.Context) {
 	name := c.Params(":name")
-	hook, err := c.Repo.GitRepo.GetHook(name)
+	hook, err := c.Repo.GitRepo.Hook("custom_hooks", git.HookName(name))
 	if err != nil {
-		if err == git.ErrNotValidHook {
+		if err == os.ErrNotExist {
 			c.Handle(404, "GetHook", err)
 		} else {
 			c.Handle(500, "GetHook", err)
 		}
 		return
 	}
-	hook.Content = c.Query("content")
-	if err = hook.Update(); err != nil {
+	if err = hook.Update(c.Query("content")); err != nil {
 		c.Handle(500, "hook.Update", err)
 		return
 	}

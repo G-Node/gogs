@@ -3,10 +3,10 @@ package context
 import (
 	"strings"
 
-	"github.com/G-Node/git-module"
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/libgin/libgin"
+	"github.com/gogs/git-module"
 	log "gopkg.in/clog.v1"
 )
 
@@ -48,26 +48,26 @@ func getRepoDOI(c *Context) string {
 	// if multiple exit, get the latest one
 	doiBase := conf.DOI.Base
 
-	doiForkGit, err := git.OpenRepository(doiFork.RepoPath())
+	doiForkGit, err := git.Open(doiFork.RepoPath())
 	if err != nil {
 		log.Error(2, "failed to open git repository at %q (%d): %v", doiFork.RepoPath(), doiFork.ID, err)
 		return ""
 	}
-	if tags, err := doiForkGit.GetTags(); err == nil {
+	if tags, err := doiForkGit.Tags(); err == nil {
 		var latestTime int64
 		latestTag := ""
 		for _, tagName := range tags {
 			if strings.Contains(tagName, doiBase) {
-				tag, err := doiForkGit.GetTag(tagName)
+				tag, err := doiForkGit.Tag(tagName)
 				if err != nil {
 					// log the error and continue to the next tag
-					log.Error(2, "failed to get information for tag %q for repository at %q: %v", tagName, doiForkGit.Path, err)
+					log.Error(2, "failed to get information for tag %q for repository at %q: %v", tagName, doiForkGit.Path(), err)
 					continue
 				}
 				commit, err := tag.Commit()
 				if err != nil {
 					// log the error and continue to the next tag
-					log.Error(2, "failed to get commit for tag %q for repository at %q: %v", tagName, doiForkGit.Path, err)
+					log.Error(2, "failed to get commit for tag %q for repository at %q: %v", tagName, doiForkGit.Path(), err)
 					continue
 				}
 				commitTime := commit.Committer.When.Unix()
@@ -81,7 +81,7 @@ func getRepoDOI(c *Context) string {
 	} else {
 		// this shouldn't happen even if there are no tags
 		// log the error, but fall back to the old method anyway
-		log.Error(2, "failed to get tags for repository at %q: %v", doiForkGit.Path, err)
+		log.Error(2, "failed to get tags for repository at %q: %v", doiForkGit.Path(), err)
 	}
 
 	// Has DOI fork but isn't tagged: return old style has-based DOI
@@ -99,12 +99,12 @@ func getRepoDOI(c *Context) string {
 // valid.  If any error occurs, for example due to an uninitialised repository
 // or missing repository root, it returns 'false' without error.
 func hasDataCite(c *Context) bool {
-	commit, err := c.Repo.GitRepo.GetBranchCommit(c.Repo.Repository.DefaultBranch)
+	commit, err := c.Repo.GitRepo.BranchCommit(c.Repo.Repository.DefaultBranch)
 	if err != nil {
 		log.Trace("Couldn't get commit: %v", err)
 		return false
 	}
-	_, err = commit.GetBlobByPath("/datacite.yml")
+	_, err = commit.Blob("/datacite.yml")
 
 	log.Trace("Found datacite? %t", err == nil)
 	return err == nil
@@ -125,23 +125,23 @@ func isDOIReady(c *Context) bool {
 			return false
 		}
 
-		headBranch, err := gitrepo.GetHEADBranch()
+		headBranch, err := gitrepo.SymbolicRef(git.SymbolicRefOptions{Name: "HEAD"})
 		if err != nil {
-			log.Error(2, "Failed to get HEAD branch for repo at %q: %v", gitrepo.Path, err)
+			log.Error(2, "Failed to get HEAD branch for repo at %q: %v", gitrepo.Path(), err)
 			return false
 		}
 
-		headCommit, err := gitrepo.GetBranchCommitID(headBranch.Name)
+		headCommit, err := gitrepo.BranchCommitID(headBranch)
 		if err != nil {
-			log.Error(2, "Failed to get commit ID of branch %q for repo at %q: %v", headBranch.Name, gitrepo.Path, err)
+			log.Error(2, "Failed to get commit ID of branch %q for repo at %q: %v", headBranch, gitrepo.Path(), err)
 			return false
 		}
 
 		// if current valid and registered DOI matches the HEAD commit, can't
 		// register again
-		doiCommit, err := gitrepo.GetTagCommitID(currentDOI.(string))
+		doiCommit, err := gitrepo.TagCommitID(currentDOI.(string))
 		if err != nil {
-			log.Error(2, "Failed to get commit ID of tag %q for repo at %q: %v", currentDOI, gitrepo.Path, err)
+			log.Error(2, "Failed to get commit ID of tag %q for repo at %q: %v", currentDOI, gitrepo.Path(), err)
 			return false
 		}
 

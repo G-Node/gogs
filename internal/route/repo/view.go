@@ -8,20 +8,20 @@ import (
 	"bytes"
 	"fmt"
 	gotemplate "html/template"
-	"io/ioutil"
 	"path"
 	"strings"
+	"time"
 
-	"github.com/go-macaron/captcha"
+	"github.com/G-Node/libgin/libgin/annex"
+	"github.com/gogs/git-module"
+	"github.com/pkg/errors"
 	"github.com/unknwon/paginater"
 	log "unknwon.dev/clog/v2"
-
-	"github.com/G-Node/git-module"
-	"github.com/G-Node/libgin/libgin/annex"
 
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
+	"github.com/G-Node/gogs/internal/gitutil"
 	"github.com/G-Node/gogs/internal/markup"
 	"github.com/G-Node/gogs/internal/template"
 	"github.com/G-Node/gogs/internal/template/highlight"
@@ -36,22 +36,26 @@ const (
 )
 
 func renderDirectory(c *context.Context, treeLink string) {
-	tree, err := c.Repo.Commit.SubTree(c.Repo.TreePath)
+	tree, err := c.Repo.Commit.Subtree(c.Repo.TreePath)
 	if err != nil {
-		c.NotFoundOrServerError("Repo.Commit.SubTree", git.IsErrNotExist, err)
+		c.NotFoundOrServerError("get subtree", gitutil.IsErrRevisionNotExist, err)
 		return
 	}
 
-	entries, err := tree.ListEntries()
+	entries, err := tree.Entries()
 	if err != nil {
-		c.ServerError("ListEntries", err)
+		c.ServerError("list entries", err)
 		return
 	}
 	entries.Sort()
 
-	c.Data["Files"], err = entries.GetCommitsInfoWithCustomConcurrency(c.Repo.Commit, c.Repo.TreePath, conf.Repository.CommitsFetchConcurrency)
+	c.Data["Files"], err = entries.CommitsInfo(c.Repo.Commit, git.CommitsInfoOptions{
+		Path:           c.Repo.TreePath,
+		MaxConcurrency: conf.Repository.CommitsFetchConcurrency,
+		Timeout:        5 * time.Minute,
+	})
 	if err != nil {
-		c.ServerError("GetCommitsInfoWithCustomConcurrency", err)
+		c.ServerError("get commits info", err)
 		return
 	}
 	if c.Data["HasDataCite"].(bool) {
@@ -59,11 +63,11 @@ func renderDirectory(c *context.Context, treeLink string) {
 	}
 	var readmeFile *git.Blob
 	for _, entry := range entries {
-		if entry.IsDir() || !markup.IsReadmeFile(entry.Name()) {
+		if entry.IsTree() || !markup.IsReadmeFile(entry.Name()) {
 			continue
 		}
 
-		// TODO: collect all possible README files and show with priority.
+		// TODO(unknwon): collect all possible README files and show with priority.
 		readmeFile = entry.Blob()
 		break
 	}
@@ -73,43 +77,36 @@ func renderDirectory(c *context.Context, treeLink string) {
 		c.Data["ReadmeInList"] = true
 		c.Data["ReadmeExist"] = true
 
-		dataRc, err := readmeFile.Data()
+		p, err := readmeFile.Bytes()
 		if err != nil {
 			c.ServerError("readmeFile.Data", err)
 			return
 		}
 
-		buf := make([]byte, 1024)
-		n, _ := dataRc.Read(buf)
-		buf = buf[:n]
-
-		// GIN mod: Replace existing buf and reader with annexed content buf and reader
-		buf, dataRc, err = resolveAnnexedContent(c, buf, dataRc)
+		// GIN mod: Replace existing buffer p and reader with annexed content buffer
+		p, err = resolveAnnexedContent(c, p)
 		if err != nil {
 			return
 		}
 
-		isTextFile := tool.IsTextFile(buf)
+		isTextFile := tool.IsTextFile(p)
 		c.Data["IsTextFile"] = isTextFile
 		c.Data["FileName"] = readmeFile.Name()
 		if isTextFile {
-			d, _ := ioutil.ReadAll(dataRc)
-			buf = append(buf, d...)
-
 			switch markup.Detect(readmeFile.Name()) {
 			case markup.MARKDOWN:
 				c.Data["IsMarkdown"] = true
-				buf = markup.Markdown(buf, treeLink, c.Repo.Repository.ComposeMetas())
+				p = markup.Markdown(p, treeLink, c.Repo.Repository.ComposeMetas())
 			case markup.ORG_MODE:
 				c.Data["IsMarkdown"] = true
-				buf = markup.OrgMode(buf, treeLink, c.Repo.Repository.ComposeMetas())
+				p = markup.OrgMode(p, treeLink, c.Repo.Repository.ComposeMetas())
 			case markup.IPYTHON_NOTEBOOK:
 				c.Data["IsIPythonNotebook"] = true
 				c.Data["RawFileLink"] = c.Repo.RepoLink + "/raw/" + path.Join(c.Repo.BranchName, c.Repo.TreePath, readmeFile.Name())
 			default:
-				buf = bytes.Replace(buf, []byte("\n"), []byte(`<br>`), -1)
+				p = bytes.Replace(p, []byte("\n"), []byte(`<br>`), -1)
 			}
-			c.Data["FileContent"] = string(buf)
+			c.Data["FileContent"] = string(p)
 		}
 	}
 
@@ -117,9 +114,9 @@ func renderDirectory(c *context.Context, treeLink string) {
 	// or of directory if not in root directory.
 	latestCommit := c.Repo.Commit
 	if len(c.Repo.TreePath) > 0 {
-		latestCommit, err = c.Repo.Commit.GetCommitByPath(c.Repo.TreePath)
+		latestCommit, err = c.Repo.Commit.CommitByPath(git.CommitByRevisionOptions{Path: c.Repo.TreePath})
 		if err != nil {
-			c.ServerError("GetCommitByPath", err)
+			c.ServerError("get commit by path", err)
 			return
 		}
 	}
@@ -132,11 +129,11 @@ func renderDirectory(c *context.Context, treeLink string) {
 	}
 }
 
-func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink string, cpt *captcha.Captcha) {
+func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink string) {
 	c.Data["IsViewFile"] = true
 
 	blob := entry.Blob()
-	dataRc, err := blob.Data()
+	p, err := blob.Bytes()
 	if err != nil {
 		c.Handle(500, "Data", err)
 		return
@@ -147,18 +144,13 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 	c.Data["HighlightClass"] = highlight.FileNameToHighlightClass(blob.Name())
 	c.Data["RawFileLink"] = rawLink + "/" + c.Repo.TreePath
 
-	buf := make([]byte, 1024)
-	n, _ := dataRc.Read(buf)
-	buf = buf[:n]
-
-	// GIN mod: Replace existing buf and reader with annexed content buf and
-	// reader (only if it's an annexed ptr file)
-	buf, dataRc, err = resolveAnnexedContent(c, buf, dataRc)
+	// GIN mod: Replace existing buffer p with annexed content buffer (only if
+	// it's an annexed ptr file)
+	p, err = resolveAnnexedContent(c, p)
 	if err != nil {
 		return
 	}
-
-	isTextFile := tool.IsTextFile(buf)
+	isTextFile := tool.IsTextFile(p)
 	c.Data["IsTextFile"] = isTextFile
 
 	// Assume file is not editable first.
@@ -178,44 +170,41 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 
 		c.Data["ReadmeExist"] = markup.IsReadmeFile(blob.Name())
 
-		d, _ := ioutil.ReadAll(dataRc)
-		buf = append(buf, d...)
-
 		switch markup.Detect(blob.Name()) {
 		case markup.MARKDOWN:
 			c.Data["IsMarkdown"] = true
-			c.Data["FileContent"] = string(markup.Markdown(buf, path.Dir(treeLink), c.Repo.Repository.ComposeMetas()))
+			c.Data["FileContent"] = string(markup.Markdown(p, path.Dir(treeLink), c.Repo.Repository.ComposeMetas()))
 		case markup.ORG_MODE:
 			c.Data["IsMarkdown"] = true
-			c.Data["FileContent"] = string(markup.OrgMode(buf, path.Dir(treeLink), c.Repo.Repository.ComposeMetas()))
+			c.Data["FileContent"] = string(markup.OrgMode(p, path.Dir(treeLink), c.Repo.Repository.ComposeMetas()))
 		case markup.IPYTHON_NOTEBOOK:
 			c.Data["IsIPythonNotebook"] = true
 			// GIN mod: JSON, YAML, and odML render support with jsTree
 		case markup.JSON:
 			c.Data["IsJSON"] = true
-			c.Data["RawFileContent"] = string(buf)
+			c.Data["RawFileContent"] = string(p)
 			fallthrough
 		case markup.YAML:
 			c.Data["IsYAML"] = true
-			c.Data["RawFileContent"] = string(buf)
+			c.Data["RawFileContent"] = string(p)
 			fallthrough
 		case markup.XML:
 			// pass XML down to ODML checker
 			fallthrough
 		case markup.ODML:
-			if tool.IsODMLFile(buf) {
+			if tool.IsODMLFile(p) {
 				c.Data["IsODML"] = true
-				c.Data["ODML"] = string(markup.MarshalODML(buf))
+				c.Data["ODML"] = string(markup.MarshalODML(p))
 			}
 			fallthrough
 		default:
 			// Building code view blocks with line number on server side.
 			var fileContent string
-			if err, content := template.ToUTF8WithErr(buf); err != nil {
+			if err, content := template.ToUTF8WithErr(p); err != nil {
 				if err != nil {
 					log.Error("ToUTF8WithErr: %s", err)
 				}
-				fileContent = string(buf)
+				fileContent = string(p)
 			} else {
 				fileContent = content
 			}
@@ -243,7 +232,7 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			c.Data["LineNums"] = gotemplate.HTML(output.String())
 		}
 
-		isannex := tool.IsAnnexedFile(buf)
+		isannex := tool.IsAnnexedFile(p)
 		if canEnableEditor && !isannex {
 			c.Data["CanEditFile"] = true
 			c.Data["EditFileTooltip"] = c.Tr("repo.editor.edit_this_file")
@@ -253,16 +242,16 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			c.Data["EditFileTooltip"] = c.Tr("repo.editor.fork_before_edit")
 		}
 
-	case tool.IsPDFFile(buf) && (c.Data["FileSize"].(int64) < conf.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
+	case tool.IsPDFFile(p) && (c.Data["FileSize"].(int64) < conf.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
 		c.IsLogged):
 		c.Data["IsPDFFile"] = true
-	case tool.IsVideoFile(buf) && (c.Data["FileSize"].(int64) < conf.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
+	case tool.IsVideoFile(p) && (c.Data["FileSize"].(int64) < conf.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
 		c.IsLogged):
 		c.Data["IsVideoFile"] = true
-	case tool.IsImageFile(buf) && (c.Data["FileSize"].(int64) < conf.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
+	case tool.IsImageFile(p) && (c.Data["FileSize"].(int64) < conf.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
 		c.IsLogged):
 		c.Data["IsImageFile"] = true
-	case tool.IsAnnexedFile(buf) && (c.Data["FileSize"].(int64) < conf.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
+	case tool.IsAnnexedFile(p) && (c.Data["FileSize"].(int64) < conf.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
 		c.IsLogged):
 		c.Data["IsAnnexedFile"] = true
 	}
@@ -278,15 +267,15 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 }
 
 func setEditorconfigIfExists(c *context.Context) {
-	ec, err := c.Repo.GetEditorconfig()
-	if err != nil && !git.IsErrNotExist(err) {
-		log.Trace("setEditorconfigIfExists.GetEditorconfig [%d]: %v", c.Repo.Repository.ID, err)
+	ec, err := c.Repo.Editorconfig()
+	if err != nil && !gitutil.IsErrRevisionNotExist(errors.Cause(err)) {
+		log.Warn("setEditorconfigIfExists.Editorconfig [repo_id: %d]: %v", c.Repo.Repository.ID, err)
 		return
 	}
 	c.Data["Editorconfig"] = ec
 }
 
-func Home(c *context.Context, cpt *captcha.Captcha) {
+func Home(c *context.Context) {
 	c.Data["PageIsViewFiles"] = true
 
 	if c.Repo.Repository.IsBare {
@@ -326,16 +315,16 @@ func Home(c *context.Context, cpt *captcha.Captcha) {
 	c.Data["PageIsRepoHome"] = isRootDir
 
 	// Get current entry user currently looking at.
-	entry, err := c.Repo.Commit.GetTreeEntryByPath(c.Repo.TreePath)
+	entry, err := c.Repo.Commit.TreeEntry(c.Repo.TreePath)
 	if err != nil {
-		c.NotFoundOrServerError("Repo.Commit.GetTreeEntryByPath", git.IsErrNotExist, err)
+		c.NotFoundOrServerError("get tree entry", gitutil.IsErrRevisionNotExist, err)
 		return
 	}
 
-	if entry.IsDir() {
+	if entry.IsTree() {
 		renderDirectory(c, treeLink)
 	} else {
-		renderFile(c, entry, treeLink, rawLink, cpt)
+		renderFile(c, entry, treeLink, rawLink)
 	}
 	if c.Written() {
 		return

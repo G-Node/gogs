@@ -1,11 +1,16 @@
+// Copyright 2020 The Gogs Authors. All rights reserved.
+// Use of this source code is governed by a MIT-style
+// license that can be found in the LICENSE file.
+
 package repo
 
 import (
 	"fmt"
 
-	"github.com/G-Node/git-module"
+	"github.com/gogs/git-module"
 
 	"github.com/G-Node/gogs/internal/context"
+	"github.com/G-Node/gogs/internal/gitutil"
 )
 
 type repoGitTree struct {
@@ -24,14 +29,14 @@ type repoGitTreeEntry struct {
 }
 
 func GetRepoGitTree(c *context.APIContext) {
-	gitTree, err := c.Repo.GitRepo.GetTree(c.Params(":sha"))
+	gitTree, err := c.Repo.GitRepo.LsTree(c.Params(":sha"))
 	if err != nil {
-		c.NotFoundOrServerError("GetRepoGitTree", git.IsErrNotExist, err)
+		c.NotFoundOrServerError("get tree", gitutil.IsErrRevisionNotExist, err)
 		return
 	}
-	entries, err := gitTree.ListEntries()
+	entries, err := gitTree.Entries()
 	if err != nil {
-		c.ServerError("GetRepoGitTree", err)
+		c.ServerError("list entries", err)
 		return
 	}
 
@@ -48,7 +53,7 @@ func GetRepoGitTree(c *context.APIContext) {
 	children := make([]*repoGitTreeEntry, 0, len(entries))
 	for _, entry := range entries {
 		var mode string
-		switch entry.Type {
+		switch entry.Type() {
 		case git.ObjectCommit:
 			mode = "160000"
 		case git.ObjectTree:
@@ -63,10 +68,10 @@ func GetRepoGitTree(c *context.APIContext) {
 		children = append(children, &repoGitTreeEntry{
 			Path: entry.Name(),
 			Mode: mode,
-			Type: string(entry.Type),
+			Type: string(entry.Type()),
 			Size: entry.Size(),
-			Sha:  entry.ID.String(),
-			URL:  fmt.Sprintf(templateURL+"/%s", entry.ID.String()),
+			Sha:  entry.ID().String(),
+			URL:  fmt.Sprintf(templateURL+"/%s", entry.ID().String()),
 		})
 	}
 	c.JSONSuccess(&repoGitTree{

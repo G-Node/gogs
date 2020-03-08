@@ -8,12 +8,13 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"path/filepath"
 	"strings"
 
 	"github.com/unknwon/com"
 	log "unknwon.dev/clog/v2"
 
-	"github.com/G-Node/git-module"
+	"github.com/gogs/git-module"
 
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
@@ -272,27 +273,22 @@ func Action(c *context.Context) {
 
 func Download(c *context.Context) {
 	var (
-		uri         = c.Params("*")
-		refName     string
-		ext         string
-		archivePath string
-		archiveType git.ArchiveType
+		uri           = c.Params("*")
+		refName       string
+		ext           string
+		archivePath   string
+		archiveFormat git.ArchiveFormat
 	)
 
 	switch {
-	case strings.HasSuffix(uri, ".gin.zip"):
-		ext = ".gin.zip"
-		archivePath = path.Join(c.Repo.GitRepo.Path, "archives/gin")
-		archiveType = git.ArchiveGIN
 	case strings.HasSuffix(uri, ".zip"):
 		ext = ".zip"
-		archivePath = path.Join(c.Repo.GitRepo.Path, "archives/zip")
-		archiveType = git.ArchiveZip
+		archivePath = filepath.Join(c.Repo.GitRepo.Path(), "archives", "zip")
+		archiveFormat = git.ArchiveZip
 	case strings.HasSuffix(uri, ".tar.gz"):
 		ext = ".tar.gz"
-		archivePath = path.Join(c.Repo.GitRepo.Path, "archives/targz")
-		archiveType = git.ArchiveTarGz
-
+		archivePath = filepath.Join(c.Repo.GitRepo.Path(), "archives", "targz")
+		archiveFormat = git.ArchiveTarGz
 	default:
 		log.Trace("Unknown format: %s", uri)
 		c.Error(404)
@@ -313,20 +309,20 @@ func Download(c *context.Context) {
 		err    error
 	)
 	gitRepo := c.Repo.GitRepo
-	if gitRepo.IsBranchExist(refName) {
-		commit, err = gitRepo.GetBranchCommit(refName)
+	if gitRepo.HasBranch(refName) {
+		commit, err = gitRepo.BranchCommit(refName)
 		if err != nil {
-			c.Handle(500, "GetBranchCommit", err)
+			c.ServerError("get branch commit", err)
 			return
 		}
-	} else if gitRepo.IsTagExist(refName) {
-		commit, err = gitRepo.GetTagCommit(refName)
+	} else if gitRepo.HasTag(refName) {
+		commit, err = gitRepo.TagCommit(refName)
 		if err != nil {
-			c.Handle(500, "GetTagCommit", err)
+			c.ServerError("get tag commit", err)
 			return
 		}
 	} else if len(refName) >= 7 && len(refName) <= 40 {
-		commit, err = gitRepo.GetCommit(refName)
+		commit, err = gitRepo.CatFileCommit(refName)
 		if err != nil {
 			c.NotFound()
 			return
@@ -338,8 +334,8 @@ func Download(c *context.Context) {
 
 	archivePath = path.Join(archivePath, tool.ShortSHA1(commit.ID.String())+ext)
 	if !com.IsFile(archivePath) {
-		if err := commit.CreateArchive(archivePath, archiveType, c.Repo.Repository.CloneLink().SSH); err != nil {
-			c.Handle(500, "Download -> CreateArchive "+archivePath, err)
+		if err := commit.CreateArchive(archiveFormat, archivePath); err != nil {
+			c.ServerError("creates archive", err)
 			return
 		}
 	}

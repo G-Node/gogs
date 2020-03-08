@@ -5,24 +5,22 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
 
-	"github.com/G-Node/git-module"
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/tool"
 	"github.com/G-Node/libgin/libgin"
-	"github.com/go-macaron/captcha"
+	"github.com/gogs/git-module"
 	log "gopkg.in/clog.v1"
 	"gopkg.in/yaml.v2"
 )
 
-func serveAnnexedData(ctx *context.Context, name string, cpt *captcha.Captcha, buf []byte) error {
+func serveAnnexedData(ctx *context.Context, name string, buf []byte) error {
 	keyparts := strings.Split(strings.TrimSpace(string(buf)), "/")
 	key := keyparts[len(keyparts)-1]
 	contentPath, err := git.NewCommand("annex", "contentlocation", key).RunInDir(ctx.Repo.Repository.RepoPath())
@@ -31,8 +29,8 @@ func serveAnnexedData(ctx *context.Context, name string, cpt *captcha.Captcha, b
 		return err
 	}
 	// always trim space from output for git command
-	contentPath = strings.TrimSpace(contentPath)
-	return serveAnnexedKey(ctx, name, contentPath)
+	contentPath = bytes.TrimSpace(contentPath)
+	return serveAnnexedKey(ctx, name, string(contentPath))
 }
 
 func serveAnnexedKey(ctx *context.Context, name string, contentPath string) error {
@@ -75,19 +73,13 @@ func serveAnnexedKey(ctx *context.Context, name string, contentPath string) erro
 
 func readDataciteFile(c *context.Context) {
 	log.Trace("Reading datacite.yml file")
-	entry, err := c.Repo.Commit.GetBlobByPath("/datacite.yml")
+	entry, err := c.Repo.Commit.Blob("/datacite.yml")
 	if err != nil || entry == nil {
 		log.Error(2, "datacite.yml blob could not be retrieved: %v", err)
 		c.Data["HasDataCite"] = false
 		return
 	}
-	doiData, err := entry.Data()
-	if err != nil {
-		log.Error(2, "datacite.yml blob could not be read: %v", err)
-		c.Data["HasDataCite"] = false
-		return
-	}
-	buf, err := ioutil.ReadAll(doiData)
+	buf, err := entry.Bytes()
 	if err != nil {
 		log.Error(2, "datacite.yml data could not be read: %v", err)
 		c.Data["HasDataCite"] = false
@@ -111,10 +103,10 @@ func readDataciteFile(c *context.Context) {
 // the two variables without modifications.
 // Any errors that occur during processing are stored in the provided context.
 // The FileSize of the annexed content is also saved in the context (c.Data["FileSize"]).
-func resolveAnnexedContent(c *context.Context, buf []byte, dataRc io.Reader) ([]byte, io.Reader, error) {
+func resolveAnnexedContent(c *context.Context, buf []byte) ([]byte, error) {
 	if !tool.IsAnnexedFile(buf) {
 		// not an annex pointer file; return as is
-		return buf, dataRc, nil
+		return buf, nil
 	}
 	log.Trace("Annexed file requested: Resolving content for %q", bytes.TrimSpace(buf))
 
@@ -124,21 +116,21 @@ func resolveAnnexedContent(c *context.Context, buf []byte, dataRc io.Reader) ([]
 	if err != nil {
 		log.Error(2, "Failed to find content location for key %q", key)
 		c.Data["IsAnnexedFile"] = true
-		return buf, dataRc, err
+		return buf, err
 	}
 	// always trim space from output for git command
-	contentPath = strings.TrimSpace(contentPath)
-	afp, err := os.Open(filepath.Join(c.Repo.Repository.RepoPath(), contentPath))
+	contentPath = bytes.TrimSpace(contentPath)
+	afp, err := os.Open(filepath.Join(c.Repo.Repository.RepoPath(), string(contentPath)))
 	if err != nil {
 		log.Trace("Could not open annex file: %v", err)
 		c.Data["IsAnnexedFile"] = true
-		return buf, dataRc, err
+		return buf, err
 	}
 	info, err := afp.Stat()
 	if err != nil {
 		log.Trace("Could not stat annex file: %v", err)
 		c.Data["IsAnnexedFile"] = true
-		return buf, dataRc, err
+		return buf, err
 	}
 	annexDataReader := bufio.NewReader(afp)
 	annexBuf := make([]byte, 1024)
@@ -146,7 +138,7 @@ func resolveAnnexedContent(c *context.Context, buf []byte, dataRc io.Reader) ([]
 	annexBuf = annexBuf[:n]
 	c.Data["FileSize"] = info.Size()
 	log.Trace("Annexed file size: %d B", info.Size())
-	return annexBuf, annexDataReader, nil
+	return annexBuf, nil
 }
 
 func GitConfig(c *context.Context) {
