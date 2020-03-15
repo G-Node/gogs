@@ -13,7 +13,6 @@ import (
 
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/db/errors"
 	"github.com/G-Node/gogs/internal/markup"
 )
 
@@ -58,7 +57,7 @@ func Search(c *context.APIContext) {
 func GetInfo(c *context.APIContext) {
 	u, err := db.GetUserByName(c.Params(":username"))
 	if err != nil {
-		c.NotFoundOrServerError("GetUserByName", errors.IsUserNotExist, err)
+		c.NotFoundOrError(err, "get user by name")
 		return
 	}
 

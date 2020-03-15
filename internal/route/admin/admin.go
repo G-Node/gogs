@@ -168,7 +168,7 @@ func Dashboard(c *context.Context) {
 		} else {
 			c.Flash.Success(success)
 		}
-		c.SubURLRedirect("/admin")
+		c.RedirectSubpath("/admin")
 		return
 	}
 
@@ -244,5 +244,5 @@ func Monitor(c *context.Context) {
 	c.Data["PageIsAdminMonitor"] = true
 	c.Data["Processes"] = process.Processes
 	c.Data["Entries"] = cron.ListTasks()
-	c.HTML(200, MONITOR)
+	c.Success( MONITOR)
 }

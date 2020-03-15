@@ -33,6 +33,7 @@ import (
 	"github.com/G-Node/gogs/internal/avatar"
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db/errors"
+	"github.com/G-Node/gogs/internal/errutil"
 	"github.com/G-Node/gogs/internal/markup"
 	"github.com/G-Node/gogs/internal/osutil"
 	"github.com/G-Node/gogs/internal/process"
@@ -249,11 +250,11 @@ func (repo *Repository) loadAttributes(e Engine) (err error) {
 	if repo.IsFork && repo.BaseRepo == nil {
 		repo.BaseRepo, err = getRepositoryByID(e, repo.ForkID)
 		if err != nil {
-			if errors.IsRepoNotExist(err) {
+			if IsErrRepoNotExist(err) {
 				repo.IsFork = false
 				repo.ForkID = 0
 			} else {
-				return fmt.Errorf("getRepositoryByID [%d]: %v", repo.ForkID, err)
+				return fmt.Errorf("get fork repository by ID: %v", err)
 			}
 		}
 	}
@@ -1107,10 +1108,23 @@ func createRepository(e *xorm.Session, doer, owner *User, repo *Repository) (err
 	return repo.loadAttributes(e)
 }
 
+type ErrReachLimitOfRepo struct {
+	Limit int
+}
+
+func IsErrReachLimitOfRepo(err error) bool {
+	_, ok := err.(ErrReachLimitOfRepo)
+	return ok
+}
+
+func (err ErrReachLimitOfRepo) Error() string {
+	return fmt.Sprintf("user has reached maximum limit of repositories [limit: %d]", err.Limit)
+}
+
 // CreateRepository creates a repository for given user or organization.
 func CreateRepository(doer, owner *User, opts CreateRepoOptions) (_ *Repository, err error) {
 	if !owner.CanCreateRepo() {
-		return nil, errors.ReachLimitOfRepo{Limit: owner.RepoCreationNum()}
+		return nil, ErrReachLimitOfRepo{Limit: owner.RepoCreationNum()}
 	}
 
 	repo := &Repository{
@@ -1484,17 +1498,17 @@ func UpdateRepository(repo *Repository, visibilityChanged bool) (err error) {
 }
 
 // DeleteRepository deletes a repository for a user or organization.
-func DeleteRepository(uid, repoID int64) error {
-	repo := &Repository{ID: repoID, OwnerID: uid}
+func DeleteRepository(ownerID, repoID int64) error {
+	repo := &Repository{ID: repoID, OwnerID: ownerID}
 	has, err := x.Get(repo)
 	if err != nil {
 		return err
 	} else if !has {
-		return errors.RepoNotExist{ID: repoID, UserID: uid}
+		return ErrRepoNotExist{args: map[string]interface{}{"ownerID": ownerID, "repoID": repoID}}
 	}
 
 	// In case is a organization.
-	org, err := GetUserByID(uid)
+	org, err := GetUserByID(ownerID)
 	if err != nil {
 		return err
 	}
@@ -1574,7 +1588,7 @@ func DeleteRepository(uid, repoID int64) error {
 		}
 	}
 
-	if _, err = sess.Exec("UPDATE `user` SET num_repos=num_repos-1 WHERE id=?", uid); err != nil {
+	if _, err = sess.Exec("UPDATE `user` SET num_repos=num_repos-1 WHERE id=?", ownerID); err != nil {
 		return err
 	}
 
@@ -1619,6 +1633,25 @@ func GetRepositoryByRef(ref string) (*Repository, error) {
 	return GetRepositoryByName(user.ID, repoName)
 }
 
+var _ errutil.NotFound = (*ErrRepoNotExist)(nil)
+
+type ErrRepoNotExist struct {
+	args map[string]interface{}
+}
+
+func IsErrRepoNotExist(err error) bool {
+	_, ok := err.(ErrRepoNotExist)
+	return ok
+}
+
+func (err ErrRepoNotExist) Error() string {
+	return fmt.Sprintf("repository does not exist: %v", err.args)
+}
+
+func (ErrRepoNotExist) NotFound() bool {
+	return true
+}
+
 // GetRepositoryByName returns the repository by given name under user if exists.
 func GetRepositoryByName(ownerID int64, name string) (*Repository, error) {
 	repo := &Repository{
@@ -1629,7 +1662,7 @@ func GetRepositoryByName(ownerID int64, name string) (*Repository, error) {
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, errors.RepoNotExist{UserID: ownerID, Name: name}
+		return nil, ErrRepoNotExist{args: map[string]interface{}{"ownerID": ownerID, "name": name}}
 	}
 	return repo, repo.LoadAttributes()
 }
@@ -1640,7 +1673,7 @@ func getRepositoryByID(e Engine, id int64) (*Repository, error) {
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, errors.RepoNotExist{ID: id}
+		return nil, ErrRepoNotExist{args: map[string]interface{}{"repoID": id}}
 	}
 	return repo, repo.loadAttributes(e)
 }
@@ -2364,7 +2397,7 @@ func HasForkedRepo(ownerID, repoID int64) (*Repository, bool, error) {
 // ForkRepository creates a fork of target repository under another user domain.
 func ForkRepository(doer, owner *User, baseRepo *Repository, name, desc string) (_ *Repository, err error) {
 	if !owner.CanCreateRepo() {
-		return nil, errors.ReachLimitOfRepo{Limit: owner.RepoCreationNum()}
+		return nil, ErrReachLimitOfRepo{Limit: owner.RepoCreationNum()}
 	}
 
 	repo := &Repository{

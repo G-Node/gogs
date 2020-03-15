@@ -5,18 +5,18 @@
 package admin
 
 import (
-	repo2 "github.com/G-Node/gogs/internal/route/api/v1/repo"
-	user2 "github.com/G-Node/gogs/internal/route/api/v1/user"
 	api "github.com/gogs/go-gogs-client"
 
 	"github.com/G-Node/gogs/internal/context"
+	"github.com/G-Node/gogs/internal/route/api/v1/repo"
+	"github.com/G-Node/gogs/internal/route/api/v1/user"
 )
 
 func CreateRepo(c *context.APIContext, form api.CreateRepoOption) {
-	owner := user2.GetUserByParams(c)
+	owner := user.GetUserByParams(c)
 	if c.Written() {
 		return
 	}
 
-	repo2.CreateUserRepo(c, owner, form)
+	repo.CreateUserRepo(c, owner, form)
 }

@@ -7,32 +7,32 @@ package org
 import (
 	"net/http"
 
-	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/db/errors"
-	convert2 "github.com/G-Node/gogs/internal/route/api/v1/convert"
 	api "github.com/gogs/go-gogs-client"
 
 	"github.com/G-Node/gogs/internal/context"
+	"github.com/G-Node/gogs/internal/db"
+	"github.com/G-Node/gogs/internal/db/errors"
+	"github.com/G-Node/gogs/internal/route/api/v1/convert"
 )
 
 func ListTeams(c *context.APIContext) {
 	org := c.Org.Organization
 	if err := org.GetTeams(); err != nil {
-		c.Error(500, "GetTeams", err)
+		c.Error(err, "get teams")
 		return
 	}
 
 	apiTeams := make([]*api.Team, len(org.Teams))
 	for i := range org.Teams {
-		apiTeams[i] = convert2.ToTeam(org.Teams[i])
+		apiTeams[i] = convert.ToTeam(org.Teams[i])
 	}
-	c.JSON(200, apiTeams)
+	c.JSONSuccess(apiTeams)
 }
 
 func CreateTeam(c *context.APIContext, opt api.CreateTeamOption) {
 	org := c.Org.Organization
 	if !org.IsOwnedBy(c.User.ID) {
-		c.Error(http.StatusForbidden, "", "given user is not owner of organization")
+		c.ErrorStatus(http.StatusForbidden, errors.New("given user is not owner of organization"))
 		return
 	}
 	team := &db.Team{
@@ -43,14 +43,14 @@ func CreateTeam(c *context.APIContext, opt api.CreateTeamOption) {
 	}
 	if err := db.NewTeam(team); err != nil {
 		if db.IsErrTeamAlreadyExist(err) {
-			c.Error(http.StatusUnprocessableEntity, "", err)
+			c.ErrorStatus(http.StatusUnprocessableEntity, err)
 		} else {
-			c.ServerError("NewTeam", err)
+			c.Error(err, "NewTeam")
 		}
 		return
 	}
 
-	c.JSON(http.StatusCreated, convert2.ToTeam(team))
+	c.JSON(http.StatusCreated, convert.ToTeam(team))
 }
 
 func GetTeam(c *context.APIContext) {
@@ -58,22 +58,22 @@ func GetTeam(c *context.APIContext) {
 	org := c.Org.Organization
 	team, err := org.GetTeam(teamname)
 	if err != nil {
-		c.NotFoundOrServerError("GetTeamByName", errors.IsTeamNotExist, err)
+		c.NotFoundOrError(err, "GetTeamByName")
 		return
 	}
-	c.JSON(200, convert2.ToTeam(team))
+	c.JSON(200, convert.ToTeam(team))
 }
 
 func EditTeam(c *context.APIContext, opt api.CreateTeamOption) {
 	teamname := c.Params(":team")
 	org := c.Org.Organization
 	if !org.IsOwnedBy(c.User.ID) {
-		c.Error(http.StatusForbidden, "", "given user is not owner of organization")
+		c.ErrorStatus(http.StatusForbidden, errors.New("given user is not owner of organization"))
 		return
 	}
 	oldteam, err := org.GetTeam(teamname)
 	if err != nil {
-		c.NotFoundOrServerError("EditTeamByName", errors.IsTeamNotExist, err)
+		c.NotFoundOrError(err, "EditTeamByName")
 		return
 	}
 	newperm := oldteam.Authorize
@@ -91,10 +91,10 @@ func EditTeam(c *context.APIContext, opt api.CreateTeamOption) {
 		Authorize:   newperm,
 	}
 	if err := db.UpdateTeam(team, oldteam.Authorize != team.Authorize); err != nil {
-		c.NotFoundOrServerError("EditTeamByName", errors.IsTeamNotExist, err)
+		c.NotFoundOrError(err, "EditTeamByName")
 		return
 	}
-	c.JSON(http.StatusCreated, convert2.ToTeam(team))
+	c.JSON(http.StatusCreated, convert.ToTeam(team))
 }
 
 func DeleteTeam(c *context.APIContext) {
@@ -102,15 +102,15 @@ func DeleteTeam(c *context.APIContext) {
 	org := c.Org.Organization
 	team, err := org.GetTeam(teamname)
 	if err != nil {
-		c.NotFoundOrServerError("DeleteTeamByName", errors.IsTeamNotExist, err)
+		c.NotFoundOrError(err, "DeleteTeamByName")
 		return
 	}
 	if team.IsOwnerTeam() {
-		c.Error(http.StatusMethodNotAllowed, "", "cannot delete Owners team")
+		c.ErrorStatus(http.StatusMethodNotAllowed, errors.New("cannot delete Owners team"))
 		return
 	}
 	if err := db.DeleteTeam(team); err != nil {
-		c.NotFoundOrServerError("DeleteTeamByName", errors.IsTeamNotExist, err)
+		c.NotFoundOrError(err, "DeleteTeamByName")
 		return
 	}
 	c.NoContent()

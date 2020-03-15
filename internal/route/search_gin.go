@@ -75,7 +75,7 @@ func collectSearchableRepoIDs(c *context.Context) ([]int64, error) {
 		PageSize: 0,
 	})
 	if err != nil {
-		c.ServerError("SearchRepositoryByName", err)
+		c.Error(err, "SearchRepositoryByName")
 		return nil, err
 	}
 
