@@ -661,7 +661,9 @@ func (repo *Repository) SavePatch(index int64, patch []byte) error {
 		return fmt.Errorf("PatchPath: %v", err)
 	}
 
-	os.MkdirAll(filepath.Dir(patchPath), os.ModePerm)
+	if err = os.MkdirAll(filepath.Dir(patchPath), os.ModePerm); err != nil {
+		return err
+	}
 	if err = ioutil.WriteFile(patchPath, patch, 0644); err != nil {
 		return fmt.Errorf("WriteFile: %v", err)
 	}
@@ -1020,7 +1022,9 @@ func initRepository(e Engine, repoPath string, doer *User, repo *Repository, opt
 
 	// Initialize repository according to user's choice.
 	if opts.AutoInit {
-		os.MkdirAll(tmpDir, os.ModePerm)
+		if err = os.MkdirAll(tmpDir, os.ModePerm); err != nil {
+			return err
+		}
 		defer RemoveAllWithNotice("Delete repository for auto-initialization", tmpDir)
 
 		if err = prepareRepoCommit(repo, tmpDir, repoPath, opts); err != nil {
@@ -1352,7 +1356,9 @@ func TransferOwnership(doer *User, newOwnerName string, repo *Repository) error 
 	}
 
 	// Rename remote repository to new path and delete local copy.
-	os.MkdirAll(UserPath(newOwner.Name), os.ModePerm)
+	if err = os.MkdirAll(UserPath(newOwner.Name), os.ModePerm); err != nil {
+		return err
+	}
 	if err = os.Rename(RepoPath(owner.Name, repo.Name), RepoPath(newOwner.Name, repo.Name)); err != nil {
 		return fmt.Errorf("rename repository directory: %v", err)
 	}
