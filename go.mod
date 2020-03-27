@@ -6,9 +6,9 @@ require (
 	github.com/G-Node/git-module v0.8.4-gnode
 	github.com/G-Node/libgin v0.3.2
 	github.com/bgentry/speakeasy v0.1.0 // indirect
-	github.com/denisenkom/go-mssqldb v0.0.0-20200206145737-bbfc9a55622e
+	github.com/denisenkom/go-mssqldb v0.0.0-20191001013358-cfbb681360f0
 	github.com/dustinkirkland/golang-petname v0.0.0-20191129215211-8e5a1ed0cff0
-	github.com/editorconfig/editorconfig-core-go/v2 v2.3.2
+	github.com/editorconfig/editorconfig-core-go/v2 v2.3.1
 	github.com/fatih/color v1.9.0 // indirect
 	github.com/go-macaron/binding v1.1.0
 	github.com/go-macaron/cache v0.0.0-20190810181446-10f7c57e2196
