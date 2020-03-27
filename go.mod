@@ -69,7 +69,7 @@ require (
 	gopkg.in/macaron.v1 v1.3.5
 	gopkg.in/yaml.v2 v2.2.7
 	unknwon.dev/clog/v2 v2.1.2
-	xorm.io/builder v0.3.6
+	xorm.io/builder v0.3.7
 	xorm.io/core v0.7.2
 	xorm.io/xorm v0.8.0
 )
