@@ -248,7 +248,8 @@ func RegisterRoutes(m *macaron.Macaron) {
 			m.Get("/search", repo.Search)
 
 			m.Get("/:username/:reponame", repoAssignment(), repo.Get)
-			m.Get("/suggest/:query", search.Suggest)
+			m.Get("/:username/:reponame/releases", repoAssignment(), repo.Releases)
+			m.Get("/suggest/:query", search.Suggest) // GIN specific code
 		})
 
 		m.Group("/repos", func() {
