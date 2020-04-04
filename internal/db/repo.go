@@ -493,7 +493,7 @@ func (repo *Repository) getUsersWithAccesMode(e Engine, mode AccessMode) (_ []*U
 
 // getAssignees returns a list of users who can be assigned to issues in this repository.
 func (repo *Repository) getAssignees(e Engine) (_ []*User, err error) {
-	return repo.getUsersWithAccesMode(e, ACCESS_MODE_READ)
+	return repo.getUsersWithAccesMode(e, AccessModeRead)
 }
 
 // GetAssignees returns all users that have read access and can be assigned to issues
@@ -509,7 +509,7 @@ func (repo *Repository) GetAssigneeByID(userID int64) (*User, error) {
 
 // GetWriters returns all users that have write access to the repository.
 func (repo *Repository) GetWriters() (_ []*User, err error) {
-	return repo.getUsersWithAccesMode(x, ACCESS_MODE_WRITE)
+	return repo.getUsersWithAccesMode(x, AccessModeWrite)
 }
 
 // GetMilestoneByID returns the milestone belongs to repository by given ID.
@@ -552,7 +552,7 @@ func (repo *Repository) ComposeCompareURL(oldCommitID, newCommitID string) strin
 }
 
 func (repo *Repository) HasAccess(userID int64) bool {
-	has, _ := HasAccess(userID, repo, ACCESS_MODE_READ)
+	has, _ := HasAccess(userID, repo, AccessModeRead)
 	return has
 }
 
@@ -1669,6 +1669,7 @@ func (ErrRepoNotExist) NotFound() bool {
 }
 
 // GetRepositoryByName returns the repository by given name under user if exists.
+// Deprecated: Use Repos.GetByName instead.
 func GetRepositoryByName(ownerID int64, name string) (*Repository, error) {
 	repo := &Repository{
 		OwnerID:   ownerID,

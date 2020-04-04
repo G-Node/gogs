@@ -142,9 +142,9 @@ func (u *User) APIFormat() *api.User {
 	}
 }
 
-// returns true if user login type is LOGIN_PLAIN.
+// returns true if user login type is LoginPlain.
 func (u *User) IsLocal() bool {
-	return u.LoginType <= LOGIN_PLAIN
+	return u.LoginType <= LoginPlain
 }
 
 // HasForkedRepo checks if user has already forked a repository with given ID.
@@ -380,7 +380,7 @@ func (u *User) DeleteAvatar() error {
 
 // IsAdminOfRepo returns true if user has admin or higher access of repository.
 func (u *User) IsAdminOfRepo(repo *Repository) bool {
-	has, err := HasAccess(u.ID, repo, ACCESS_MODE_ADMIN)
+	has, err := HasAccess(u.ID, repo, AccessModeAdmin)
 	if err != nil {
 		log.Error("HasAccess: %v", err)
 	}
@@ -389,7 +389,7 @@ func (u *User) IsAdminOfRepo(repo *Repository) bool {
 
 // IsWriterOfRepo returns true if user has write access to given repository.
 func (u *User) IsWriterOfRepo(repo *Repository) bool {
-	has, err := HasAccess(u.ID, repo, ACCESS_MODE_WRITE)
+	has, err := HasAccess(u.ID, repo, AccessModeWrite)
 	if err != nil {
 		log.Error("HasAccess: %v", err)
 	}
@@ -413,7 +413,7 @@ func (u *User) IsPublicMember(orgId int64) bool {
 
 // IsEnabledTwoFactor returns true if user has enabled two-factor authentication.
 func (u *User) IsEnabledTwoFactor() bool {
-	return IsUserEnabledTwoFactor(u.ID)
+	return TwoFactors.IsUserEnabled(u.ID)
 }
 
 func (u *User) getOrganizationCount(e Engine) (int64, error) {
@@ -630,7 +630,7 @@ func CountUsers() int64 {
 }
 
 // Users returns number of users in given page.
-func Users(page, pageSize int) ([]*User, error) {
+func ListUsers(page, pageSize int) ([]*User, error) {
 	users := make([]*User, 0, pageSize)
 	return users, x.Limit(pageSize, (page-1)*pageSize).Where("type=0").Asc("id").Find(&users)
 }
@@ -826,7 +826,7 @@ func deleteUser(e *xorm.Session, u *User) error {
 	// ***** END: Follow *****
 
 	if err = deleteBeans(e,
-		&AccessToken{UID: u.ID},
+		&AccessToken{UserID: u.ID},
 		&Collaboration{UserID: u.ID},
 		&Access{UserID: u.ID},
 		&Watch{UserID: u.ID},
@@ -962,13 +962,14 @@ func getUserByID(e Engine, id int64) (*User, error) {
 }
 
 // GetUserByID returns the user object by given ID if exists.
+// Deprecated: Use Users.GetByID instead.
 func GetUserByID(id int64) (*User, error) {
 	return getUserByID(x, id)
 }
 
 // GetAssigneeByID returns the user with write access of repository by given ID.
 func GetAssigneeByID(repo *Repository, userID int64) (*User, error) {
-	has, err := HasAccess(userID, repo, ACCESS_MODE_READ)
+	has, err := HasAccess(userID, repo, AccessModeRead)
 	if err != nil {
 		return nil, err
 	} else if !has {
@@ -978,6 +979,7 @@ func GetAssigneeByID(repo *Repository, userID int64) (*User, error) {
 }
 
 // GetUserByName returns a user by given name.
+// Deprecated: Use Users.GetByUsername instead.
 func GetUserByName(name string) (*User, error) {
 	if len(name) == 0 {
 		return nil, ErrUserNotExist{args: map[string]interface{}{"name": name}}
