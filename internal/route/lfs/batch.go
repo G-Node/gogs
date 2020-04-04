@@ -9,17 +9,17 @@ import (
 	"net/http"
 
 	jsoniter "github.com/json-iterator/go"
+	"gopkg.in/macaron.v1"
 	log "unknwon.dev/clog/v2"
 
 	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/lfsutil"
 	"github.com/G-Node/gogs/internal/strutil"
 )
 
 // POST /{owner}/{repo}.git/info/lfs/object/batch
-func serveBatch(c *context.Context, owner *db.User, repo *db.Repository) {
+func serveBatch(c *macaron.Context, owner *db.User, repo *db.Repository) {
 	var request batchRequest
 	defer c.Req.Request.Body.Close()
 	err := jsoniter.NewDecoder(c.Req.Request.Body).Decode(&request)

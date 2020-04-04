@@ -9,14 +9,14 @@ import (
 
 	"gopkg.in/macaron.v1"
 
+	"github.com/G-Node/gogs/internal/authutil"
 	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/context"
 )
 
 func MetricsFilter() macaron.Handler {
-	return func(c *context.Context) {
+	return func(w http.ResponseWriter, r *http.Request) {
 		if !conf.Prometheus.Enabled {
-			c.Status(http.StatusNotFound)
+			w.WriteHeader(http.StatusNotFound)
 			return
 		}
 
@@ -24,6 +24,10 @@ func MetricsFilter() macaron.Handler {
 			return
 		}
 
-		c.RequireBasicAuth(conf.Prometheus.BasicAuthUsername, conf.Prometheus.BasicAuthPassword)
+		username, password := authutil.DecodeBasic(r.Header)
+		if username != conf.Prometheus.BasicAuthUsername || password != conf.Prometheus.BasicAuthPassword {
+			w.WriteHeader(http.StatusForbidden)
+			return
+		}
 	}
 }
