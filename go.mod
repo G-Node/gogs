@@ -1,6 +1,6 @@
 module github.com/G-Node/gogs
 
-go 1.13
+go 1.14
 
 require (
 	github.com/G-Node/git-module v0.8.4-gnode
@@ -75,5 +75,5 @@ require (
 	xorm.io/xorm v0.8.0
 )
 
-// +heroku goVersion go1.13
+// +heroku goVersion go1.14
 // +heroku install ./
