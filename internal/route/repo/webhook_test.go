@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/mock"
+	"github.com/G-Node/gogs/internal/mocks"
 )
 
 func Test_isLocalHostname(t *testing.T) {
@@ -33,9 +33,12 @@ func Test_isLocalHostname(t *testing.T) {
 }
 
 func Test_validateWebhook(t *testing.T) {
-	l := mock.NewLocale("en", func(s string, _ ...interface{}) string {
-		return s
-	})
+	l := &mocks.Locale{
+		MockLang: "en",
+		MockTr: func(s string, _ ...interface{}) string {
+			return s
+		},
+	}
 
 	tests := []struct {
 		name     string
