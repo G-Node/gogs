@@ -635,7 +635,6 @@ func runWeb(c *cli.Context) error {
 			m.Get("", repo.Home)
 			m.Get("/stars", repo.Stars)
 			m.Get("/watchers", repo.Watchers)
-			m.Head("/tasks/trigger", repo.TriggerTask) // TODO: Without session and CSRF
 		}, ignSignIn, context.RepoAssignment(), context.RepoRef())
 
 		// GIN specific code
@@ -684,6 +683,8 @@ func runWeb(c *cli.Context) error {
 	// ***************************
 
 	m.Group("/:username/:reponame", func() {
+		m.Get("/tasks/trigger", repo.TriggerTask)
+
 		m.Group("/info/lfs", func() {
 			lfs.RegisterRoutes(m.Router)
 		})
