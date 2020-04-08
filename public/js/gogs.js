@@ -1717,11 +1717,13 @@ $(document).ready(function() {
       $($(this).data("target")).removeClass("disabled");
     } else {
       $($(this).data("target")).addClass("disabled");
+      $($(this).data("uncheck")).prop("checked", false);
     }
   });
   $(".enable-system-radio").change(function() {
     $($(this).data("enable")).removeClass("disabled");
     $($(this).data("disable")).addClass("disabled");
+    $($(this).data("uncheck")).prop("checked", false);
   });
 
   // Set anchor.
