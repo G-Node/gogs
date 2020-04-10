@@ -200,11 +200,6 @@ var (
 		AccessControlAllowOrigin string
 	}
 
-	// LFS settings
-	LFS struct {
-		ObjectsPath string
-	}
-
 	// Attachment settings
 	Attachment struct {
 		Enabled      bool
@@ -446,6 +441,14 @@ type DatabaseOpts struct {
 
 // Database settings
 var Database DatabaseOpts
+
+type LFSOpts struct {
+	Storage     string
+	ObjectsPath string
+}
+
+// LFS settings
+var LFS LFSOpts
 
 type i18nConf struct {
 	Langs     []string          `delim:","`
