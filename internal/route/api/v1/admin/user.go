@@ -13,7 +13,6 @@ import (
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/db/errors"
 	"github.com/G-Node/gogs/internal/email"
 	"github.com/G-Node/gogs/internal/route/api/v1/user"
 )
@@ -25,7 +24,7 @@ func parseLoginSource(c *context.APIContext, u *db.User, sourceID int64, loginNa
 
 	source, err := db.LoginSources.GetByID(sourceID)
 	if err != nil {
-		if errors.IsLoginSourceNotExist(err) {
+		if db.IsErrLoginSourceNotExist(err) {
 			c.ErrorStatus(http.StatusUnprocessableEntity, err)
 		} else {
 			c.Error(err, "get login source by ID")
