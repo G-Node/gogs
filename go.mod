@@ -8,7 +8,7 @@ require (
 	github.com/bgentry/speakeasy v0.1.0 // indirect
 	github.com/denisenkom/go-mssqldb v0.0.0-20200206145737-bbfc9a55622e // indirect
 	github.com/dustinkirkland/golang-petname v0.0.0-20191129215211-8e5a1ed0cff0
-	github.com/editorconfig/editorconfig-core-go/v2 v2.3.2
+	github.com/editorconfig/editorconfig-core-go/v2 v2.3.1
 	github.com/fatih/color v1.9.0 // indirect
 	github.com/go-macaron/binding v1.1.0
 	github.com/go-macaron/cache v0.0.0-20190810181446-10f7c57e2196
@@ -52,8 +52,9 @@ require (
 	github.com/sergi/go-diff v1.1.0
 	github.com/smartystreets/goconvey v1.6.4
 	github.com/ssor/bom v0.0.0-20170718123548-6386211fdfcf // indirect
-	github.com/stretchr/testify v1.6.1
-	github.com/unknwon/cae v1.0.2
+	github.com/stretchr/testify v1.5.1
+	github.com/t-tiger/gorm-bulk-insert v1.3.0
+	github.com/unknwon/cae v1.0.0
 	github.com/unknwon/com v1.0.1
 	github.com/unknwon/i18n v0.0.0-20190805065654-5c6446a380b6
 	github.com/unknwon/paginater v0.0.0-20170405233947-45e5d631308e
