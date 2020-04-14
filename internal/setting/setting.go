@@ -131,6 +131,7 @@ var (
 		EnableRawFileRenderMode  bool
 		RawCaptchaMinFileSize    int64
 		CaptchaMinFileSize       int64
+		AutoInit                 bool
 
 		// Repository editor settings
 		Editor struct {
