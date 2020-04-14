@@ -34,6 +34,7 @@ import (
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db/errors"
 	"github.com/G-Node/gogs/internal/errutil"
+	"github.com/G-Node/gogs/internal/strutil"
 	"github.com/G-Node/gogs/internal/tool"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -521,7 +522,7 @@ func IsBlockedDomain(email string) bool {
 
 // GetUserSalt returns a ramdom user salt token.
 func GetUserSalt() (string, error) {
-	return tool.RandomString(10)
+	return strutil.RandomChars(10)
 }
 
 // NewGhostUser creates and returns a fake user for someone who has deleted his/her account.

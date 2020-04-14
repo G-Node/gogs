@@ -27,8 +27,8 @@ import (
 	"github.com/G-Node/gogs/internal/markup"
 	"github.com/G-Node/gogs/internal/osutil"
 	"github.com/G-Node/gogs/internal/ssh"
+	"github.com/G-Node/gogs/internal/strutil"
 	"github.com/G-Node/gogs/internal/template/highlight"
-	"github.com/G-Node/gogs/internal/tool"
 )
 
 const (
@@ -365,7 +365,7 @@ func InstallPost(c *context.Context, f form.Install) {
 	cfg.Section("log").Key("ROOT_PATH").SetValue(f.LogRootPath)
 
 	cfg.Section("security").Key("INSTALL_LOCK").SetValue("true")
-	secretKey, err := tool.RandomString(15)
+	secretKey, err := strutil.RandomChars(15)
 	if err != nil {
 		c.RenderWithErr(c.Tr("install.secret_key_failed", err), INSTALL, &f)
 		return
