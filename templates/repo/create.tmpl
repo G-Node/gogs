@@ -56,12 +56,12 @@
 						<span class="help">{{.i18n.Tr "repo.repo_description_helper" | Safe}}</span>
 						<span class="help">{{.i18n.Tr "repo.repo_description_length"}}: <span id="descLength"></span></span>
 					</div>
-				</div>
 
-				<h3 class="ui attached header">
-					Initial Files
-				</h3>
-				<div class="ui attached segment">
+					<div class="ui divider"></div>
+
+					<div class="inline field">
+						<label><h3>Initial files</h3></label>
+					</div>
 					<div class="inline field" data-tooltip={{.i18n.Tr "repo.repo_gitignore_tooltip"}}>
 						<label>.gitignore</label>
 						<a target="_blank" href="https://git-scm.com/docs/gitignore"><span class="octicon octicon-question"></span></a>
@@ -108,9 +108,9 @@
 							<label>{{.i18n.Tr "repo.auto_init"}}</label>
 						</div>
 					</div>
-				</div>
 
-				<div class="ui attached segment">
+					<div class="ui divider"></div>
+
 					<div class="inline field">
 						<label></label>
 						<button class="ui green button">
