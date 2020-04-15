@@ -56,10 +56,13 @@
 						<span class="help">{{.i18n.Tr "repo.repo_description_helper" | Safe}}</span>
 						<span class="help">{{.i18n.Tr "repo.repo_description_length"}}: <span id="descLength"></span></span>
 					</div>
+				</div>
 
-					<div class="ui divider"></div>
-
-					<div class="inline field" data-tooltip="In the case of data repositories you probably don't need this">
+				<h3 class="ui attached header">
+					Initial Files
+				</h3>
+				<div class="ui attached segment">
+					<div class="inline field" data-tooltip={{.i18n.Tr "repo.repo_gitignore_tooltip"}}>
 						<label>.gitignore</label>
 						<a target="_blank" href="https://git-scm.com/docs/gitignore"><span class="octicon octicon-question"></span></a>
 						<div class="ui multiple search normal selection dropdown">
@@ -72,7 +75,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="inline field" data-tooltip="You can choose a license now, or add one to the repository later">
+					<div class="inline field" data-tooltip={{.i18n.Tr "repo.license_tooltip"}}>
 						<label>{{.i18n.Tr "repo.license"}}</label>
 						<a target="_blank" href="/G-Node/Info/wiki/Licensing"><span class="octicon octicon-question"></span></a>
 						<div class="ui search selection dropdown">
@@ -87,7 +90,7 @@
 						</div>
 					</div>
 
-					<div class="inline field">
+					<div class="inline field" data-tooltip={{.i18n.Tr "repo.readme_tooltip"}}>
 						<label>{{.i18n.Tr "repo.readme"}}</label>
 						<div class="ui selection dropdown">
 							<input type="hidden" name="readme" value="{{.readme}}">
@@ -105,7 +108,9 @@
 							<label>{{.i18n.Tr "repo.auto_init"}}</label>
 						</div>
 					</div>
+				</div>
 
+				<div class="ui attached segment">
 					<div class="inline field">
 						<label></label>
 						<button class="ui green button">
