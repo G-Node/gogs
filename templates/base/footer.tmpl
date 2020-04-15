@@ -14,6 +14,15 @@
 				<a href="/G-Node/Info/wiki/Terms+of+Use">Terms of Use</a>
 				<a href="/G-Node/Info/wiki/Datenschutz">Datenschutz</a>
 				{{if .PageIsAdmin}}<span>{{.i18n.Tr "version"}}: {{AppVer}}</span>{{end}}
+				<div class="ui language bottom floating slide up dropdown link item" data-tooltip="Non-English translations may be incomplete">
+					<i class="world icon"></i>
+					<div class="text">{{.LangName}}</div>
+					<div class="menu">
+						{{range .AllLangs}}
+							<a class="item {{if eq $.Lang .Lang}}active selected{{end}}" href="{{if eq $.Lang .Lang}}#{{else}}{{$.Link}}?lang={{.Lang}}{{end}}">{{.Name}}</a>
+						{{end}}
+					</div>
+				</div>
 			</div>
 			<div class="ui center links item brand footertext">
 				<span>Powered by:      <a href="https://github.com/gogits/gogs"><img class="ui mini footericon" src="{{AppSubURL}}/img/gogs.svg"/></a>         </span>
