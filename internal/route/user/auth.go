@@ -346,12 +346,10 @@ func SignUpPost(c *context.Context, cpt *captcha.Captcha, f form.Register) {
 		case db.IsErrEmailAlreadyUsed(err):
 			c.FormErr("Email")
 			c.RenderWithErr(c.Tr("form.email_been_used"), SIGNUP, &f)
-		case db.IsErrNameReserved(err):
+		case db.IsErrNameNotAllowed(err):
 			c.FormErr("UserName")
-			c.RenderWithErr(c.Tr("user.form.name_reserved", err.(db.ErrNameReserved).Name), SIGNUP, &f)
-		case db.IsErrNamePatternNotAllowed(err):
-			c.FormErr("UserName")
-			c.RenderWithErr(c.Tr("user.form.name_pattern_not_allowed", err.(db.ErrNamePatternNotAllowed).Pattern), SIGNUP, &f)
+			c.RenderWithErr(c.Tr("user.form.name_not_allowed", err.(db.ErrNameNotAllowed).Value()), SIGNUP, &f)
+		// GIN specific code: case db.IsErrBlockedDomain
 		case db.IsErrBlockedDomain(err):
 			c.RenderWithErr(c.Tr("form.email_not_allowed"), SIGNUP, &f)
 		default:
