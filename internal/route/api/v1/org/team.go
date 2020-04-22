@@ -5,6 +5,9 @@
 package org
 
 import (
+	"net/http"
+
+	"github.com/G-Node/gogs/internal/db"
 	convert2 "github.com/G-Node/gogs/internal/route/api/v1/convert"
 	api "github.com/gogs/go-gogs-client"
 
@@ -23,4 +26,27 @@ func ListTeams(c *context.APIContext) {
 		apiTeams[i] = convert2.ToTeam(org.Teams[i])
 	}
 	c.JSON(200, apiTeams)
+}
+
+func CreateTeam(c *context.APIContext, opt api.CreateTeamOption) {
+	if !c.Org.Organization.IsOwnedBy(c.User.ID) {
+		c.Error(http.StatusForbidden, "", "given user is not owner of organization")
+		return
+	}
+	team := &db.Team{
+		OrgID:       c.Org.Organization.ID,
+		Name:        opt.Name,
+		Description: opt.Description,
+		Authorize:   db.ParseAccessMode(opt.Permission),
+	}
+	if err := db.NewTeam(team); err != nil {
+		if db.IsErrTeamAlreadyExist(err) {
+			c.Error(http.StatusUnprocessableEntity, "", err)
+		} else {
+			c.ServerError("NewTeam", err)
+		}
+		return
+	}
+
+	c.JSON(http.StatusCreated, convert2.ToTeam(team))
 }

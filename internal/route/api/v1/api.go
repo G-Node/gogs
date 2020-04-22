@@ -5,14 +5,15 @@
 package v1
 
 import (
+	"net/http"
+	"strings"
+
 	admin2 "github.com/G-Node/gogs/internal/route/api/v1/admin"
 	misc2 "github.com/G-Node/gogs/internal/route/api/v1/misc"
 	org2 "github.com/G-Node/gogs/internal/route/api/v1/org"
 	repo2 "github.com/G-Node/gogs/internal/route/api/v1/repo"
 	search2 "github.com/G-Node/gogs/internal/route/api/v1/search"
 	user2 "github.com/G-Node/gogs/internal/route/api/v1/user"
-	"net/http"
-	"strings"
 
 	"github.com/go-macaron/binding"
 	"gopkg.in/macaron.v1"
@@ -368,7 +369,11 @@ func RegisterRoutes(m *macaron.Macaron) {
 			m.Combo("").
 				Get(org2.Get).
 				Patch(bind(api.EditOrgOption{}), org2.Edit)
-			m.Get("/teams", org2.ListTeams)
+			m.Group("/teams", func() {
+				m.Combo("").
+					Get(org2.ListTeams).
+					Post(bind(api.CreateTeamOption{}), org2.CreateTeam)
+			})
 		}, orgAssignment(true))
 
 		m.Group("/admin", func() {
