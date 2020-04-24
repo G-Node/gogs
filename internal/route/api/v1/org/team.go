@@ -76,12 +76,19 @@ func EditTeam(c *context.APIContext, opt api.CreateTeamOption) {
 		c.NotFoundOrServerError("EditTeamByName", errors.IsTeamNotExist, err)
 		return
 	}
+	newperm := oldteam.Authorize
+	newname := oldteam.Name
+	if !oldteam.IsOwnerTeam() {
+		// Not allowed to change Owner team perms or name
+		newperm = db.ParseAccessMode(opt.Permission)
+		newname = opt.Name
+	}
 	team := &db.Team{
 		ID:          oldteam.ID,
 		OrgID:       org.ID,
-		Name:        opt.Name,
+		Name:        newname,
 		Description: opt.Description,
-		Authorize:   db.ParseAccessMode(opt.Permission),
+		Authorize:   newperm,
 	}
 	if err := db.UpdateTeam(team, oldteam.Authorize != team.Authorize); err != nil {
 		c.NotFoundOrServerError("EditTeamByName", errors.IsTeamNotExist, err)
@@ -96,6 +103,10 @@ func DeleteTeam(c *context.APIContext) {
 	team, err := org.GetTeam(teamname)
 	if err != nil {
 		c.NotFoundOrServerError("DeleteTeamByName", errors.IsTeamNotExist, err)
+		return
+	}
+	if team.IsOwnerTeam() {
+		c.Error(http.StatusMethodNotAllowed, "", "cannot delete Owners team")
 		return
 	}
 	if err := db.DeleteTeam(team); err != nil {
