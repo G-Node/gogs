@@ -373,6 +373,10 @@ func RegisterRoutes(m *macaron.Macaron) {
 				m.Combo("").
 					Get(org2.ListTeams).
 					Post(bind(api.CreateTeamOption{}), org2.CreateTeam)
+				m.Combo("/:team").
+					Get(org2.GetTeam).
+					Patch(bind(api.CreateTeamOption{}), org2.EditTeam).
+					Delete(org2.DeleteTeam)
 			})
 		}, orgAssignment(true))
 
