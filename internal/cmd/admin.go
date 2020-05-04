@@ -148,7 +148,7 @@ func runCreateUser(c *cli.Context) error {
 	}
 	conf.InitLogging(true)
 
-	if err = db.SetEngine(); err != nil {
+	if _, err = db.SetEngine(); err != nil {
 		return errors.Wrap(err, "set engine")
 	}
 
@@ -174,7 +174,7 @@ func adminDashboardOperation(operation func() error, successMessage string) func
 		}
 		conf.InitLogging(true)
 
-		if err = db.SetEngine(); err != nil {
+		if _, err = db.SetEngine(); err != nil {
 			return errors.Wrap(err, "set engine")
 		}
 
