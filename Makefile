@@ -33,7 +33,7 @@ govet:
 	$(GOVET) models pkg routes
 
 build: $(GENERATED)
-	go build $(BUILD_FLAGS) -ldflags '$(LDFLAGS)' -tags '$(TAGS)' -trimpath -o gogs
+	go build -mod vendor $(BUILD_FLAGS) -ldflags '$(LDFLAGS)' -tags '$(TAGS)' -trimpath -o gogs
 
 build-dev: $(GENERATED) govet
 	go build $(BUILD_FLAGS) -tags '$(TAGS)' -trimpath -o gogs

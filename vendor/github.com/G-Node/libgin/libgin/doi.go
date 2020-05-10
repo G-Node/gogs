@@ -24,6 +24,7 @@ var UUIDMap = map[string]string{
 	"steffi/Kleineidam_et_al_2017":               "f53069de4c4921a3cfa8f17d55ef98bb",
 	"Churan/Morris_et_al_Frontiers_2016":         "97bc1456d3f4bca2d945357b3ec92029",
 	"fabee/efish_locking":                        "6953bbf0087ba444b2d549b759de4a06",
+	"CTN/B6_dapi_template":                       "16wrxa",
 }
 
 // RepoPathToUUID computes a UUID from a repository path.
