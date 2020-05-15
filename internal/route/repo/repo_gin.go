@@ -97,8 +97,9 @@ func readDataciteFile(entry *git.TreeEntry, c *context.Context) {
 	doi := calcRepoDOI(c, setting.DOI.Base)
 	//ddata, err := ginDoi.GDoiMData(doi, "https://api.datacite.org/works/") //todo configure URL?
 
-	c.Data["DOIReg"] = libgin.IsRegisteredDOI(doi)
-	c.Data["DOI"] = doi
+	if libgin.IsRegisteredDOI(doi) {
+		c.Data["DOI"] = doi
+	}
 }
 
 // calcRepoDOI calculates the theoretical DOI for a repository. If the repository
