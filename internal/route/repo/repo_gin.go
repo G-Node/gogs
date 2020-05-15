@@ -14,6 +14,7 @@ import (
 
 	"github.com/G-Node/git-module"
 	"github.com/G-Node/gogs/internal/context"
+	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/tool"
 	"github.com/G-Node/libgin/libgin"
@@ -94,24 +95,73 @@ func readDataciteFile(entry *git.TreeEntry, c *context.Context) {
 	}
 	c.Data["DOIInfo"] = &doiInfo
 
-	doi := calcRepoDOI(c, setting.DOI.Base)
-	//ddata, err := ginDoi.GDoiMData(doi, "https://api.datacite.org/works/") //todo configure URL?
-
-	if libgin.IsRegisteredDOI(doi) {
+	if doi := getRepoDOI(c); doi != "" && libgin.IsRegisteredDOI(doi) {
 		c.Data["DOI"] = doi
 	}
 }
 
-// calcRepoDOI calculates the theoretical DOI for a repository. If the repository
-// belongs to the DOI user (and is a fork) it uses the name for the base
-// repository.
-func calcRepoDOI(c *context.Context, doiBase string) string {
-	repoN := c.Repo.Repository.FullName()
-	// check whether this repo belongs to DOI and is a fork
-	if c.Repo.Repository.IsFork && c.Repo.Owner.Name == "doi" {
-		repoN = c.Repo.Repository.BaseRepo.FullName()
+// getRepoDOI returns the DOI for the repository based on the following rules:
+// - if the repository belongs to the DOI user and has a tag that matches the
+// DOI prefix, returns the tag.
+// - if the repo is forked by the DOI user, check the DOI fork for the tag as above.
+// - if the repo is forked by the DOI user and the fork doesn't have a tag,
+// returns the (old-style) calculated DOI, based on the hash of the repository
+// path.
+// - An empty string is returned if it is not not forked by the DOI user.
+func getRepoDOI(c *context.Context) string {
+	repo := c.Repo.Repository
+	var doiFork *db.Repository
+	if repo.Owner.Name == "doi" {
+		doiFork = repo
+	} else {
+		// TODO: Check error
+		forks, _ := c.Repo.Repository.GetForks()
+		for _, fork := range forks {
+			if fork.MustOwner().Name == "doi" {
+				doiFork = fork
+				break
+			}
+		}
 	}
-	uuid := libgin.RepoPathToUUID(repoN)
+
+	if doiFork == nil {
+		// not owned or forked by DOI, so not registered
+		return ""
+	}
+
+	// check the DOI fork for a tag that matches our DOI prefix
+	// if multiple exit, get the latest one
+	doiBase := setting.DOI.Base
+
+	// TODO: Check error
+	doiForkGit, _ := git.OpenRepository(doiFork.RepoPath())
+	tags, err := doiForkGit.GetTags()
+	if err != nil {
+		// TODO: skip tag check
+	}
+
+	var latestTime int64
+	latestTag := ""
+	for _, tagName := range tags {
+		if strings.Contains(tagName, doiBase) {
+			tag, _ := doiForkGit.GetTag(tagName) // TODO: Check error
+			commit, _ := tag.Commit()            // TODO: Check error
+			commitTime := commit.Committer.When.Unix()
+			if commitTime > latestTime {
+				latestTag = tagName
+				latestTime = commitTime
+			}
+			return latestTag
+		}
+	}
+
+	// Has DOI fork but isn't tagged: return old style has-based DOI
+	repoPath := repo.FullName()
+	// get base repo name if it's a DOI fork
+	if c.Repo.Repository.IsFork && c.Repo.Owner.Name == "doi" {
+		repoPath = c.Repo.Repository.BaseRepo.FullName()
+	}
+	uuid := libgin.RepoPathToUUID(repoPath)
 	return doiBase + uuid[:6]
 }
 
