@@ -108,19 +108,24 @@ func readDataciteFile(entry *git.TreeEntry, c *context.Context) {
 // returns the (old-style) calculated DOI, based on the hash of the repository
 // path.
 // - An empty string is returned if it is not not forked by the DOI user.
+// If an error occurs at any point, returns an empty string (the error is logged).
+// Tag retrieval is allowed to fail and falls back on the hashed DOI method.
 func getRepoDOI(c *context.Context) string {
 	repo := c.Repo.Repository
 	var doiFork *db.Repository
 	if repo.Owner.Name == "doi" {
 		doiFork = repo
 	} else {
-		// TODO: Check error
-		forks, _ := c.Repo.Repository.GetForks()
-		for _, fork := range forks {
-			if fork.MustOwner().Name == "doi" {
-				doiFork = fork
-				break
+		if forks, err := repo.GetForks(); err == nil {
+			for _, fork := range forks {
+				if fork.MustOwner().Name == "doi" {
+					doiFork = fork
+					break
+				}
 			}
+		} else {
+			log.Error(2, "failed to get forks for repository %q (%d): %v", repo.FullName(), repo.ID, err)
+			return ""
 		}
 	}
 
@@ -133,26 +138,40 @@ func getRepoDOI(c *context.Context) string {
 	// if multiple exit, get the latest one
 	doiBase := setting.DOI.Base
 
-	// TODO: Check error
-	doiForkGit, _ := git.OpenRepository(doiFork.RepoPath())
-	tags, err := doiForkGit.GetTags()
+	doiForkGit, err := git.OpenRepository(doiFork.RepoPath())
 	if err != nil {
-		// TODO: skip tag check
+		log.Error(2, "failed to open git repository at %q (%d): %v", doiFork.RepoPath(), doiFork.ID, err)
+		return ""
 	}
-
-	var latestTime int64
-	latestTag := ""
-	for _, tagName := range tags {
-		if strings.Contains(tagName, doiBase) {
-			tag, _ := doiForkGit.GetTag(tagName) // TODO: Check error
-			commit, _ := tag.Commit()            // TODO: Check error
-			commitTime := commit.Committer.When.Unix()
-			if commitTime > latestTime {
-				latestTag = tagName
-				latestTime = commitTime
+	if tags, err := doiForkGit.GetTags(); err == nil {
+		var latestTime int64
+		latestTag := ""
+		for _, tagName := range tags {
+			if strings.Contains(tagName, doiBase) {
+				tag, err := doiForkGit.GetTag(tagName)
+				if err != nil {
+					// log the error and continue to the next tag
+					log.Error(2, "failed to get information for tag %q for repository at %q: %v", tagName, doiForkGit.Path, err)
+					continue
+				}
+				commit, err := tag.Commit()
+				if err != nil {
+					// log the error and continue to the next tag
+					log.Error(2, "failed to get commit for tag %q for repository at %q: %v", tagName, doiForkGit.Path, err)
+					continue
+				}
+				commitTime := commit.Committer.When.Unix()
+				if commitTime > latestTime {
+					latestTag = tagName
+					latestTime = commitTime
+				}
+				return latestTag
 			}
-			return latestTag
 		}
+	} else {
+		// this shouldn't happen even if there are no tags
+		// log the error, but fall back to the old method anyway
+		log.Error(2, "failed to get tags for repository at %q: %v", doiForkGit.Path, err)
 	}
 
 	// Has DOI fork but isn't tagged: return old style has-based DOI
