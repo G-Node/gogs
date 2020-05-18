@@ -4,7 +4,7 @@
 			<div class="ui header">
 				{{if not $.IsGuest}}
 					<div class="ui right">
-						{{if $.IsRepositoryAdmin}}
+						{{if and $.IsRepositoryAdmin .PageIsRepoHome}}
 							{{if $.IsDOIReady}} {{/* Ready to (re)register: Show button */}}
 							<div class="ui labeled button" tabindex="0">
 								<a class="ui basic button" href="/{{.Repository.Owner.Name}}/{{.Repository.Name}}/doi"><i class="octicon octicon-squirrel"></i> Request DOI</a>
