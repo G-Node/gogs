@@ -31,6 +31,17 @@
 									</a>
 								</div>
 							</form>
+							<form class="display inline" action="{{$.RepoLink}}/action/{{if $.IsStaringRepo}}un{{end}}star?redirect_to={{$.Link}}" method="POST">
+								{{$.CSRFTokenHTML}}
+								<div class="ui labeled button" tabindex="0">
+									<button class="ui basic button">
+										<i class="star{{if not $.IsStaringRepo}} outline{{end}} icon"></i>{{if $.IsStaringRepo}}{{$.i18n.Tr "repo.unstar"}}{{else}}{{$.i18n.Tr "repo.star"}}{{end}}
+									</button>
+									<a class="ui basic label" href="{{.Link}}/stars">
+										{{.NumStars}}
+									</a>
+								</div>
+							</form>
 							{{if .CanBeForked}}
 							<div class="ui labeled button" tabindex="0"
 									 data-tooltip="Please note: annexed file content will not be forked" data-position="bottom center">
