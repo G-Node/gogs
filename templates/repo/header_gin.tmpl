@@ -1,0 +1,37 @@
+<div class="ui container"><!-- start container -->
+	<div class="ui vertically padded grid head"><!-- start grid -->
+		<div class="column"><!-- start column -->
+			<div class="ui header">
+				{{if not $.IsGuest}}
+					<div class="ui right">
+						{{if and $.IsRepositoryAdmin .PageIsRepoHome}}
+							{{if $.IsDOIReady}} {{/* Ready to (re)register: Show button */}}
+							<div class="ui labeled button" tabindex="0">
+								<a class="ui basic button" href="/{{.Repository.Owner.Name}}/{{.Repository.Name}}/doi"><i class="octicon octicon-squirrel"></i> Request DOI</a>
+							</div>
+							{{else if not $.DOI}} {{/*Link to registration instructions*/}}
+								<div class="ui labeled button	" tabindex="0">
+									<a class="ui basic button" data-tooltip="Your repository does not fulfill all requirements for a DOI yet. Click to get instructions." data-position="bottom center" href="/G-Node/Info/wiki/DOI">
+										<i class="octicon octicon-squirrel"></i> How to publish
+									</a>
+									<a class="ui basic label" href="{{$.RepoLink}}/_add/{{EscapePound $.BranchName}}/datacite.yml" data-tooltip="Add datacite file" data-position="bottom center">
+										<i class="octicon octicon-file"></i>
+									</a>
+								</div>
+							{{end}} {{/* End registration button */}}
+						{{end}} {{/* Admin section */}}
+							
+						{{if $.DOI}} {{/* Registered repo: Show DOI badge */}}
+							<div class="nobg ui image label">
+								<a href="https://doi.org/{{$.DOI}}">
+									<div class="gin doi">DOI</div>
+								</a>
+								<div class="gin doinr">{{$.DOI}}</div>
+							</div>
+						{{end}} {{/* End DOI badge */}}
+					</div>
+				{{end}}
+			</div>
+		</div>
+	</div>
+</div>

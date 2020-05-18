@@ -31,9 +31,19 @@
 									</a>
 								</div>
 							</form>
+							<form class="display inline" action="{{$.RepoLink}}/action/{{if $.IsStaringRepo}}un{{end}}star?redirect_to={{$.Link}}" method="POST">
+								{{$.CSRFTokenHTML}}
+								<div class="ui labeled button" tabindex="0">
+									<button class="ui basic button">
+										<i class="star{{if not $.IsStaringRepo}} outline{{end}} icon"></i>{{if $.IsStaringRepo}}{{$.i18n.Tr "repo.unstar"}}{{else}}{{$.i18n.Tr "repo.star"}}{{end}}
+									</button>
+									<a class="ui basic label" href="{{.Link}}/stars">
+										{{.NumStars}}
+									</a>
+								</div>
+							</form>
 							{{if .CanBeForked}}
-							<div class="ui labeled button" tabindex="0"
-									 data-tooltip="Please note: annexed file content will not be forked" data-position="bottom center">
+							<div class="ui labeled button" tabindex="0" data-tooltip="Please note: annexed file content will not be forked" data-position="bottom center">
 									<a class="ui basic button {{if eq .OwnerID $.LoggedUserID}}poping up{{end}}" href="{{AppSubURL}}/repo/fork/{{.ID}}">
 										<i class="octicon octicon-repo-forked"></i>{{$.i18n.Tr "repo.fork"}}
 									</a>
@@ -42,39 +52,6 @@
 									</a>
 								</div>
 							{{end}}
-							{{if not $.DOI}}
-								{{if and (and $.HasDatacite $.IsRepositoryAdmin) (not .IsPrivate)}}
-								<div class="ui labeled button" tabindex="0">
-									<a class="ui basic button"
-										 href="/{{.Owner.Name}}/{{.Name}}/doi">
-										<i class="octicon octicon-squirrel"></i> DOIfy
-									</a>
-								</div>
-								{{else}}
-								{{if and $.IsRepositoryAdmin $.CommitsCount}}
-								<div class="ui labeled button	" tabindex="0">
-									<a class="ui basic button"
-										 data-tooltip="Your repository does not fulfill all requirements for a doi yet. Click to get instructions."
-										 data-position="bottom center"
-										 href="/G-Node/Info/wiki/DOI">
-										<i class="octicon octicon-squirrel"></i> DOIfy
-									</a>
-									<a class="ui basic label" href="{{$.RepoLink}}/_add/{{EscapePound $.BranchName}}/datacite.yml"
-										data-tooltip="Add Doifile"
-										data-position="bottom center">
-										<i class="octicon octicon-file"></i>
-									</a>
-								</div>
-								{{end}}
-								{{end}}
-							{{else}}
-										<div class="nobg ui image label">
-											<a href="https://doi.org/{{$.DOI}}">
-												<div class="gin doi">DOI</div>
-											</a>
-												<div class="gin doinr">{{$.DOI}}</div>
-										</div>
-							{{end}}
 						</div>
 					{{end}}
 				</div>
@@ -82,6 +59,7 @@
 		</div><!-- end grid -->
 	</div><!-- end container -->
 {{end}}
+{{template "repo/header_gin" .}}
 {{if not .IsDiffCompare}}
 	<div class="ui tabs container">
 		<div class="ui tabular menu navbar">
