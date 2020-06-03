@@ -6,17 +6,16 @@ package context
 
 import (
 	"fmt"
+	"gopkg.in/editorconfig/editorconfig-core-go.v1"
+	"gopkg.in/macaron.v1"
 	"io/ioutil"
 	"strings"
 
-	"gopkg.in/editorconfig/editorconfig-core-go.v1"
-	"gopkg.in/macaron.v1"
-
 	"github.com/G-Node/git-module"
-
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
 	"github.com/G-Node/gogs/internal/setting"
+	"github.com/G-Node/libgin/libgin"
 )
 
 type PullRequest struct {
@@ -270,6 +269,11 @@ func RepoAssignment(pages ...bool) macaron.Handler {
 		c.Data["CommitID"] = c.Repo.CommitID
 
 		c.Data["IsGuest"] = !c.Repo.HasAccess()
+
+		if doi := getRepoDOI(c); doi != "" && libgin.IsRegisteredDOI(doi) {
+			c.Data["DOI"] = doi
+		}
+
 	}
 }
 
