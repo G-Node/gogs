@@ -20,6 +20,7 @@
 
 					{{if not $.IsGuest}}
 						<div class="ui right">
+							{{template "repo/header_gin" $}}
 							<form class="display inline" action="{{$.RepoLink}}/action/{{if $.IsWatchingRepo}}un{{end}}watch?redirect_to={{$.Link}}" method="POST">
 								{{$.CSRFTokenHTML}}
 								<div class="ui labeled button" tabindex="0">
@@ -59,7 +60,6 @@
 		</div><!-- end grid -->
 	</div><!-- end container -->
 {{end}}
-{{template "repo/header_gin" .}}
 {{if not .IsDiffCompare}}
 	<div class="ui tabs container">
 		<div class="ui tabular menu navbar">
