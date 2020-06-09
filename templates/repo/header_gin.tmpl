@@ -1,4 +1,5 @@
-{{if or $.DOI $.IsRepositoryAdmin}} {{/* Show DOI buttons or badge */}}
+{{if not $.IsBareRepo}}
+	{{if or $.DOI $.IsRepositoryAdmin}} {{/* Show DOI buttons or badge */}}
 					{{if $.IsRepositoryAdmin}}
 						{{if $.IsDOIReady}} {{/* Ready to (re)register: Show button */}}
 							<a class="ui basic button" href="/{{.Repository.Owner.Name}}/{{.Repository.Name}}/doi"><i class="octicon octicon-squirrel"></i> Request {{if $.DOI}}New{{end}} DOI</a>
@@ -30,4 +31,5 @@
 			<div class="column"><!-- start column -->
 				<div class="ui header">
 					<div class="ui right">
+	{{end}}
 {{end}}
