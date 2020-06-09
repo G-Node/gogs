@@ -270,6 +270,8 @@ func RepoAssignment(pages ...bool) macaron.Handler {
 
 		c.Data["IsGuest"] = !c.Repo.HasAccess()
 
+		c.Data["HasDataCite"] = hasDataCite(c)
+
 		if doi := getRepoDOI(c); doi != "" && libgin.IsRegisteredDOI(doi) {
 			c.Data["DOI"] = doi
 		}

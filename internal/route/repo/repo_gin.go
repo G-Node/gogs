@@ -73,10 +73,10 @@ func serveAnnexedKey(ctx *context.Context, name string, contentPath string) erro
 	return err
 }
 
-func readDataciteFile(entry *git.TreeEntry, c *context.Context) {
+func readDataciteFile(entry *git.Blob, c *context.Context) {
 	log.Trace("Found datacite.yml file")
-	c.Data["HasDatacite"] = true
-	doiData, err := entry.Blob().Data()
+	c.Data["HasDataCite"] = true
+	doiData, err := entry.Data()
 	if err != nil {
 		log.Error(2, "datacite.yml blob could not be read: %v", err)
 		return
@@ -99,7 +99,7 @@ func readDataciteFile(entry *git.TreeEntry, c *context.Context) {
 // True if repository is not Private, is not registered, or is registered and
 // has changes.
 func isDOIReady(c *context.Context) bool {
-	if hasDC, ok := c.Data["HasDatacite"]; !ok || !hasDC.(bool) {
+	if hasDC, ok := c.Data["HasDataCite"]; !ok || !hasDC.(bool) {
 		return false
 	}
 	dbrepo := c.Repo.Repository

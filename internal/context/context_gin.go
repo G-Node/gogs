@@ -93,3 +93,16 @@ func getRepoDOI(c *Context) string {
 	uuid := libgin.RepoPathToUUID(repoPath)
 	return doiBase + uuid[:6]
 }
+
+// hasDataCite returns 'true' if a repository includes a file called
+// 'datacite.yml' in its root.  No checks are made to determine if the file is
+// valid.  If any error occurs, for example due to an uninitialised repository
+// or missing repository root, it returns 'false' without error.
+func hasDataCite(c *Context) bool {
+	commit, err := c.Repo.GitRepo.GetBranchCommit(c.Repo.Repository.DefaultBranch)
+	if err != nil {
+		return false
+	}
+	_, err = commit.GetBlobByPath("./datacite.yml")
+	return err == nil
+}
