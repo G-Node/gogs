@@ -93,25 +93,47 @@ func readDataciteFile(entry *git.TreeEntry, c *context.Context) {
 		return
 	}
 	c.Data["DOIInfo"] = &doiInfo
-
-	doi := calcRepoDOI(c, setting.DOI.Base)
-	//ddata, err := ginDoi.GDoiMData(doi, "https://api.datacite.org/works/") //todo configure URL?
-
-	c.Data["DOIReg"] = libgin.IsRegisteredDOI(doi)
-	c.Data["DOI"] = doi
+	c.Data["IsDOIReady"] = isDOIReady(c)
 }
 
-// calcRepoDOI calculates the theoretical DOI for a repository. If the repository
-// belongs to the DOI user (and is a fork) it uses the name for the base
-// repository.
-func calcRepoDOI(c *context.Context, doiBase string) string {
-	repoN := c.Repo.Repository.FullName()
-	// check whether this repo belongs to DOI and is a fork
-	if c.Repo.Repository.IsFork && c.Repo.Owner.Name == "doi" {
-		repoN = c.Repo.Repository.BaseRepo.FullName()
+// True if repository is not Private, is not registered, or is registered and
+// has changes.
+func isDOIReady(c *context.Context) bool {
+	if hasDC, ok := c.Data["HasDatacite"]; !ok || !hasDC.(bool) {
+		return false
 	}
-	uuid := libgin.RepoPathToUUID(repoN)
-	return doiBase + uuid[:6]
+	dbrepo := c.Repo.Repository
+	gitrepo := c.Repo.GitRepo
+
+	headIsRegistered := func() bool {
+		currentDOI, ok := c.Data["DOI"]
+		if !ok {
+			return false
+		}
+
+		headBranch, err := gitrepo.GetHEADBranch()
+		if err != nil {
+			log.Error(2, "Failed to get HEAD branch for repo at %q: %v", gitrepo.Path, err)
+			return false
+		}
+
+		headCommit, err := gitrepo.GetBranchCommitID(headBranch.Name)
+		if err != nil {
+			log.Error(2, "Failed to get commit ID of branch %q for repo at %q: %v", headBranch.Name, gitrepo.Path, err)
+		}
+
+		// if current valid and registered DOI matches the HEAD commit, can't
+		// register again
+		doiCommit, err := gitrepo.GetTagCommitID(currentDOI.(string))
+		if err != nil {
+			log.Error(2, "Failed to get commit ID of tag %q for repo at %q: %v", currentDOI, gitrepo.Path, err)
+		}
+
+		log.Trace("%s ?= %s", headCommit, doiCommit)
+		return headCommit == doiCommit
+	}()
+
+	return !dbrepo.IsPrivate && !headIsRegistered
 }
 
 // resolveAnnexedContent takes a buffer with the contents of a git-annex

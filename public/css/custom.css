@@ -237,7 +237,7 @@ figure figcaption {
   color: white;
   border-top-left-radius: 0.28571429rem;
   border-bottom-left-radius: 0.28571429rem;
-  padding: 0.833em 1em;
+  padding: 0.5em 1.5em;
 }
 .gin.doinr {
   background-color: #2185D0;
@@ -245,7 +245,7 @@ figure figcaption {
   color: white;
   border-top-right-radius: 0.28571429rem;
   border-bottom-right-radius: 0.28571429rem;
-  padding: 0.833em 1em;
+  padding: 0.5em 1.5em;
 }
 .ui.image.label.nobg {
   background: none;
@@ -374,4 +374,9 @@ textarea#description {
 .footertext {
   font-size: 1rem;
   vertical-align: middle;
+}
+.ui.header .button {
+    height: 2em;
+    vertical-align: middle;
+    padding: 0.5em 1.5em;
 }

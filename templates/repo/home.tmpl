@@ -26,14 +26,9 @@
 			{{if .PullRequestCtx.Allowed}}
 				<div class="fitted item" data-tooltip="Please note: annexed file content will not be part of a pull request">
 					<a href="{{.BaseRepo.Link}}/compare/{{EscapePound .BaseRepo.DefaultBranch}}...{{EscapePound .PullRequestCtx.HeadInfo}}">
-						<button class="ui green small button"><i class="octicon octicon-git-compare"></i>Pull request</button>
+						<button class="ui green small button"><i class="octicon octicon-git-compare"></i></button>
 					</a>
 				</div>
-				{{else if or .IsRepositoryWriter .HasForked}}
-					<div class="fitted item"
-							data-tooltip="Pull requests have been disabled for this repository" data-position="top center">
-							<button class="ui disabled small button"><i class="octicon octicon-git-compare"></i></button>
-					</div>
 			{{end}}
 			{{template "repo/branch_dropdown" .}}
 			<div class="fitted item">
@@ -53,7 +48,6 @@
 				</div>
 			</div>
 			<div class="right fitted item">
-				<div class="ui action small input" id="clone-panel">
 				{{if .Repository.CanEnableEditor}}
 					<div id="file-buttons" class="ui tiny blue buttons">
 						{{if .CanAddFile}}
@@ -70,14 +64,10 @@
 				{{end}}
 
 				<!-- Only show clone panel in repository home page -->
-				{{ $n := len .TreeNames}}
-				{{ $l := Subtract $n 1}}
 				{{if eq $n 0}}
-
-						<button class="ui basic clone button" id="repo-clone-gin" data-link="{{.CloneLink.Gin}}">
-							GIN
-						</button>
-						{{if and (not $.DisableHTTP) $.ShowHTTP}}
+					<div class="ui action small input" id="clone-panel">
+						<button class="ui basic clone button" id="repo-clone-gin" data-link="{{.CloneLink.Gin}}">GIN</button>
+						{{if not $.DisableHTTP}}
 							<button class="ui basic clone button" id="repo-clone-https" data-link="{{.CloneLink.HTTPS}}">
 								{{if UseHTTPS}}HTTPS{{else}}HTTP{{end}}
 							</button>
@@ -87,37 +77,33 @@
 								SSH
 							</button>
 						{{end}}
-						<input id="repo-clone-url" value="{{if not $.DisableHTTP}}{{$.CloneLink.HTTPS}}{{else}}{{$.CloneLink.SSH}}{{end}}" readonly >
+						<input id="repo-clone-url" value="{{if not $.DisableHTTP}}{{$.CloneLink.HTTPS}}{{else}}{{$.CloneLink.SSH}}{{end}}" readonly>
 						<button class="ui basic icon button poping up clipboard" id="clipboard-btn" data-original="{{.i18n.Tr "repo.copy_link"}}" data-success="{{.i18n.Tr "repo.copy_link_success"}}" data-error="{{.i18n.Tr "repo.copy_link_error"}}" data-content="{{.i18n.Tr "repo.copy_link"}}" data-variation="inverted tiny" data-clipboard-target="#repo-clone-url">
 							<i class="octicon octicon-clippy"></i>
 						</button>
 						<div id="download-repo-button" class="ui basic icon button poping up" data-original="Archives">
-						<i class="download icon"></i>
-						</div>
-
-						<!-- Download modal -->
-						<div id="download_modal" class="ui modal warning">
-							<i class="close icon"></i>
-							<div class="content">
-								<div class="ui header">So you want to download data without special tooling (e.g. git, git-annex or GIN)?</div>
-								<p>Here is what you can do:</p>
-								<p>Download the small files and the file structure as an archive (.zip or .tar.gz). Annexed files (by default, files larger than 10 MB) will be
-								included as pointer files (stubs) but the data will not be included. To get the content of the big files you need to download them individually
-								from this web page.</p>
-								<p>Download the small files as a GIN archive (.gin.zip). This includes all the git information,
-								including the history of the repository and the possibility to download the content of large files using git annex or the GIN client.</p>
-							</div>
-							<div class="actions">
-								<a class="ui positive button" href="{{$.RepoLink}}/archive/{{EscapePound $.BranchName}}.zip"><i class="octicon octicon-file-zip"></i> Download zip</a>
-								<a class="ui positive button" href="{{$.RepoLink}}/archive/{{EscapePound $.BranchName}}.tar.gz"><i class="octicon octicon-file-zip"></i> Download tar.gz</a>
-								<a class="ui positive button" href="{{$.RepoLink}}/archive/{{EscapePound $.BranchName}}.gin.zip"><i
-									class="octicon octicon-file-zip"></i> Download GIN archive</a>
+							<i class="download icon"></i>
+							<!-- Download modal -->
+							<div id="download_modal" class="ui modal warning">
+								<i class="close icon"></i>
+								<div class="content">
+									<div class="ui header">Download repository archive</div>
+									<p>To download data without special tooling (e.g. git, git-annex or GIN) you can:</p>
+									<p>Download the small files and the file structure as an archive (.zip or .tar.gz). Annexed files (by default, files larger than 10 MB) will be
+									included as pointer files (stubs) but the data will not be included. To get the content of the big files you need to download them individually
+									from this web page.</p>
+									<p>Download the small files as a GIN archive (.gin.zip). This includes all the git information,
+									including the history of the repository and the possibility to download the content of large files using git annex or the GIN client.</p>
+								</div>
+								<div class="actions">
+									<a class="ui positive button" href="{{$.RepoLink}}/archive/{{EscapePound $.BranchName}}.zip"><i class="octicon octicon-file-zip"></i> Download zip</a>
+									<a class="ui positive button" href="{{$.RepoLink}}/archive/{{EscapePound $.BranchName}}.tar.gz"><i class="octicon octicon-file-zip"></i> Download tar.gz</a>
+									<a class="ui positive button" href="{{$.RepoLink}}/archive/{{EscapePound $.BranchName}}.gin.zip"><i class="octicon octicon-file-zip"></i> Download GIN archive</a>
+								</div>
 							</div>
 						</div>
-
-
+					</div>
 				{{end}}
-				</div>
 			</div>
 		</div>
 		{{if .IsViewFile}}
