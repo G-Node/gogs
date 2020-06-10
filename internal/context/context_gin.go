@@ -75,9 +75,9 @@ func getRepoDOI(c *Context) string {
 					latestTag = tagName
 					latestTime = commitTime
 				}
-				return latestTag
 			}
 		}
+		return latestTag
 	} else {
 		// this shouldn't happen even if there are no tags
 		// log the error, but fall back to the old method anyway
