@@ -101,8 +101,51 @@ func getRepoDOI(c *Context) string {
 func hasDataCite(c *Context) bool {
 	commit, err := c.Repo.GitRepo.GetBranchCommit(c.Repo.Repository.DefaultBranch)
 	if err != nil {
+		log.Trace("Couldn't get commit: %v", err)
 		return false
 	}
-	_, err = commit.GetBlobByPath("./datacite.yml")
+	_, err = commit.GetBlobByPath("/datacite.yml")
+
+	log.Trace("Found datacite? %t", err == nil)
 	return err == nil
+}
+
+// True if repository is not Private, is not registered, or is registered and
+// has changes (HEAD is not registered)
+func isDOIReady(c *Context) bool {
+	if hasDC, ok := c.Data["HasDataCite"]; !ok || !hasDC.(bool) {
+		return false
+	}
+	dbrepo := c.Repo.Repository
+	gitrepo := c.Repo.GitRepo
+
+	headIsRegistered := func() bool {
+		currentDOI, ok := c.Data["DOI"]
+		if !ok {
+			return false
+		}
+
+		headBranch, err := gitrepo.GetHEADBranch()
+		if err != nil {
+			log.Error(2, "Failed to get HEAD branch for repo at %q: %v", gitrepo.Path, err)
+			return false
+		}
+
+		headCommit, err := gitrepo.GetBranchCommitID(headBranch.Name)
+		if err != nil {
+			log.Error(2, "Failed to get commit ID of branch %q for repo at %q: %v", headBranch.Name, gitrepo.Path, err)
+		}
+
+		// if current valid and registered DOI matches the HEAD commit, can't
+		// register again
+		doiCommit, err := gitrepo.GetTagCommitID(currentDOI.(string))
+		if err != nil {
+			log.Error(2, "Failed to get commit ID of tag %q for repo at %q: %v", currentDOI, gitrepo.Path, err)
+		}
+
+		log.Trace("%s ?= %s", headCommit, doiCommit)
+		return headCommit == doiCommit
+	}()
+
+	return !dbrepo.IsPrivate && !headIsRegistered
 }

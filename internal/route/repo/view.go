@@ -55,9 +55,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 		return
 	}
 	if c.Data["HasDataCite"].(bool) {
-		if entry, err := tree.GetBlobByPath("datacite.yml"); err != nil {
-			readDataciteFile(entry, c)
-		}
+		readDataciteFile(c)
 	}
 	var readmeFile *git.Blob
 	for _, entry := range entries {
