@@ -134,6 +134,7 @@ func isDOIReady(c *Context) bool {
 		headCommit, err := gitrepo.GetBranchCommitID(headBranch.Name)
 		if err != nil {
 			log.Error(2, "Failed to get commit ID of branch %q for repo at %q: %v", headBranch.Name, gitrepo.Path, err)
+			return false
 		}
 
 		// if current valid and registered DOI matches the HEAD commit, can't
@@ -141,6 +142,7 @@ func isDOIReady(c *Context) bool {
 		doiCommit, err := gitrepo.GetTagCommitID(currentDOI.(string))
 		if err != nil {
 			log.Error(2, "Failed to get commit ID of tag %q for repo at %q: %v", currentDOI, gitrepo.Path, err)
+			return false
 		}
 
 		log.Trace("%s ?= %s", headCommit, doiCommit)
