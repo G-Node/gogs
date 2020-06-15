@@ -54,14 +54,10 @@ func renderDirectory(c *context.Context, treeLink string) {
 		c.ServerError("GetCommitsInfoWithCustomConcurrency", err)
 		return
 	}
-	c.Data["HasDatacite"] = false
-	var readmeFile *git.Blob
-	for _, entry := range entries {
-		if !entry.IsDir() && entry.Name() == "datacite.yml" {
-			readDataciteFile(entry, c)
-			break
-		}
+	if c.Data["HasDataCite"].(bool) {
+		readDataciteFile(c)
 	}
+	var readmeFile *git.Blob
 	for _, entry := range entries {
 		if entry.IsDir() || !markup.IsReadmeFile(entry.Name()) {
 			continue

@@ -73,67 +73,34 @@ func serveAnnexedKey(ctx *context.Context, name string, contentPath string) erro
 	return err
 }
 
-func readDataciteFile(entry *git.TreeEntry, c *context.Context) {
-	log.Trace("Found datacite.yml file")
-	c.Data["HasDatacite"] = true
-	doiData, err := entry.Blob().Data()
+func readDataciteFile(c *context.Context) {
+	log.Trace("Reading datacite.yml file")
+	entry, err := c.Repo.Commit.GetBlobByPath("/datacite.yml")
+	if err != nil || entry == nil {
+		log.Error(2, "datacite.yml blob could not be retrieved: %v", err)
+		c.Data["HasDataCite"] = false
+		return
+	}
+	doiData, err := entry.Data()
 	if err != nil {
 		log.Error(2, "datacite.yml blob could not be read: %v", err)
+		c.Data["HasDataCite"] = false
 		return
 	}
 	buf, err := ioutil.ReadAll(doiData)
 	if err != nil {
 		log.Error(2, "datacite.yml data could not be read: %v", err)
+		c.Data["HasDataCite"] = false
 		return
 	}
 	doiInfo := libgin.DOIRegInfo{}
 	err = yaml.Unmarshal(buf, &doiInfo)
 	if err != nil {
 		log.Error(2, "datacite.yml data could not be unmarshalled: %v", err)
+		c.Data["HasDataCite"] = false
 		return
 	}
 	c.Data["DOIInfo"] = &doiInfo
-	c.Data["IsDOIReady"] = isDOIReady(c)
-}
-
-// True if repository is not Private, is not registered, or is registered and
-// has changes.
-func isDOIReady(c *context.Context) bool {
-	if hasDC, ok := c.Data["HasDatacite"]; !ok || !hasDC.(bool) {
-		return false
-	}
-	dbrepo := c.Repo.Repository
-	gitrepo := c.Repo.GitRepo
-
-	headIsRegistered := func() bool {
-		currentDOI, ok := c.Data["DOI"]
-		if !ok {
-			return false
-		}
-
-		headBranch, err := gitrepo.GetHEADBranch()
-		if err != nil {
-			log.Error(2, "Failed to get HEAD branch for repo at %q: %v", gitrepo.Path, err)
-			return false
-		}
-
-		headCommit, err := gitrepo.GetBranchCommitID(headBranch.Name)
-		if err != nil {
-			log.Error(2, "Failed to get commit ID of branch %q for repo at %q: %v", headBranch.Name, gitrepo.Path, err)
-		}
-
-		// if current valid and registered DOI matches the HEAD commit, can't
-		// register again
-		doiCommit, err := gitrepo.GetTagCommitID(currentDOI.(string))
-		if err != nil {
-			log.Error(2, "Failed to get commit ID of tag %q for repo at %q: %v", currentDOI, gitrepo.Path, err)
-		}
-
-		log.Trace("%s ?= %s", headCommit, doiCommit)
-		return headCommit == doiCommit
-	}()
-
-	return !dbrepo.IsPrivate && !headIsRegistered
 }
 
 // resolveAnnexedContent takes a buffer with the contents of a git-annex

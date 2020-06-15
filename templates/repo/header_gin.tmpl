@@ -1,18 +1,23 @@
-{{if or $.DOI $.IsRepositoryAdmin}} {{/* Show DOI buttons or badge */}}
+{{if not $.IsBareRepo}}
+	{{if or $.DOI $.IsRepositoryAdmin}} {{/* Show DOI buttons or badge */}}
 					{{if $.IsRepositoryAdmin}}
 						{{if $.IsDOIReady}} {{/* Ready to (re)register: Show button */}}
 							<a class="ui basic button" href="/{{.Repository.Owner.Name}}/{{.Repository.Name}}/doi"><i class="octicon octicon-squirrel"></i> Request {{if $.DOI}}New{{end}} DOI</a>
 						{{else if not $.DOI}} {{/*Link to registration instructions*/}}
 							<a class="ui basic button" data-tooltip="Your repository does not fulfill all requirements for a DOI yet. Click to get instructions." data-position="bottom center" href="/G-Node/Info/wiki/DOI"><i class="octicon octicon-squirrel"></i> How to publish</a>
-							<a class="ui basic button" href="{{$.RepoLink}}/_add/{{EscapePound $.BranchName}}/datacite.yml" data-tooltip="Add datacite file" data-position="bottom center"><i class="octicon octicon-file">Add DataCite file</i></a>
+							{{if $.HasDataCite}}
+								<a class="ui basic button" href="{{$.RepoLink}}/_edit/{{EscapePound $.BranchName}}/datacite.yml" data-tooltip="Add datacite file" data-position="bottom center"><i class="octicon octicon-file">Edit DataCite file</i></a>
+							{{else}}
+								<a class="ui basic button" href="{{$.RepoLink}}/_add/{{EscapePound $.BranchName}}/datacite.yml" data-tooltip="Add datacite file" data-position="bottom center"><i class="octicon octicon-file">Add DataCite file</i></a>
+							{{end}}
 						{{end}} {{/* End registration button */}}
 					{{end}} {{/* Admin section */}}
 					{{if $.DOI}} {{/* Registered repo: Show DOI badge */}}
 						<div class="ui labeled button" tabindex="0">
 							<a href="https://doi.org/{{$.DOI}}">
 								<div class="gin doi">DOI</div>
+								<div class="gin doinr">{{$.DOI}}</div>
 							</a>
-							<div class="gin doinr">{{$.DOI}}</div>
 						</div>
 					{{end}} {{/* End DOI badge */}}
 					{{/* Close original header divs and create second row below for original buttons */}}
@@ -26,4 +31,5 @@
 			<div class="column"><!-- start column -->
 				<div class="ui header">
 					<div class="ui right">
+	{{end}}
 {{end}}
