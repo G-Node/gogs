@@ -71,7 +71,7 @@ func RebuildIndex() error {
 }
 
 func annexUninit(path string) {
-	// walker sets the permission for any file found to 0600, to allow deletion
+	// walker sets the permission for any file found to 0660, to allow deletion
 	var mode os.FileMode
 	walker := func(path string, info os.FileInfo, err error) error {
 		if info == nil {
@@ -102,18 +102,18 @@ func annexSetup(path string) {
 	log.Trace("Running annex add (with filesize filter) in '%s'", path)
 
 	// Initialise annex in case it's a new repository
-	if msg, err := annex.Init(path, "--version=7"); err != nil {
+	if msg, err := annex.Init(path); err != nil {
 		log.Error(2, "Annex init failed: %v (%s)", err, msg)
 		return
 	}
 
-	// Upgrade to v7 in case the directory was here before and wasn't cleaned up properly
+	// Upgrade to v8 in case the directory was here before and wasn't cleaned up properly
 	if msg, err := annex.Upgrade(path); err != nil {
 		log.Error(2, "Annex upgrade failed: %v (%s)", err, msg)
 		return
 	}
 
-	// Enable addunlocked for annex v7
+	// Enable addunlocked for annex v8
 	if msg, err := annex.SetAddUnlocked(path); err != nil {
 		log.Error(2, "Failed to set 'addunlocked' annex option: %v (%s)", err, msg)
 	}
