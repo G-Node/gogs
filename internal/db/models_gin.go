@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/G-Node/git-module"
 	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/libgin/libgin"
 	"github.com/G-Node/libgin/libgin/annex"
@@ -142,6 +143,29 @@ func annexSync(path string) error {
 	if msg, err := annex.ASync(path, "--content"); err != nil {
 		log.Error(2, "Annex sync failed: %v (%s)", err, msg)
 		return fmt.Errorf("git annex sync --content [%s]", path)
+	}
+	return nil
+}
+
+func annexAdd(repoPath string, all bool, files ...string) error {
+	cmd := git.NewCommand("annex", "add")
+	if all {
+		cmd.AddArguments(".")
+	}
+	_, err := cmd.AddArguments(files...).RunInDir(repoPath)
+	return err
+}
+
+func annexUpload(repoPath, remote string) error {
+	log.Trace("Synchronising annex info")
+	if msg, err := git.NewCommand("annex", "sync").RunInDir(repoPath); err != nil {
+		log.Error(2, "git-annex sync failed: %v (%s)", err, msg)
+	}
+	log.Trace("Uploading annexed data")
+	cmd := git.NewCommand("annex", "copy", fmt.Sprintf("--to=%s", remote), "--all")
+	if msg, err := cmd.RunInDir(repoPath); err != nil {
+		log.Error(2, "git-annex copy failed: %v (%s)", err, msg)
+		return fmt.Errorf("git annex copy [%s]", repoPath)
 	}
 	return nil
 }

@@ -502,8 +502,8 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 	}
 
 	annexSetup(localPath) // Initialise annex and set configuration (with add filter for filesizes)
-	if err = git.AddChanges(localPath, true); err != nil {
-		return fmt.Errorf("git add --all: %v", err)
+	if err = annexAdd(localPath, true); err != nil {
+		return fmt.Errorf("git annex add: %v", err)
 	} else if err = git.CommitChanges(localPath, git.CommitChangesOptions{
 		Committer: doer.NewGitSig(),
 		Message:   opts.Message,
@@ -521,8 +521,8 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 		return fmt.Errorf("git push origin %s: %v", opts.NewBranch, err)
 	}
 
-	if err := annexSync(localPath); err != nil { // Run full annex sync
-		return fmt.Errorf("annex sync %s: %v", localPath, err)
+	if err := annexUpload(localPath, "origin"); err != nil { // Copy new files
+		return fmt.Errorf("annex copy %s: %v", localPath, err)
 	}
 	annexUninit(localPath) // Uninitialise annex to prepare for deletion
 	StartIndexing(*repo)   // Index the new data
