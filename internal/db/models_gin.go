@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/G-Node/git-module"
 	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/libgin/libgin"
 	"github.com/G-Node/libgin/libgin/annex"
@@ -71,7 +72,7 @@ func RebuildIndex() error {
 }
 
 func annexUninit(path string) {
-	// walker sets the permission for any file found to 0600, to allow deletion
+	// walker sets the permission for any file found to 0660, to allow deletion
 	var mode os.FileMode
 	walker := func(path string, info os.FileInfo, err error) error {
 		if info == nil {
@@ -102,18 +103,18 @@ func annexSetup(path string) {
 	log.Trace("Running annex add (with filesize filter) in '%s'", path)
 
 	// Initialise annex in case it's a new repository
-	if msg, err := annex.Init(path, "--version=7"); err != nil {
+	if msg, err := annex.Init(path); err != nil {
 		log.Error(2, "Annex init failed: %v (%s)", err, msg)
 		return
 	}
 
-	// Upgrade to v7 in case the directory was here before and wasn't cleaned up properly
+	// Upgrade to v8 in case the directory was here before and wasn't cleaned up properly
 	if msg, err := annex.Upgrade(path); err != nil {
 		log.Error(2, "Annex upgrade failed: %v (%s)", err, msg)
 		return
 	}
 
-	// Enable addunlocked for annex v7
+	// Enable addunlocked for annex v8
 	if msg, err := annex.SetAddUnlocked(path); err != nil {
 		log.Error(2, "Failed to set 'addunlocked' annex option: %v (%s)", err, msg)
 	}
@@ -142,6 +143,29 @@ func annexSync(path string) error {
 	if msg, err := annex.ASync(path, "--content"); err != nil {
 		log.Error(2, "Annex sync failed: %v (%s)", err, msg)
 		return fmt.Errorf("git annex sync --content [%s]", path)
+	}
+	return nil
+}
+
+func annexAdd(repoPath string, all bool, files ...string) error {
+	cmd := git.NewCommand("annex", "add")
+	if all {
+		cmd.AddArguments(".")
+	}
+	_, err := cmd.AddArguments(files...).RunInDir(repoPath)
+	return err
+}
+
+func annexUpload(repoPath, remote string) error {
+	log.Trace("Synchronising annex info")
+	if msg, err := git.NewCommand("annex", "sync").RunInDir(repoPath); err != nil {
+		log.Error(2, "git-annex sync failed: %v (%s)", err, msg)
+	}
+	log.Trace("Uploading annexed data")
+	cmd := git.NewCommand("annex", "copy", fmt.Sprintf("--to=%s", remote), "--all")
+	if msg, err := cmd.RunInDir(repoPath); err != nil {
+		log.Error(2, "git-annex copy failed: %v (%s)", err, msg)
+		return fmt.Errorf("git annex copy [%s]", repoPath)
 	}
 	return nil
 }
