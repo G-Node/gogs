@@ -5,10 +5,10 @@
 package admin
 
 import (
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/route"
-	"github.com/G-Node/gogs/internal/setting"
 )
 
 const (
@@ -24,7 +24,7 @@ func Organizations(c *context.Context) {
 		Type:     db.USER_TYPE_ORGANIZATION,
 		Counter:  db.CountOrganizations,
 		Ranger:   db.Organizations,
-		PageSize: setting.UI.Admin.OrgPagingNum,
+		PageSize: conf.UI.Admin.OrgPagingNum,
 		OrderBy:  "id ASC",
 		TplName:  ORGS,
 	})

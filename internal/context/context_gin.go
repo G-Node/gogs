@@ -4,8 +4,8 @@ import (
 	"strings"
 
 	"github.com/G-Node/git-module"
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/libgin/libgin"
 	log "gopkg.in/clog.v1"
 )
@@ -46,7 +46,7 @@ func getRepoDOI(c *Context) string {
 
 	// check the DOI fork for a tag that matches our DOI prefix
 	// if multiple exit, get the latest one
-	doiBase := setting.DOI.Base
+	doiBase := conf.DOI.Base
 
 	doiForkGit, err := git.OpenRepository(doiFork.RepoPath())
 	if err != nil {

@@ -8,13 +8,13 @@ import (
 	"fmt"
 	"strings"
 
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/form"
 	"github.com/G-Node/gogs/internal/markup"
-	"github.com/G-Node/gogs/internal/setting"
 )
 
 const (
@@ -151,10 +151,10 @@ func Releases(c *context.Context) {
 
 func renderReleaseAttachmentSettings(c *context.Context) {
 	c.Data["RequireDropzone"] = true
-	c.Data["IsAttachmentEnabled"] = setting.Release.Attachment.Enabled
-	c.Data["AttachmentAllowedTypes"] = strings.Join(setting.Release.Attachment.AllowedTypes, ",")
-	c.Data["AttachmentMaxSize"] = setting.Release.Attachment.MaxSize
-	c.Data["AttachmentMaxFiles"] = setting.Release.Attachment.MaxFiles
+	c.Data["IsAttachmentEnabled"] = conf.Release.Attachment.Enabled
+	c.Data["AttachmentAllowedTypes"] = strings.Join(conf.Release.Attachment.AllowedTypes, ",")
+	c.Data["AttachmentMaxSize"] = conf.Release.Attachment.MaxSize
+	c.Data["AttachmentMaxFiles"] = conf.Release.Attachment.MaxFiles
 }
 
 func NewRelease(c *context.Context) {
@@ -203,7 +203,7 @@ func NewReleasePost(c *context.Context, f form.NewRelease) {
 	}
 
 	var attachments []string
-	if setting.Release.Attachment.Enabled {
+	if conf.Release.Attachment.Enabled {
 		attachments = f.Files
 	}
 
@@ -295,7 +295,7 @@ func EditReleasePost(c *context.Context, f form.EditRelease) {
 	}
 
 	var attachments []string
-	if setting.Release.Attachment.Enabled {
+	if conf.Release.Attachment.Enabled {
 		attachments = f.Files
 	}
 
@@ -312,11 +312,11 @@ func EditReleasePost(c *context.Context, f form.EditRelease) {
 }
 
 func UploadReleaseAttachment(c *context.Context) {
-	if !setting.Release.Attachment.Enabled {
+	if !conf.Release.Attachment.Enabled {
 		c.NotFound()
 		return
 	}
-	uploadAttachment(c, setting.Release.Attachment.AllowedTypes)
+	uploadAttachment(c, conf.Release.Attachment.AllowedTypes)
 }
 
 func DeleteRelease(c *context.Context) {

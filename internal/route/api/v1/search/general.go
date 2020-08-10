@@ -6,8 +6,8 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
-	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/libgin/libgin"
 )
 
@@ -17,7 +17,7 @@ func Search(c *context.APIContext) {
 		c.Status(http.StatusUnauthorized)
 		return
 	}
-	if setting.Search.SearchURL == "" {
+	if conf.Search.SearchURL == "" {
 		c.Status(http.StatusNotImplemented)
 		return
 	}
@@ -27,7 +27,7 @@ func Search(c *context.APIContext) {
 		c.Status(http.StatusInternalServerError)
 		return
 	}
-	req, _ := http.NewRequest("Post", setting.Search.SearchURL, bytes.NewReader(data))
+	req, _ := http.NewRequest("Post", conf.Search.SearchURL, bytes.NewReader(data))
 	cl := http.Client{}
 	resp, err := cl.Do(req)
 	if err != nil {

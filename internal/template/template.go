@@ -10,121 +10,126 @@ import (
 	"html/template"
 	"mime"
 	"path/filepath"
-	"runtime"
 	"strings"
+	"sync"
 	"time"
 
+	"github.com/editorconfig/editorconfig-core-go/v2"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/microcosm-cc/bluemonday"
 	"golang.org/x/net/html/charset"
 	"golang.org/x/text/transform"
-	log "gopkg.in/clog.v1"
-	"gopkg.in/editorconfig/editorconfig-core-go.v1"
+	log "unknwon.dev/clog/v2"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/markup"
-	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/tool"
 )
 
-// TODO: only initialize map once and save to a local variable to reduce copies.
-func NewFuncMap() []template.FuncMap {
-	return []template.FuncMap{map[string]interface{}{
-		"GoVer": func() string {
-			return strings.Title(runtime.Version())
-		},
-		"Year": func() int {
-			return time.Now().Year()
-		},
-		"UseHTTPS": func() bool {
-			return strings.HasPrefix(setting.AppURL, "https")
-		},
-		"AppName": func() string {
-			return setting.AppName
-		},
-		"AppSubURL": func() string {
-			return setting.AppSubURL
-		},
-		"AppURL": func() string {
-			return setting.AppURL
-		},
-		"AppVer": func() string {
-			return setting.AppVer
-		},
-		"AppDomain": func() string {
-			return setting.Domain
-		},
-		"DisableGravatar": func() bool {
-			return setting.DisableGravatar
-		},
-		"ShowFooterTemplateLoadTime": func() bool {
-			return setting.ShowFooterTemplateLoadTime
-		},
-		"LoadTimes": func(startTime time.Time) string {
-			return fmt.Sprint(time.Since(startTime).Nanoseconds()/1e6) + "ms"
-		},
-		"AvatarLink":       tool.AvatarLink,
-		"AppendAvatarSize": tool.AppendAvatarSize,
-		"Safe":             Safe,
-		"Sanitize":         bluemonday.UGCPolicy().Sanitize,
-		"Str2HTML":         Str2HTML,
-		"Str2JS":           Str2JS,
-		"NewLine2br":       NewLine2br,
-		"TimeSince":        tool.TimeSince,
-		"RawTimeSince":     tool.RawTimeSince,
-		"FileSize":         tool.FileSize,
-		"Subtract":         tool.Subtract,
-		"Add": func(a, b int) int {
-			return a + b
-		},
-		"ActionIcon": ActionIcon,
-		"DateFmtLong": func(t time.Time) string {
-			return t.Format(time.RFC1123Z)
-		},
-		"DateFmtShort": func(t time.Time) string {
-			return t.Format("Jan 02, 2006")
-		},
-		"List": List,
-		"SubStr": func(str string, start, length int) string {
-			if len(str) == 0 {
-				return ""
-			}
-			end := start + length
-			if length == -1 {
-				end = len(str)
-			}
-			if len(str) < end {
-				return str
-			}
-			return str[start:end]
-		},
-		"Join":                  strings.Join,
-		"EllipsisString":        tool.EllipsisString,
-		"DiffTypeToStr":         DiffTypeToStr,
-		"DiffLineTypeToStr":     DiffLineTypeToStr,
-		"Sha1":                  Sha1,
-		"ShortSHA1":             tool.ShortSHA1,
-		"MD5":                   tool.MD5,
-		"ActionContent2Commits": ActionContent2Commits,
-		"EscapePound":           EscapePound,
-		"RenderCommitMessage":   RenderCommitMessage,
-		"ThemeColorMetaTag": func() string {
-			return setting.UI.ThemeColorMetaTag
-		},
-		"FilenameIsImage": func(filename string) bool {
-			mimeType := mime.TypeByExtension(filepath.Ext(filename))
-			return strings.HasPrefix(mimeType, "image/")
-		},
-		"TabSizeClass": func(ec *editorconfig.Editorconfig, filename string) string {
-			if ec != nil {
-				def := ec.GetDefinitionForFilename(filename)
-				if def.TabWidth > 0 {
-					return fmt.Sprintf("tab-size-%d", def.TabWidth)
+var (
+	funcMap     []template.FuncMap
+	funcMapOnce sync.Once
+)
+
+// FuncMap returns a list of user-defined template functions.
+func FuncMap() []template.FuncMap {
+	funcMapOnce.Do(func() {
+		funcMap = []template.FuncMap{map[string]interface{}{
+			"Year": func() int {
+				return time.Now().Year()
+			},
+			"UseHTTPS": func() bool {
+				return conf.Server.URL.Scheme == "https"
+			},
+			"AppName": func() string {
+				return conf.App.BrandName
+			},
+			"AppSubURL": func() string {
+				return conf.Server.Subpath
+			},
+			"AppURL": func() string {
+				return conf.Server.ExternalURL
+			},
+			"AppVer": func() string {
+				return conf.App.Version
+			},
+			"AppDomain": func() string {
+				return conf.Server.Domain
+			},
+			"DisableGravatar": func() bool {
+				return conf.Picture.DisableGravatar
+			},
+			"ShowFooterTemplateLoadTime": func() bool {
+				return conf.Other.ShowFooterTemplateLoadTime
+			},
+			"LoadTimes": func(startTime time.Time) string {
+				return fmt.Sprint(time.Since(startTime).Nanoseconds()/1e6) + "ms"
+			},
+			"AvatarLink":       tool.AvatarLink,
+			"AppendAvatarSize": tool.AppendAvatarSize,
+			"Safe":             Safe,
+			"Sanitize":         bluemonday.UGCPolicy().Sanitize,
+			"Str2HTML":         Str2HTML,
+			"Str2JS":           Str2JS,
+			"NewLine2br":       NewLine2br,
+			"TimeSince":        tool.TimeSince,
+			"RawTimeSince":     tool.RawTimeSince,
+			"FileSize":         tool.FileSize,
+			"Subtract":         tool.Subtract,
+			"Add": func(a, b int) int {
+				return a + b
+			},
+			"ActionIcon": ActionIcon,
+			"DateFmtLong": func(t time.Time) string {
+				return t.Format(time.RFC1123Z)
+			},
+			"DateFmtShort": func(t time.Time) string {
+				return t.Format("Jan 02, 2006")
+			},
+			"List": List,
+			"SubStr": func(str string, start, length int) string {
+				if len(str) == 0 {
+					return ""
 				}
-			}
-			return "tab-size-8"
-		},
-	}}
+				end := start + length
+				if length == -1 {
+					end = len(str)
+				}
+				if len(str) < end {
+					return str
+				}
+				return str[start:end]
+			},
+			"Join":                  strings.Join,
+			"EllipsisString":        tool.EllipsisString,
+			"DiffTypeToStr":         DiffTypeToStr,
+			"DiffLineTypeToStr":     DiffLineTypeToStr,
+			"Sha1":                  Sha1,
+			"ShortSHA1":             tool.ShortSHA1,
+			"MD5":                   tool.MD5,
+			"ActionContent2Commits": ActionContent2Commits,
+			"EscapePound":           EscapePound,
+			"RenderCommitMessage":   RenderCommitMessage,
+			"ThemeColorMetaTag": func() string {
+				return conf.UI.ThemeColorMetaTag
+			},
+			"FilenameIsImage": func(filename string) bool {
+				mimeType := mime.TypeByExtension(filepath.Ext(filename))
+				return strings.HasPrefix(mimeType, "image/")
+			},
+			"TabSizeClass": func(ec *editorconfig.Editorconfig, filename string) string {
+				if ec != nil {
+					def, err := ec.GetDefinitionForFilename(filename)
+					if err == nil && def.TabWidth > 0 {
+						return fmt.Sprintf("tab-size-%d", def.TabWidth)
+					}
+				}
+				return "tab-size-8"
+			},
+		}}
+	})
+	return funcMap
 }
 
 func Safe(raw string) template.HTML {
@@ -292,7 +297,7 @@ func ActionIcon(opType int) string {
 func ActionContent2Commits(act Actioner) *db.PushCommits {
 	push := db.NewPushCommits()
 	if err := jsoniter.Unmarshal([]byte(act.GetContent()), push); err != nil {
-		log.Error(4, "Unmarshal:\n%s\nERROR: %v", act.GetContent(), err)
+		log.Error("Unmarshal:\n%s\nERROR: %v", act.GetContent(), err)
 	}
 	return push
 }

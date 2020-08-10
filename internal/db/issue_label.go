@@ -7,7 +7,6 @@ package db
 import (
 	"fmt"
 	"html/template"
-	"regexp"
 	"strconv"
 	"strings"
 
@@ -15,10 +14,11 @@ import (
 
 	api "github.com/gogs/go-gogs-client"
 
+	"github.com/G-Node/gogs/internal/lazyregexp"
 	"github.com/G-Node/gogs/internal/tool"
 )
 
-var labelColorPattern = regexp.MustCompile("#([a-fA-F0-9]{6})")
+var labelColorPattern = lazyregexp.New("#([a-fA-F0-9]{6})")
 
 // GetLabelTemplateFile loads the label template file by given name,
 // then parses and returns a list of name-color pairs.

@@ -12,18 +12,18 @@ import (
 	"os"
 	"os/exec"
 	"path"
-	"regexp"
 	"strconv"
 	"strings"
 	"time"
 
-	log "gopkg.in/clog.v1"
 	"gopkg.in/macaron.v1"
+	log "unknwon.dev/clog/v2"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
-	"github.com/G-Node/gogs/internal/setting"
+	"github.com/G-Node/gogs/internal/lazyregexp"
 	"github.com/G-Node/gogs/internal/tool"
 )
 
@@ -44,9 +44,9 @@ func askCredentials(c *context.Context, status int, text string) {
 
 func HTTPContexter() macaron.Handler {
 	return func(c *context.Context) {
-		if len(setting.HTTP.AccessControlAllowOrigin) > 0 {
+		if len(conf.HTTP.AccessControlAllowOrigin) > 0 {
 			// Set CORS headers for browser-based git clients
-			c.Resp.Header().Set("Access-Control-Allow-Origin", setting.HTTP.AccessControlAllowOrigin)
+			c.Resp.Header().Set("Access-Control-Allow-Origin", conf.HTTP.AccessControlAllowOrigin)
 			c.Resp.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, User-Agent")
 
 			// Handle preflight OPTIONS request
@@ -77,7 +77,7 @@ func HTTPContexter() macaron.Handler {
 		}
 
 		// Authentication is not required for pulling from public repositories.
-		if isPull && !repo.IsPrivate && !setting.Service.RequireSignInView {
+		if isPull && !repo.IsPrivate && !conf.Auth.RequireSigninView {
 			c.Map(&HTTPContext{
 				Context: c,
 			})
@@ -235,7 +235,7 @@ func serviceRPC(h serviceHandler, service string) {
 	if h.r.Header.Get("Content-Encoding") == "gzip" {
 		reqBody, err = gzip.NewReader(reqBody)
 		if err != nil {
-			log.Error(2, "HTTP.Get: fail to create gzip reader: %v", err)
+			log.Error("HTTP.Get: fail to create gzip reader: %v", err)
 			h.w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -258,7 +258,7 @@ func serviceRPC(h serviceHandler, service string) {
 	cmd.Stderr = &stderr
 	cmd.Stdin = reqBody
 	if err = cmd.Run(); err != nil {
-		log.Error(2, "HTTP.serviceRPC: fail to serve RPC '%s': %v - %s", service, err, stderr.String())
+		log.Error("HTTP.serviceRPC: fail to serve RPC '%s': %v - %s", service, err, stderr.String())
 		h.w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -286,7 +286,7 @@ func gitCommand(dir string, args ...string) []byte {
 	cmd.Dir = dir
 	out, err := cmd.Output()
 	if err != nil {
-		log.Error(2, fmt.Sprintf("Git: %v - %s", err, out))
+		log.Error(fmt.Sprintf("Git: %v - %s", err, out))
 	}
 	return out
 }
@@ -346,21 +346,21 @@ func getIdxFile(h serviceHandler) {
 }
 
 var routes = []struct {
-	reg     *regexp.Regexp
+	re      *lazyregexp.Regexp
 	method  string
 	handler func(serviceHandler)
 }{
-	{regexp.MustCompile("(.*?)/git-upload-pack$"), "POST", serviceUploadPack},
-	{regexp.MustCompile("(.*?)/git-receive-pack$"), "POST", serviceReceivePack},
-	{regexp.MustCompile("(.*?)/info/refs$"), "GET", getInfoRefs},
-	{regexp.MustCompile("(.*?)/HEAD$"), "GET", getTextFile},
-	{regexp.MustCompile("(.*?)/objects/info/alternates$"), "GET", getTextFile},
-	{regexp.MustCompile("(.*?)/objects/info/http-alternates$"), "GET", getTextFile},
-	{regexp.MustCompile("(.*?)/objects/info/packs$"), "GET", getInfoPacks},
-	{regexp.MustCompile("(.*?)/objects/info/[^/]*$"), "GET", getTextFile},
-	{regexp.MustCompile("(.*?)/objects/[0-9a-f]{2}/[0-9a-f]{38}$"), "GET", getLooseObject},
-	{regexp.MustCompile("(.*?)/objects/pack/pack-[0-9a-f]{40}\\.pack$"), "GET", getPackFile},
-	{regexp.MustCompile("(.*?)/objects/pack/pack-[0-9a-f]{40}\\.idx$"), "GET", getIdxFile},
+	{lazyregexp.New("(.*?)/git-upload-pack$"), "POST", serviceUploadPack},
+	{lazyregexp.New("(.*?)/git-receive-pack$"), "POST", serviceReceivePack},
+	{lazyregexp.New("(.*?)/info/refs$"), "GET", getInfoRefs},
+	{lazyregexp.New("(.*?)/HEAD$"), "GET", getTextFile},
+	{lazyregexp.New("(.*?)/objects/info/alternates$"), "GET", getTextFile},
+	{lazyregexp.New("(.*?)/objects/info/http-alternates$"), "GET", getTextFile},
+	{lazyregexp.New("(.*?)/objects/info/packs$"), "GET", getInfoPacks},
+	{lazyregexp.New("(.*?)/objects/info/[^/]*$"), "GET", getTextFile},
+	{lazyregexp.New("(.*?)/objects/[0-9a-f]{2}/[0-9a-f]{38}$"), "GET", getLooseObject},
+	{lazyregexp.New("(.*?)/objects/pack/pack-[0-9a-f]{40}\\.pack$"), "GET", getPackFile},
+	{lazyregexp.New("(.*?)/objects/pack/pack-[0-9a-f]{40}\\.idx$"), "GET", getIdxFile},
 }
 
 func getGitRepoPath(dir string) (string, error) {
@@ -368,7 +368,7 @@ func getGitRepoPath(dir string) (string, error) {
 		dir += ".git"
 	}
 
-	filename := path.Join(setting.RepoRootPath, dir)
+	filename := path.Join(conf.Repository.Root, dir)
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
 		return "", err
 	}
@@ -379,7 +379,7 @@ func getGitRepoPath(dir string) (string, error) {
 func HTTP(c *HTTPContext) {
 	for _, route := range routes {
 		reqPath := strings.ToLower(c.Req.URL.Path)
-		m := route.reg.FindStringSubmatch(reqPath)
+		m := route.re.FindStringSubmatch(reqPath)
 		if m == nil {
 			continue
 		}
@@ -387,7 +387,7 @@ func HTTP(c *HTTPContext) {
 		// We perform check here because route matched in cmd/web.go is wider than needed,
 		// but we only want to output this message only if user is really trying to access
 		// Git HTTP endpoints.
-		if setting.Repository.DisableHTTPGit {
+		if conf.Repository.DisableHTTPGit {
 			c.HandleText(http.StatusForbidden, "Interacting with repositories by HTTP protocol is not disabled")
 			return
 		}

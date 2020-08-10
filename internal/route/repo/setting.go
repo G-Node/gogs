@@ -12,14 +12,14 @@ import (
 
 	"github.com/G-Node/git-module"
 	"github.com/unknwon/com"
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
+	"github.com/G-Node/gogs/internal/email"
 	"github.com/G-Node/gogs/internal/form"
-	"github.com/G-Node/gogs/internal/mailer"
-	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/tool"
 	petname "github.com/dustinkirkland/golang-petname"
 )
@@ -102,7 +102,7 @@ func SettingsPost(c *context.Context, f form.RepoSetting) {
 
 		if isNameChanged {
 			if err := db.RenameRepoAction(c.User, oldRepoName, repo); err != nil {
-				log.Error(2, "RenameRepoAction: %v", err)
+				log.Error("RenameRepoAction: %v", err)
 			}
 		}
 
@@ -198,7 +198,7 @@ func SettingsPost(c *context.Context, f form.RepoSetting) {
 		}
 		log.Trace("Repository converted from mirror to regular: %s/%s", c.Repo.Owner.Name, repo.Name)
 		c.Flash.Success(c.Tr("repo.settings.convert_succeed"))
-		c.Redirect(setting.AppSubURL + "/" + c.Repo.Owner.Name + "/" + repo.Name)
+		c.Redirect(conf.Server.Subpath + "/" + c.Repo.Owner.Name + "/" + repo.Name)
 
 	case "transfer":
 		if !c.Repo.IsOwner() {
@@ -237,7 +237,7 @@ func SettingsPost(c *context.Context, f form.RepoSetting) {
 		}
 		log.Trace("Repository transfered: %s/%s -> %s", c.Repo.Owner.Name, repo.Name, newOwner)
 		c.Flash.Success(c.Tr("repo.settings.transfer_succeed"))
-		c.Redirect(setting.AppSubURL + "/" + newOwner + "/" + repo.Name)
+		c.Redirect(conf.Server.Subpath + "/" + newOwner + "/" + repo.Name)
 
 	case "delete":
 		if !c.Repo.IsOwner() {
@@ -370,13 +370,13 @@ func SettingsCollaboration(c *context.Context) {
 	c.HTML(200, SETTINGS_COLLABORATION)
 }
 
-func inviteWithMail(c *context.Context, mail string) (*db.User, error) {
+func inviteWithMail(c *context.Context, address string) (*db.User, error) {
 	name := petname.Generate(2, "_")
 	pw := petname.Generate(3, "")
 	user := db.User{
 		Name:     name,
 		Passwd:   pw,
-		Email:    mail,
+		Email:    address,
 		IsActive: true}
 	err := db.CreateUser(&user)
 	if err != nil {
@@ -386,22 +386,22 @@ func inviteWithMail(c *context.Context, mail string) (*db.User, error) {
 	c.Context.Data["Account"] = user.Name
 	c.Context.Data["Inviter"] = c.User.Name
 	c.Context.Data["Pw"] = pw
-	mailer.SendInviteMail(c.Context, db.NewMailerUser(&user))
+	email.SendInviteMail(c.Context, db.NewMailerUser(&user))
 	return &user, nil
 }
 func SettingsCollaborationPost(c *context.Context) {
 	var name string
-	email := strings.ToLower(c.Query("invite"))
-	if len(email) > 0 {
-		u, err := inviteWithMail(c, email)
+	address := strings.ToLower(c.Query("invite"))
+	if len(address) > 0 {
+		u, err := inviteWithMail(c, address)
 		if err != nil {
-			log.Info("Problem with inviting user %q: %s", email, err)
+			log.Info("Problem with inviting user %q: %s", address, err)
 			if db.IsErrBlockedDomain(err) {
 				c.Flash.Error(c.Tr("form.invite_email_blocked"))
 			} else if db.IsErrEmailAlreadyUsed(err) {
 				c.Flash.Error(c.Tr("form.email_been_used"))
 			}
-			c.Redirect(setting.AppSubURL + c.Req.URL.Path)
+			c.Redirect(conf.Server.Subpath + c.Req.URL.Path)
 			return
 		}
 		name = u.Name
@@ -409,7 +409,7 @@ func SettingsCollaborationPost(c *context.Context) {
 		name = strings.ToLower(c.Query("collaborator"))
 	}
 	if len(name) == 0 || c.Repo.Owner.LowerName == name {
-		c.Redirect(setting.AppSubURL + c.Req.URL.Path)
+		c.Redirect(conf.Server.Subpath + c.Req.URL.Path)
 		return
 	}
 
@@ -417,7 +417,7 @@ func SettingsCollaborationPost(c *context.Context) {
 	if err != nil {
 		if errors.IsUserNotExist(err) {
 			c.Flash.Error(c.Tr("form.user_not_exist"))
-			c.Redirect(setting.AppSubURL + c.Req.URL.Path)
+			c.Redirect(conf.Server.Subpath + c.Req.URL.Path)
 		} else {
 			c.Handle(500, "GetUserByName", err)
 		}
@@ -427,7 +427,7 @@ func SettingsCollaborationPost(c *context.Context) {
 	// Organization is not allowed to be added as a collaborator
 	if u.IsOrganization() {
 		c.Flash.Error(c.Tr("repo.settings.org_not_allowed_to_be_collaborator"))
-		c.Redirect(setting.AppSubURL + c.Req.URL.Path)
+		c.Redirect(conf.Server.Subpath + c.Req.URL.Path)
 		return
 	}
 
@@ -436,19 +436,19 @@ func SettingsCollaborationPost(c *context.Context) {
 		return
 	}
 
-	if setting.Service.EnableNotifyMail {
-		mailer.SendCollaboratorMail(db.NewMailerUser(u), db.NewMailerUser(c.User), db.NewMailerRepo(c.Repo.Repository))
+	if conf.User.EnableEmailNotification {
+		email.SendCollaboratorMail(db.NewMailerUser(u), db.NewMailerUser(c.User), db.NewMailerRepo(c.Repo.Repository))
 	}
 
 	c.Flash.Success(c.Tr("repo.settings.add_collaborator_success"))
-	c.Redirect(setting.AppSubURL + c.Req.URL.Path)
+	c.Redirect(conf.Server.Subpath + c.Req.URL.Path)
 }
 
 func ChangeCollaborationAccessMode(c *context.Context) {
 	if err := c.Repo.Repository.ChangeCollaborationAccessMode(
 		c.QueryInt64("uid"),
 		db.AccessMode(c.QueryInt("mode"))); err != nil {
-		log.Error(2, "ChangeCollaborationAccessMode: %v", err)
+		log.Error("ChangeCollaborationAccessMode: %v", err)
 		return
 	}
 

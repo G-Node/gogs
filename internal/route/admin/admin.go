@@ -12,14 +12,13 @@ import (
 
 	"github.com/json-iterator/go"
 	"github.com/unknwon/com"
-	"gopkg.in/macaron.v1"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/cron"
 	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/mailer"
+	"github.com/G-Node/gogs/internal/email"
 	"github.com/G-Node/gogs/internal/process"
-	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/tool"
 )
 
@@ -29,9 +28,8 @@ const (
 	MONITOR   = "admin/monitor"
 )
 
-var (
-	startTime = time.Now()
-)
+// initTime is the time when the application was initialized.
+var initTime = time.Now()
 
 var sysStatus struct {
 	Uptime       string
@@ -75,7 +73,7 @@ var sysStatus struct {
 }
 
 func updateSystemStatus() {
-	sysStatus.Uptime = tool.TimeSincePro(startTime)
+	sysStatus.Uptime = tool.TimeSincePro(initTime)
 
 	m := new(runtime.MemStats)
 	runtime.ReadMemStats(m)
@@ -127,9 +125,9 @@ const (
 )
 
 func Dashboard(c *context.Context) {
-	c.Data["Title"] = c.Tr("admin.dashboard")
-	c.Data["PageIsAdmin"] = true
-	c.Data["PageIsAdminDashboard"] = true
+	c.Title("admin.dashboard")
+	c.PageIs("Admin")
+	c.PageIs("AdminDashboard")
 
 	// Run operation.
 	op, _ := com.StrTo(c.Query("op")).Int()
@@ -170,88 +168,79 @@ func Dashboard(c *context.Context) {
 		} else {
 			c.Flash.Success(success)
 		}
-		c.Redirect(setting.AppSubURL + "/admin")
+		c.SubURLRedirect("/admin")
 		return
 	}
+
+	c.Data["GitVersion"] = conf.Git.Version
+	c.Data["GoVersion"] = runtime.Version()
+	c.Data["BuildTime"] = conf.BuildTime
+	c.Data["BuildCommit"] = conf.BuildCommit
 
 	c.Data["Stats"] = db.GetStatistic()
 	// FIXME: update periodically
 	updateSystemStatus()
 	c.Data["SysStatus"] = sysStatus
-	c.HTML(200, DASHBOARD)
+	c.Success(DASHBOARD)
 }
 
 func SendTestMail(c *context.Context) {
-	email := c.Query("email")
+	emailAddr := c.Query("email")
 	// Send a test email to the user's email address and redirect back to Config
-	if err := mailer.SendTestMail(email); err != nil {
-		c.Flash.Error(c.Tr("admin.config.test_mail_failed", email, err))
+	if err := email.SendTestMail(emailAddr); err != nil {
+		c.Flash.Error(c.Tr("admin.config.email.test_mail_failed", emailAddr, err))
 	} else {
-		c.Flash.Info(c.Tr("admin.config.test_mail_sent", email))
+		c.Flash.Info(c.Tr("admin.config.email.test_mail_sent", emailAddr))
 	}
 
-	c.Redirect(setting.AppSubURL + "/admin/config")
+	c.Redirect(conf.Server.Subpath + "/admin/config")
 }
 
 func Config(c *context.Context) {
-	c.Data["Title"] = c.Tr("admin.config")
-	c.Data["PageIsAdmin"] = true
-	c.Data["PageIsAdminConfig"] = true
+	c.Title("admin.config")
+	c.PageIs("Admin")
+	c.PageIs("AdminConfig")
 
-	c.Data["AppURL"] = setting.AppURL
-	c.Data["Domain"] = setting.Domain
-	c.Data["OfflineMode"] = setting.OfflineMode
-	c.Data["DisableRouterLog"] = setting.DisableRouterLog
-	c.Data["RunUser"] = setting.RunUser
-	c.Data["RunMode"] = strings.Title(macaron.Env)
-	c.Data["StaticRootPath"] = setting.StaticRootPath
-	c.Data["LogRootPath"] = setting.LogRootPath
-	c.Data["ReverseProxyAuthUser"] = setting.ReverseProxyAuthUser
+	c.Data["App"] = conf.App
+	c.Data["Server"] = conf.Server
+	c.Data["SSH"] = conf.SSH
+	c.Data["Repository"] = conf.Repository
+	c.Data["Database"] = conf.Database
+	c.Data["Security"] = conf.Security
+	c.Data["Email"] = conf.Email
+	c.Data["Auth"] = conf.Auth
+	c.Data["User"] = conf.User
+	c.Data["Session"] = conf.Session
+	c.Data["Cache"] = conf.Cache
+	c.Data["HTTP"] = conf.HTTP
 
-	c.Data["SSH"] = setting.SSH
+	// TODO
+	c.Data["Attachment"] = conf.Attachment
+	c.Data["Release"] = conf.Release
+	c.Data["Time"] = conf.Time
+	c.Data["Picture"] = conf.Picture
+	c.Data["Mirror"] = conf.Mirror
 
-	c.Data["RepoRootPath"] = setting.RepoRootPath
-	c.Data["ScriptType"] = setting.ScriptType
-	c.Data["Repository"] = setting.Repository
-	c.Data["HTTP"] = setting.HTTP
+	// ???
+	c.Data["Webhook"] = conf.Webhook
+	c.Data["Git"] = conf.Git
 
-	c.Data["DbCfg"] = db.DbCfg
-	c.Data["Service"] = setting.Service
-	c.Data["Webhook"] = setting.Webhook
-
-	c.Data["MailerEnabled"] = false
-	if setting.MailService != nil {
-		c.Data["MailerEnabled"] = true
-		c.Data["Mailer"] = setting.MailService
-	}
-
-	c.Data["CacheAdapter"] = setting.CacheAdapter
-	c.Data["CacheInterval"] = setting.CacheInterval
-	c.Data["CacheConn"] = setting.CacheConn
-
-	c.Data["SessionConfig"] = setting.SessionConfig
-
-	c.Data["DisableGravatar"] = setting.DisableGravatar
-	c.Data["EnableFederatedAvatar"] = setting.EnableFederatedAvatar
-
-	c.Data["GitVersion"] = setting.Git.Version
-	c.Data["Git"] = setting.Git
-
+	c.Data["LogRootPath"] = conf.Log.RootPath
 	type logger struct {
 		Mode, Config string
 	}
-	loggers := make([]*logger, len(setting.LogModes))
-	for i := range setting.LogModes {
+	loggers := make([]*logger, len(conf.Log.Modes))
+	for i := range conf.Log.Modes {
 		loggers[i] = &logger{
-			Mode: strings.Title(setting.LogModes[i]),
+			Mode: strings.Title(conf.Log.Modes[i]),
 		}
 
-		result, _ := jsoniter.MarshalIndent(setting.LogConfigs[i], "", "  ")
+		result, _ := jsoniter.MarshalIndent(conf.Log.Configs[i], "", "  ")
 		loggers[i].Config = string(result)
 	}
 	c.Data["Loggers"] = loggers
 
-	c.HTML(200, CONFIG)
+	c.Success(CONFIG)
 }
 
 func Monitor(c *context.Context) {

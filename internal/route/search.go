@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/libgin/libgin"
 	log "gopkg.in/clog.v1"
 )
@@ -91,12 +91,12 @@ func collectSearchableRepoIDs(c *context.Context) ([]int64, error) {
 }
 
 func search(c *context.Context, keywords string, sType int) ([]byte, error) {
-	if setting.Search.SearchURL == "" {
+	if conf.Search.SearchURL == "" {
 		log.Error(2, "Unable to perform search: SearchURL not configured")
 		return nil, fmt.Errorf("Extended search not implemented")
 	}
 
-	key := []byte(setting.Search.Key)
+	key := []byte(conf.Search.Key)
 
 	repoids, err := collectSearchableRepoIDs(c)
 	if err != nil {
@@ -119,7 +119,7 @@ func search(c *context.Context, keywords string, sType int) ([]byte, error) {
 	}
 
 	// Send query to gin-dex
-	req, err := http.NewRequest("POST", setting.Search.SearchURL, strings.NewReader(encdata))
+	req, err := http.NewRequest("POST", conf.Search.SearchURL, strings.NewReader(encdata))
 	if err != nil {
 		log.Error(2, "Failed to build request for gin-dex: %v", err)
 	}

@@ -15,15 +15,14 @@ import (
 
 	"github.com/unknwon/com"
 	"github.com/unknwon/paginater"
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
 	"github.com/G-Node/gogs/internal/form"
 	"github.com/G-Node/gogs/internal/markup"
-	"github.com/G-Node/gogs/internal/setting"
-	"github.com/G-Node/gogs/internal/template"
 	"github.com/G-Node/gogs/internal/tool"
 )
 
@@ -117,8 +116,8 @@ func issues(c *context.Context, isPullList bool) {
 
 	// Must sign in to see issues about you.
 	if viewType != "all" && !c.IsLogged {
-		c.SetCookie("redirect_to", "/"+url.QueryEscape(setting.AppSubURL+c.Req.RequestURI), 0, setting.AppSubURL)
-		c.Redirect(setting.AppSubURL + "/user/login")
+		c.SetCookie("redirect_to", "/"+url.QueryEscape(conf.Server.Subpath+c.Req.RequestURI), 0, conf.Server.Subpath)
+		c.Redirect(conf.Server.Subpath + "/user/login")
 		return
 	}
 
@@ -168,7 +167,7 @@ func issues(c *context.Context, isPullList bool) {
 	} else {
 		total = int(issueStats.ClosedCount)
 	}
-	pager := paginater.New(total, setting.UI.IssuePagingNum, page, 5)
+	pager := paginater.New(total, conf.UI.IssuePagingNum, page, 5)
 	c.Data["Page"] = pager
 
 	issues, err := db.Issues(&db.IssuesOptions{
@@ -257,10 +256,10 @@ func Pulls(c *context.Context) {
 
 func renderAttachmentSettings(c *context.Context) {
 	c.Data["RequireDropzone"] = true
-	c.Data["IsAttachmentEnabled"] = setting.AttachmentEnabled
-	c.Data["AttachmentAllowedTypes"] = setting.AttachmentAllowedTypes
-	c.Data["AttachmentMaxSize"] = setting.AttachmentMaxSize
-	c.Data["AttachmentMaxFiles"] = setting.AttachmentMaxFiles
+	c.Data["IsAttachmentEnabled"] = conf.Attachment.Enabled
+	c.Data["AttachmentAllowedTypes"] = conf.Attachment.AllowedTypes
+	c.Data["AttachmentMaxSize"] = conf.Attachment.MaxSize
+	c.Data["AttachmentMaxFiles"] = conf.Attachment.MaxFiles
 }
 
 func RetrieveRepoMilestonesAndAssignees(c *context.Context, repo *db.Repository) {
@@ -430,7 +429,7 @@ func NewIssuePost(c *context.Context, f form.NewIssue) {
 	}
 
 	var attachments []string
-	if setting.AttachmentEnabled {
+	if conf.Attachment.Enabled {
 		attachments = f.Files
 	}
 
@@ -449,7 +448,7 @@ func NewIssuePost(c *context.Context, f form.NewIssue) {
 	}
 
 	log.Trace("Issue created: %d/%d", c.Repo.Repository.ID, issue.ID)
-	c.Redirect(c.Repo.RepoLink + "/issues/" + com.ToStr(issue.Index))
+	c.RawRedirect(c.Repo.MakeURL(fmt.Sprintf("issues/%d", issue.Index)))
 }
 
 func uploadAttachment(c *context.Context, allowedTypes []string) {
@@ -494,12 +493,12 @@ func uploadAttachment(c *context.Context, allowedTypes []string) {
 }
 
 func UploadIssueAttachment(c *context.Context) {
-	if !setting.AttachmentEnabled {
+	if !conf.Attachment.Enabled {
 		c.NotFound()
 		return
 	}
 
-	uploadAttachment(c, strings.Split(setting.AttachmentAllowedTypes, ","))
+	uploadAttachment(c, conf.Attachment.AllowedTypes)
 }
 
 func viewIssue(c *context.Context, isPullList bool) {
@@ -522,10 +521,10 @@ func viewIssue(c *context.Context, isPullList bool) {
 
 	// Make sure type and URL matches.
 	if !isPullList && issue.IsPull {
-		c.Redirect(c.Repo.RepoLink + "/pulls/" + com.ToStr(issue.Index))
+		c.RawRedirect(c.Repo.MakeURL(fmt.Sprintf("pulls/%d", issue.Index)))
 		return
 	} else if isPullList && !issue.IsPull {
-		c.Redirect(c.Repo.RepoLink + "/issues/" + com.ToStr(issue.Index))
+		c.RawRedirect(c.Repo.MakeURL(fmt.Sprintf("issues/%d", issue.Index)))
 		return
 	}
 
@@ -660,15 +659,17 @@ func viewIssue(c *context.Context, isPullList bool) {
 			c.Repo.IsWriter() && c.Repo.GitRepo.IsBranchExist(pull.HeadBranch) &&
 			!branchProtected
 
-		deleteBranchUrl := template.EscapePound(c.Repo.RepoLink + "/branches/delete/" + pull.HeadBranch)
-		c.Data["DeleteBranchLink"] = fmt.Sprintf("%s?commit=%s&redirect_to=%s", deleteBranchUrl, pull.MergedCommitID, c.Data["Link"])
+		c.Data["DeleteBranchLink"] = c.Repo.MakeURL(url.URL{
+			Path:     "branches/delete/" + pull.HeadBranch,
+			RawQuery: fmt.Sprintf("commit=%s&redirect_to=%s", pull.MergedCommitID, c.Data["Link"]),
+		})
 	}
 
 	c.Data["Participants"] = participants
 	c.Data["NumParticipants"] = len(participants)
 	c.Data["Issue"] = issue
 	c.Data["IsIssueOwner"] = c.Repo.IsWriter() || (c.IsLogged && issue.IsPoster(c.User.ID))
-	c.Data["SignInLink"] = setting.AppSubURL + "/user/login?redirect_to=" + c.Data["Link"].(string)
+	c.Data["SignInLink"] = conf.Server.Subpath + "/user/login?redirect_to=" + c.Data["Link"].(string)
 	c.HTML(200, ISSUE_VIEW)
 }
 
@@ -844,13 +845,13 @@ func NewComment(c *context.Context, f form.CreateComment) {
 	}
 
 	var attachments []string
-	if setting.AttachmentEnabled {
+	if conf.Attachment.Enabled {
 		attachments = f.Files
 	}
 
 	if c.HasError() {
 		c.Flash.Error(c.Data["ErrorMsg"].(string))
-		c.Redirect(fmt.Sprintf("%s/issues/%d", c.Repo.RepoLink, issue.Index))
+		c.RawRedirect(c.Repo.MakeURL(fmt.Sprintf("issues/%d", issue.Index)))
 		return
 	}
 
@@ -890,7 +891,7 @@ func NewComment(c *context.Context, f form.CreateComment) {
 				c.Flash.Info(c.Tr("repo.pulls.open_unmerged_pull_exists", pr.Index))
 			} else {
 				if err = issue.ChangeStatus(c.User, c.Repo.Repository, f.Status == "close"); err != nil {
-					log.Error(2, "ChangeStatus: %v", err)
+					log.Error("ChangeStatus: %v", err)
 				} else {
 					log.Trace("Issue [%d] status changed to closed: %v", issue.ID, issue.IsClosed)
 				}
@@ -902,11 +903,16 @@ func NewComment(c *context.Context, f form.CreateComment) {
 		if issue.IsPull {
 			typeName = "pulls"
 		}
-		if comment != nil {
-			c.RawRedirect(fmt.Sprintf("%s/%s/%d#%s", c.Repo.RepoLink, typeName, issue.Index, comment.HashTag()))
-		} else {
-			c.Redirect(fmt.Sprintf("%s/%s/%d", c.Repo.RepoLink, typeName, issue.Index))
+
+		location := url.URL{
+			Path: fmt.Sprintf("%s/%d", typeName, issue.Index),
 		}
+
+		if comment != nil {
+			location.Fragment = comment.HashTag()
+		}
+
+		c.RawRedirect(c.Repo.MakeURL(location))
 	}()
 
 	// Fix #321: Allow empty comments, as long as we have attachments.
@@ -990,13 +996,13 @@ func Labels(c *context.Context) {
 
 func InitializeLabels(c *context.Context, f form.InitializeLabels) {
 	if c.HasError() {
-		c.Redirect(c.Repo.RepoLink + "/labels")
+		c.RawRedirect(c.Repo.MakeURL("labels"))
 		return
 	}
 	list, err := db.GetLabelTemplateFile(f.TemplateName)
 	if err != nil {
 		c.Flash.Error(c.Tr("repo.issues.label_templates.fail_to_load_file", f.TemplateName, err))
-		c.Redirect(c.Repo.RepoLink + "/labels")
+		c.RawRedirect(c.Repo.MakeURL("labels"))
 		return
 	}
 
@@ -1012,7 +1018,7 @@ func InitializeLabels(c *context.Context, f form.InitializeLabels) {
 		c.Handle(500, "NewLabels", err)
 		return
 	}
-	c.Redirect(c.Repo.RepoLink + "/labels")
+	c.RawRedirect(c.Repo.MakeURL("labels"))
 }
 
 func NewLabel(c *context.Context, f form.CreateLabel) {
@@ -1021,7 +1027,7 @@ func NewLabel(c *context.Context, f form.CreateLabel) {
 
 	if c.HasError() {
 		c.Flash.Error(c.Data["ErrorMsg"].(string))
-		c.Redirect(c.Repo.RepoLink + "/labels")
+		c.RawRedirect(c.Repo.MakeURL("labels"))
 		return
 	}
 
@@ -1034,7 +1040,7 @@ func NewLabel(c *context.Context, f form.CreateLabel) {
 		c.Handle(500, "NewLabel", err)
 		return
 	}
-	c.Redirect(c.Repo.RepoLink + "/labels")
+	c.RawRedirect(c.Repo.MakeURL("labels"))
 }
 
 func UpdateLabel(c *context.Context, f form.CreateLabel) {
@@ -1055,7 +1061,7 @@ func UpdateLabel(c *context.Context, f form.CreateLabel) {
 		c.Handle(500, "UpdateLabel", err)
 		return
 	}
-	c.Redirect(c.Repo.RepoLink + "/labels")
+	c.RawRedirect(c.Repo.MakeURL("labels"))
 }
 
 func DeleteLabel(c *context.Context) {
@@ -1066,7 +1072,7 @@ func DeleteLabel(c *context.Context) {
 	}
 
 	c.JSON(200, map[string]interface{}{
-		"redirect": c.Repo.RepoLink + "/labels",
+		"redirect": c.Repo.MakeURL("labels"),
 	})
 	return
 }
@@ -1092,7 +1098,7 @@ func Milestones(c *context.Context) {
 	} else {
 		total = int(closedCount)
 	}
-	c.Data["Page"] = paginater.New(total, setting.UI.IssuePagingNum, page, 5)
+	c.Data["Page"] = paginater.New(total, conf.UI.IssuePagingNum, page, 5)
 
 	miles, err := db.GetMilestones(c.Repo.Repository.ID, page, isShowClosed)
 	if err != nil {
@@ -1124,7 +1130,7 @@ func NewMilestone(c *context.Context) {
 	c.Data["PageIsIssueList"] = true
 	c.Data["PageIsMilestones"] = true
 	c.Data["RequireDatetimepicker"] = true
-	c.Data["DateLang"] = setting.DateLang(c.Locale.Language())
+	c.Data["DateLang"] = conf.I18n.DateLang(c.Locale.Language())
 	c.HTML(200, MILESTONE_NEW)
 }
 
@@ -1133,7 +1139,7 @@ func NewMilestonePost(c *context.Context, f form.CreateMilestone) {
 	c.Data["PageIsIssueList"] = true
 	c.Data["PageIsMilestones"] = true
 	c.Data["RequireDatetimepicker"] = true
-	c.Data["DateLang"] = setting.DateLang(c.Locale.Language())
+	c.Data["DateLang"] = conf.I18n.DateLang(c.Locale.Language())
 
 	if c.HasError() {
 		c.HTML(200, MILESTONE_NEW)
@@ -1161,7 +1167,7 @@ func NewMilestonePost(c *context.Context, f form.CreateMilestone) {
 	}
 
 	c.Flash.Success(c.Tr("repo.milestones.create_success", f.Title))
-	c.Redirect(c.Repo.RepoLink + "/milestones")
+	c.RawRedirect(c.Repo.MakeURL("milestones"))
 }
 
 func EditMilestone(c *context.Context) {
@@ -1169,7 +1175,7 @@ func EditMilestone(c *context.Context) {
 	c.Data["PageIsMilestones"] = true
 	c.Data["PageIsEditMilestone"] = true
 	c.Data["RequireDatetimepicker"] = true
-	c.Data["DateLang"] = setting.DateLang(c.Locale.Language())
+	c.Data["DateLang"] = conf.I18n.DateLang(c.Locale.Language())
 
 	m, err := db.GetMilestoneByRepoID(c.Repo.Repository.ID, c.ParamsInt64(":id"))
 	if err != nil {
@@ -1193,7 +1199,7 @@ func EditMilestonePost(c *context.Context, f form.CreateMilestone) {
 	c.Data["PageIsMilestones"] = true
 	c.Data["PageIsEditMilestone"] = true
 	c.Data["RequireDatetimepicker"] = true
-	c.Data["DateLang"] = setting.DateLang(c.Locale.Language())
+	c.Data["DateLang"] = conf.I18n.DateLang(c.Locale.Language())
 
 	if c.HasError() {
 		c.HTML(200, MILESTONE_NEW)
@@ -1228,7 +1234,7 @@ func EditMilestonePost(c *context.Context, f form.CreateMilestone) {
 	}
 
 	c.Flash.Success(c.Tr("repo.milestones.edit_success", m.Name))
-	c.Redirect(c.Repo.RepoLink + "/milestones")
+	c.RawRedirect(c.Repo.MakeURL("milestones"))
 }
 
 func ChangeMilestonStatus(c *context.Context) {
@@ -1242,6 +1248,10 @@ func ChangeMilestonStatus(c *context.Context) {
 		return
 	}
 
+	location := url.URL{
+		Path: "milestones",
+	}
+
 	switch c.Params(":action") {
 	case "open":
 		if m.IsClosed {
@@ -1250,7 +1260,7 @@ func ChangeMilestonStatus(c *context.Context) {
 				return
 			}
 		}
-		c.Redirect(c.Repo.RepoLink + "/milestones?state=open")
+		location.RawQuery = "state=open"
 	case "close":
 		if !m.IsClosed {
 			m.ClosedDate = time.Now()
@@ -1259,10 +1269,10 @@ func ChangeMilestonStatus(c *context.Context) {
 				return
 			}
 		}
-		c.Redirect(c.Repo.RepoLink + "/milestones?state=closed")
-	default:
-		c.Redirect(c.Repo.RepoLink + "/milestones")
+		location.RawQuery = "state=closed"
 	}
+
+	c.RawRedirect(c.Repo.MakeURL(location))
 }
 
 func DeleteMilestone(c *context.Context) {
@@ -1273,6 +1283,6 @@ func DeleteMilestone(c *context.Context) {
 	}
 
 	c.JSON(200, map[string]interface{}{
-		"redirect": c.Repo.RepoLink + "/milestones",
+		"redirect": c.Repo.MakeURL("milestones"),
 	})
 }

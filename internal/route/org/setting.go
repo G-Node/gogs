@@ -5,16 +5,16 @@
 package org
 
 import (
-	user2 "github.com/G-Node/gogs/internal/route/user"
 	"strings"
 
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
 	"github.com/G-Node/gogs/internal/form"
-	"github.com/G-Node/gogs/internal/setting"
+	"github.com/G-Node/gogs/internal/route/user"
 )
 
 const (
@@ -63,7 +63,7 @@ func SettingsPost(c *context.Context, f form.UpdateOrgSetting) {
 			return
 		}
 		// reset c.org.OrgLink with new name
-		c.Org.OrgLink = setting.AppSubURL + "/org/" + f.Name
+		c.Org.OrgLink = conf.Server.Subpath + "/org/" + f.Name
 		log.Trace("Organization name changed: %s -> %s", org.Name, f.Name)
 	}
 	// In case it's just a case change.
@@ -89,7 +89,7 @@ func SettingsPost(c *context.Context, f form.UpdateOrgSetting) {
 
 func SettingsAvatar(c *context.Context, f form.Avatar) {
 	f.Source = form.AVATAR_LOCAL
-	if err := user2.UpdateAvatarSetting(c, f, c.Org.Organization); err != nil {
+	if err := user.UpdateAvatarSetting(c, f, c.Org.Organization); err != nil {
 		c.Flash.Error(err.Error())
 	} else {
 		c.Flash.Success(c.Tr("org.settings.update_avatar_success"))
@@ -130,7 +130,7 @@ func SettingsDelete(c *context.Context) {
 			}
 		} else {
 			log.Trace("Organization deleted: %s", org.Name)
-			c.Redirect(setting.AppSubURL + "/")
+			c.Redirect(conf.Server.Subpath + "/")
 		}
 		return
 	}
@@ -143,7 +143,7 @@ func Webhooks(c *context.Context) {
 	c.Data["PageIsSettingsHooks"] = true
 	c.Data["BaseLink"] = c.Org.OrgLink
 	c.Data["Description"] = c.Tr("org.settings.hooks_desc")
-	c.Data["Types"] = setting.Webhook.Types
+	c.Data["Types"] = conf.Webhook.Types
 
 	ws, err := db.GetWebhooksByOrgID(c.Org.Organization.ID)
 	if err != nil {

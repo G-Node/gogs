@@ -6,26 +6,26 @@ package repo
 
 import (
 	"fmt"
-	convert2 "github.com/G-Node/gogs/internal/route/api/v1/convert"
 	"net/http"
 	"path"
 
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 
 	api "github.com/gogs/go-gogs-client"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
 	"github.com/G-Node/gogs/internal/form"
-	"github.com/G-Node/gogs/internal/setting"
+	"github.com/G-Node/gogs/internal/route/api/v1/convert"
 )
 
 func Search(c *context.APIContext) {
 	opts := &db.SearchRepoOptions{
 		Keyword:  path.Base(c.Query("q")),
 		OwnerID:  c.QueryInt64("uid"),
-		PageSize: convert2.ToCorrectPageSize(c.QueryInt("limit")),
+		PageSize: convert.ToCorrectPageSize(c.QueryInt("limit")),
 		Page:     c.QueryInt("page"),
 	}
 
@@ -181,7 +181,7 @@ func CreateUserRepo(c *context.APIContext, owner *db.User, opt api.CreateRepoOpt
 		} else {
 			if repo != nil {
 				if err = db.DeleteRepository(c.User.ID, repo.ID); err != nil {
-					log.Error(2, "DeleteRepository: %v", err)
+					log.Error("DeleteRepository: %v", err)
 				}
 			}
 			c.ServerError("CreateRepository", err)
@@ -271,14 +271,14 @@ func Migrate(c *context.APIContext, f form.MigrateRepo) {
 	repo, err := db.MigrateRepository(c.User, ctxUser, db.MigrateRepoOptions{
 		Name:        f.RepoName,
 		Description: f.Description,
-		IsPrivate:   f.Private || setting.Repository.ForcePrivate,
+		IsPrivate:   f.Private || conf.Repository.ForcePrivate,
 		IsMirror:    f.Mirror,
 		RemoteAddr:  remoteAddr,
 	})
 	if err != nil {
 		if repo != nil {
 			if errDelete := db.DeleteRepository(ctxUser.ID, repo.ID); errDelete != nil {
-				log.Error(2, "DeleteRepository: %v", errDelete)
+				log.Error("DeleteRepository: %v", errDelete)
 			}
 		}
 

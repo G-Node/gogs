@@ -11,11 +11,11 @@ import (
 
 	. "github.com/smartystreets/goconvey/convey"
 
-	"github.com/G-Node/gogs/internal/setting"
+	"github.com/G-Node/gogs/internal/conf"
 )
 
 func init() {
-	setting.NewContext()
+	conf.MustInit("")
 }
 
 func Test_SSHParsePublicKey(t *testing.T) {

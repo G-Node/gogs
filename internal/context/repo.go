@@ -6,15 +6,18 @@ package context
 
 import (
 	"fmt"
-	"gopkg.in/editorconfig/editorconfig-core-go.v1"
-	"gopkg.in/macaron.v1"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
+	"github.com/editorconfig/editorconfig-core-go/v2"
+	"gopkg.in/macaron.v1"
+
 	"github.com/G-Node/git-module"
+
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
-	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/libgin/libgin"
 )
 
@@ -93,6 +96,22 @@ func (r *Repository) GetEditorconfig() (*editorconfig.Editorconfig, error) {
 		return nil, err
 	}
 	return editorconfig.ParseBytes(data)
+}
+
+// MakeURL accepts a string or url.URL as argument and returns escaped URL prepended with repository URL.
+func (r *Repository) MakeURL(location interface{}) string {
+	switch location := location.(type) {
+	case string:
+		tempURL := url.URL{
+			Path: r.RepoLink + "/" + location,
+		}
+		return tempURL.String()
+	case url.URL:
+		location.Path = r.RepoLink + "/" + location.Path
+		return location.String()
+	default:
+		panic("location type must be either string or url.URL")
+	}
 }
 
 // PullRequestURL returns URL for composing a pull request.
@@ -230,9 +249,9 @@ func RepoAssignment(pages ...bool) macaron.Handler {
 		c.Data["IsRepositoryAdmin"] = c.Repo.IsAdmin()
 		c.Data["IsRepositoryWriter"] = c.Repo.IsWriter()
 
-		c.Data["DisableSSH"] = setting.SSH.Disabled
-		c.Data["DisableHTTP"] = setting.Repository.DisableHTTPGit
-		c.Data["ShowHTTP"] = setting.Repository.ShowHTTPGit
+		c.Data["DisableSSH"] = conf.SSH.Disabled
+		c.Data["DisableHTTP"] = conf.Repository.DisableHTTPGit
+		c.Data["ShowHTTP"] = conf.Repository.ShowHTTPGit
 		c.Data["CloneLink"] = repo.CloneLink()
 		c.Data["WikiCloneLink"] = repo.WikiCloneLink()
 

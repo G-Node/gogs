@@ -13,8 +13,8 @@ import (
 	"github.com/G-Node/git-module"
 	"github.com/go-macaron/captcha"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
-	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/tool"
 )
 
@@ -40,7 +40,7 @@ func serveData(c *context.Context, name string, r io.Reader, cpt *captcha.Captch
 			c.Resp.Header().Set("Content-Disposition", "attachment; filename=\""+name+"\"")
 			c.Resp.Header().Set("Content-Transfer-Encoding", "binary")
 		}
-	} else if !setting.Repository.EnableRawFileRenderMode || !c.QueryBool("render") {
+	} else if !conf.Repository.EnableRawFileRenderMode || !c.QueryBool("render") {
 		c.Resp.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	}
 

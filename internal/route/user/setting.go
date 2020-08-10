@@ -16,14 +16,14 @@ import (
 	"github.com/pquerna/otp"
 	"github.com/pquerna/otp/totp"
 	"github.com/unknwon/com"
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
+	"github.com/G-Node/gogs/internal/email"
 	"github.com/G-Node/gogs/internal/form"
-	"github.com/G-Node/gogs/internal/mailer"
-	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/tool"
 )
 
@@ -75,8 +75,6 @@ func SettingsPost(c *context.Context, f form.UpdateProfile) {
 				switch {
 				case db.IsErrUserAlreadyExist(err):
 					msg = c.Tr("form.username_been_taken")
-				case db.IsErrEmailAlreadyUsed(err):
-					msg = c.Tr("form.email_been_used")
 				case db.IsErrNameReserved(err):
 					msg = c.Tr("form.name_reserved")
 				case db.IsErrNamePatternNotAllowed(err):
@@ -103,6 +101,11 @@ func SettingsPost(c *context.Context, f form.UpdateProfile) {
 	c.User.Website = f.Website
 	c.User.Location = f.Location
 	if err := db.UpdateUser(c.User); err != nil {
+		if db.IsErrEmailAlreadyUsed(err) {
+			msg := c.Tr("form.email_been_used")
+			c.RenderWithErr(msg, SETTINGS_PROFILE, &f)
+			return
+		}
 		c.ServerError("UpdateUser", err)
 		return
 	}
@@ -141,7 +144,7 @@ func UpdateAvatarSetting(c *context.Context, f form.Avatar, ctxUser *db.User) er
 		// generate a random one when needed.
 		if ctxUser.UseCustomAvatar && !com.IsFile(ctxUser.CustomAvatarPath()) {
 			if err := ctxUser.GenerateRandomAvatar(); err != nil {
-				log.Error(2, "generate random avatar [%d]: %v", ctxUser.ID, err)
+				log.Error("generate random avatar [%d]: %v", ctxUser.ID, err)
 			}
 		}
 	}
@@ -256,12 +259,12 @@ func SettingsEmailPost(c *context.Context, f form.AddEmail) {
 		return
 	}
 
-	email := &db.EmailAddress{
+	emailAddr := &db.EmailAddress{
 		UID:         c.User.ID,
 		Email:       f.Email,
-		IsActivated: !setting.Service.RegisterEmailConfirm,
+		IsActivated: !conf.Auth.RequireEmailConfirmation,
 	}
-	if err := db.AddEmailAddress(email); err != nil {
+	if err := db.AddEmailAddress(emailAddr); err != nil {
 		if db.IsErrEmailAlreadyUsed(err) {
 			c.RenderWithErr(c.Tr("form.email_been_used"), SETTINGS_EMAILS, &f)
 		} else {
@@ -271,13 +274,13 @@ func SettingsEmailPost(c *context.Context, f form.AddEmail) {
 	}
 
 	// Send confirmation email
-	if setting.Service.RegisterEmailConfirm {
-		mailer.SendActivateEmailMail(c.Context, db.NewMailerUser(c.User), email.Email)
+	if conf.Auth.RequireEmailConfirmation {
+		email.SendActivateEmailMail(c.Context, db.NewMailerUser(c.User), emailAddr.Email)
 
 		if err := c.Cache.Put("MailResendLimit_"+c.User.LowerName, c.User.LowerName, 180); err != nil {
-			log.Error(2, "Set cache 'MailResendLimit' failed: %v", err)
+			log.Error("Set cache 'MailResendLimit' failed: %v", err)
 		}
-		c.Flash.Info(c.Tr("settings.add_email_confirmation_sent", email.Email, setting.Service.ActiveCodeLives/60))
+		c.Flash.Info(c.Tr("settings.add_email_confirmation_sent", emailAddr.Email, conf.Auth.ActivateCodeLives/60))
 	} else {
 		c.Flash.Success(c.Tr("settings.add_email_success"))
 	}
@@ -296,7 +299,7 @@ func DeleteEmail(c *context.Context) {
 
 	c.Flash.Success(c.Tr("settings.email_deletion_success"))
 	c.JSONSuccess(map[string]interface{}{
-		"redirect": setting.AppSubURL + "/user/settings/email",
+		"redirect": conf.Server.Subpath + "/user/settings/email",
 	})
 }
 
@@ -368,7 +371,7 @@ func DeleteSSHKey(c *context.Context) {
 	}
 
 	c.JSONSuccess(map[string]interface{}{
-		"redirect": setting.AppSubURL + "/user/settings/ssh",
+		"redirect": conf.Server.Subpath + "/user/settings/ssh",
 	})
 }
 
@@ -403,7 +406,7 @@ func SettingsTwoFactorEnable(c *context.Context) {
 	}
 	if key == nil {
 		key, err = totp.Generate(totp.GenerateOpts{
-			Issuer:      setting.AppName,
+			Issuer:      conf.App.BrandName,
 			AccountName: c.User.Email,
 		})
 		if err != nil {
@@ -503,7 +506,7 @@ func SettingsTwoFactorDisable(c *context.Context) {
 
 	c.Flash.Success(c.Tr("settings.two_factor_disable_success"))
 	c.JSONSuccess(map[string]interface{}{
-		"redirect": setting.AppSubURL + "/user/settings/security",
+		"redirect": conf.Server.Subpath + "/user/settings/security",
 	})
 }
 
@@ -539,7 +542,7 @@ func SettingsLeaveRepo(c *context.Context) {
 
 	c.Flash.Success(c.Tr("settings.repos.leave_success", repo.FullName()))
 	c.JSONSuccess(map[string]interface{}{
-		"redirect": setting.AppSubURL + "/user/settings/repositories",
+		"redirect": conf.Server.Subpath + "/user/settings/repositories",
 	})
 }
 
@@ -568,7 +571,7 @@ func SettingsLeaveOrganization(c *context.Context) {
 	}
 
 	c.JSONSuccess(map[string]interface{}{
-		"redirect": setting.AppSubURL + "/user/settings/organizations",
+		"redirect": conf.Server.Subpath + "/user/settings/organizations",
 	})
 }
 
@@ -629,7 +632,7 @@ func SettingsDeleteApplication(c *context.Context) {
 	}
 
 	c.JSONSuccess(map[string]interface{}{
-		"redirect": setting.AppSubURL + "/user/settings/applications",
+		"redirect": conf.Server.Subpath + "/user/settings/applications",
 	})
 }
 
@@ -651,16 +654,16 @@ func SettingsDelete(c *context.Context) {
 			switch {
 			case db.IsErrUserOwnRepos(err):
 				c.Flash.Error(c.Tr("form.still_own_repo"))
-				c.Redirect(setting.AppSubURL + "/user/settings/delete")
+				c.Redirect(conf.Server.Subpath + "/user/settings/delete")
 			case db.IsErrUserHasOrgs(err):
 				c.Flash.Error(c.Tr("form.still_has_org"))
-				c.Redirect(setting.AppSubURL + "/user/settings/delete")
+				c.Redirect(conf.Server.Subpath + "/user/settings/delete")
 			default:
 				c.ServerError("DeleteUser", err)
 			}
 		} else {
 			log.Trace("Account deleted: %s", c.User.Name)
-			c.Redirect(setting.AppSubURL + "/")
+			c.Redirect(conf.Server.Subpath + "/")
 		}
 		return
 	}

@@ -11,7 +11,7 @@ import (
 	"net/smtp"
 	"net/textproto"
 	"os"
-	"path"
+	"path/filepath"
 	"strings"
 	"sync"
 	"time"
@@ -19,16 +19,16 @@ import (
 	"github.com/go-macaron/binding"
 	"github.com/json-iterator/go"
 	"github.com/unknwon/com"
-	log "gopkg.in/clog.v1"
 	"gopkg.in/ini.v1"
+	log "unknwon.dev/clog/v2"
 	"xorm.io/core"
 	"xorm.io/xorm"
 
 	"github.com/G-Node/gogs/internal/auth/github"
 	"github.com/G-Node/gogs/internal/auth/ldap"
 	"github.com/G-Node/gogs/internal/auth/pam"
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db/errors"
-	"github.com/G-Node/gogs/internal/setting"
 )
 
 type LoginType int
@@ -462,14 +462,14 @@ var localLoginSources = &LocalLoginSources{}
 // LoadAuthSources loads authentication sources from local files
 // and converts them into login sources.
 func LoadAuthSources() {
-	authdPath := path.Join(setting.CustomPath, "conf/auth.d")
+	authdPath := filepath.Join(conf.CustomDir(), "conf", "auth.d")
 	if !com.IsDir(authdPath) {
 		return
 	}
 
 	paths, err := com.GetFileListBySuffix(authdPath, ".conf")
 	if err != nil {
-		log.Fatal(2, "Failed to list authentication sources: %v", err)
+		log.Fatal("Failed to list authentication sources: %v", err)
 	}
 
 	localLoginSources.sources = make([]*LoginSource, 0, len(paths))
@@ -477,7 +477,7 @@ func LoadAuthSources() {
 	for _, fpath := range paths {
 		authSource, err := ini.Load(fpath)
 		if err != nil {
-			log.Fatal(2, "Failed to load authentication source: %v", err)
+			log.Fatal("Failed to load authentication source: %v", err)
 		}
 		authSource.NameMapper = ini.TitleUnderscore
 
@@ -496,7 +496,7 @@ func LoadAuthSources() {
 
 		fi, err := os.Stat(fpath)
 		if err != nil {
-			log.Fatal(2, "Failed to load authentication source: %v", err)
+			log.Fatal("Failed to load authentication source: %v", err)
 		}
 		loginSource.Updated = fi.ModTime()
 
@@ -519,11 +519,11 @@ func LoadAuthSources() {
 			loginSource.Type = LOGIN_GITHUB
 			loginSource.Cfg = &GitHubConfig{}
 		default:
-			log.Fatal(2, "Failed to load authentication source: unknown type '%s'", authType)
+			log.Fatal("Failed to load authentication source: unknown type '%s'", authType)
 		}
 
 		if err = authSource.Section("config").MapTo(loginSource.Cfg); err != nil {
-			log.Fatal(2, "Failed to parse authentication source 'config': %v", err)
+			log.Fatal("Failed to parse authentication source 'config': %v", err)
 		}
 
 		localLoginSources.sources = append(localLoginSources.sources, loginSource)

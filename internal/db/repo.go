@@ -23,19 +23,19 @@ import (
 	"github.com/nfnt/resize"
 	"github.com/unknwon/cae/zip"
 	"github.com/unknwon/com"
-	log "gopkg.in/clog.v1"
 	"gopkg.in/ini.v1"
+	log "unknwon.dev/clog/v2"
 	"xorm.io/xorm"
 
 	git "github.com/G-Node/git-module"
 	api "github.com/gogs/go-gogs-client"
 
 	"github.com/G-Node/gogs/internal/avatar"
-	"github.com/G-Node/gogs/internal/bindata"
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db/errors"
 	"github.com/G-Node/gogs/internal/markup"
+	"github.com/G-Node/gogs/internal/osutil"
 	"github.com/G-Node/gogs/internal/process"
-	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/sync"
 )
 
@@ -56,15 +56,15 @@ func LoadRepoConfig() {
 	types := []string{"gitignore", "license", "readme", "label"}
 	typeFiles := make([][]string, 4)
 	for i, t := range types {
-		files, err := bindata.AssetDir("conf/" + t)
+		files, err := conf.AssetDir("conf/" + t)
 		if err != nil {
-			log.Fatal(4, "Fail to get %s files: %v", t, err)
+			log.Fatal("Failed to get %s files: %v", t, err)
 		}
-		customPath := path.Join(setting.CustomPath, "conf", t)
+		customPath := filepath.Join(conf.CustomDir(), "conf", t)
 		if com.IsDir(customPath) {
 			customFiles, err := com.StatDir(customPath)
 			if err != nil {
-				log.Fatal(4, "Fail to get custom %s files: %v", t, err)
+				log.Fatal("Failed to get custom %s files: %v", t, err)
 			}
 
 			for _, f := range customFiles {
@@ -87,13 +87,13 @@ func LoadRepoConfig() {
 
 	// Filter out invalid names and promote preferred licenses.
 	sortedLicenses := make([]string, 0, len(Licenses))
-	for _, name := range setting.Repository.PreferredLicenses {
+	for _, name := range conf.Repository.PreferredLicenses {
 		if com.IsSliceContainsStr(Licenses, name) {
 			sortedLicenses = append(sortedLicenses, name)
 		}
 	}
 	for _, name := range Licenses {
-		if !com.IsSliceContainsStr(setting.Repository.PreferredLicenses, name) {
+		if !com.IsSliceContainsStr(conf.Repository.PreferredLicenses, name) {
 			sortedLicenses = append(sortedLicenses, name)
 		}
 	}
@@ -105,23 +105,23 @@ func NewRepoContext() {
 
 	// Check Git installation.
 	if _, err := exec.LookPath("git"); err != nil {
-		log.Fatal(4, "Fail to test 'git' command: %v (forgotten install?)", err)
+		log.Fatal("Failed to test 'git' command: %v (forgotten install?)", err)
 	}
 
 	// Check Git version.
 	var err error
-	setting.Git.Version, err = git.BinVersion()
+	conf.Git.Version, err = git.BinVersion()
 	if err != nil {
-		log.Fatal(4, "Fail to get Git version: %v", err)
+		log.Fatal("Failed to get Git version: %v", err)
 	}
 
-	log.Info("Git Version: %s", setting.Git.Version)
-	if version.Compare("1.7.1", setting.Git.Version, ">") {
-		log.Fatal(4, "Gogs requires Git version greater or equal to 1.7.1")
+	log.Trace("Git version: %s", conf.Git.Version)
+	if version.Compare("1.8.3", conf.Git.Version, ">") {
+		log.Fatal("Gogs requires Git version greater or equal to 1.8.3")
 	}
 	git.HookDir = "custom_hooks"
 	git.HookSampleDir = "hooks"
-	git.DefaultCommitsPageSize = setting.UI.User.CommitsPagingNum
+	git.DefaultCommitsPageSize = conf.UI.User.CommitsPagingNum
 
 	// Git requires setting user.name and user.email in order to commit changes.
 	for configKey, defaultValue := range map[string]string{"user.name": "Gogs", "user.email": "gogs@fake.local"} {
@@ -129,11 +129,11 @@ func NewRepoContext() {
 			// ExitError indicates this config is not set
 			if _, ok := err.(*exec.ExitError); ok || strings.TrimSpace(stdout) == "" {
 				if _, stderr, gerr := process.Exec("NewRepoContext(set "+configKey+")", "git", "config", "--global", configKey, defaultValue); gerr != nil {
-					log.Fatal(4, "Fail to set git %s(%s): %s", configKey, gerr, stderr)
+					log.Fatal("Failed to set git %s(%s): %s", configKey, gerr, stderr)
 				}
 				log.Info("Git config %s set to %s", configKey, defaultValue)
 			} else {
-				log.Fatal(4, "Fail to get git %s(%s): %s", configKey, err, stderr)
+				log.Fatal("Failed to get git %s(%s): %s", configKey, err, stderr)
 			}
 		}
 	}
@@ -141,10 +141,10 @@ func NewRepoContext() {
 	// Set git some configurations.
 	if _, stderr, err := process.Exec("NewRepoContext(git config --global core.quotepath false)",
 		"git", "config", "--global", "core.quotepath", "false"); err != nil {
-		log.Fatal(2, "Fail to execute 'git config --global core.quotepath false': %v - %s", err, stderr)
+		log.Fatal("Failed to execute 'git config --global core.quotepath false': %v - %s", err, stderr)
 	}
 
-	RemoveAllWithNotice("Clean up repository temporary data", filepath.Join(setting.AppDataPath, "tmp"))
+	RemoveAllWithNotice("Clean up repository temporary data", filepath.Join(conf.Server.AppDataPath, "tmp"))
 }
 
 // Repository contains information of a repository.
@@ -292,12 +292,12 @@ func (repo *Repository) FullName() string {
 }
 
 func (repo *Repository) HTMLURL() string {
-	return setting.AppURL + repo.FullName()
+	return conf.Server.ExternalURL + repo.FullName()
 }
 
 // CustomAvatarPath returns repository custom avatar file path.
 func (repo *Repository) CustomAvatarPath() string {
-	return filepath.Join(setting.RepositoryAvatarUploadPath, com.ToStr(repo.ID))
+	return filepath.Join(conf.Picture.RepositoryAvatarUploadPath, com.ToStr(repo.ID))
 }
 
 // RelAvatarLink returns relative avatar link to the site domain,
@@ -308,14 +308,14 @@ func (repo *Repository) RelAvatarLink() string {
 	if !com.IsExist(repo.CustomAvatarPath()) {
 		return defaultImgUrl
 	}
-	return fmt.Sprintf("%s/%s/%d", setting.AppSubURL, REPO_AVATAR_URL_PREFIX, repo.ID)
+	return fmt.Sprintf("%s/%s/%d", conf.Server.Subpath, REPO_AVATAR_URL_PREFIX, repo.ID)
 }
 
 // AvatarLink returns repository avatar absolute link.
 func (repo *Repository) AvatarLink() string {
 	link := repo.RelAvatarLink()
 	if link[0] == '/' && link[1] != '/' {
-		return setting.AppURL + strings.TrimPrefix(link, setting.AppSubURL)[1:]
+		return conf.Server.ExternalURL + strings.TrimPrefix(link, conf.Server.Subpath)[1:]
 	}
 	return link
 }
@@ -328,7 +328,7 @@ func (repo *Repository) UploadAvatar(data []byte) error {
 		return fmt.Errorf("decode image: %v", err)
 	}
 
-	os.MkdirAll(setting.RepositoryAvatarUploadPath, os.ModePerm)
+	_ = os.MkdirAll(conf.Picture.RepositoryAvatarUploadPath, os.ModePerm)
 	fw, err := os.Create(repo.CustomAvatarPath())
 	if err != nil {
 		return fmt.Errorf("create custom avatar directory: %v", err)
@@ -546,7 +546,7 @@ func (repo *Repository) RelLink() string {
 }
 
 func (repo *Repository) Link() string {
-	return setting.AppSubURL + "/" + repo.FullName()
+	return conf.Server.Subpath + "/" + repo.FullName()
 }
 
 func (repo *Repository) ComposeCompareURL(oldCommitID, newCommitID string) string {
@@ -593,7 +593,7 @@ func (repo *Repository) NextIssueIndex() int64 {
 }
 
 func (repo *Repository) LocalCopyPath() string {
-	return path.Join(setting.AppDataPath, "tmp/local-repo", com.ToStr(repo.ID))
+	return filepath.Join(conf.Server.AppDataPath, "tmp", "local-repo", com.ToStr(repo.ID))
 }
 
 // UpdateLocalCopy fetches latest changes of given branch from repoPath to localPath.
@@ -609,7 +609,7 @@ func UpdateLocalCopyBranch(repoPath, localPath, branch string, isWiki bool) (err
 			branch = ""
 		}
 		if err = git.Clone(repoPath, localPath, git.CloneRepoOptions{
-			Timeout: time.Duration(setting.Git.Timeout.Clone) * time.Second,
+			Timeout: time.Duration(conf.Git.Timeout.Clone) * time.Second,
 			Branch:  branch,
 		}); err != nil {
 			return fmt.Errorf("git clone %s: %v", branch, err)
@@ -686,7 +686,7 @@ type CloneLink struct {
 
 // ComposeHTTPSCloneURL returns HTTPS clone URL based on given owner and repository name.
 func ComposeHTTPSCloneURL(owner, repo string) string {
-	return fmt.Sprintf("%s%s/%s.git", setting.AppURL, owner, repo)
+	return fmt.Sprintf("%s%s/%s.git", conf.Server.ExternalURL, owner, repo)
 }
 
 func (repo *Repository) cloneLink(isWiki bool) *CloneLink {
@@ -697,10 +697,10 @@ func (repo *Repository) cloneLink(isWiki bool) *CloneLink {
 
 	repo.Owner = repo.MustOwner()
 	cl := new(CloneLink)
-	if setting.SSH.Port != 22 {
-		cl.SSH = fmt.Sprintf("ssh://%s@%s:%d/%s/%s.git", setting.RunUser, setting.SSH.Domain, setting.SSH.Port, repo.Owner.Name, repoName)
+	if conf.SSH.Port != 22 {
+		cl.SSH = fmt.Sprintf("ssh://%s@%s:%d/%s/%s.git", conf.App.RunUser, conf.SSH.Domain, conf.SSH.Port, repo.Owner.Name, repoName)
 	} else {
-		cl.SSH = fmt.Sprintf("%s@%s:/%s/%s.git", setting.RunUser, setting.SSH.Domain, repo.Owner.Name, repoName)
+		cl.SSH = fmt.Sprintf("%s@%s:/%s/%s.git", conf.App.RunUser, conf.SSH.Domain, repo.Owner.Name, repoName)
 	}
 	cl.HTTPS = ComposeHTTPSCloneURL(repo.Owner.Name, repoName)
 	cl.Gin = fmt.Sprintf("gin get %s/%s", repo.Owner.Name, repoName)
@@ -766,7 +766,7 @@ func MigrateRepository(doer, owner *User, opts MigrateRepoOptions) (*Repository,
 		repo.NumWatches = 1
 	}
 
-	migrateTimeout := time.Duration(setting.Git.Timeout.Migrate) * time.Second
+	migrateTimeout := time.Duration(conf.Git.Timeout.Migrate) * time.Second
 
 	RemoveAllWithNotice("Repository path erase before creation", repoPath)
 	if err = git.Clone(opts.RemoteAddr, repoPath, git.CloneRepoOptions{
@@ -785,7 +785,7 @@ func MigrateRepository(doer, owner *User, opts MigrateRepoOptions) (*Repository,
 			Quiet:   true,
 			Timeout: migrateTimeout,
 		}); err != nil {
-			log.Trace("Fail to clone wiki: %v", err)
+			log.Trace("Failed to clone wiki: %v", err)
 			RemoveAllWithNotice("Delete repository wiki for initialization failure", wikiPath)
 		}
 	}
@@ -815,16 +815,16 @@ func MigrateRepository(doer, owner *User, opts MigrateRepoOptions) (*Repository,
 		}
 
 		if err = repo.UpdateSize(); err != nil {
-			log.Error(2, "UpdateSize [repo_id: %d]: %v", repo.ID, err)
+			log.Error("UpdateSize [repo_id: %d]: %v", repo.ID, err)
 		}
 	}
 
 	if opts.IsMirror {
 		if _, err = x.InsertOne(&Mirror{
 			RepoID:      repo.ID,
-			Interval:    setting.Mirror.DefaultInterval,
+			Interval:    conf.Mirror.DefaultInterval,
 			EnablePrune: true,
-			NextSync:    time.Now().Add(time.Duration(setting.Mirror.DefaultInterval) * time.Hour),
+			NextSync:    time.Now().Add(time.Duration(conf.Mirror.DefaultInterval) * time.Hour),
 		}); err != nil {
 			return repo, fmt.Errorf("InsertOne: %v", err)
 		}
@@ -860,7 +860,7 @@ func createDelegateHooks(repoPath string) (err error) {
 	for _, name := range git.HookNames {
 		hookPath := filepath.Join(repoPath, "hooks", name)
 		if err = ioutil.WriteFile(hookPath,
-			[]byte(fmt.Sprintf(hooksTpls[name], setting.ScriptType, setting.AppPath, setting.CustomConf)),
+			[]byte(fmt.Sprintf(hooksTpls[name], conf.Repository.ScriptType, conf.AppPath(), conf.CustomConf)),
 			os.ModePerm); err != nil {
 			return fmt.Errorf("create delegate hook '%s': %v", hookPath, err)
 		}
@@ -931,11 +931,11 @@ func getRepoInitFile(tp, name string) ([]byte, error) {
 	relPath := path.Join("conf", tp, strings.TrimLeft(path.Clean("/"+name), "/"))
 
 	// Use custom file when available.
-	customPath := path.Join(setting.CustomPath, relPath)
-	if com.IsFile(customPath) {
+	customPath := filepath.Join(conf.CustomDir(), relPath)
+	if osutil.IsFile(customPath) {
 		return ioutil.ReadFile(customPath)
 	}
-	return bindata.Asset(relPath)
+	return conf.Asset(relPath)
 }
 
 func prepareRepoCommit(repo *Repository, tmpDir, repoPath string, opts CreateRepoOptions) error {
@@ -1165,7 +1165,7 @@ func countRepositories(userID int64, private bool) int64 {
 
 	count, err := sess.Count(new(Repository))
 	if err != nil {
-		log.Error(4, "countRepositories: %v", err)
+		log.Error("countRepositories: %v", err)
 	}
 	return count
 }
@@ -1438,11 +1438,11 @@ func updateRepository(e Engine, repo *Repository, visibilityChanged bool) (err e
 		daemonExportFile := path.Join(repo.RepoPath(), "git-daemon-export-ok")
 		if repo.IsPrivate && com.IsExist(daemonExportFile) {
 			if err = os.Remove(daemonExportFile); err != nil {
-				log.Error(4, "Failed to remove %s: %v", daemonExportFile, err)
+				log.Error("Failed to remove %s: %v", daemonExportFile, err)
 			}
 		} else if !repo.IsPrivate && !com.IsExist(daemonExportFile) {
 			if f, err := os.Create(daemonExportFile); err != nil {
-				log.Error(4, "Failed to create %s: %v", daemonExportFile, err)
+				log.Error("Failed to create %s: %v", daemonExportFile, err)
 			} else {
 				f.Close()
 			}
@@ -1594,7 +1594,7 @@ func DeleteRepository(uid, repoID int64) error {
 
 	if repo.NumForks > 0 {
 		if _, err = x.Exec("UPDATE `repository` SET fork_id=0,is_fork=? WHERE fork_id=?", false, repo.ID); err != nil {
-			log.Error(4, "reset 'fork_id' and 'is_fork': %v", err)
+			log.Error("reset 'fork_id' and 'is_fork': %v", err)
 		}
 	}
 
@@ -1770,7 +1770,7 @@ func DeleteOldRepositoryArchives() {
 	log.Trace("Doing: DeleteOldRepositoryArchives")
 
 	formats := []string{"zip", "targz"}
-	oldestTime := time.Now().Add(-setting.Cron.RepoArchiveCleanup.OlderThan)
+	oldestTime := time.Now().Add(-conf.Cron.RepoArchiveCleanup.OlderThan)
 	if err := x.Where("id > 0").Iterate(new(Repository),
 		func(idx int, bean interface{}) error {
 			repo := bean.(*Repository)
@@ -1783,14 +1783,14 @@ func DeleteOldRepositoryArchives() {
 
 				dir, err := os.Open(dirPath)
 				if err != nil {
-					log.Error(3, "Fail to open directory '%s': %v", dirPath, err)
+					log.Error("Failed to open directory '%s': %v", dirPath, err)
 					continue
 				}
 
 				fis, err := dir.Readdir(0)
 				dir.Close()
 				if err != nil {
-					log.Error(3, "Fail to read directory '%s': %v", dirPath, err)
+					log.Error("Failed to read directory '%s': %v", dirPath, err)
 					continue
 				}
 
@@ -1801,10 +1801,10 @@ func DeleteOldRepositoryArchives() {
 
 					archivePath := filepath.Join(dirPath, fi.Name())
 					if err = os.Remove(archivePath); err != nil {
-						desc := fmt.Sprintf("Fail to health delete archive '%s': %v", archivePath, err)
+						desc := fmt.Sprintf("Failed to health delete archive '%s': %v", archivePath, err)
 						log.Warn(desc)
 						if err = CreateRepositoryNotice(desc); err != nil {
-							log.Error(3, "CreateRepositoryNotice: %v", err)
+							log.Error("CreateRepositoryNotice: %v", err)
 						}
 					}
 				}
@@ -1812,7 +1812,7 @@ func DeleteOldRepositoryArchives() {
 
 			return nil
 		}); err != nil {
-		log.Error(2, "DeleteOldRepositoryArchives: %v", err)
+		log.Error("DeleteOldRepositoryArchives: %v", err)
 	}
 }
 
@@ -1933,21 +1933,21 @@ func GitFsck() {
 		func(idx int, bean interface{}) error {
 			repo := bean.(*Repository)
 			repoPath := repo.RepoPath()
-			if err := git.Fsck(repoPath, setting.Cron.RepoHealthCheck.Timeout, setting.Cron.RepoHealthCheck.Args...); err != nil {
+			if err := git.Fsck(repoPath, conf.Cron.RepoHealthCheck.Timeout, conf.Cron.RepoHealthCheck.Args...); err != nil {
 				desc := fmt.Sprintf("Failed to perform health check on repository '%s': %v", repoPath, err)
 				log.Warn(desc)
 				if err = CreateRepositoryNotice(desc); err != nil {
-					log.Error(3, "CreateRepositoryNotice: %v", err)
+					log.Error("CreateRepositoryNotice: %v", err)
 				}
 			}
 			return nil
 		}); err != nil {
-		log.Error(2, "GitFsck: %v", err)
+		log.Error("GitFsck: %v", err)
 	}
 }
 
 func GitGcRepos() error {
-	args := append([]string{"gc"}, setting.Git.GCArgs...)
+	args := append([]string{"gc"}, conf.Git.GCArgs...)
 	return x.Where("id > 0").Iterate(new(Repository),
 		func(idx int, bean interface{}) error {
 			repo := bean.(*Repository)
@@ -1955,7 +1955,7 @@ func GitGcRepos() error {
 				return err
 			}
 			_, stderr, err := process.ExecDir(
-				time.Duration(setting.Git.Timeout.GC)*time.Second,
+				time.Duration(conf.Git.Timeout.GC)*time.Second,
 				RepoPath(repo.Owner.Name, repo.Name), "Repository garbage collection",
 				"git", args...)
 			if err != nil {
@@ -1973,7 +1973,7 @@ type repoChecker struct {
 func repoStatsCheck(checker *repoChecker) {
 	results, err := x.Query(checker.querySQL)
 	if err != nil {
-		log.Error(2, "Select %s: %v", checker.desc, err)
+		log.Error("Select %s: %v", checker.desc, err)
 		return
 	}
 	for _, result := range results {
@@ -1981,7 +1981,7 @@ func repoStatsCheck(checker *repoChecker) {
 		log.Trace("Updating %s: %d", checker.desc, id)
 		_, err = x.Exec(checker.correctSQL, id, id)
 		if err != nil {
-			log.Error(2, "Update %s[%d]: %v", checker.desc, id, err)
+			log.Error("Update %s[%d]: %v", checker.desc, id, err)
 		}
 	}
 }
@@ -2035,14 +2035,14 @@ func CheckRepoStats() {
 	desc := "repository count 'num_closed_issues'"
 	results, err := x.Query("SELECT repo.id FROM `repository` repo WHERE repo.num_closed_issues!=(SELECT COUNT(*) FROM `issue` WHERE repo_id=repo.id AND is_closed=? AND is_pull=?)", true, false)
 	if err != nil {
-		log.Error(2, "Select %s: %v", desc, err)
+		log.Error("Select %s: %v", desc, err)
 	} else {
 		for _, result := range results {
 			id := com.StrTo(result["id"]).MustInt64()
 			log.Trace("Updating %s: %d", desc, id)
 			_, err = x.Exec("UPDATE `repository` SET num_closed_issues=(SELECT COUNT(*) FROM `issue` WHERE repo_id=? AND is_closed=? AND is_pull=?) WHERE id=?", id, true, false, id)
 			if err != nil {
-				log.Error(2, "Update %s[%d]: %v", desc, id, err)
+				log.Error("Update %s[%d]: %v", desc, id, err)
 			}
 		}
 	}
@@ -2052,7 +2052,7 @@ func CheckRepoStats() {
 	// ***** START: Repository.NumForks *****
 	results, err = x.Query("SELECT repo.id FROM `repository` repo WHERE repo.num_forks!=(SELECT COUNT(*) FROM `repository` WHERE fork_id=repo.id)")
 	if err != nil {
-		log.Error(2, "Select repository count 'num_forks': %v", err)
+		log.Error("Select repository count 'num_forks': %v", err)
 	} else {
 		for _, result := range results {
 			id := com.StrTo(result["id"]).MustInt64()
@@ -2060,19 +2060,19 @@ func CheckRepoStats() {
 
 			repo, err := GetRepositoryByID(id)
 			if err != nil {
-				log.Error(2, "GetRepositoryByID[%d]: %v", id, err)
+				log.Error("GetRepositoryByID[%d]: %v", id, err)
 				continue
 			}
 
 			rawResult, err := x.Query("SELECT COUNT(*) FROM `repository` WHERE fork_id=?", repo.ID)
 			if err != nil {
-				log.Error(2, "Select count of forks[%d]: %v", repo.ID, err)
+				log.Error("Select count of forks[%d]: %v", repo.ID, err)
 				continue
 			}
 			repo.NumForks = int(parseCountResult(rawResult))
 
 			if err = UpdateRepository(repo, false); err != nil {
-				log.Error(2, "UpdateRepository[%d]: %v", id, err)
+				log.Error("UpdateRepository[%d]: %v", id, err)
 				continue
 			}
 		}
@@ -2237,7 +2237,7 @@ func GetWatchers(repoID int64) ([]*Watch, error) {
 func (repo *Repository) GetWatchers(page int) ([]*User, error) {
 	users := make([]*User, 0, ItemsPerPage)
 	sess := x.Limit(ItemsPerPage, (page-1)*ItemsPerPage).Where("watch.repo_id=?", repo.ID)
-	if setting.UsePostgreSQL {
+	if conf.UsePostgreSQL {
 		sess = sess.Join("LEFT", "watch", `"user".id=watch.user_id`)
 	} else {
 		sess = sess.Join("LEFT", "watch", "user.id=watch.user_id")
@@ -2328,7 +2328,7 @@ func IsStaring(userID, repoID int64) bool {
 func (repo *Repository) GetStargazers(page int) ([]*User, error) {
 	users := make([]*User, 0, ItemsPerPage)
 	sess := x.Limit(ItemsPerPage, (page-1)*ItemsPerPage).Where("star.repo_id=?", repo.ID)
-	if setting.UsePostgreSQL {
+	if conf.UsePostgreSQL {
 		sess = sess.Join("LEFT", "star", `"user".id=star.uid`)
 	} else {
 		sess = sess.Join("LEFT", "star", "user.id=star.uid")
@@ -2412,14 +2412,14 @@ func ForkRepository(doer, owner *User, baseRepo *Repository, name, desc string) 
 	}
 
 	if err = repo.UpdateSize(); err != nil {
-		log.Error(2, "UpdateSize [repo_id: %d]: %v", repo.ID, err)
+		log.Error("UpdateSize [repo_id: %d]: %v", repo.ID, err)
 	}
 	if err = PrepareWebhooks(baseRepo, HOOK_EVENT_FORK, &api.ForkPayload{
 		Forkee: repo.APIFormat(nil),
 		Repo:   baseRepo.APIFormat(nil),
 		Sender: doer.APIFormat(),
 	}); err != nil {
-		log.Error(2, "PrepareWebhooks [repo_id: %d]: %v", baseRepo.ID, err)
+		log.Error("PrepareWebhooks [repo_id: %d]: %v", baseRepo.ID, err)
 	}
 	return repo, nil
 }

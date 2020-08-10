@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"net/url"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
-	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/libgin/libgin"
 	log "gopkg.in/clog.v1"
 )
@@ -32,15 +32,15 @@ func RequestDOI(c *context.Context) {
 
 	log.Trace("Encrypting data for DOI: %+v", data)
 	dataj, _ := json.Marshal(data)
-	regrequest, err := libgin.EncryptURLString([]byte(setting.DOI.Key), string(dataj))
+	regrequest, err := libgin.EncryptURLString([]byte(conf.DOI.Key), string(dataj))
 	if err != nil {
 		log.Error(2, "Could not encrypt secret key: %s", err)
 		c.Status(http.StatusInternalServerError)
 		return
 	}
-	doiurl, err := url.Parse(setting.DOI.URL + "/register") // TODO: Handle error by notifying admin email
+	doiurl, err := url.Parse(conf.DOI.URL + "/register") // TODO: Handle error by notifying admin email
 	if err != nil {
-		log.Error(2, "Failed to parse DOI URL: %s", setting.DOI.URL)
+		log.Error(2, "Failed to parse DOI URL: %s", conf.DOI.URL)
 	}
 
 	params := url.Values{}

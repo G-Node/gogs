@@ -10,12 +10,12 @@ import (
 
 	"github.com/go-macaron/session"
 	gouuid "github.com/satori/go.uuid"
-	log "gopkg.in/clog.v1"
 	"gopkg.in/macaron.v1"
+	log "unknwon.dev/clog/v2"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
-	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/tool"
 )
 
@@ -52,13 +52,13 @@ func SignedInID(c *macaron.Context, sess session.Store) (_ int64, isTokenAuth bo
 			t, err := db.GetAccessTokenBySHA(tokenSHA)
 			if err != nil {
 				if !db.IsErrAccessTokenNotExist(err) && !db.IsErrAccessTokenEmpty(err) {
-					log.Error(2, "GetAccessTokenBySHA: %v", err)
+					log.Error("GetAccessTokenBySHA: %v", err)
 				}
 				return 0, false
 			}
 			t.Updated = time.Now()
 			if err = db.UpdateAccessToken(t); err != nil {
-				log.Error(2, "UpdateAccessToken: %v", err)
+				log.Error("UpdateAccessToken: %v", err)
 			}
 			return t.UID, true
 		}
@@ -71,7 +71,7 @@ func SignedInID(c *macaron.Context, sess session.Store) (_ int64, isTokenAuth bo
 	if id, ok := uid.(int64); ok {
 		if _, err := db.GetUserByID(id); err != nil {
 			if !errors.IsUserNotExist(err) {
-				log.Error(2, "GetUserByID: %v", err)
+				log.Error("GetUserByID: %v", err)
 			}
 			return 0, false
 		}
@@ -90,18 +90,18 @@ func SignedInUser(ctx *macaron.Context, sess session.Store) (_ *db.User, isBasic
 	uid, isTokenAuth := SignedInID(ctx, sess)
 
 	if uid <= 0 {
-		if setting.Service.EnableReverseProxyAuth {
-			webAuthUser := ctx.Req.Header.Get(setting.ReverseProxyAuthUser)
+		if conf.Auth.EnableReverseProxyAuthentication {
+			webAuthUser := ctx.Req.Header.Get(conf.Security.ReverseProxyAuthenticationUser)
 			if len(webAuthUser) > 0 {
 				u, err := db.GetUserByName(webAuthUser)
 				if err != nil {
 					if !errors.IsUserNotExist(err) {
-						log.Error(2, "GetUserByName: %v", err)
+						log.Error("GetUserByName: %v", err)
 						return nil, false, false
 					}
 
 					// Check if enabled auto-registration.
-					if setting.Service.EnableReverseProxyAutoRegister {
+					if conf.Auth.EnableReverseProxyAutoRegistration {
 						u := &db.User{
 							Name:     webAuthUser,
 							Email:    gouuid.NewV4().String() + "@localhost",
@@ -110,7 +110,7 @@ func SignedInUser(ctx *macaron.Context, sess session.Store) (_ *db.User, isBasic
 						}
 						if err = db.CreateUser(u); err != nil {
 							// FIXME: should I create a system notice?
-							log.Error(2, "CreateUser: %v", err)
+							log.Error("CreateUser: %v", err)
 							return nil, false, false
 						} else {
 							return u, false, false
@@ -131,7 +131,7 @@ func SignedInUser(ctx *macaron.Context, sess session.Store) (_ *db.User, isBasic
 				u, err := db.UserLogin(uname, passwd, -1)
 				if err != nil {
 					if !errors.IsUserNotExist(err) {
-						log.Error(2, "UserLogin: %v", err)
+						log.Error("UserLogin: %v", err)
 					}
 					return nil, false, false
 				}
@@ -144,7 +144,7 @@ func SignedInUser(ctx *macaron.Context, sess session.Store) (_ *db.User, isBasic
 
 	u, err := db.GetUserByID(uid)
 	if err != nil {
-		log.Error(2, "GetUserByID: %v", err)
+		log.Error("GetUserByID: %v", err)
 		return nil, false, false
 	}
 	return u, false, isTokenAuth

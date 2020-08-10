@@ -10,15 +10,15 @@ import (
 	"strings"
 
 	"github.com/unknwon/com"
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 
 	"github.com/G-Node/git-module"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
 	"github.com/G-Node/gogs/internal/form"
-	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/tool"
 )
 
@@ -28,7 +28,8 @@ const (
 	PULL_COMMITS = "repo/pulls/commits"
 	PULL_FILES   = "repo/pulls/files"
 
-	PULL_REQUEST_TEMPLATE_KEY = "PullRequestTemplate"
+	PULL_REQUEST_TEMPLATE_KEY       = "PullRequestTemplate"
+	PULL_REQUEST_TITLE_TEMPLATE_KEY = "PullRequestTitleTemplate"
 )
 
 var (
@@ -36,6 +37,12 @@ var (
 		"PULL_REQUEST.md",
 		".gogs/PULL_REQUEST.md",
 		".github/PULL_REQUEST.md",
+	}
+
+	PullRequestTitleTemplateCandidates = []string{
+		"PULL_REQUEST_TITLE.md",
+		".gogs/PULL_REQUEST_TITLE.md",
+		".github/PULL_REQUEST_TITLE.md",
 	}
 )
 
@@ -347,8 +354,8 @@ func ViewPullFiles(c *context.Context) {
 	}
 
 	diff, err := db.GetDiffRange(diffRepoPath,
-		startCommitID, endCommitID, setting.Git.MaxGitDiffLines,
-		setting.Git.MaxGitDiffLineCharacters, setting.Git.MaxGitDiffFiles)
+		startCommitID, endCommitID, conf.Git.MaxGitDiffLines,
+		conf.Git.MaxGitDiffLineCharacters, conf.Git.MaxGitDiffFiles)
 	if err != nil {
 		c.ServerError("GetDiffRange", err)
 		return
@@ -376,9 +383,9 @@ func ViewPullFiles(c *context.Context) {
 		c.Data["Reponame"] = pull.HeadRepo.Name
 
 		headTarget := path.Join(pull.HeadUserName, pull.HeadRepo.Name)
-		c.Data["SourcePath"] = setting.AppSubURL + "/" + path.Join(headTarget, "src", endCommitID)
-		c.Data["BeforeSourcePath"] = setting.AppSubURL + "/" + path.Join(headTarget, "src", startCommitID)
-		c.Data["RawPath"] = setting.AppSubURL + "/" + path.Join(headTarget, "raw", endCommitID)
+		c.Data["SourcePath"] = conf.Server.Subpath + "/" + path.Join(headTarget, "src", endCommitID)
+		c.Data["BeforeSourcePath"] = conf.Server.Subpath + "/" + path.Join(headTarget, "src", startCommitID)
+		c.Data["RawPath"] = conf.Server.Subpath + "/" + path.Join(headTarget, "raw", endCommitID)
 	}
 
 	c.Data["RequireHighlightJS"] = true
@@ -563,8 +570,8 @@ func PrepareCompareDiff(
 	}
 
 	diff, err := db.GetDiffRange(db.RepoPath(headUser.Name, headRepo.Name),
-		prInfo.MergeBase, headCommitID, setting.Git.MaxGitDiffLines,
-		setting.Git.MaxGitDiffLineCharacters, setting.Git.MaxGitDiffFiles)
+		prInfo.MergeBase, headCommitID, conf.Git.MaxGitDiffLines,
+		conf.Git.MaxGitDiffLineCharacters, conf.Git.MaxGitDiffFiles)
 	if err != nil {
 		c.ServerError("GetDiffRange", err)
 		return false
@@ -586,9 +593,9 @@ func PrepareCompareDiff(
 	c.Data["IsImageFile"] = headCommit.IsImageFile
 
 	headTarget := path.Join(headUser.Name, repo.Name)
-	c.Data["SourcePath"] = setting.AppSubURL + "/" + path.Join(headTarget, "src", headCommitID)
-	c.Data["BeforeSourcePath"] = setting.AppSubURL + "/" + path.Join(headTarget, "src", prInfo.MergeBase)
-	c.Data["RawPath"] = setting.AppSubURL + "/" + path.Join(headTarget, "raw", headCommitID)
+	c.Data["SourcePath"] = conf.Server.Subpath + "/" + path.Join(headTarget, "src", headCommitID)
+	c.Data["BeforeSourcePath"] = conf.Server.Subpath + "/" + path.Join(headTarget, "src", prInfo.MergeBase)
+	c.Data["RawPath"] = conf.Server.Subpath + "/" + path.Join(headTarget, "raw", headCommitID)
 	return false
 }
 
@@ -637,6 +644,14 @@ func CompareAndPullRequest(c *context.Context) {
 	}
 
 	c.Data["IsSplitStyle"] = c.Query("style") == "split"
+	setTemplateIfExists(c, PULL_REQUEST_TITLE_TEMPLATE_KEY, PullRequestTitleTemplateCandidates)
+
+	if c.Data[PULL_REQUEST_TITLE_TEMPLATE_KEY] != nil {
+		customTitle := c.Data[PULL_REQUEST_TITLE_TEMPLATE_KEY].(string)
+		r := strings.NewReplacer("{{headBranch}}", headBranch, "{{baseBranch}}", baseBranch)
+		c.Data["title"] = r.Replace(customTitle)
+	}
+
 	c.Success(COMPARE_PULL)
 }
 
@@ -662,7 +677,7 @@ func CompareAndPullRequestPost(c *context.Context, f form.NewIssue) {
 		return
 	}
 
-	if setting.AttachmentEnabled {
+	if conf.Attachment.Enabled {
 		attachments = f.Files
 	}
 

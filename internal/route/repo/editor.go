@@ -12,16 +12,16 @@ import (
 	"path/filepath"
 	"strings"
 
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 
 	"github.com/G-Node/git-module"
-	"github.com/G-Node/gogs/internal/bindata"
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
 	"github.com/G-Node/gogs/internal/form"
 	"github.com/G-Node/gogs/internal/markup"
-	"github.com/G-Node/gogs/internal/setting"
+	"github.com/G-Node/gogs/internal/pathutil"
 	"github.com/G-Node/gogs/internal/template"
 	"github.com/G-Node/gogs/internal/tool"
 )
@@ -97,7 +97,7 @@ func editFile(c *context.Context, isNewFile bool) {
 		buf = append(buf, d...)
 		if err, content := template.ToUTF8WithErr(buf); err != nil {
 			if err != nil {
-				log.Error(2, "Failed to convert encoding to UTF-8: %v", err)
+				log.Error("Failed to convert encoding to UTF-8: %v", err)
 			}
 			c.Data["FileContent"] = string(buf)
 		} else {
@@ -116,10 +116,10 @@ func editFile(c *context.Context, isNewFile bool) {
 	c.Data["commit_choice"] = "direct"
 	c.Data["new_branch_name"] = ""
 	c.Data["last_commit"] = c.Repo.Commit.ID
-	c.Data["MarkdownFileExts"] = strings.Join(setting.Markdown.FileExtensions, ",")
-	c.Data["LineWrapExtensions"] = strings.Join(setting.Repository.Editor.LineWrapExtensions, ",")
-	c.Data["PreviewableFileModes"] = strings.Join(setting.Repository.Editor.PreviewableFileModes, ",")
-	c.Data["EditorconfigURLPrefix"] = fmt.Sprintf("%s/api/v1/repos/%s/editorconfig/", setting.AppSubURL, c.Repo.Repository.FullName())
+	c.Data["MarkdownFileExts"] = strings.Join(conf.Markdown.FileExtensions, ",")
+	c.Data["LineWrapExtensions"] = strings.Join(conf.Repository.Editor.LineWrapExtensions, ",")
+	c.Data["PreviewableFileModes"] = strings.Join(conf.Repository.Editor.PreviewableFileModes, ",")
+	c.Data["EditorconfigURLPrefix"] = fmt.Sprintf("%s/api/v1/repos/%s/editorconfig/", conf.Server.Subpath, c.Repo.Repository.FullName())
 
 	c.Success(EDIT_FILE)
 }
@@ -148,7 +148,7 @@ func editFilePost(c *context.Context, f form.EditRepoFile, isNewFile bool) {
 		branchName = f.NewBranchName
 	}
 
-	f.TreePath = strings.Trim(path.Clean("/"+f.TreePath), " /")
+	f.TreePath = pathutil.Clean(f.TreePath)
 	treeNames, treePaths := getParentTreeFields(f.TreePath)
 
 	c.Data["ParentTreePath"] = path.Dir(c.Repo.TreePath)
@@ -162,9 +162,9 @@ func editFilePost(c *context.Context, f form.EditRepoFile, isNewFile bool) {
 	c.Data["commit_choice"] = f.CommitChoice
 	c.Data["new_branch_name"] = branchName
 	c.Data["last_commit"] = f.LastCommit
-	c.Data["MarkdownFileExts"] = strings.Join(setting.Markdown.FileExtensions, ",")
-	c.Data["LineWrapExtensions"] = strings.Join(setting.Repository.Editor.LineWrapExtensions, ",")
-	c.Data["PreviewableFileModes"] = strings.Join(setting.Repository.Editor.PreviewableFileModes, ",")
+	c.Data["MarkdownFileExts"] = strings.Join(conf.Markdown.FileExtensions, ",")
+	c.Data["LineWrapExtensions"] = strings.Join(conf.Repository.Editor.LineWrapExtensions, ",")
+	c.Data["PreviewableFileModes"] = strings.Join(conf.Repository.Editor.PreviewableFileModes, ",")
 
 	if c.HasError() {
 		c.Success(EDIT_FILE)
@@ -284,7 +284,7 @@ func editFilePost(c *context.Context, f form.EditRepoFile, isNewFile bool) {
 		Content:      strings.Replace(f.Content, "\r", "", -1),
 		IsNewFile:    isNewFile,
 	}); err != nil {
-		log.Error(2, "Failed to update repo file: %v", err)
+		log.Error("Failed to update repo file: %v", err)
 		c.FormErr("TreePath")
 		c.RenderWithErr(c.Tr("repo.editor.fail_to_update_file", f.TreePath, errors.InternalServerError), EDIT_FILE, &f)
 		return
@@ -346,6 +346,8 @@ func DeleteFile(c *context.Context) {
 func DeleteFilePost(c *context.Context, f form.DeleteRepoFile) {
 	c.PageIs("Delete")
 	c.Data["BranchLink"] = c.Repo.RepoLink + "/src/" + c.Repo.BranchName
+
+	c.Repo.TreePath = pathutil.Clean(c.Repo.TreePath)
 	c.Data["TreePath"] = c.Repo.TreePath
 
 	oldBranchName := c.Repo.BranchName
@@ -389,7 +391,7 @@ func DeleteFilePost(c *context.Context, f form.DeleteRepoFile) {
 		TreePath:     c.Repo.TreePath,
 		Message:      message,
 	}); err != nil {
-		log.Error(2, "Failed to delete repo file: %v", err)
+		log.Error("Failed to delete repo file: %v", err)
 		c.RenderWithErr(c.Tr("repo.editor.fail_to_delete_file", c.Repo.TreePath, errors.InternalServerError), DELETE_FILE, &f)
 		return
 	}
@@ -404,9 +406,9 @@ func DeleteFilePost(c *context.Context, f form.DeleteRepoFile) {
 
 func renderUploadSettings(c *context.Context) {
 	c.RequireDropzone()
-	c.Data["UploadAllowedTypes"] = strings.Join(setting.Repository.Upload.AllowedTypes, ",")
-	c.Data["UploadMaxSize"] = setting.Repository.Upload.FileMaxSize
-	c.Data["UploadMaxFiles"] = setting.Repository.Upload.MaxFiles
+	c.Data["UploadAllowedTypes"] = strings.Join(conf.Repository.Upload.AllowedTypes, ",")
+	c.Data["UploadMaxSize"] = conf.Repository.Upload.FileMaxSize
+	c.Data["UploadMaxFiles"] = conf.Repository.Upload.MaxFiles
 }
 
 func UploadFile(c *context.Context) {
@@ -440,7 +442,7 @@ func UploadFilePost(c *context.Context, f form.UploadRepoFile) {
 		branchName = f.NewBranchName
 	}
 
-	f.TreePath = strings.Trim(path.Clean("/"+f.TreePath), " /")
+	f.TreePath = pathutil.Clean(f.TreePath)
 	treeNames, treePaths := getParentTreeFields(f.TreePath)
 	if len(treeNames) == 0 {
 		// We must at least have one element for user to input.
@@ -509,7 +511,7 @@ func UploadFilePost(c *context.Context, f form.UploadRepoFile) {
 		Message:      message,
 		Files:        f.Files,
 	}); err != nil {
-		log.Error(2, "Failed to upload files: %v", err)
+		log.Error("Failed to upload files: %v", err)
 		c.FormErr("TreePath")
 		c.RenderWithErr(c.Tr("repo.editor.unable_to_upload_files", f.TreePath, errors.InternalServerError), UPLOAD_FILE, &f)
 		return
@@ -540,9 +542,9 @@ func UploadFileToServer(c *context.Context) {
 	}
 	fileType := http.DetectContentType(buf)
 
-	if len(setting.Repository.Upload.AllowedTypes) > 0 {
+	if len(conf.Repository.Upload.AllowedTypes) > 0 {
 		allowed := false
-		for _, t := range setting.Repository.Upload.AllowedTypes {
+		for _, t := range conf.Repository.Upload.AllowedTypes {
 			t := strings.Trim(t, " ")
 			if t == "*/*" || t == fileType {
 				allowed = true
@@ -593,7 +595,7 @@ func CreateDatacite(c *context.Context) {
 
 	c.Data["IsYAML"] = true
 	// safe to ignore error since we check for the asset at startup
-	data, _ := bindata.Asset(dcname)
+	data, _ := conf.Asset(dcname)
 	c.Data["FileContent"] = string(data)
 	c.Data["ParentTreePath"] = path.Dir(c.Repo.TreePath)
 	c.Data["TreeNames"] = treeNames
@@ -604,10 +606,10 @@ func CreateDatacite(c *context.Context) {
 	c.Data["commit_choice"] = "direct"
 	c.Data["new_branch_name"] = ""
 	c.Data["last_commit"] = c.Repo.Commit.ID
-	c.Data["MarkdownFileExts"] = strings.Join(setting.Markdown.FileExtensions, ",")
-	c.Data["LineWrapExtensions"] = strings.Join(setting.Repository.Editor.LineWrapExtensions, ",")
-	c.Data["PreviewableFileModes"] = strings.Join(setting.Repository.Editor.PreviewableFileModes, ",")
-	c.Data["EditorconfigURLPrefix"] = fmt.Sprintf("%s/api/v1/repos/%s/editorconfig/", setting.AppSubURL, c.Repo.Repository.FullName())
+	c.Data["MarkdownFileExts"] = strings.Join(conf.Markdown.FileExtensions, ",")
+	c.Data["LineWrapExtensions"] = strings.Join(conf.Repository.Editor.LineWrapExtensions, ",")
+	c.Data["PreviewableFileModes"] = strings.Join(conf.Repository.Editor.PreviewableFileModes, ",")
+	c.Data["EditorconfigURLPrefix"] = fmt.Sprintf("%s/api/v1/repos/%s/editorconfig/", conf.Server.Subpath, c.Repo.Repository.FullName())
 
 	c.Success(EDIT_FILE)
 }

@@ -20,12 +20,10 @@ To minimize the time and effort scientists have to spend on these tasks, we deve
 ### Version your data
 * When changing your files and uploading them to the server, the history is automatically kept, you can always go back to a previous version.
 
-
 ### Share your data
 * Make your data public: if you want to make your data accessible to the world, just make your repository publicly available. The data will be accessible but only you will be able to change it.
 * Share your data with collaborators: you can also share repositories with other users of the GIN service making it easy to jointly work on a project.
 * Make your data citable: through the gin DOI service you can obtain registered identifiers for your public datasets.
-
 
 ### Choose how you want to use our service
 * Register with the GIN services and use the provided infrastructure.
@@ -35,7 +33,7 @@ To minimize the time and effort scientists have to spend on these tasks, we deve
 By indexing the repository contents it's easy to find the files you are looking for. When using the [NIX](http://www.g-node.org/nix) data format for scientific data and metadata, even the contents of these files will be indexed and searchable, making it easy for you to identify the data you are looking for.
 
 ## Acknowledgments
-GIN is based on [Gogs](https://github.com/gogits/gogs)
+GIN is based on [Gogs](https://github.com/gogs/gogs)
 
 ## License
 

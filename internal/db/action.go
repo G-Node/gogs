@@ -7,21 +7,21 @@ package db
 import (
 	"fmt"
 	"path"
-	"regexp"
 	"strings"
 	"time"
 	"unicode"
 
 	"github.com/json-iterator/go"
 	"github.com/unknwon/com"
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 	"xorm.io/xorm"
 
 	"github.com/G-Node/git-module"
 	api "github.com/gogs/go-gogs-client"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db/errors"
-	"github.com/G-Node/gogs/internal/setting"
+	"github.com/G-Node/gogs/internal/lazyregexp"
 	"github.com/G-Node/gogs/internal/tool"
 )
 
@@ -58,9 +58,9 @@ var (
 	IssueCloseKeywords  = []string{"close", "closes", "closed", "fix", "fixes", "fixed", "resolve", "resolves", "resolved"}
 	IssueReopenKeywords = []string{"reopen", "reopens", "reopened"}
 
-	IssueCloseKeywordsPat     = regexp.MustCompile(assembleKeywordsPattern(IssueCloseKeywords))
-	IssueReopenKeywordsPat    = regexp.MustCompile(assembleKeywordsPattern(IssueReopenKeywords))
-	IssueReferenceKeywordsPat = regexp.MustCompile(`(?i)(?:)(^| )\S+`)
+	IssueCloseKeywordsPat     = lazyregexp.New(assembleKeywordsPattern(IssueCloseKeywords))
+	IssueReopenKeywordsPat    = lazyregexp.New(assembleKeywordsPattern(IssueReopenKeywords))
+	IssueReferenceKeywordsPat = lazyregexp.New(`(?i)(?:)(^| )\S+`)
 )
 
 func assembleKeywordsPattern(words []string) string {
@@ -134,8 +134,8 @@ func (a *Action) ShortRepoPath() string {
 }
 
 func (a *Action) GetRepoLink() string {
-	if len(setting.AppSubURL) > 0 {
-		return path.Join(setting.AppSubURL, a.GetRepoPath())
+	if conf.Server.Subpath != "" {
+		return path.Join(conf.Server.Subpath, a.GetRepoPath())
 	}
 	return "/" + a.GetRepoPath()
 }
@@ -160,7 +160,7 @@ func (a *Action) GetIssueTitle() string {
 	index := com.StrTo(a.GetIssueInfos()[0]).MustInt64()
 	issue, err := GetIssueByIndex(a.RepoID, index)
 	if err != nil {
-		log.Error(4, "GetIssueByIndex: %v", err)
+		log.Error("GetIssueByIndex: %v", err)
 		return "500 when get issue"
 	}
 	return issue.Title
@@ -170,7 +170,7 @@ func (a *Action) GetIssueContent() string {
 	index := com.StrTo(a.GetIssueInfos()[0]).MustInt64()
 	issue, err := GetIssueByIndex(a.RepoID, index)
 	if err != nil {
-		log.Error(4, "GetIssueByIndex: %v", err)
+		log.Error("GetIssueByIndex: %v", err)
 		return "500 when get issue"
 	}
 	return issue.Content
@@ -305,7 +305,7 @@ func (push *PushCommits) AvatarLink(email string) string {
 		if err != nil {
 			push.avatars[email] = tool.AvatarLink(email)
 			if !errors.IsUserNotExist(err) {
-				log.Error(4, "GetUserByEmail: %v", err)
+				log.Error("GetUserByEmail: %v", err)
 			}
 		} else {
 			push.avatars[email] = u.RelAvatarLink()
@@ -490,13 +490,13 @@ func CommitRepoAction(opts CommitRepoActionOptions) error {
 		// Only update issues via commits when internal issue tracker is enabled
 		if repo.EnableIssues && !repo.EnableExternalTracker {
 			if err = UpdateIssuesCommit(pusher, repo, opts.Commits.Commits); err != nil {
-				log.Error(2, "UpdateIssuesCommit: %v", err)
+				log.Error("UpdateIssuesCommit: %v", err)
 			}
 		}
 	}
 
-	if len(opts.Commits.Commits) > setting.UI.FeedMaxCommitNum {
-		opts.Commits.Commits = opts.Commits.Commits[:setting.UI.FeedMaxCommitNum]
+	if len(opts.Commits.Commits) > conf.UI.FeedMaxCommitNum {
+		opts.Commits.Commits = opts.Commits.Commits[:conf.UI.FeedMaxCommitNum]
 	}
 
 	data, err := jsoniter.Marshal(opts.Commits)
@@ -540,7 +540,7 @@ func CommitRepoAction(opts CommitRepoActionOptions) error {
 			return nil
 		}
 
-		compareURL := setting.AppURL + opts.Commits.CompareURL
+		compareURL := conf.Server.ExternalURL + opts.Commits.CompareURL
 		if isNewRef {
 			compareURL = ""
 			if err = PrepareWebhooks(repo, HOOK_EVENT_CREATE, &api.CreatePayload{
@@ -692,8 +692,8 @@ type MirrorSyncPushActionOptions struct {
 
 // MirrorSyncPushAction adds new action for mirror synchronization of pushed commits.
 func MirrorSyncPushAction(repo *Repository, opts MirrorSyncPushActionOptions) error {
-	if len(opts.Commits.Commits) > setting.UI.FeedMaxCommitNum {
-		opts.Commits.Commits = opts.Commits.Commits[:setting.UI.FeedMaxCommitNum]
+	if len(opts.Commits.Commits) > conf.UI.FeedMaxCommitNum {
+		opts.Commits.Commits = opts.Commits.Commits[:conf.UI.FeedMaxCommitNum]
 	}
 
 	apiCommits, err := opts.Commits.ToApiPayloadCommits(repo.RepoPath(), repo.HTMLURL())
@@ -707,7 +707,7 @@ func MirrorSyncPushAction(repo *Repository, opts MirrorSyncPushActionOptions) er
 		Ref:        opts.RefName,
 		Before:     opts.OldCommitID,
 		After:      opts.NewCommitID,
-		CompareURL: setting.AppURL + opts.Commits.CompareURL,
+		CompareURL: conf.Server.ExternalURL + opts.Commits.CompareURL,
 		Commits:    apiCommits,
 		Repo:       repo.APIFormat(nil),
 		Pusher:     apiPusher,
@@ -738,8 +738,8 @@ func MirrorSyncDeleteAction(repo *Repository, refName string) error {
 // actorID is the user who's requesting, ctxUserID is the user/org that is requested.
 // actorID can be -1 when isProfile is true or to skip the permission check.
 func GetFeeds(ctxUser *User, actorID, afterID int64, isProfile bool) ([]*Action, error) {
-	actions := make([]*Action, 0, setting.UI.User.NewsFeedPagingNum)
-	sess := x.Limit(setting.UI.User.NewsFeedPagingNum).Where("user_id = ?", ctxUser.ID).Desc("id")
+	actions := make([]*Action, 0, conf.UI.User.NewsFeedPagingNum)
+	sess := x.Limit(conf.UI.User.NewsFeedPagingNum).Where("user_id = ?", ctxUser.ID).Desc("id")
 	if afterID > 0 {
 		sess.And("id < ?", afterID)
 	}

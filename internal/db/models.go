@@ -20,12 +20,12 @@ import (
 	"github.com/json-iterator/go"
 	_ "github.com/lib/pq"
 	"github.com/unknwon/com"
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 	"xorm.io/core"
 	"xorm.io/xorm"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db/migrations"
-	"github.com/G-Node/gogs/internal/setting"
 )
 
 // Engine represents a XORM engine or session.
@@ -49,10 +49,6 @@ var (
 	tables    []interface{}
 	HasEngine bool
 
-	DbCfg struct {
-		Type, Host, Name, User, Passwd, Path, SSLMode string
-	}
-
 	EnableSQLite3 bool
 )
 
@@ -72,29 +68,6 @@ func init() {
 	for _, name := range gonicNames {
 		core.LintGonicMapper[name] = true
 	}
-}
-
-func LoadConfigs() {
-	sec := setting.Cfg.Section("database")
-	DbCfg.Type = sec.Key("DB_TYPE").String()
-	switch DbCfg.Type {
-	case "sqlite3":
-		setting.UseSQLite3 = true
-	case "mysql":
-		setting.UseMySQL = true
-	case "postgres":
-		setting.UsePostgreSQL = true
-	case "mssql":
-		setting.UseMSSQL = true
-	}
-	DbCfg.Host = sec.Key("HOST").String()
-	DbCfg.Name = sec.Key("NAME").String()
-	DbCfg.User = sec.Key("USER").String()
-	if len(DbCfg.Passwd) == 0 {
-		DbCfg.Passwd = sec.Key("PASSWD").String()
-	}
-	DbCfg.SSLMode = sec.Key("SSL_MODE").String()
-	DbCfg.Path = sec.Key("PATH").MustString("data/gogs.db")
 }
 
 // parsePostgreSQLHostPort parses given input in various forms defined in
@@ -127,46 +100,55 @@ func parseMSSQLHostPort(info string) (string, string) {
 }
 
 func getEngine() (*xorm.Engine, error) {
-	connStr := ""
-	var Param string = "?"
-	if strings.Contains(DbCfg.Name, Param) {
+	Param := "?"
+	if strings.Contains(conf.Database.Name, Param) {
 		Param = "&"
 	}
-	switch DbCfg.Type {
+
+	connStr := ""
+	switch conf.Database.Type {
 	case "mysql":
-		if DbCfg.Host[0] == '/' { // looks like a unix socket
+		conf.UseMySQL = true
+		if conf.Database.Host[0] == '/' { // looks like a unix socket
 			connStr = fmt.Sprintf("%s:%s@unix(%s)/%s%scharset=utf8mb4&parseTime=true",
-				DbCfg.User, DbCfg.Passwd, DbCfg.Host, DbCfg.Name, Param)
+				conf.Database.User, conf.Database.Password, conf.Database.Host, conf.Database.Name, Param)
 		} else {
 			connStr = fmt.Sprintf("%s:%s@tcp(%s)/%s%scharset=utf8mb4&parseTime=true",
-				DbCfg.User, DbCfg.Passwd, DbCfg.Host, DbCfg.Name, Param)
+				conf.Database.User, conf.Database.Password, conf.Database.Host, conf.Database.Name, Param)
 		}
 		var engineParams = map[string]string{"rowFormat": "DYNAMIC"}
-		return xorm.NewEngineWithParams(DbCfg.Type, connStr, engineParams)
+		return xorm.NewEngineWithParams(conf.Database.Type, connStr, engineParams)
+
 	case "postgres":
-		host, port := parsePostgreSQLHostPort(DbCfg.Host)
+		conf.UsePostgreSQL = true
+		host, port := parsePostgreSQLHostPort(conf.Database.Host)
 		if host[0] == '/' { // looks like a unix socket
 			connStr = fmt.Sprintf("postgres://%s:%s@:%s/%s%ssslmode=%s&host=%s",
-				url.QueryEscape(DbCfg.User), url.QueryEscape(DbCfg.Passwd), port, DbCfg.Name, Param, DbCfg.SSLMode, host)
+				url.QueryEscape(conf.Database.User), url.QueryEscape(conf.Database.Password), port, conf.Database.Name, Param, conf.Database.SSLMode, host)
 		} else {
 			connStr = fmt.Sprintf("postgres://%s:%s@%s:%s/%s%ssslmode=%s",
-				url.QueryEscape(DbCfg.User), url.QueryEscape(DbCfg.Passwd), host, port, DbCfg.Name, Param, DbCfg.SSLMode)
+				url.QueryEscape(conf.Database.User), url.QueryEscape(conf.Database.Password), host, port, conf.Database.Name, Param, conf.Database.SSLMode)
 		}
+
 	case "mssql":
-		host, port := parseMSSQLHostPort(DbCfg.Host)
-		connStr = fmt.Sprintf("server=%s; port=%s; database=%s; user id=%s; password=%s;", host, port, DbCfg.Name, DbCfg.User, DbCfg.Passwd)
+		conf.UseMSSQL = true
+		host, port := parseMSSQLHostPort(conf.Database.Host)
+		connStr = fmt.Sprintf("server=%s; port=%s; database=%s; user id=%s; password=%s;", host, port, conf.Database.Name, conf.Database.User, conf.Database.Passwd)
+
 	case "sqlite3":
 		if !EnableSQLite3 {
 			return nil, errors.New("this binary version does not build support for SQLite3")
 		}
-		if err := os.MkdirAll(path.Dir(DbCfg.Path), os.ModePerm); err != nil {
+		if err := os.MkdirAll(path.Dir(conf.Database.Path), os.ModePerm); err != nil {
 			return nil, fmt.Errorf("create directories: %v", err)
 		}
-		connStr = "file:" + DbCfg.Path + "?cache=shared&mode=rwc"
+		conf.UseSQLite3 = true
+		connStr = "file:" + conf.Database.Path + "?cache=shared&mode=rwc"
+
 	default:
-		return nil, fmt.Errorf("unknown database type: %s", DbCfg.Type)
+		return nil, fmt.Errorf("unknown database type: %s", conf.Database.Type)
 	}
-	return xorm.NewEngine(DbCfg.Type, connStr)
+	return xorm.NewEngine(conf.Database.Type, connStr)
 }
 
 func NewTestEngine(x *xorm.Engine) (err error) {
@@ -189,8 +171,8 @@ func SetEngine() (err error) {
 
 	// WARNING: for serv command, MUST remove the output to os.stdout,
 	// so use log file to instead print to stdout.
-	sec := setting.Cfg.Section("log.xorm")
-	logger, err := log.NewFileWriter(path.Join(setting.LogRootPath, "xorm.log"),
+	sec := conf.File.Section("log.xorm")
+	logger, err := log.NewFileWriter(path.Join(conf.Log.RootPath, "xorm.log"),
 		log.FileRotationConfig{
 			Rotate:  sec.Key("ROTATE").MustBool(true),
 			Daily:   sec.Key("ROTATE_DAILY").MustBool(true),
@@ -206,7 +188,7 @@ func SetEngine() (err error) {
 	x.SetMaxIdleConns(0)
 	x.SetConnMaxLifetime(time.Second)
 
-	if setting.ProdMode {
+	if conf.IsProdMode() {
 		x.SetLogger(xorm.NewSimpleLogger3(logger, xorm.DEFAULT_LOG_PREFIX, xorm.DEFAULT_LOG_FLAG, core.LOG_WARNING))
 	} else {
 		x.SetLogger(xorm.NewSimpleLogger(logger))
@@ -370,26 +352,26 @@ func ImportDatabase(dirPath string, verbose bool) (err error) {
 
 			meta := make(map[string]interface{})
 			if err = jsoniter.Unmarshal(scanner.Bytes(), &meta); err != nil {
-				log.Error(2, "Failed to unmarshal to map: %v", err)
+				log.Error("Failed to unmarshal to map: %v", err)
 			}
 
 			// Reset created_unix back to the date save in archive because Insert method updates its value
 			if isInsertProcessor && !skipInsertProcessors[rawTableName] {
 				if _, err = x.Exec("UPDATE "+rawTableName+" SET created_unix=? WHERE id=?", meta["CreatedUnix"], meta["ID"]); err != nil {
-					log.Error(2, "Failed to reset 'created_unix': %v", err)
+					log.Error("Failed to reset 'created_unix': %v", err)
 				}
 			}
 
 			switch rawTableName {
 			case "milestone":
 				if _, err = x.Exec("UPDATE "+rawTableName+" SET deadline_unix=?, closed_date_unix=? WHERE id=?", meta["DeadlineUnix"], meta["ClosedDateUnix"], meta["ID"]); err != nil {
-					log.Error(2, "Failed to reset 'milestone.deadline_unix', 'milestone.closed_date_unix': %v", err)
+					log.Error("Failed to reset 'milestone.deadline_unix', 'milestone.closed_date_unix': %v", err)
 				}
 			}
 		}
 
 		// PostgreSQL needs manually reset table sequence for auto increment keys
-		if setting.UsePostgreSQL {
+		if conf.UsePostgreSQL {
 			rawTableName := snakeMapper.Obj2Table(tableName)
 			seqName := rawTableName + "_id_seq"
 			if _, err = x.Exec(fmt.Sprintf(`SELECT setval('%s', COALESCE((SELECT MAX(id)+1 FROM "%s"), 1), false);`, seqName, rawTableName)); err != nil {

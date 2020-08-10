@@ -12,10 +12,11 @@ import (
 	"strings"
 
 	"github.com/unknwon/com"
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 	"xorm.io/xorm"
 
-	"github.com/G-Node/gogs/internal/setting"
+	"github.com/G-Node/gogs/internal/conf"
+	"github.com/G-Node/gogs/internal/osutil"
 )
 
 func generateAndMigrateGitHooks(x *xorm.Engine) (err error) {
@@ -31,18 +32,18 @@ func generateAndMigrateGitHooks(x *xorm.Engine) (err error) {
 	var (
 		hookNames = []string{"pre-receive", "update", "post-receive"}
 		hookTpls  = []string{
-			fmt.Sprintf("#!/usr/bin/env %s\n\"%s\" hook --config='%s' pre-receive\n", setting.ScriptType, setting.AppPath, setting.CustomConf),
-			fmt.Sprintf("#!/usr/bin/env %s\n\"%s\" hook --config='%s' update $1 $2 $3\n", setting.ScriptType, setting.AppPath, setting.CustomConf),
-			fmt.Sprintf("#!/usr/bin/env %s\n\"%s\" hook --config='%s' post-receive\n", setting.ScriptType, setting.AppPath, setting.CustomConf),
+			fmt.Sprintf("#!/usr/bin/env %s\n\"%s\" hook --config='%s' pre-receive\n", conf.Repository.ScriptType, conf.AppPath(), conf.CustomConf),
+			fmt.Sprintf("#!/usr/bin/env %s\n\"%s\" hook --config='%s' update $1 $2 $3\n", conf.Repository.ScriptType, conf.AppPath(), conf.CustomConf),
+			fmt.Sprintf("#!/usr/bin/env %s\n\"%s\" hook --config='%s' post-receive\n", conf.Repository.ScriptType, conf.AppPath(), conf.CustomConf),
 		}
 	)
 
 	// Cleanup old update.log and http.log files.
-	filepath.Walk(setting.LogRootPath, func(path string, info os.FileInfo, err error) error {
+	_ = filepath.Walk(conf.Log.RootPath, func(path string, info os.FileInfo, err error) error {
 		if !info.IsDir() &&
 			(strings.HasPrefix(filepath.Base(path), "update.log") ||
 				strings.HasPrefix(filepath.Base(path), "http.log")) {
-			os.Remove(path)
+			_ = os.Remove(path)
 		}
 		return nil
 	})
@@ -62,7 +63,7 @@ func generateAndMigrateGitHooks(x *xorm.Engine) (err error) {
 				return nil
 			}
 
-			repoBase := filepath.Join(setting.RepoRootPath, strings.ToLower(user.Name), strings.ToLower(repo.Name))
+			repoBase := filepath.Join(conf.Repository.Root, strings.ToLower(user.Name), strings.ToLower(repo.Name))
 			repoPath := repoBase + ".git"
 			wikiPath := repoBase + ".wiki.git"
 			log.Trace("[%04d]: %s", idx, repoPath)
@@ -80,8 +81,8 @@ func generateAndMigrateGitHooks(x *xorm.Engine) (err error) {
 				// Gogs didn't allow user to set custom update hook thus no migration for it.
 				// In case user runs this migration multiple times, and custom hook exists,
 				// we assume it's been migrated already.
-				if hookName != "update" && com.IsFile(oldHookPath) && !com.IsExist(customHookDir) {
-					os.MkdirAll(customHookDir, os.ModePerm)
+				if hookName != "update" && osutil.IsFile(oldHookPath) && !com.IsExist(customHookDir) {
+					_ = os.MkdirAll(customHookDir, os.ModePerm)
 					if err = os.Rename(oldHookPath, newHookPath); err != nil {
 						return fmt.Errorf("move hook file to custom directory '%s' -> '%s': %v", oldHookPath, newHookPath, err)
 					}
@@ -92,7 +93,7 @@ func generateAndMigrateGitHooks(x *xorm.Engine) (err error) {
 				}
 
 				if com.IsDir(wikiPath) {
-					os.MkdirAll(wikiHookDir, os.ModePerm)
+					_ = os.MkdirAll(wikiHookDir, os.ModePerm)
 					wikiHookPath := filepath.Join(wikiHookDir, hookName)
 					if err = ioutil.WriteFile(wikiHookPath, []byte(hookTpls[i]), os.ModePerm); err != nil {
 						return fmt.Errorf("write wiki hook file '%s': %v", wikiHookPath, err)

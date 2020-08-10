@@ -9,16 +9,18 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
+	"path/filepath"
 	"time"
 
+	"github.com/pkg/errors"
 	"github.com/unknwon/cae/zip"
 	"github.com/unknwon/com"
 	"github.com/urfave/cli"
-	log "gopkg.in/clog.v1"
 	"gopkg.in/ini.v1"
+	log "unknwon.dev/clog/v2"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/setting"
 )
 
 var Backup = cli.Command{
@@ -29,7 +31,7 @@ which can be used for migrating Gogs to another server. The output format is mea
 portable among all supported database engines.`,
 	Action: runBackup,
 	Flags: []cli.Flag{
-		stringFlag("config, c", "custom/conf/app.ini", "Custom configuration file path"),
+		stringFlag("config, c", "", "Custom configuration file path"),
 		boolFlag("verbose, v", "Show process details"),
 		stringFlag("tempdir, t", os.TempDir(), "Temporary directory path"),
 		stringFlag("target", "./", "Target directory path to save backup archive"),
@@ -44,20 +46,21 @@ const _ARCHIVE_ROOT_DIR = "gogs-backup"
 
 func runBackup(c *cli.Context) error {
 	zip.Verbose = c.Bool("verbose")
-	if c.IsSet("config") {
-		setting.CustomConf = c.String("config")
+
+	err := conf.Init(c.String("config"))
+	if err != nil {
+		return errors.Wrap(err, "init configuration")
 	}
-	setting.NewContext()
-	db.LoadConfigs()
+
 	db.SetEngine()
 
 	tmpDir := c.String("tempdir")
 	if !com.IsExist(tmpDir) {
-		log.Fatal(0, "'--tempdir' does not exist: %s", tmpDir)
+		log.Fatal("'--tempdir' does not exist: %s", tmpDir)
 	}
 	rootDir, err := ioutil.TempDir(tmpDir, "gogs-backup-")
 	if err != nil {
-		log.Fatal(0, "Fail to create backup root directory '%s': %v", rootDir, err)
+		log.Fatal("Failed to create backup root directory '%s': %v", rootDir, err)
 	}
 	log.Info("Backup root directory: %s", rootDir)
 
@@ -66,72 +69,72 @@ func runBackup(c *cli.Context) error {
 	metadata := ini.Empty()
 	metadata.Section("").Key("VERSION").SetValue(com.ToStr(_CURRENT_BACKUP_FORMAT_VERSION))
 	metadata.Section("").Key("DATE_TIME").SetValue(time.Now().String())
-	metadata.Section("").Key("GOGS_VERSION").SetValue(setting.AppVer)
+	metadata.Section("").Key("GOGS_VERSION").SetValue(conf.App.Version)
 	if err = metadata.SaveTo(metaFile); err != nil {
-		log.Fatal(0, "Fail to save metadata '%s': %v", metaFile, err)
+		log.Fatal("Failed to save metadata '%s': %v", metaFile, err)
 	}
 
-	archiveName := path.Join(c.String("target"), c.String("archive-name"))
+	archiveName := filepath.Join(c.String("target"), c.String("archive-name"))
 	log.Info("Packing backup files to: %s", archiveName)
 
 	z, err := zip.Create(archiveName)
 	if err != nil {
-		log.Fatal(0, "Fail to create backup archive '%s': %v", archiveName, err)
+		log.Fatal("Failed to create backup archive '%s': %v", archiveName, err)
 	}
 	if err = z.AddFile(_ARCHIVE_ROOT_DIR+"/metadata.ini", metaFile); err != nil {
-		log.Fatal(0, "Fail to include 'metadata.ini': %v", err)
+		log.Fatal("Failed to include 'metadata.ini': %v", err)
 	}
 
 	// Database
-	dbDir := path.Join(rootDir, "db")
+	dbDir := filepath.Join(rootDir, "db")
 	if err = db.DumpDatabase(dbDir); err != nil {
-		log.Fatal(0, "Fail to dump database: %v", err)
+		log.Fatal("Failed to dump database: %v", err)
 	}
 	if err = z.AddDir(_ARCHIVE_ROOT_DIR+"/db", dbDir); err != nil {
-		log.Fatal(0, "Fail to include 'db': %v", err)
+		log.Fatal("Failed to include 'db': %v", err)
 	}
 
 	// Custom files
 	if !c.Bool("database-only") {
-		if err = z.AddDir(_ARCHIVE_ROOT_DIR+"/custom", setting.CustomPath); err != nil {
-			log.Fatal(0, "Fail to include 'custom': %v", err)
+		if err = z.AddDir(_ARCHIVE_ROOT_DIR+"/custom", conf.CustomDir()); err != nil {
+			log.Fatal("Failed to include 'custom': %v", err)
 		}
 	}
 
 	// Data files
 	if !c.Bool("database-only") {
 		for _, dir := range []string{"attachments", "avatars", "repo-avatars"} {
-			dirPath := path.Join(setting.AppDataPath, dir)
+			dirPath := filepath.Join(conf.Server.AppDataPath, dir)
 			if !com.IsDir(dirPath) {
 				continue
 			}
 
 			if err = z.AddDir(path.Join(_ARCHIVE_ROOT_DIR+"/data", dir), dirPath); err != nil {
-				log.Fatal(0, "Fail to include 'data': %v", err)
+				log.Fatal("Failed to include 'data': %v", err)
 			}
 		}
 	}
 
 	// Repositories
 	if !c.Bool("exclude-repos") && !c.Bool("database-only") {
-		reposDump := path.Join(rootDir, "repositories.zip")
-		log.Info("Dumping repositories in '%s'", setting.RepoRootPath)
-		if err = zip.PackTo(setting.RepoRootPath, reposDump, true); err != nil {
-			log.Fatal(0, "Fail to dump repositories: %v", err)
+		reposDump := filepath.Join(rootDir, "repositories.zip")
+		log.Info("Dumping repositories in %q", conf.Repository.Root)
+		if err = zip.PackTo(conf.Repository.Root, reposDump, true); err != nil {
+			log.Fatal("Failed to dump repositories: %v", err)
 		}
 		log.Info("Repositories dumped to: %s", reposDump)
 
 		if err = z.AddFile(_ARCHIVE_ROOT_DIR+"/repositories.zip", reposDump); err != nil {
-			log.Fatal(0, "Fail to include 'repositories.zip': %v", err)
+			log.Fatal("Failed to include 'repositories.zip': %v", err)
 		}
 	}
 
 	if err = z.Close(); err != nil {
-		log.Fatal(0, "Fail to save backup archive '%s': %v", archiveName, err)
+		log.Fatal("Failed to save backup archive '%s': %v", archiveName, err)
 	}
 
 	os.RemoveAll(rootDir)
 	log.Info("Backup succeed! Archive is located at: %s", archiveName)
-	log.Shutdown()
+	log.Stop()
 	return nil
 }

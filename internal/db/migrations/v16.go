@@ -9,12 +9,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 	"xorm.io/xorm"
 
 	"github.com/G-Node/git-module"
 
-	"github.com/G-Node/gogs/internal/setting"
+	"github.com/G-Node/gogs/internal/conf"
 )
 
 func updateRepositorySizes(x *xorm.Engine) (err error) {
@@ -60,7 +60,7 @@ func updateRepositorySizes(x *xorm.Engine) (err error) {
 				continue
 			}
 
-			repoPath := filepath.Join(setting.RepoRootPath, strings.ToLower(user.Name), strings.ToLower(repo.Name)) + ".git"
+			repoPath := filepath.Join(conf.Repository.Root, strings.ToLower(user.Name), strings.ToLower(repo.Name)) + ".git"
 			countObject, err := git.GetRepoSize(repoPath)
 			if err != nil {
 				log.Warn("GetRepoSize: %v", err)

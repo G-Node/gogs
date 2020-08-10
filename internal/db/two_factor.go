@@ -12,11 +12,11 @@ import (
 
 	"github.com/pquerna/otp/totp"
 	"github.com/unknwon/com"
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 	"xorm.io/xorm"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db/errors"
-	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/tool"
 )
 
@@ -47,7 +47,7 @@ func (t *TwoFactor) ValidateTOTP(passcode string) (bool, error) {
 	if err != nil {
 		return false, fmt.Errorf("DecodeString: %v", err)
 	}
-	decryptSecret, err := com.AESGCMDecrypt(tool.MD5Bytes(setting.SecretKey), secret)
+	decryptSecret, err := com.AESGCMDecrypt(tool.MD5Bytes(conf.Security.SecretKey), secret)
 	if err != nil {
 		return false, fmt.Errorf("AESGCMDecrypt: %v", err)
 	}
@@ -58,7 +58,7 @@ func (t *TwoFactor) ValidateTOTP(passcode string) (bool, error) {
 func IsUserEnabledTwoFactor(userID int64) bool {
 	has, err := x.Where("user_id = ?", userID).Get(new(TwoFactor))
 	if err != nil {
-		log.Error(2, "IsUserEnabledTwoFactor [user_id: %d]: %v", userID, err)
+		log.Error("IsUserEnabledTwoFactor [user_id: %d]: %v", userID, err)
 	}
 	return has
 }
@@ -85,7 +85,7 @@ func NewTwoFactor(userID int64, secret string) error {
 	}
 
 	// Encrypt secret
-	encryptSecret, err := com.AESGCMEncrypt(tool.MD5Bytes(setting.SecretKey), []byte(secret))
+	encryptSecret, err := com.AESGCMEncrypt(tool.MD5Bytes(conf.Security.SecretKey), []byte(secret))
 	if err != nil {
 		return fmt.Errorf("AESGCMEncrypt: %v", err)
 	}

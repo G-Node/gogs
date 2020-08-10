@@ -7,7 +7,7 @@ RUN apk --no-cache --no-progress add --virtual \
 
 WORKDIR /go/src/github.com/G-Node/gogs
 COPY . .
-RUN make build TAGS="sqlite cert pam"
+RUN make build-no-gen TAGS="sqlite cert pam"
 
 FROM alpine:3.10
 ADD https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64 /usr/sbin/gosu
@@ -44,8 +44,6 @@ COPY docker/nsswitch.conf /etc/nsswitch.conf
 
 WORKDIR /app/gogs
 COPY docker ./docker
-COPY templates ./templates
-COPY public ./public
 COPY --from=binarybuilder /go/src/github.com/G-Node/gogs/gogs .
 
 RUN ./docker/finalize.sh

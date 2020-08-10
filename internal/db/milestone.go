@@ -8,12 +8,12 @@ import (
 	"fmt"
 	"time"
 
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 	"xorm.io/xorm"
 
 	api "github.com/gogs/go-gogs-client"
 
-	"github.com/G-Node/gogs/internal/setting"
+	"github.com/G-Node/gogs/internal/conf"
 )
 
 // Milestone represents a milestone of repository.
@@ -157,10 +157,10 @@ func GetMilestonesByRepoID(repoID int64) ([]*Milestone, error) {
 
 // GetMilestones returns a list of milestones of given repository and status.
 func GetMilestones(repoID int64, page int, isClosed bool) ([]*Milestone, error) {
-	miles := make([]*Milestone, 0, setting.UI.IssuePagingNum)
+	miles := make([]*Milestone, 0, conf.UI.IssuePagingNum)
 	sess := x.Where("repo_id = ? AND is_closed = ?", repoID, isClosed)
 	if page > 0 {
-		sess = sess.Limit(setting.UI.IssuePagingNum, (page-1)*setting.UI.IssuePagingNum)
+		sess = sess.Limit(conf.UI.IssuePagingNum, (page-1)*conf.UI.IssuePagingNum)
 	}
 	return miles, sess.Find(&miles)
 }
@@ -336,7 +336,7 @@ func ChangeMilestoneAssign(doer *User, issue *Issue, oldMilestoneID int64) (err 
 	if issue.IsPull {
 		err = issue.PullRequest.LoadIssue()
 		if err != nil {
-			log.Error(2, "LoadIssue: %v", err)
+			log.Error("LoadIssue: %v", err)
 			return
 		}
 		err = PrepareWebhooks(issue.Repo, HOOK_EVENT_PULL_REQUEST, &api.PullRequestPayload{
@@ -356,7 +356,7 @@ func ChangeMilestoneAssign(doer *User, issue *Issue, oldMilestoneID int64) (err 
 		})
 	}
 	if err != nil {
-		log.Error(2, "PrepareWebhooks [is_pull: %v]: %v", issue.IsPull, err)
+		log.Error("PrepareWebhooks [is_pull: %v]: %v", issue.IsPull, err)
 	}
 
 	return nil

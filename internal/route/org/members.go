@@ -6,12 +6,12 @@ package org
 
 import (
 	"github.com/unknwon/com"
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
-	"github.com/G-Node/gogs/internal/setting"
 )
 
 const (
@@ -76,7 +76,7 @@ func MembersAction(c *context.Context) {
 	}
 
 	if err != nil {
-		log.Error(4, "Action(%s): %v", c.Params(":action"), err)
+		log.Error("Action(%s): %v", c.Params(":action"), err)
 		c.JSON(200, map[string]interface{}{
 			"ok":  false,
 			"err": err.Error(),
@@ -87,7 +87,7 @@ func MembersAction(c *context.Context) {
 	if c.Params(":action") != "leave" {
 		c.Redirect(c.Org.OrgLink + "/members")
 	} else {
-		c.Redirect(setting.AppSubURL + "/")
+		c.Redirect(conf.Server.Subpath + "/")
 	}
 }
 

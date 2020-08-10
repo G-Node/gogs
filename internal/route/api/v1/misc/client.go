@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
-	"github.com/G-Node/gogs/internal/setting"
 	log "gopkg.in/clog.v1"
 )
 
@@ -23,13 +23,13 @@ type APICLIConfig struct {
 }
 
 func ClientC(c *context.APIContext) {
-	cf := APICLIConfig{RSAKet: setting.CLIConfig.RSAHostKey,
-		Weburl:  fmt.Sprintf("%s://%s", setting.Protocol, setting.Domain),
-		Webport: setting.HTTPPort, SSHUrl: setting.SSH.Domain, SSHPort: setting.SSH.Port,
-		SSHUser: setting.RunUser}
+	cf := APICLIConfig{RSAKet: conf.CLIConfig.RSAHostKey,
+		Weburl:  fmt.Sprintf("%s://%s", conf.Server.Protocol, conf.Server.Domain),
+		Webport: conf.Server.HTTPPort, SSHUrl: conf.SSH.Domain, SSHPort: conf.SSH.Port,
+		SSHUser: conf.App.RunUser}
 	data, err := json.Marshal(cf)
 	if err != nil {
-		log.Info("Copuld not determine client congig: %+v", err)
+		log.Info("Could not determine client configuration: %+v", err)
 		c.WriteHeader(http.StatusInternalServerError)
 		return
 	}

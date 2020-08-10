@@ -5,18 +5,18 @@
 package admin
 
 import (
-	user2 "github.com/G-Node/gogs/internal/route/api/v1/user"
 	"net/http"
 
-	log "gopkg.in/clog.v1"
+	log "unknwon.dev/clog/v2"
 
 	api "github.com/gogs/go-gogs-client"
 
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/db/errors"
-	"github.com/G-Node/gogs/internal/mailer"
-	"github.com/G-Node/gogs/internal/setting"
+	"github.com/G-Node/gogs/internal/email"
+	"github.com/G-Node/gogs/internal/route/api/v1/user"
 )
 
 func parseLoginSource(c *context.APIContext, u *db.User, sourceID int64, loginName string) {
@@ -68,15 +68,15 @@ func CreateUser(c *context.APIContext, form api.CreateUserOption) {
 	log.Trace("Account created by admin %q: %s", c.User.Name, u.Name)
 
 	// Send email notification.
-	if form.SendNotify && setting.MailService != nil {
-		mailer.SendRegisterNotifyMail(c.Context.Context, db.NewMailerUser(u))
+	if form.SendNotify && conf.Email.Enabled {
+		email.SendRegisterNotifyMail(c.Context.Context, db.NewMailerUser(u))
 	}
 
 	c.JSON(http.StatusCreated, u.APIFormat())
 }
 
 func EditUser(c *context.APIContext, form api.EditUserOption) {
-	u := user2.GetUserByParams(c)
+	u := user.GetUserByParams(c)
 	if c.Written() {
 		return
 	}
@@ -131,7 +131,7 @@ func EditUser(c *context.APIContext, form api.EditUserOption) {
 }
 
 func DeleteUser(c *context.APIContext) {
-	u := user2.GetUserByParams(c)
+	u := user.GetUserByParams(c)
 	if c.Written() {
 		return
 	}
@@ -151,9 +151,9 @@ func DeleteUser(c *context.APIContext) {
 }
 
 func CreatePublicKey(c *context.APIContext, form api.CreateKeyOption) {
-	u := user2.GetUserByParams(c)
+	u := user.GetUserByParams(c)
 	if c.Written() {
 		return
 	}
-	user2.CreateUserPublicKey(c, form, u.ID)
+	user.CreateUserPublicKey(c, form, u.ID)
 }

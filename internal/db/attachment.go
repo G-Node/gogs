@@ -15,7 +15,7 @@ import (
 	gouuid "github.com/satori/go.uuid"
 	"xorm.io/xorm"
 
-	"github.com/G-Node/gogs/internal/setting"
+	"github.com/G-Node/gogs/internal/conf"
 )
 
 // Attachment represent a attachment of issue/comment/release.
@@ -44,7 +44,7 @@ func (a *Attachment) AfterSet(colName string, _ xorm.Cell) {
 
 // AttachmentLocalPath returns where attachment is stored in local file system based on given UUID.
 func AttachmentLocalPath(uuid string) string {
-	return path.Join(setting.AttachmentPath, uuid[0:1], uuid[1:2], uuid)
+	return path.Join(conf.Attachment.Path, uuid[0:1], uuid[1:2], uuid)
 }
 
 // LocalPath returns where attachment is stored in local file system.

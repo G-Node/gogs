@@ -10,16 +10,16 @@ import (
 	"strings"
 
 	"github.com/unknwon/paginater"
-	log "gopkg.in/clog.v1"
 	"gopkg.in/macaron.v1"
+	log "unknwon.dev/clog/v2"
 
-	"github.com/G-Node/gogs/internal/setting"
+	"github.com/G-Node/gogs/internal/conf"
 )
 
 type APIContext struct {
 	*Context // TODO: Reduce to only needed fields instead of full shadow
 
-	// Base URL for the version of API endpoints, e.g. https://try.gogs.io/api/v1
+	// Base URL for the version of API endpoints, e.g. https://try.github.com/G-Node/api/v1
 	BaseURL string
 
 	Org *APIOrganization
@@ -39,7 +39,7 @@ func (c *APIContext) Error(status int, title string, obj interface{}) {
 	}
 
 	if status == http.StatusInternalServerError {
-		log.Error(3, "%s: %s", title, message)
+		log.Error("%s: %s", title, message)
 	}
 
 	c.JSON(status, map[string]string{
@@ -79,16 +79,16 @@ func (c *APIContext) SetLinkHeader(total, pageSize int) {
 	page := paginater.New(total, pageSize, c.QueryInt("page"), 0)
 	links := make([]string, 0, 4)
 	if page.HasNext() {
-		links = append(links, fmt.Sprintf("<%s%s?page=%d>; rel=\"next\"", setting.AppURL, c.Req.URL.Path[1:], page.Next()))
+		links = append(links, fmt.Sprintf("<%s%s?page=%d>; rel=\"next\"", conf.Server.ExternalURL, c.Req.URL.Path[1:], page.Next()))
 	}
 	if !page.IsLast() {
-		links = append(links, fmt.Sprintf("<%s%s?page=%d>; rel=\"last\"", setting.AppURL, c.Req.URL.Path[1:], page.TotalPages()))
+		links = append(links, fmt.Sprintf("<%s%s?page=%d>; rel=\"last\"", conf.Server.ExternalURL, c.Req.URL.Path[1:], page.TotalPages()))
 	}
 	if !page.IsFirst() {
-		links = append(links, fmt.Sprintf("<%s%s?page=1>; rel=\"first\"", setting.AppURL, c.Req.URL.Path[1:]))
+		links = append(links, fmt.Sprintf("<%s%s?page=1>; rel=\"first\"", conf.Server.ExternalURL, c.Req.URL.Path[1:]))
 	}
 	if page.HasPrevious() {
-		links = append(links, fmt.Sprintf("<%s%s?page=%d>; rel=\"prev\"", setting.AppURL, c.Req.URL.Path[1:], page.Previous()))
+		links = append(links, fmt.Sprintf("<%s%s?page=%d>; rel=\"prev\"", conf.Server.ExternalURL, c.Req.URL.Path[1:], page.Previous()))
 	}
 
 	if len(links) > 0 {
@@ -100,7 +100,7 @@ func APIContexter() macaron.Handler {
 	return func(ctx *Context) {
 		c := &APIContext{
 			Context: ctx,
-			BaseURL: setting.AppURL + "api/v1",
+			BaseURL: conf.Server.ExternalURL + "api/v1",
 		}
 		ctx.Map(c)
 	}

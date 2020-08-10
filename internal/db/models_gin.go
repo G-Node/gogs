@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/G-Node/git-module"
-	"github.com/G-Node/gogs/internal/setting"
+	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/libgin/libgin"
 	"github.com/G-Node/libgin/libgin/annex"
 	log "gopkg.in/clog.v1"
@@ -19,7 +19,7 @@ import (
 // for a repository.
 func StartIndexing(repo Repository) {
 	go func() {
-		if setting.Search.IndexURL == "" {
+		if conf.Search.IndexURL == "" {
 			log.Trace("Indexing not enabled")
 			return
 		}
@@ -33,12 +33,12 @@ func StartIndexing(repo Repository) {
 			log.Error(2, "Could not marshal index request: %v", err)
 			return
 		}
-		key := []byte(setting.Search.Key)
+		key := []byte(conf.Search.Key)
 		encdata, err := libgin.EncryptString(key, string(data))
 		if err != nil {
 			log.Error(2, "Could not encrypt index request: %v", err)
 		}
-		req, err := http.NewRequest(http.MethodPost, setting.Search.IndexURL, strings.NewReader(encdata))
+		req, err := http.NewRequest(http.MethodPost, conf.Search.IndexURL, strings.NewReader(encdata))
 		if err != nil {
 			log.Error(2, "Error creating index request")
 		}
@@ -53,7 +53,7 @@ func StartIndexing(repo Repository) {
 
 // RebuildIndex sends all repositories to the indexing service to be indexed.
 func RebuildIndex() error {
-	indexurl := setting.Search.IndexURL
+	indexurl := conf.Search.IndexURL
 	if indexurl == "" {
 		return fmt.Errorf("Indexing service not configured")
 	}
@@ -125,7 +125,7 @@ func annexSetup(path string) {
 	}
 
 	// Set size filter in config
-	if msg, err := annex.SetAnnexSizeFilter(path, setting.Repository.Upload.AnnexFileMinSize*annex.MEGABYTE); err != nil {
+	if msg, err := annex.SetAnnexSizeFilter(path, conf.Repository.Upload.AnnexFileMinSize*annex.MEGABYTE); err != nil {
 		log.Error(2, "Failed to set size filter for annex: %v (%s)", err, msg)
 	}
 }
