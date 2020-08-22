@@ -41,9 +41,6 @@ var (
 		BrandName string
 		RunUser   string
 		RunMode   string
-
-		// Deprecated: Use BrandName instead, will be removed in 0.13.
-		AppName string
 	}
 
 	// SSH settings
@@ -110,9 +107,6 @@ var (
 		CookieSecure            bool
 		EnableLoginStatusCookie bool
 		LoginStatusCookieName   string
-
-		// Deprecated: Use Auth.ReverseProxyAuthenticationHeader instead, will be removed in 0.13.
-		ReverseProxyAuthenticationUser string
 	}
 
 	// Email settings
@@ -137,9 +131,6 @@ var (
 
 		// Derived from other static values
 		FromEmail string `ini:"-"` // Parsed email address of From without person's name.
-
-		// Deprecated: Use Password instead, will be removed in 0.13.
-		Passwd string
 	}
 
 	// Authentication settings
@@ -154,17 +145,6 @@ var (
 		EnableReverseProxyAuthentication   bool
 		EnableReverseProxyAutoRegistration bool
 		ReverseProxyAuthenticationHeader   string
-
-		// Deprecated: Use ActivateCodeLives instead, will be removed in 0.13.
-		ActiveCodeLiveMinutes int
-		// Deprecated: Use ResetPasswordCodeLives instead, will be removed in 0.13.
-		ResetPasswdCodeLiveMinutes int
-		// Deprecated: Use RequireEmailConfirmation instead, will be removed in 0.13.
-		RegisterEmailConfirm bool
-		// Deprecated: Use EnableRegistrationCaptcha instead, will be removed in 0.13.
-		EnableCaptcha bool
-		// Deprecated: Use User.EnableEmailNotification instead, will be removed in 0.13.
-		EnableNotifyMail bool
 	}
 
 	// User settings
@@ -181,11 +161,6 @@ var (
 		GCInterval     int64 `ini:"GC_INTERVAL"`
 		MaxLifeTime    int64
 		CSRFCookieName string `ini:"CSRF_COOKIE_NAME"`
-
-		// Deprecated: Use GCInterval instead, will be removed in 0.13.
-		GCIntervalTime int64 `ini:"GC_INTERVAL_TIME"`
-		// Deprecated: Use MaxLifeTime instead, will be removed in 0.13.
-		SessionLifeTime int64
 	}
 
 	// Cache settings
@@ -412,11 +387,6 @@ type ServerOpts struct {
 	Subpath        string      `ini:"-"` // Subpath found the ExternalURL. Should be empty when not found.
 	SubpathDepth   int         `ini:"-"` // The number of slashes found in the Subpath.
 	UnixSocketMode os.FileMode `ini:"-"` // Parsed file mode of UnixSocketPermission.
-
-	// Deprecated: Use ExternalURL instead, will be removed in 0.13.
-	RootURL string `ini:"ROOT_URL"`
-	// Deprecated: Use LandingURL instead, will be removed in 0.13.
-	LangdingPage string `ini:"LANDING_PAGE"`
 }
 
 // Server settings
@@ -432,11 +402,6 @@ type DatabaseOpts struct {
 	Path         string
 	MaxOpenConns int
 	MaxIdleConns int
-
-	// Deprecated: Use Type instead, will be removed in 0.13.
-	DbType string
-	// Deprecated: Use Password instead, will be removed in 0.13.
-	Passwd string
 }
 
 // Database settings
@@ -470,68 +435,11 @@ var I18n *i18nConf
 
 // handleDeprecated transfers deprecated values to the new ones when set.
 func handleDeprecated() {
-	if App.AppName != "" {
-		App.BrandName = App.AppName
-		App.AppName = ""
-	}
-
-	if Server.RootURL != "" {
-		Server.ExternalURL = Server.RootURL
-		Server.RootURL = ""
-	}
-	if Server.LangdingPage == "explore" {
-		Server.LandingURL = "/explore"
-		Server.LangdingPage = ""
-	}
-
-	if Database.DbType != "" {
-		Database.Type = Database.DbType
-		Database.DbType = ""
-	}
-	if Database.Passwd != "" {
-		Database.Password = Database.Passwd
-		Database.Passwd = ""
-	}
-
-	if Email.Passwd != "" {
-		Email.Password = Email.Passwd
-		Email.Passwd = ""
-	}
-
-	if Auth.ActiveCodeLiveMinutes > 0 {
-		Auth.ActivateCodeLives = Auth.ActiveCodeLiveMinutes
-		Auth.ActiveCodeLiveMinutes = 0
-	}
-	if Auth.ResetPasswdCodeLiveMinutes > 0 {
-		Auth.ResetPasswordCodeLives = Auth.ResetPasswdCodeLiveMinutes
-		Auth.ResetPasswdCodeLiveMinutes = 0
-	}
-	if Auth.RegisterEmailConfirm {
-		Auth.RequireEmailConfirmation = true
-		Auth.RegisterEmailConfirm = false
-	}
-	if Auth.EnableCaptcha {
-		Auth.EnableRegistrationCaptcha = true
-		Auth.EnableCaptcha = false
-	}
-	if Security.ReverseProxyAuthenticationUser != "" {
-		Auth.ReverseProxyAuthenticationHeader = Security.ReverseProxyAuthenticationUser
-		Security.ReverseProxyAuthenticationUser = ""
-	}
-
-	if Auth.EnableNotifyMail {
-		User.EnableEmailNotification = true
-		Auth.EnableNotifyMail = false
-	}
-
-	if Session.GCIntervalTime > 0 {
-		Session.GCInterval = Session.GCIntervalTime
-		Session.GCIntervalTime = 0
-	}
-	if Session.SessionLifeTime > 0 {
-		Session.MaxLifeTime = Session.SessionLifeTime
-		Session.SessionLifeTime = 0
-	}
+	// Add fallback logic here, example:
+	// if App.AppName != "" {
+	// 	App.BrandName = App.AppName
+	// 	App.AppName = ""
+	// }
 }
 
 // HookMode indicates whether program starts as Git server-side hook callback.
