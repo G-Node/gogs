@@ -7,7 +7,7 @@ RUN apk --no-cache --no-progress add --virtual \
 
 WORKDIR /go/src/github.com/G-Node/gogs
 COPY . .
-RUN make build-no-gen TAGS="cert pam"
+RUN make build TAGS="cert pam"
 
 FROM alpine:3.11
 ADD https://github.com/tianon/gosu/releases/download/1.11/gosu-amd64 /usr/sbin/gosu
@@ -39,7 +39,7 @@ RUN ln -s /git-annex/git-annex.linux/git-annex-shell /bin/git-annex-shell
 
 ENV GOGS_CUSTOM /data/gogs
 
-# Configure LibC Name Service
+# Configure LibC Name Service
 COPY docker/nsswitch.conf /etc/nsswitch.conf
 
 WORKDIR /app/gogs
@@ -48,7 +48,7 @@ COPY --from=binarybuilder /go/src/github.com/G-Node/gogs/gogs .
 
 RUN ./docker/finalize.sh
 
-# Configure Docker Container
+# Configure Docker Container
 VOLUME ["/data", "/backup"]
 EXPOSE 22 3000
 ENTRYPOINT ["/app/gogs/docker/start.sh"]
