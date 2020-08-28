@@ -35,6 +35,6 @@ By indexing the repository contents it's easy to find the files you are looking 
 ## Acknowledgments
 GIN is based on [Gogs](https://github.com/gogs/gogs)
 
-## License
+## ⚖️ License
 
 This project is under the MIT License. See the [LICENSE](https://github.com/G-Node/gogs/blob/master/LICENSE) file for the full license text.
