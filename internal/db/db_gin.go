@@ -8,6 +8,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/G-Node/git-module"
@@ -172,6 +173,60 @@ func annexUpload(repoPath, remote string) error {
 		return fmt.Errorf("git annex copy [%s]", repoPath)
 	}
 	return nil
+}
+
+// isAddressAllowed returns true if the email address is allowed to sign up
+// based on the regular expressions found in the email filter file
+// (custom/addressfilters).
+// In case of errors (opening or reading file) or no matches, the function
+// defaults to 'true'.
+func isAddressAllowed(email string) bool {
+	fpath := path.Join(setting.CustomPath, "addressfilters")
+	if !com.IsExist(fpath) {
+		// file doesn't exist: default allow everything
+		return true
+	}
+
+	f, err := os.Open(fpath)
+	if err != nil {
+		log.Error(2, "Failed to open file %q: %v", fpath, err)
+		// file read error: default allow everything
+		return true
+	}
+	defer f.Close()
+
+	emailBytes := []byte(email)
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		// Check provided email address against each line regex
+		// Failure to match any line returns true (allowed)
+		// Matching a line prefixed with + returns true (allowed)
+		// Matching a line prefixed with - returns false (blocked)
+		// Erroneous patterns are logged and ignored
+		var allow bool
+		line := scanner.Text()
+		if line[0] == '-' {
+			allow = false
+		} else if line[0] == '+' {
+			allow = true
+		} else {
+			log.Error(2, "Invalid line in addressfilters: %s", line)
+			log.Error(2, "Prefix invalid (must be '-' or '+')")
+			continue
+		}
+		pattern := strings.TrimSpace(line[1:])
+		match, err := regexp.Match(pattern, emailBytes)
+		if err != nil {
+			log.Error(2, "Invalid line in addressfilters: %s", line)
+			log.Error(2, "Invalid pattern: %v", err)
+		}
+		if match {
+			return allow
+		}
+	}
+
+	// No match: Default to allow
+	return true
 }
 
 func IsBlockedDomain(email string) bool {
