@@ -5,7 +5,6 @@
 package db
 
 import (
-	"bufio"
 	"bytes"
 	"container/list"
 	"crypto/sha256"
@@ -16,7 +15,6 @@ import (
 	_ "image/jpeg"
 	"image/png"
 	"os"
-	"path"
 	"path/filepath"
 	"strings"
 	"time"
@@ -35,7 +33,6 @@ import (
 	"github.com/G-Node/gogs/internal/db/errors"
 	"github.com/G-Node/gogs/internal/setting"
 	"github.com/G-Node/gogs/internal/tool"
-	"golang.org/x/crypto/bcrypt"
 )
 
 // USER_AVATAR_URL_PREFIX is used to identify a URL is to access user avatar.
@@ -329,11 +326,6 @@ func (u *User) EncodePasswd() {
 	u.Passwd = fmt.Sprintf("%x", newPasswd)
 }
 
-func (u *User) OldGinVerifyPassword(plain string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(u.Passwd), []byte(plain))
-	return err == nil
-}
-
 // ValidatePassword checks if given password matches the one belongs to the user.
 func (u *User) ValidatePassword(passwd string) bool {
 	if u.OldGinVerifyPassword(passwd) {
@@ -492,31 +484,6 @@ func IsUserExist(uid int64, name string) (bool, error) {
 		return false, nil
 	}
 	return x.Where("id != ?", uid).Get(&User{LowerName: strings.ToLower(name)})
-}
-
-func IsBlockedDomain(email string) bool {
-	fpath := path.Join(setting.CustomPath, "blocklist")
-	if !com.IsExist(fpath) {
-		return false
-	}
-
-	f, err := os.Open(fpath)
-	if err != nil {
-		log.Error(2, "Failed to open file %q: %v", fpath, err)
-		return false
-	}
-	defer f.Close()
-
-	scanner := bufio.NewScanner(f)
-	for scanner.Scan() {
-		// Check provided email address against each line as suffix
-		if strings.HasSuffix(email, scanner.Text()) {
-			log.Trace("New user email matched blocked domain: %q", email)
-			return true
-		}
-	}
-
-	return false
 }
 
 // GetUserSalt returns a ramdom user salt token.
