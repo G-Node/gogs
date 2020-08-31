@@ -1,6 +1,7 @@
 package db
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -8,10 +9,12 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/G-Node/git-module"
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/libgin/libgin"
 	"github.com/G-Node/libgin/libgin/annex"
-	"github.com/gogs/git-module"
+	"github.com/unknwon/com"
+	"golang.org/x/crypto/bcrypt"
 	log "gopkg.in/clog.v1"
 )
 
@@ -150,9 +153,9 @@ func annexSync(path string) error {
 func annexAdd(repoPath string, all bool, files ...string) error {
 	cmd := git.NewCommand("annex", "add")
 	if all {
-		cmd.AddArgs(".")
+		cmd.AddArguments(".")
 	}
-	_, err := cmd.AddArgs(files...).RunInDir(repoPath)
+	_, err := cmd.AddArguments(files...).RunInDir(repoPath)
 	return err
 }
 
@@ -168,4 +171,35 @@ func annexUpload(repoPath, remote string) error {
 		return fmt.Errorf("git annex copy [%s]", repoPath)
 	}
 	return nil
+}
+
+func IsBlockedDomain(email string) bool {
+	// fpath := path.Join(setting.CustomPath, "blocklist")
+	fpath := filepath.Join(conf.CustomDir(), "blocklist")
+	if !com.IsExist(fpath) {
+		return false
+	}
+
+	f, err := os.Open(fpath)
+	if err != nil {
+		log.Error(2, "Failed to open file %q: %v", fpath, err)
+		return false
+	}
+	defer f.Close()
+
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		// Check provided email address against each line as suffix
+		if strings.HasSuffix(email, scanner.Text()) {
+			log.Trace("New user email matched blocked domain: %q", email)
+			return true
+		}
+	}
+
+	return false
+}
+
+func (u *User) OldGinVerifyPassword(plain string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(u.Passwd), []byte(plain))
+	return err == nil
 }
