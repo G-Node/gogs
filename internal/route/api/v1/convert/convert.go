@@ -9,7 +9,7 @@ import (
 
 	"github.com/unknwon/com"
 
-	"github.com/G-Node/git-module"
+	"github.com/gogs/git-module"
 	api "github.com/gogs/go-gogs-client"
 
 	"github.com/G-Node/gogs/internal/db"
@@ -43,7 +43,7 @@ func ToCommit(c *git.Commit) *api.PayloadCommit {
 	}
 	return &api.PayloadCommit{
 		ID:      c.ID.String(),
-		Message: c.Message(),
+		Message: c.Message,
 		URL:     "Not implemented",
 		Author: &api.PayloadUser{
 			Name:     c.Author.Name,

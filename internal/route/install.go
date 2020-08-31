@@ -18,7 +18,7 @@ import (
 	log "unknwon.dev/clog/v2"
 	"xorm.io/xorm"
 
-	"github.com/G-Node/git-module"
+	"github.com/gogs/git-module"
 
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
@@ -41,8 +41,9 @@ func checkRunMode() {
 	if conf.IsProdMode() {
 		macaron.Env = macaron.PROD
 		macaron.ColorLog = false
+		git.SetOutput(nil)
 	} else {
-		git.Debug = true
+		git.SetOutput(os.Stdout)
 	}
 	log.Info("Run mode: %s", strings.Title(macaron.Env))
 }
@@ -54,7 +55,7 @@ func GlobalInit(customConf string) error {
 		return errors.Wrap(err, "init configuration")
 	}
 
-	conf.InitLogging()
+	conf.InitLogging(false)
 	log.Info("%s %s", conf.App.BrandName, conf.App.Version)
 	log.Trace("Work directory: %s", conf.WorkDir())
 	log.Trace("Custom path: %s", conf.CustomDir())

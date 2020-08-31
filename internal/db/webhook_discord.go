@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/G-Node/git-module"
+	"github.com/gogs/git-module"
 	api "github.com/gogs/go-gogs-client"
 	jsoniter "github.com/json-iterator/go"
 
@@ -70,7 +70,7 @@ func DiscordSHALinkFormatter(url string, text string) string {
 
 // getDiscordCreatePayload composes Discord payload for create new branch or tag.
 func getDiscordCreatePayload(p *api.CreatePayload) (*DiscordPayload, error) {
-	refName := git.RefEndName(p.Ref)
+	refName := git.RefShortName(p.Ref)
 	repoLink := DiscordLinkFormatter(p.Repo.HTMLURL, p.Repo.Name)
 	refLink := DiscordLinkFormatter(p.Repo.HTMLURL+"/src/"+refName, refName)
 	content := fmt.Sprintf("Created new %s: %s/%s", p.RefType, repoLink, refLink)
@@ -88,7 +88,7 @@ func getDiscordCreatePayload(p *api.CreatePayload) (*DiscordPayload, error) {
 
 // getDiscordDeletePayload composes Discord payload for delete a branch or tag.
 func getDiscordDeletePayload(p *api.DeletePayload) (*DiscordPayload, error) {
-	refName := git.RefEndName(p.Ref)
+	refName := git.RefShortName(p.Ref)
 	repoLink := DiscordLinkFormatter(p.Repo.HTMLURL, p.Repo.Name)
 	content := fmt.Sprintf("Deleted %s: %s/%s", p.RefType, repoLink, refName)
 	return &DiscordPayload{
@@ -123,7 +123,7 @@ func getDiscordForkPayload(p *api.ForkPayload) (*DiscordPayload, error) {
 func getDiscordPushPayload(p *api.PushPayload, slack *SlackMeta) (*DiscordPayload, error) {
 	// n new commits
 	var (
-		branchName   = git.RefEndName(p.Ref)
+		branchName   = git.RefShortName(p.Ref)
 		commitDesc   string
 		commitString string
 	)

@@ -300,7 +300,6 @@ var (
 	// Webhook settings
 	Webhook struct {
 		Types          []string
-		QueueLength    int
 		DeliverTimeout int
 		SkipTLSVerify  bool `ini:"SKIP_TLS_VERIFY"`
 		PagingNum      int
@@ -359,12 +358,12 @@ var (
 		// ⚠️ WARNING: Should only be set by "internal/db/repo.go".
 		Version string `ini:"-"`
 
-		DisableDiffHighlight     bool
-		MaxGitDiffLines          int
-		MaxGitDiffLineCharacters int
-		MaxGitDiffFiles          int
-		GCArgs                   []string `ini:"GC_ARGS" delim:" "`
-		Timeout                  struct {
+		DisableDiffHighlight bool
+		MaxDiffFiles         int      `ini:"MAX_GIT_DIFF_FILES"`
+		MaxDiffLines         int      `ini:"MAX_GIT_DIFF_LINES"`
+		MaxDiffLineChars     int      `ini:"MAX_GIT_DIFF_LINE_CHARACTERS"`
+		GCArgs               []string `ini:"GC_ARGS" delim:" "`
+		Timeout              struct {
 			Migrate int
 			Mirror  int
 			Clone   int
@@ -523,6 +522,8 @@ func handleDeprecated() {
 
 // HookMode indicates whether program starts as Git server-side hook callback.
 // All operations should be done synchronously to prevent program exits before finishing.
+//
+// ⚠️ WARNING: Should only be set by "internal/cmd/serv.go".
 var HookMode bool
 
 // Indicates which database backend is currently being used.

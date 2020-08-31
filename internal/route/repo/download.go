@@ -6,37 +6,30 @@ package repo
 
 import (
 	"fmt"
-	"io"
 	"net/http"
 	"path"
 
-	"github.com/G-Node/git-module"
-	"github.com/go-macaron/captcha"
+	"github.com/gogs/git-module"
 
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
+	"github.com/G-Node/gogs/internal/gitutil"
 	"github.com/G-Node/gogs/internal/tool"
 )
 
-func serveData(c *context.Context, name string, r io.Reader, cpt *captcha.Captcha) error {
-	buf := make([]byte, 1024)
-	n, _ := r.Read(buf)
-	if n >= 0 {
-		buf = buf[:n]
-	}
-
-	commit, err := c.Repo.Commit.GetCommitByPath(c.Repo.TreePath)
+func serveData(c *context.Context, name string, data []byte) error {
+	commit, err := c.Repo.Commit.CommitByPath(git.CommitByRevisionOptions{Path: c.Repo.TreePath})
 	if err != nil {
-		return fmt.Errorf("GetCommitByPath: %v", err)
+		return fmt.Errorf("get commit by path %q: %v", c.Repo.TreePath, err)
 	}
 	c.Resp.Header().Set("Last-Modified", commit.Committer.When.Format(http.TimeFormat))
 
-	if tool.IsAnnexedFile(buf) {
-		return serveAnnexedData(c, name, cpt, buf)
+	if tool.IsAnnexedFile(data) {
+		return serveAnnexedData(c, name, data)
 	}
 
-	if !tool.IsTextFile(buf) {
-		if !tool.IsImageFile(buf) {
+	if !tool.IsTextFile(data) {
+		if !tool.IsImageFile(data) {
 			c.Resp.Header().Set("Content-Disposition", "attachment; filename=\""+name+"\"")
 			c.Resp.Header().Set("Content-Transfer-Encoding", "binary")
 		}
@@ -44,33 +37,30 @@ func serveData(c *context.Context, name string, r io.Reader, cpt *captcha.Captch
 		c.Resp.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	}
 
-	if _, err := c.Resp.Write(buf); err != nil {
+	if _, err := c.Resp.Write(data); err != nil {
 		return fmt.Errorf("write buffer to response: %v", err)
 	}
-	_, err = io.Copy(c.Resp, r)
-	return err
+	return nil
 }
 
-func ServeBlob(c *context.Context, blob *git.Blob, cpt *captcha.Captcha) error {
-	r, w := io.Pipe()
-	defer r.Close()
-	defer w.Close()
-	go blob.DataPipeline(w, w)
-	return serveData(c, path.Base(c.Repo.TreePath), io.LimitReader(r, blob.Size()), cpt)
-}
-
-func SingleDownload(c *context.Context, cpt *captcha.Captcha) {
-	blob, err := c.Repo.Commit.GetBlobByPath(c.Repo.TreePath)
+func ServeBlob(c *context.Context, blob *git.Blob) error {
+	p, err := blob.Bytes()
 	if err != nil {
-		if git.IsErrNotExist(err) {
-			c.Handle(404, "GetBlobByPath", nil)
-		} else {
-			c.Handle(500, "GetBlobByPath", err)
-		}
+		return err
+	}
+
+	return serveData(c, path.Base(c.Repo.TreePath), p)
+}
+
+func SingleDownload(c *context.Context) {
+	blob, err := c.Repo.Commit.Blob(c.Repo.TreePath)
+	if err != nil {
+		c.NotFoundOrServerError("get blob", gitutil.IsErrRevisionNotExist, err)
 		return
 	}
-	// reallow direct download independent of size
-	if err = ServeBlob(c, blob, nil); err != nil {
-		c.Handle(500, "ServeBlob", err)
+
+	if err = ServeBlob(c, blob); err != nil {
+		c.ServerError("serve blob", err)
+		return
 	}
 }

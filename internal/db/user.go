@@ -7,7 +7,6 @@ package db
 import (
 	"bufio"
 	"bytes"
-	"container/list"
 	"crypto/sha256"
 	"crypto/subtle"
 	"encoding/hex"
@@ -28,7 +27,7 @@ import (
 	log "unknwon.dev/clog/v2"
 	"xorm.io/xorm"
 
-	"github.com/G-Node/git-module"
+	"github.com/gogs/git-module"
 	api "github.com/gogs/go-gogs-client"
 
 	"github.com/G-Node/gogs/internal/avatar"
@@ -926,7 +925,7 @@ func GetUserByKeyID(keyID int64) (*User, error) {
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, errors.UserNotKeyOwner{keyID}
+		return nil, errors.UserNotKeyOwner{KeyID: keyID}
 	}
 	return user, nil
 }
@@ -937,7 +936,7 @@ func getUserByID(e Engine, id int64) (*User, error) {
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, errors.UserNotExist{id, ""}
+		return nil, errors.UserNotExist{UserID: id}
 	}
 	return u, nil
 }
@@ -953,7 +952,7 @@ func GetAssigneeByID(repo *Repository, userID int64) (*User, error) {
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, errors.UserNotExist{userID, ""}
+		return nil, errors.UserNotExist{UserID: userID}
 	}
 	return GetUserByID(userID)
 }
@@ -961,14 +960,14 @@ func GetAssigneeByID(repo *Repository, userID int64) (*User, error) {
 // GetUserByName returns a user by given name.
 func GetUserByName(name string) (*User, error) {
 	if len(name) == 0 {
-		return nil, errors.UserNotExist{0, name}
+		return nil, errors.UserNotExist{Name: name}
 	}
 	u := &User{LowerName: strings.ToLower(name)}
 	has, err := x.Get(u)
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, errors.UserNotExist{0, name}
+		return nil, errors.UserNotExist{Name: name}
 	}
 	return u, nil
 }
@@ -1017,28 +1016,22 @@ func ValidateCommitWithEmail(c *git.Commit) *User {
 }
 
 // ValidateCommitsWithEmails checks if authors' e-mails of commits are corresponding to users.
-func ValidateCommitsWithEmails(oldCommits *list.List) *list.List {
-	var (
-		u          *User
-		emails     = map[string]*User{}
-		newCommits = list.New()
-		e          = oldCommits.Front()
-	)
-	for e != nil {
-		c := e.Value.(*git.Commit)
-
-		if v, ok := emails[c.Author.Email]; !ok {
-			u, _ = GetUserByEmail(c.Author.Email)
-			emails[c.Author.Email] = u
+func ValidateCommitsWithEmails(oldCommits []*git.Commit) []*UserCommit {
+	emails := make(map[string]*User)
+	newCommits := make([]*UserCommit, len(oldCommits))
+	for i := range oldCommits {
+		var u *User
+		if v, ok := emails[oldCommits[i].Author.Email]; !ok {
+			u, _ = GetUserByEmail(oldCommits[i].Author.Email)
+			emails[oldCommits[i].Author.Email] = u
 		} else {
 			u = v
 		}
 
-		newCommits.PushBack(UserCommit{
+		newCommits[i] = &UserCommit{
 			User:   u,
-			Commit: c,
-		})
-		e = e.Next()
+			Commit: oldCommits[i],
+		}
 	}
 	return newCommits
 }
@@ -1046,7 +1039,7 @@ func ValidateCommitsWithEmails(oldCommits *list.List) *list.List {
 // GetUserByEmail returns the user object by given e-mail if exists.
 func GetUserByEmail(email string) (*User, error) {
 	if len(email) == 0 {
-		return nil, errors.UserNotExist{0, "email"}
+		return nil, errors.UserNotExist{Name: "email"}
 	}
 
 	email = strings.ToLower(email)
@@ -1070,7 +1063,7 @@ func GetUserByEmail(email string) (*User, error) {
 		return GetUserByID(emailAddress.UID)
 	}
 
-	return nil, errors.UserNotExist{0, email}
+	return nil, errors.UserNotExist{Name: email}
 }
 
 type SearchUserOptions struct {
