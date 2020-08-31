@@ -559,6 +559,10 @@ func CreateUser(u *User) (err error) {
 		return ErrBlockedDomain{u.Email}
 	}
 
+	if !isAddressAllowed(u.Email) {
+		return ErrBlockedDomain{u.Email}
+	}
+
 	u.LowerName = strings.ToLower(u.Name)
 	u.AvatarEmail = u.Email
 	u.Avatar = tool.HashEmail(u.AvatarEmail)
