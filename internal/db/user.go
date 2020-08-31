@@ -555,10 +555,6 @@ func CreateUser(u *User) (err error) {
 		return ErrEmailAlreadyUsed{u.Email}
 	}
 
-	if IsBlockedDomain(u.Email) {
-		return ErrBlockedDomain{u.Email}
-	}
-
 	if !isAddressAllowed(u.Email) {
 		return ErrBlockedDomain{u.Email}
 	}
