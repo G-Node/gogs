@@ -221,6 +221,7 @@ func isAddressAllowed(email string) bool {
 			log.Error(2, "Invalid pattern: %v", err)
 		}
 		if match {
+			log.Trace("New user email %q matched filter rule %q (Allow: %t)", email, line, allow)
 			return allow
 		}
 	}
