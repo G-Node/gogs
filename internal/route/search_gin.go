@@ -82,7 +82,7 @@ func collectSearchableRepoIDs(c *context.Context) ([]int64, error) {
 	// If it's not unlisted, add it to the set
 	// This will add public (listed) repositories
 	for _, r := range repos {
-		if !r.Unlisted {
+		if !r.IsUnlisted {
 			repoIDSet.add(r.ID)
 		}
 	}
