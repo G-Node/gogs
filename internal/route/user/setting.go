@@ -18,6 +18,7 @@ import (
 	"github.com/unknwon/com"
 	log "unknwon.dev/clog/v2"
 
+	"github.com/G-Node/gogs/internal/auth"
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/cryptoutil"
@@ -640,7 +641,7 @@ func SettingsDelete(c *context.Context) {
 
 	if c.Req.Method == "POST" {
 		if _, err := db.Users.Authenticate(c.User.Name, c.Query("password"), c.User.LoginSource); err != nil {
-			if db.IsErrUserNotExist(err) {
+			if auth.IsErrBadCredentials(err) {
 				c.RenderWithErr(c.Tr("form.enterred_invalid_password"), SETTINGS_DELETE, nil)
 			} else {
 				c.Errorf(err, "authenticate user")

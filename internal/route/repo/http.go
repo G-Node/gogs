@@ -20,6 +20,7 @@ import (
 	"gopkg.in/macaron.v1"
 	log "unknwon.dev/clog/v2"
 
+	"github.com/G-Node/gogs/internal/auth"
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/lazyregexp"
@@ -122,7 +123,7 @@ func HTTPContexter() macaron.Handler {
 		}
 
 		authUser, err := db.Users.Authenticate(authUsername, authPassword, -1)
-		if err != nil && !db.IsErrUserNotExist(err) {
+		if err != nil && !auth.IsErrBadCredentials(err) {
 			c.Status(http.StatusInternalServerError)
 			log.Error("Failed to authenticate user [name: %s]: %v", authUsername, err)
 			return

@@ -14,6 +14,9 @@ import (
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 
+	"github.com/G-Node/gogs/internal/auth"
+	"github.com/G-Node/gogs/internal/auth/github"
+	"github.com/G-Node/gogs/internal/auth/pam"
 	"github.com/G-Node/gogs/internal/cryptoutil"
 	"github.com/G-Node/gogs/internal/lfsutil"
 	"github.com/G-Node/gogs/internal/testutil"
@@ -79,22 +82,22 @@ func setupDBToDump(t *testing.T, db *gorm.DB) {
 		},
 
 		&LoginSource{
-			Type:      LoginPAM,
+			Type:      auth.PAM,
 			Name:      "My PAM",
 			IsActived: true,
-			Config: &PAMConfig{
+			Provider: pam.NewProvider(&pam.Config{
 				ServiceName: "PAM service",
-			},
+			}),
 			CreatedUnix: 1588568886,
 			UpdatedUnix: 1588572486, // 1 hour later
 		},
 		&LoginSource{
-			Type:      LoginGitHub,
+			Type:      auth.GitHub,
 			Name:      "GitHub.com",
 			IsActived: true,
-			Config: &GitHubConfig{
+			Provider: github.NewProvider(&github.Config{
 				APIEndpoint: "https://api.github.com",
-			},
+			}),
 			CreatedUnix: 1588568886,
 		},
 	}
