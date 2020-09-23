@@ -48,6 +48,19 @@ func (err ErrBlockedDomain) Error() string {
 	return fmt.Sprintf("user sign up failed")
 }
 
+type ErrNotWhitelisted struct {
+	Email string
+}
+
+func IsErrNotWhitelisted(err error) bool {
+	_, ok := err.(ErrNotWhitelisted)
+	return ok
+}
+
+func (err ErrNotWhitelisted) Error() string {
+	return fmt.Sprintf("Email address not verified")
+}
+
 //  ____ ___
 // |    |   \______ ___________
 // |    |   /  ___// __ \_  __ \

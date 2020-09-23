@@ -354,6 +354,9 @@ func SignUpPost(c *context.Context, cpt *captcha.Captcha, f form.Register) {
 			c.RenderWithErr(c.Tr("user.form.name_pattern_not_allowed", err.(db.ErrNamePatternNotAllowed).Pattern), SIGNUP, &f)
 		case db.IsErrBlockedDomain(err):
 			c.RenderWithErr(c.Tr("form.email_not_allowed"), SIGNUP, &f)
+		case db.IsErrNotWhitelisted(err):
+			c.FormErr("Email")
+			c.RenderWithErr(c.Tr("form.email_not_whitelisted"), SIGNUP, &f)
 		default:
 			c.ServerError("CreateUser", err)
 		}
