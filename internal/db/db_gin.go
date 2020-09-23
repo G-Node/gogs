@@ -2,8 +2,11 @@ package db
 
 import (
 	"bufio"
+	"crypto/sha1"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"path"
@@ -228,6 +231,43 @@ func isAddressAllowed(email string) bool {
 
 	// No match: Default to allow
 	return true
+}
+
+// isOnWhitelist returns true if the hash of a provided email address 
+// can be found in an external whitelist file.
+// Returns false if the email address hash is not found or the file cannot be accessed.
+func isOnWhitelist(email string) bool {
+	// BC20 whitelist location
+	const whitelistlocation = "https://bc20-posters.g-node.org/uploads/emailwhitelist"
+
+	// Hash email address
+	hasher := sha1.New()
+	io.WriteString(hasher, email)
+	hash := hasher.Sum(nil)
+	compare := hex.EncodeToString(hash[:])
+
+	// Fetch whitelist
+	resp, err := http.Get(whitelistlocation)
+	if err != nil {
+		log.Error(2, "Error fetching whitelist: '%s'", err.Error())
+		return false
+	}
+	defer resp.Body.Close()
+
+	// Check if provided email address is in whitelist
+	var registered bool
+	respScan := bufio.NewScanner(resp.Body)
+	for respScan.Scan() {
+		curr := respScan.Text()
+		if curr == "" {
+			continue
+		}
+		if curr == compare {
+			registered = true
+			break
+		}
+	}
+	return registered
 }
 
 func (u *User) OldGinVerifyPassword(plain string) bool {
