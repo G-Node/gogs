@@ -290,6 +290,7 @@ var (
 			Mirror  int
 			Clone   int
 			Pull    int
+			Diff    int
 			GC      int `ini:"GC"`
 		} `ini:"git.timeout"`
 	}
