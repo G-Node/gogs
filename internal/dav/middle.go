@@ -47,12 +47,12 @@ func DavMiddle() macaron.Handler {
 		if c.IsLogged && c.User.IsAdmin {
 			c.Repo.AccessMode = db.AccessModeOwner
 		} else {
-			mode, err := db.UserAccessMode(c.UserID(), repo)
-			if err != nil {
-				c.WriteHeader(http.StatusInternalServerError)
-				return
-			}
-			c.Repo.AccessMode = mode
+			c.Repo.AccessMode = db.Perms.AccessMode(c.UserID(), repo.ID,
+				db.AccessModeOptions{
+					OwnerID: repo.OwnerID,
+					Private: repo.IsPrivate,
+				},
+			)
 		}
 
 		if repo.IsMirror {
