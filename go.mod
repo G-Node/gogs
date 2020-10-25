@@ -6,7 +6,6 @@ require (
 	github.com/G-Node/git-module v0.8.4-gnode
 	github.com/G-Node/libgin v0.3.2
 	github.com/Masterminds/semver/v3 v3.1.0
-	github.com/bgentry/speakeasy v0.1.0 // indirect
 	github.com/dustinkirkland/golang-petname v0.0.0-20191129215211-8e5a1ed0cff0
 	github.com/editorconfig/editorconfig-core-go/v2 v2.3.7
 	github.com/fatih/color v1.9.0 // indirect
@@ -39,7 +38,7 @@ require (
 	github.com/olekukonko/tablewriter v0.0.4
 	github.com/pkg/errors v0.9.1
 	github.com/pquerna/otp v1.2.0
-	github.com/prometheus/client_golang v1.6.0
+	github.com/prometheus/client_golang v1.8.0
 	github.com/russross/blackfriday v1.5.2
 	github.com/saintfish/chardet v0.0.0-20120816061221-3af4cd4741ca // indirect
 	github.com/satori/go.uuid v1.2.0
@@ -52,7 +51,7 @@ require (
 	github.com/unknwon/paginater v0.0.0-20170405233947-45e5d631308e
 	github.com/urfave/cli v1.22.4
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
-	golang.org/x/net v0.0.0-20200324143707-d3edc9973b7e
+	golang.org/x/net v0.0.0-20200625001655-4c5254603344
 	golang.org/x/text v0.3.3
 	gopkg.in/DATA-DOG/go-sqlmock.v2 v2.0.0-20180914054222-c19298f520d0
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
@@ -62,7 +61,7 @@ require (
 	gopkg.in/ini.v1 v1.62.0
 	gopkg.in/ldap.v2 v2.5.1
 	gopkg.in/macaron.v1 v1.3.9
-	gopkg.in/yaml.v2 v2.2.7
+	gopkg.in/yaml.v2 v2.3.0
 	gorm.io/driver/mysql v1.0.2
 	gorm.io/driver/postgres v1.0.2
 	gorm.io/driver/sqlite v1.1.3
