@@ -60,7 +60,7 @@ require (
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gopkg.in/ini.v1 v1.62.0
 	gopkg.in/ldap.v2 v2.5.1
-	gopkg.in/macaron.v1 v1.3.9
+	gopkg.in/macaron.v1 v1.4.0
 	gopkg.in/yaml.v2 v2.3.0
 	gorm.io/driver/mysql v1.0.3
 	gorm.io/driver/postgres v1.0.5
