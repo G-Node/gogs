@@ -18,6 +18,7 @@
 						<a class="ui button" href="{{.RepoLink}}/src/{{.CommitID}}/{{EscapePound .TreePath}}">{{.i18n.Tr "repo.file_permalink"}}</a>
 					{{end}}
 					<a class="ui button" href="{{.RepoLink}}/commits/{{EscapePound .BranchName}}/{{EscapePound .TreePath}}">{{.i18n.Tr "repo.file_history"}}</a>
+					{{/* Custom GIN code change from repo.file_raw to repo.file_dl */}}
 					<a class="ui button" href="{{EscapePound $.RawFileLink}}">{{.i18n.Tr "repo.file_dl"}}</a>
 				</div>
 				{{if .Repository.CanEnableEditor}}
@@ -45,66 +46,68 @@
 		<div id="{{if not (or .IsJSON .IsYAML)}}{{if .IsIPythonNotebook}}ipython-notebook{{end}}" class="file-view {{if .IsMarkdown}}markdown{{else if .IsIPythonNotebook}}ipython-notebook{{else if .IsIPythonNotebook}}ipython-notebook{{else if .ReadmeInList}}plain-text{{else if and .IsTextFile}}code-view{{end}} has-emoji{{end}}">
 			{{if .IsMarkdown}}
 				{{if .FileContent}}{{.FileContent | Str2HTML}}{{end}}
-				{{else if .IsODML}}
-					<div class="ui fluid input">
-						<input class="search-input form-control" placeholder="Search"></input>
-					</div>
-					<div id="jstree"></div>
-					<script>
-						$(function() {
-							$(".search-input").keyup(function(e) {
-								if(e.keyCode==13) {
-									var searchString = $(this).val();
-									console.log(searchString);
-									$('#jstree').jstree('search', searchString);
-								}
-							});
-							$('#jstree').jstree({
-								'core': {
-									'data': [{{.ODML| Str2JS}}]
-								},
-								"search": {
-									"case_insensitive": true,
-									"show_only_matches" : true
-								},
-								"plugins": ["search"]
-							});
+			{{else if .IsODML}}
+				<div class="ui fluid input">
+					<input class="search-input form-control" placeholder="Search"></input>
+				</div>
+				<div id="jstree"></div>
+				<script>
+					$(function() {
+						$(".search-input").keyup(function(e) {
+							if(e.keyCode==13) {
+								var searchString = $(this).val();
+								console.log(searchString);
+								$('#jstree').jstree('search', searchString);
+							}
 						});
-					</script>
+						$('#jstree').jstree({
+							'core': {
+								'data': [{{.ODML| Str2JS}}]
+							},
+							"search": {
+								"case_insensitive": true,
+								"show_only_matches" : true
+							},
+							"plugins": ["search"]
+						});
+					});
+				</script>
 
-				{{else if .IsJSON}}
-					<div id="jsoneditor"></div>
-					<script>
-						// create the editor
-						var container = document.getElementById("jsoneditor");
-var options = {mode:"view"};
-var editor = new JSONEditor(container, options);
+			{{else if .IsJSON}}
+				<div id="jsoneditor"></div>
+				<script>
+					// create the editor
+					var container = document.getElementById("jsoneditor");
+					var options = {mode:"view"};
+					var editor = new JSONEditor(container, options);
 
-// set json
-var json = {{.RawFileContent| Str2JS}}
-editor.set(json);
+					// set json
+					var json = {{.RawFileContent| Str2JS}}
+					editor.set(json);
 
-// get json
-var json = editor.get();
-					</script>
-				{{else if .IsYAML}}
-					<div id="jsoneditor"></div>
-					<script>
-						// create the editor
-						var container = document.getElementById("jsoneditor");
-var options = {mode:"view"};
-var editor = new JSONEditor(container, options);
-// set json
-var json = YAML.parse({{.RawFileContent}})
-editor.set(json);
+					// get json
+					var json = editor.get();
+				</script>
 
-// get json
-var json = editor.get();
-					</script>
-				{{else if .IsIPythonNotebook}}
-					<script>
-$.getJSON("{{.RawFileLink}}", null, function(notebook_json) {
-	var notebook = nb.parse(notebook_json);
+			{{else if .IsYAML}}
+				<div id="jsoneditor"></div>
+				<script>
+					// create the editor
+					var container = document.getElementById("jsoneditor");
+					var options = {mode:"view"};
+					var editor = new JSONEditor(container, options);
+					// set json
+					var json = YAML.parse({{.RawFileContent}})
+					editor.set(json);
+
+					// get json
+					var json = editor.get();
+				</script>
+
+			{{else if .IsIPythonNotebook}}
+				<script>
+					$.getJSON("{{.RawFileLink}}", null, function(notebook_json) {
+						var notebook = nb.parse(notebook_json);
 						var rendered = notebook.render();
 						$.ajax({
 							type: "POST",
@@ -131,47 +134,50 @@ $.getJSON("{{.RawFileLink}}", null, function(notebook_json) {
 							});
 						});
 					});
-					</script>
-	{{else if .ReadmeInList}}
-		{{if .FileContent}}{{.FileContent | Str2HTML}}{{end}}
-		{{else if not .IsTextFile}}
-			<div class="view-raw ui center">
-				{{if .IsImageFile}}
-					<img src="{{EscapePound $.RawFileLink}}">
-				{{else if .IsAnnexedFile}}
-					<div class="ui yellow segment">
-						<strong>File content is not available</strong>
-						<p>
-						This file is a reference to a large file that is not available.
-						Find more information on what this means, how it can happen, and how to potentially resolve the issue see the <a href="/G-Node/Info/wiki/Annexed+Content">Help Page on Annexed Content</a>.
-						</p>
-					</div>
-				{{else if .IsVideoFile}}
-					<video controls src="{{EscapePound $.RawFileLink}}">
-						<strong>{{.i18n.Tr "repo.video_not_supported_in_browser"}}</strong>
-					</video>
-				{{else if .IsPDFFile}}
-					<iframe width="100%" height="600px" src="{{AppSubURL}}/plugins/pdfjs-1.4.20/web/viewer.html?file={{EscapePound $.RawFileLink}}"></iframe>
-				{{else}}
-					<a href="{{EscapePound $.RawFileLink}}" rel="nofollow" class="btn btn-gray btn-radius">{{.i18n.Tr "repo.file_view_dl"}}</a>
-				{{end}}
-			</div>
-		{{else if .FileSize}}
-			<table>
-				<tbody>
-					<tr>
+				</script>
+			{{else if .ReadmeInList}}
+				{{if .FileContent}}{{.FileContent | Str2HTML}}{{end}}
+			{{else if not .IsTextFile}}
+				<div class="view-raw ui center">
+					{{if .IsImageFile}}
+						<img src="{{EscapePound $.RawFileLink}}">
+
+					{{else if .IsAnnexedFile}}
+						<div class="ui yellow segment">
+							<strong>File content is not available</strong>
+							<p>
+							This file is a reference to a large file that is not available.
+							Find more information on what this means, how it can happen, and how to potentially resolve the issue see the <a href="/G-Node/Info/wiki/Annexed+Content">Help Page on Annexed Content</a>.
+							</p>
+						</div>
+					{{else if .IsVideoFile}}
+						<video controls src="{{EscapePound $.RawFileLink}}">
+							<strong>{{.i18n.Tr "repo.video_not_supported_in_browser"}}</strong>
+						</video>
+					{{else if .IsPDFFile}}
+						<iframe width="100%" height="600px" src="{{AppSubURL}}/plugins/pdfjs-1.4.20/web/viewer.html?file={{EscapePound $.RawFileLink}}"></iframe>
+					{{else}}
+						{{/* Custom GIN code change from repo.file_raw to repo.file_dl */}}
+						<a href="{{EscapePound $.RawFileLink}}" rel="nofollow" class="btn btn-gray btn-radius">{{.i18n.Tr "repo.file_view_dl"}}</a>
+					{{end}}
+				</div>
+			{{else if .FileSize}}
+				<table>
+					<tbody>
+						<tr>
 						{{if .IsFileTooLarge}}
 							<td><strong>{{.i18n.Tr "repo.file_too_large"}}</strong></td>
 						{{else}}
 							<td class="lines-num">{{.LineNums}}</td>
 							<td class="lines-code"><pre><code class="{{.HighlightClass}}"><ol class="linenums">{{.FileContent}}</ol></code></pre></td>
-							{{end}}
-					</tr>
-				</tbody>
-			</table>
-		{{end}}
+						{{end}}
+						</tr>
+					</tbody>
+				</table>
+			{{end}}
 		</div>
 	</div>
+
 	{{if or .IsJSON (or .IsYAML .IsODML)}}
 		<div class="ui codetab bottom attached tab {{if not .IsODML}}active{{end}} segment" data-tab="code">
 			<div class="file-view code-view has-emoji">
@@ -183,7 +189,7 @@ $.getJSON("{{.RawFileLink}}", null, function(notebook_json) {
 							{{else}}
 								<td class="lines-num">{{.LineNums}}</td>
 								<td class="lines-code"><pre><code class="{{.HighlightClass}}"><ol class="linenums">{{.FileContent}}</ol></code></pre></td>
-								{{end}}
+							{{end}}
 						</tr>
 					</tbody>
 				</table>
@@ -193,11 +199,11 @@ $.getJSON("{{.RawFileLink}}", null, function(notebook_json) {
 </div>
 
 <script>
-	function submitDeleteForm() {
-		var message = prompt("{{.i18n.Tr "repo.delete_confirm_message"}}\n\n{{.i18n.Tr "repo.delete_commit_summary"}}", "Delete '{{.TreeName}}'");
-		if (message != null) {
-			$("#delete-message").val(message);
-			$("#delete-file-form").submit()
-		}
-	}
+function submitDeleteForm() {
+    var message = prompt("{{.i18n.Tr "repo.delete_confirm_message"}}\n\n{{.i18n.Tr "repo.delete_commit_summary"}}", "Delete '{{.TreeName}}'");
+    if (message != null) {
+        $("#delete-message").val(message);
+        $("#delete-file-form").submit()
+    }
+}
 </script>
