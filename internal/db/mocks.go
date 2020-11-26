@@ -8,7 +8,7 @@ import (
 	"io"
 	"testing"
 
-	"gogs.io/gogs/internal/lfsutil"
+	"github.com/G-Node/gogs/internal/lfsutil"
 )
 
 // NOTE: Mocks are sorted in alphabetical order.
