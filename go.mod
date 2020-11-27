@@ -5,7 +5,7 @@ go 1.14
 require (
 	github.com/G-Node/git-module v0.8.4-gnode
 	github.com/G-Node/libgin v0.3.2
-	github.com/Masterminds/semver/v3 v3.1.0
+	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/dustinkirkland/golang-petname v0.0.0-20191129215211-8e5a1ed0cff0
 	github.com/editorconfig/editorconfig-core-go/v2 v2.3.7
 	github.com/fatih/color v1.9.0 // indirect
