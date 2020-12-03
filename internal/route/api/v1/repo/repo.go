@@ -27,7 +27,8 @@ func Search(c *context.APIContext) {
 		Page:     c.QueryInt("page"),
 	}
 
-	// workaround for the all query with logged users
+	// GIN specific code
+	// Workaround for the all query with logged users (?)
 	if opts.Keyword == "." {
 		opts.Keyword = ""
 	}
@@ -68,9 +69,11 @@ func Search(c *context.APIContext) {
 		return
 	}
 
+	// GIN specific code
+	// 'for' has been modfied to accomodate search in commits as well (?)
 	results := make([]*api.Repository, 0, len(repos))
 	for i := range repos {
-		if !repos[i].Unlisted {
+		if !repos[i].IsUnlisted {
 			rep := repos[i].APIFormat(nil)
 			rep.Owner.Email = ""
 			results = append(results, rep)
