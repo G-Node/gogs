@@ -17,6 +17,7 @@ import (
 
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db/errors"
+	"github.com/G-Node/gogs/internal/errutil"
 	"github.com/G-Node/gogs/internal/tool"
 )
 
@@ -90,7 +91,7 @@ func (issue *Issue) loadAttributes(e Engine) (err error) {
 	if issue.Poster == nil {
 		issue.Poster, err = getUserByID(e, issue.PosterID)
 		if err != nil {
-			if errors.IsUserNotExist(err) {
+			if IsErrUserNotExist(err) {
 				issue.PosterID = -1
 				issue.Poster = NewGhostUser()
 			} else {
@@ -395,7 +396,7 @@ func (issue *Issue) GetAssignee() (err error) {
 	}
 
 	issue.Assignee, err = GetUserByID(issue.AssigneeID)
-	if errors.IsUserNotExist(err) {
+	if IsErrUserNotExist(err) {
 		return nil
 	}
 	return err
@@ -407,6 +408,7 @@ func (issue *Issue) ReadBy(uid int64) error {
 }
 
 func updateIssueCols(e Engine, issue *Issue, cols ...string) error {
+	cols = append(cols, "updated_unix")
 	_, err := e.ID(issue.ID).Cols(cols...).Update(issue)
 	return err
 }
@@ -600,8 +602,8 @@ func (issue *Issue) ChangeAssignee(doer *User, assigneeID int64) (err error) {
 	}
 
 	issue.Assignee, err = GetUserByID(issue.AssigneeID)
-	if err != nil && !errors.IsUserNotExist(err) {
-		log.Error("GetUserByID [assignee_id: %v]: %v", issue.AssigneeID, err)
+	if err != nil && !IsErrUserNotExist(err) {
+		log.Error("Failed to get user by ID: %v", err)
 		return nil
 	}
 
@@ -673,14 +675,14 @@ func newIssue(e *xorm.Session, opts NewIssueOptions) (err error) {
 
 	if opts.Issue.AssigneeID > 0 {
 		assignee, err := getUserByID(e, opts.Issue.AssigneeID)
-		if err != nil && !errors.IsUserNotExist(err) {
-			return fmt.Errorf("getUserByID: %v", err)
+		if err != nil && !IsErrUserNotExist(err) {
+			return fmt.Errorf("get user by ID: %v", err)
 		}
 
 		// Assume assignee is invalid and drop silently.
 		opts.Issue.AssigneeID = 0
 		if assignee != nil {
-			valid, err := hasAccess(e, assignee.ID, opts.Repo, ACCESS_MODE_READ)
+			valid, err := hasAccess(e, assignee.ID, opts.Repo, AccessModeRead)
 			if err != nil {
 				return fmt.Errorf("hasAccess [user_id: %d, repo_id: %d]: %v", assignee.ID, opts.Repo.ID, err)
 			}
@@ -737,7 +739,7 @@ func newIssue(e *xorm.Session, opts NewIssueOptions) (err error) {
 
 		for i := 0; i < len(attachments); i++ {
 			attachments[i].IssueID = opts.Issue.ID
-			if _, err = e.Id(attachments[i].ID).Update(attachments[i]); err != nil {
+			if _, err = e.ID(attachments[i].ID).Update(attachments[i]); err != nil {
 				return fmt.Errorf("update attachment [id: %d]: %v", attachments[i].ID, err)
 			}
 		}
@@ -796,17 +798,35 @@ func NewIssue(repo *Repository, issue *Issue, labelIDs []int64, uuids []string) 
 	return nil
 }
 
-// GetIssueByRef returns an Issue specified by a GFM reference.
-// See https://help.github.com/articles/writing-on-github#references for more information on the syntax.
+var _ errutil.NotFound = (*ErrIssueNotExist)(nil)
+
+type ErrIssueNotExist struct {
+	args map[string]interface{}
+}
+
+func IsErrIssueNotExist(err error) bool {
+	_, ok := err.(ErrIssueNotExist)
+	return ok
+}
+
+func (err ErrIssueNotExist) Error() string {
+	return fmt.Sprintf("issue does not exist: %v", err.args)
+}
+
+func (ErrIssueNotExist) NotFound() bool {
+	return true
+}
+
+// GetIssueByRef returns an Issue specified by a GFM reference, e.g. owner/repo#123.
 func GetIssueByRef(ref string) (*Issue, error) {
 	n := strings.IndexByte(ref, byte('#'))
 	if n == -1 {
-		return nil, errors.InvalidIssueReference{Ref: ref}
+		return nil, ErrIssueNotExist{args: map[string]interface{}{"ref": ref}}
 	}
 
 	index := com.StrTo(ref[n+1:]).MustInt64()
 	if index == 0 {
-		return nil, errors.IssueNotExist{}
+		return nil, ErrIssueNotExist{args: map[string]interface{}{"ref": ref}}
 	}
 
 	repo, err := GetRepositoryByRef(ref[:n])
@@ -832,7 +852,7 @@ func GetRawIssueByIndex(repoID, index int64) (*Issue, error) {
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, errors.IssueNotExist{RepoID: repoID, Index: index}
+		return nil, ErrIssueNotExist{args: map[string]interface{}{"repoID": repoID, "index": index}}
 	}
 	return issue, nil
 }
@@ -852,7 +872,7 @@ func getRawIssueByID(e Engine, id int64) (*Issue, error) {
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, errors.IssueNotExist{ID: id}
+		return nil, ErrIssueNotExist{args: map[string]interface{}{"issueID": id}}
 	}
 	return issue, nil
 }
@@ -1153,7 +1173,7 @@ func updateIssueMentions(e Engine, issueID int64, mentions []string) error {
 		}
 
 		memberIDs := make([]int64, 0, user.NumMembers)
-		orgUsers, err := getOrgUsersByOrgID(e, user.ID)
+		orgUsers, err := getOrgUsersByOrgID(e, user.ID, 0)
 		if err != nil {
 			return fmt.Errorf("getOrgUsersByOrgID [%d]: %v", user.ID, err)
 		}

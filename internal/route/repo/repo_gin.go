@@ -146,7 +146,8 @@ func GitConfig(c *context.Context) {
 	configFilePath := path.Join(c.Repo.Repository.RepoPath(), "config")
 	log.Trace("Serving file %q", configFilePath)
 	if _, err := os.Stat(configFilePath); err != nil {
-		c.ServerError("GitConfig", err)
+		c.Error(err, "GitConfig")
+		// c.ServerError("GitConfig", err)
 		return
 	}
 	c.ServeFileContent(configFilePath, "config")
@@ -159,6 +160,6 @@ func AnnexGetKey(c *context.Context) {
 	log.Trace("Git annex requested key %q: %q", key, contentPath)
 	err := serveAnnexedKey(c, filename, contentPath)
 	if err != nil {
-		c.ServerError("AnnexGetKey", err)
+		c.Error(err, "AnnexGetKey")
 	}
 }

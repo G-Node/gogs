@@ -5,12 +5,17 @@
 package route
 
 import (
-	user2 "github.com/G-Node/gogs/internal/route/user"
+	"fmt"
+	"net/http"
+
+	"github.com/go-macaron/i18n"
 	"github.com/unknwon/paginater"
+	"gopkg.in/macaron.v1"
 
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
+	"github.com/G-Node/gogs/internal/route/user"
 )
 
 const (
@@ -24,9 +29,9 @@ func Home(c *context.Context) {
 	if c.IsLogged {
 		if !c.User.IsActive && conf.Auth.RequireEmailConfirmation {
 			c.Data["Title"] = c.Tr("auth.active_your_account")
-			c.Success(user2.ACTIVATE)
+			c.Success(user.ACTIVATE)
 		} else {
-			user2.Dashboard(c)
+			user.Dashboard(c)
 		}
 		return
 	}
@@ -61,7 +66,7 @@ func ExploreRepos(c *context.Context) {
 		PageSize: conf.UI.ExplorePagingNum,
 	})
 	if err != nil {
-		c.ServerError("SearchRepositoryByName", err)
+		c.Error(err, "search repository by name")
 		return
 	}
 	c.Data["Keyword"] = keyword
@@ -69,7 +74,7 @@ func ExploreRepos(c *context.Context) {
 	c.Data["Page"] = paginater.New(int(count), conf.UI.ExplorePagingNum, page, 5)
 
 	if err = db.RepositoryList(repos).LoadAttributes(); err != nil {
-		c.ServerError("RepositoryList.LoadAttributes", err)
+		c.Error(err, "load attributes")
 		return
 	}
 	c.Data["Repos"] = filterUnlistedRepos(repos)
@@ -102,7 +107,7 @@ func RenderUserSearch(c *context.Context, opts *UserSearchOptions) {
 	if len(keyword) == 0 {
 		users, err = opts.Ranger(page, opts.PageSize)
 		if err != nil {
-			c.ServerError("Ranger", err)
+			c.Error(err, "ranger")
 			return
 		}
 		count = opts.Counter()
@@ -115,7 +120,7 @@ func RenderUserSearch(c *context.Context, opts *UserSearchOptions) {
 			PageSize: opts.PageSize,
 		})
 		if err != nil {
-			c.ServerError("SearchUserByName", err)
+			c.Error(err, "search user by name")
 			return
 		}
 	}
@@ -133,9 +138,9 @@ func ExploreUsers(c *context.Context) {
 	c.Data["PageIsExploreUsers"] = true
 
 	RenderUserSearch(c, &UserSearchOptions{
-		Type:     db.USER_TYPE_INDIVIDUAL,
+		Type:     db.UserIndividual,
 		Counter:  db.CountUsers,
-		Ranger:   db.Users,
+		Ranger:   db.ListUsers,
 		PageSize: conf.UI.ExplorePagingNum,
 		OrderBy:  "updated_unix DESC",
 		TplName:  EXPLORE_USERS,
@@ -148,7 +153,7 @@ func ExploreOrganizations(c *context.Context) {
 	c.Data["PageIsExploreOrganizations"] = true
 
 	RenderUserSearch(c, &UserSearchOptions{
-		Type:     db.USER_TYPE_ORGANIZATION,
+		Type:     db.UserOrganization,
 		Counter:  db.CountOrganizations,
 		Ranger:   db.Organizations,
 		PageSize: conf.UI.ExplorePagingNum,
@@ -157,7 +162,7 @@ func ExploreOrganizations(c *context.Context) {
 	})
 }
 
-func NotFound(c *context.Context) {
-	c.Data["Title"] = "Page Not Found"
-	c.NotFound()
+func NotFound(c *macaron.Context, l i18n.Locale) {
+	c.Data["Title"] = l.Tr("status.page_not_found")
+	c.HTML(http.StatusNotFound, fmt.Sprintf("status/%d", http.StatusNotFound))
 }

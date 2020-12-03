@@ -33,7 +33,7 @@ func cleanCommand(cmd string) string {
 func handleServerConn(keyID string, chans <-chan ssh.NewChannel) {
 	for newChan := range chans {
 		if newChan.ChannelType() != "session" {
-			newChan.Reject(ssh.UnknownChannelType, "unknown channel type")
+			_ = newChan.Reject(ssh.UnknownChannelType, "unknown channel type")
 			continue
 		}
 
@@ -44,22 +44,34 @@ func handleServerConn(keyID string, chans <-chan ssh.NewChannel) {
 		}
 
 		go func(in <-chan *ssh.Request) {
-			defer ch.Close()
+			defer func() {
+				_ = ch.Close()
+			}()
 			for req := range in {
 				payload := cleanCommand(string(req.Payload))
 				switch req.Type {
 				case "env":
-					args := strings.Split(strings.Replace(payload, "\x00", "", -1), "\v")
-					if len(args) != 2 {
-						log.Warn("SSH: Invalid env arguments: '%#v'", args)
+					var env struct {
+						Name  string
+						Value string
+					}
+					if err := ssh.Unmarshal(req.Payload, &env); err != nil {
+						log.Warn("SSH: Invalid env payload %q: %v", req.Payload, err)
 						continue
 					}
-					args[0] = strings.TrimLeft(args[0], "\x04")
-					_, _, err := com.ExecCmdBytes("env", args[0]+"="+args[1])
+					// Sometimes the client could send malformed command (i.e. missing "="),
+					// see https://discuss.gogs.io/t/ssh/3106.
+					if env.Name == "" || env.Value == "" {
+						log.Warn("SSH: Invalid env arguments: %+v", env)
+						continue
+					}
+
+					_, stderr, err := com.ExecCmd("env", fmt.Sprintf("%s=%s", env.Name, env.Value))
 					if err != nil {
-						log.Error("env: %v", err)
+						log.Error("env: %v - %s", err, stderr)
 						return
 					}
+
 				case "exec":
 					cmdName := strings.TrimLeft(payload, "'()")
 					log.Trace("SSH: Payload: %v", cmdName)
@@ -91,17 +103,19 @@ func handleServerConn(keyID string, chans <-chan ssh.NewChannel) {
 						return
 					}
 
-					req.Reply(true, nil)
-					go io.Copy(input, ch)
-					io.Copy(ch, stdout)
-					io.Copy(ch.Stderr(), stderr)
+					_ = req.Reply(true, nil)
+					go func() {
+						_, _ = io.Copy(input, ch)
+					}()
+					_, _ = io.Copy(ch, stdout)
+					_, _ = io.Copy(ch.Stderr(), stderr)
 
 					if err = cmd.Wait(); err != nil {
 						log.Error("SSH: Wait: %v", err)
 						return
 					}
 
-					ch.SendRequest("exit-status", false, []byte{0, 0, 0, 0})
+					_, _ = ch.SendRequest("exit-status", false, []byte{0, 0, 0, 0})
 					return
 				default:
 				}
@@ -165,7 +179,9 @@ func Listen(host string, port int, ciphers []string) {
 
 	keyPath := filepath.Join(conf.Server.AppDataPath, "ssh", "gogs.rsa")
 	if !com.IsExist(keyPath) {
-		os.MkdirAll(filepath.Dir(keyPath), os.ModePerm)
+		if err := os.MkdirAll(filepath.Dir(keyPath), os.ModePerm); err != nil {
+			panic(err)
+		}
 		_, stderr, err := com.ExecCmd(conf.SSH.KeygenPath, "-f", keyPath, "-t", "rsa", "-m", "PEM", "-N", "")
 		if err != nil {
 			panic(fmt.Sprintf("Failed to generate private key: %v - %s", err, stderr))

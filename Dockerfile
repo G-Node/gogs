@@ -1,4 +1,4 @@
-FROM golang:alpine3.10 AS binarybuilder
+FROM golang:alpine3.11 AS binarybuilder
 RUN apk --no-cache --no-progress add --virtual \
   build-deps \
   build-base \
@@ -7,10 +7,10 @@ RUN apk --no-cache --no-progress add --virtual \
 
 WORKDIR /go/src/github.com/G-Node/gogs
 COPY . .
-RUN make build-no-gen TAGS="sqlite cert pam"
+RUN make build-no-gen TAGS="cert pam"
 
-FROM alpine:3.10
-ADD https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64 /usr/sbin/gosu
+FROM alpine:3.11
+ADD https://github.com/tianon/gosu/releases/download/1.11/gosu-amd64 /usr/sbin/gosu
 RUN chmod +x /usr/sbin/gosu \
   && echo http://dl-2.alpinelinux.org/alpine/edge/community/ >> /etc/apk/repositories \
   && apk --no-cache --no-progress add \
@@ -49,7 +49,7 @@ COPY --from=binarybuilder /go/src/github.com/G-Node/gogs/gogs .
 RUN ./docker/finalize.sh
 
 # Configure Docker Container
-VOLUME ["/data"]
+VOLUME ["/data", "/backup"]
 EXPOSE 22 3000
 ENTRYPOINT ["/app/gogs/docker/start.sh"]
 CMD ["/bin/s6-svscan", "/app/gogs/docker/s6/"]

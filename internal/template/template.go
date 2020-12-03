@@ -15,14 +15,16 @@ import (
 	"time"
 
 	"github.com/editorconfig/editorconfig-core-go/v2"
-	"github.com/gogs/git-module"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/microcosm-cc/bluemonday"
 	"golang.org/x/net/html/charset"
 	"golang.org/x/text/transform"
 	log "unknwon.dev/clog/v2"
 
+	"github.com/gogs/git-module"
+
 	"github.com/G-Node/gogs/internal/conf"
+	"github.com/G-Node/gogs/internal/cryptoutil"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/gitutil"
 	"github.com/G-Node/gogs/internal/markup"
@@ -167,7 +169,7 @@ func List(l *list.List) chan interface{} {
 }
 
 func Sha1(str string) string {
-	return tool.SHA1(str)
+	return cryptoutil.SHA1(str)
 }
 
 func ToUTF8WithErr(content []byte) (error, string) {
@@ -274,6 +276,7 @@ func ActionContent2Commits(act Actioner) *db.PushCommits {
 	return push
 }
 
+// TODO(unknwon): Use url.Escape.
 func EscapePound(str string) string {
 	return strings.NewReplacer("%", "%25", "#", "%23", " ", "%20", "?", "%3F").Replace(str)
 }

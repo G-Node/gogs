@@ -19,7 +19,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/mcuadros/go-version"
 	"github.com/nfnt/resize"
 	"github.com/unknwon/cae/zip"
 	"github.com/unknwon/com"
@@ -33,9 +32,11 @@ import (
 	"github.com/G-Node/gogs/internal/avatar"
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db/errors"
+	"github.com/G-Node/gogs/internal/errutil"
 	"github.com/G-Node/gogs/internal/markup"
 	"github.com/G-Node/gogs/internal/osutil"
 	"github.com/G-Node/gogs/internal/process"
+	"github.com/G-Node/gogs/internal/semverutil"
 	"github.com/G-Node/gogs/internal/sync"
 )
 
@@ -116,7 +117,7 @@ func NewRepoContext() {
 	}
 
 	log.Trace("Git version: %s", conf.Git.Version)
-	if version.Compare("1.8.3", conf.Git.Version, ">") {
+	if semverutil.Compare(conf.Git.Version, "<", "1.8.3") {
 		log.Fatal("Gogs requires Git version greater or equal to 1.8.3")
 	}
 
@@ -147,14 +148,14 @@ func NewRepoContext() {
 // Repository contains information of a repository.
 type Repository struct {
 	ID              int64
-	OwnerID         int64  `xorm:"UNIQUE(s)"`
-	Owner           *User  `xorm:"-" json:"-"`
-	LowerName       string `xorm:"UNIQUE(s) INDEX NOT NULL"`
-	Name            string `xorm:"INDEX NOT NULL"`
-	Description     string `xorm:"VARCHAR(512)"`
+	OwnerID         int64  `xorm:"UNIQUE(s)" gorm:"UNIQUE_INDEX:s"`
+	Owner           *User  `xorm:"-" gorm:"-" json:"-"`
+	LowerName       string `xorm:"UNIQUE(s) INDEX NOT NULL" gorm:"UNIQUE_INDEX:s"`
+	Name            string `xorm:"INDEX NOT NULL" gorm:"NOT NULL"`
+	Description     string `xorm:"VARCHAR(512)" gorm:"TYPE:VARCHAR(512)"`
 	Website         string
 	DefaultBranch   string
-	Size            int64 `xorm:"NOT NULL DEFAULT 0"`
+	Size            int64 `xorm:"NOT NULL DEFAULT 0" gorm:"NOT NULL;DEFAULT:0"`
 	UseCustomAvatar bool
 
 	// Counters
@@ -163,55 +164,51 @@ type Repository struct {
 	NumForks            int
 	NumIssues           int
 	NumClosedIssues     int
-	NumOpenIssues       int `xorm:"-" json:"-"`
+	NumOpenIssues       int `xorm:"-" gorm:"-" json:"-"`
 	NumPulls            int
 	NumClosedPulls      int
-	NumOpenPulls        int `xorm:"-" json:"-"`
-	NumMilestones       int `xorm:"NOT NULL DEFAULT 0"`
-	NumClosedMilestones int `xorm:"NOT NULL DEFAULT 0"`
-	NumOpenMilestones   int `xorm:"-" json:"-"`
-	NumTags             int `xorm:"-" json:"-"`
+	NumOpenPulls        int `xorm:"-" gorm:"-" json:"-"`
+	NumMilestones       int `xorm:"NOT NULL DEFAULT 0" gorm:"NOT NULL;DEFAULT:0"`
+	NumClosedMilestones int `xorm:"NOT NULL DEFAULT 0" gorm:"NOT NULL;DEFAULT:0"`
+	NumOpenMilestones   int `xorm:"-" gorm:"-" json:"-"`
+	NumTags             int `xorm:"-" gorm:"-" json:"-"`
 
 	IsPrivate bool
 	IsBare    bool
 	Unlisted  bool
 
 	IsMirror bool
-	*Mirror  `xorm:"-" json:"-"`
+	*Mirror  `xorm:"-" gorm:"-" json:"-"`
 
 	// Advanced settings
-	EnableWiki            bool `xorm:"NOT NULL DEFAULT true"`
+	EnableWiki            bool `xorm:"NOT NULL DEFAULT true" gorm:"NOT NULL;DEFAULT:TRUE"`
 	AllowPublicWiki       bool
 	EnableExternalWiki    bool
 	ExternalWikiURL       string
-	EnableIssues          bool `xorm:"NOT NULL DEFAULT true"`
+	EnableIssues          bool `xorm:"NOT NULL DEFAULT true" gorm:"NOT NULL;DEFAULT:TRUE"`
 	AllowPublicIssues     bool
 	EnableExternalTracker bool
 	ExternalTrackerURL    string
 	ExternalTrackerFormat string
 	ExternalTrackerStyle  string
-	ExternalMetas         map[string]string `xorm:"-" json:"-"`
-	EnablePulls           bool              `xorm:"NOT NULL DEFAULT true"`
-	PullsIgnoreWhitespace bool              `xorm:"NOT NULL DEFAULT false"`
-	PullsAllowRebase      bool              `xorm:"NOT NULL DEFAULT false"`
+	ExternalMetas         map[string]string `xorm:"-" gorm:"-" json:"-"`
+	EnablePulls           bool              `xorm:"NOT NULL DEFAULT true" gorm:"NOT NULL;DEFAULT:TRUE"`
+	PullsIgnoreWhitespace bool              `xorm:"NOT NULL DEFAULT false" gorm:"NOT NULL;DEFAULT:FALSE"`
+	PullsAllowRebase      bool              `xorm:"NOT NULL DEFAULT false" gorm:"NOT NULL;DEFAULT:FALSE"`
 
-	IsFork   bool `xorm:"NOT NULL DEFAULT false"`
+	IsFork   bool `xorm:"NOT NULL DEFAULT false" gorm:"NOT NULL;DEFAULT:FALSE"`
 	ForkID   int64
-	BaseRepo *Repository `xorm:"-" json:"-"`
+	BaseRepo *Repository `xorm:"-" gorm:"-" json:"-"`
 
-	Created     time.Time `xorm:"-" json:"-"`
+	Created     time.Time `xorm:"-" gorm:"-" json:"-"`
 	CreatedUnix int64
-	Updated     time.Time `xorm:"-" json:"-"`
+	Updated     time.Time `xorm:"-" gorm:"-" json:"-"`
 	UpdatedUnix int64
 }
 
 func (repo *Repository) BeforeInsert() {
 	repo.CreatedUnix = time.Now().Unix()
 	repo.UpdatedUnix = repo.CreatedUnix
-}
-
-func (repo *Repository) BeforeUpdate() {
-	repo.UpdatedUnix = time.Now().Unix()
 }
 
 func (repo *Repository) AfterSet(colName string, _ xorm.Cell) {
@@ -249,11 +246,11 @@ func (repo *Repository) loadAttributes(e Engine) (err error) {
 	if repo.IsFork && repo.BaseRepo == nil {
 		repo.BaseRepo, err = getRepositoryByID(e, repo.ForkID)
 		if err != nil {
-			if errors.IsRepoNotExist(err) {
+			if IsErrRepoNotExist(err) {
 				repo.IsFork = false
 				repo.ForkID = 0
 			} else {
-				return fmt.Errorf("getRepositoryByID [%d]: %v", repo.ForkID, err)
+				return fmt.Errorf("get fork repository by ID: %v", err)
 			}
 		}
 	}
@@ -430,24 +427,29 @@ func (repo *Repository) UpdateSize() error {
 	return nil
 }
 
-// ComposeMetas composes a map of metas for rendering external issue tracker URL.
+// ComposeMetas composes a map of metas for rendering SHA1 URL and external issue tracker URL.
 func (repo *Repository) ComposeMetas() map[string]string {
-	if !repo.EnableExternalTracker {
-		return nil
-	} else if repo.ExternalMetas == nil {
-		repo.ExternalMetas = map[string]string{
-			"format": repo.ExternalTrackerFormat,
-			"user":   repo.MustOwner().Name,
-			"repo":   repo.Name,
-		}
+	if repo.ExternalMetas != nil {
+		return repo.ExternalMetas
+	}
+
+	repo.ExternalMetas = map[string]string{
+		"repoLink": repo.Link(),
+	}
+
+	if repo.EnableExternalTracker {
+		repo.ExternalMetas["user"] = repo.MustOwner().Name
+		repo.ExternalMetas["repo"] = repo.Name
+		repo.ExternalMetas["format"] = repo.ExternalTrackerFormat
+
 		switch repo.ExternalTrackerStyle {
 		case markup.ISSUE_NAME_STYLE_ALPHANUMERIC:
 			repo.ExternalMetas["style"] = markup.ISSUE_NAME_STYLE_ALPHANUMERIC
 		default:
 			repo.ExternalMetas["style"] = markup.ISSUE_NAME_STYLE_NUMERIC
 		}
-
 	}
+
 	return repo.ExternalMetas
 }
 
@@ -492,7 +494,7 @@ func (repo *Repository) getUsersWithAccesMode(e Engine, mode AccessMode) (_ []*U
 
 // getAssignees returns a list of users who can be assigned to issues in this repository.
 func (repo *Repository) getAssignees(e Engine) (_ []*User, err error) {
-	return repo.getUsersWithAccesMode(e, ACCESS_MODE_READ)
+	return repo.getUsersWithAccesMode(e, AccessModeRead)
 }
 
 // GetAssignees returns all users that have read access and can be assigned to issues
@@ -508,7 +510,7 @@ func (repo *Repository) GetAssigneeByID(userID int64) (*User, error) {
 
 // GetWriters returns all users that have write access to the repository.
 func (repo *Repository) GetWriters() (_ []*User, err error) {
-	return repo.getUsersWithAccesMode(x, ACCESS_MODE_WRITE)
+	return repo.getUsersWithAccesMode(x, AccessModeWrite)
 }
 
 // GetMilestoneByID returns the milestone belongs to repository by given ID.
@@ -551,7 +553,7 @@ func (repo *Repository) ComposeCompareURL(oldCommitID, newCommitID string) strin
 }
 
 func (repo *Repository) HasAccess(userID int64) bool {
-	has, _ := HasAccess(userID, repo, ACCESS_MODE_READ)
+	has, _ := HasAccess(userID, repo, AccessModeRead)
 	return has
 }
 
@@ -660,7 +662,9 @@ func (repo *Repository) SavePatch(index int64, patch []byte) error {
 		return fmt.Errorf("PatchPath: %v", err)
 	}
 
-	os.MkdirAll(filepath.Dir(patchPath), os.ModePerm)
+	if err = os.MkdirAll(filepath.Dir(patchPath), os.ModePerm); err != nil {
+		return err
+	}
 	if err = ioutil.WriteFile(patchPath, patch, 0644); err != nil {
 		return fmt.Errorf("WriteFile: %v", err)
 	}
@@ -1019,7 +1023,9 @@ func initRepository(e Engine, repoPath string, doer *User, repo *Repository, opt
 
 	// Initialize repository according to user's choice.
 	if opts.AutoInit {
-		os.MkdirAll(tmpDir, os.ModePerm)
+		if err = os.MkdirAll(tmpDir, os.ModePerm); err != nil {
+			return err
+		}
 		defer RemoveAllWithNotice("Delete repository for auto-initialization", tmpDir)
 
 		if err = prepareRepoCommit(repo, tmpDir, repoPath, opts); err != nil {
@@ -1055,13 +1061,13 @@ var (
 	reservedRepoPatterns = []string{"*.git", "*.wiki"}
 )
 
-// IsUsableRepoName return an error if given name is a reserved name or pattern.
-func IsUsableRepoName(name string) error {
-	return isUsableName(reservedRepoNames, reservedRepoPatterns, name)
+// isRepoNameAllowed return an error if given name is a reserved name or pattern for repositories.
+func isRepoNameAllowed(name string) error {
+	return isNameAllowed(reservedRepoNames, reservedRepoPatterns, name)
 }
 
 func createRepository(e *xorm.Session, doer, owner *User, repo *Repository) (err error) {
-	if err = IsUsableRepoName(repo.Name); err != nil {
+	if err = isRepoNameAllowed(repo.Name); err != nil {
 		return err
 	}
 
@@ -1069,7 +1075,7 @@ func createRepository(e *xorm.Session, doer, owner *User, repo *Repository) (err
 	if err != nil {
 		return fmt.Errorf("IsRepositoryExist: %v", err)
 	} else if has {
-		return ErrRepoAlreadyExist{owner.Name, repo.Name}
+		return ErrRepoAlreadyExist{args: errutil.Args{"ownerID": owner.ID, "name": repo.Name}}
 	}
 
 	if _, err = e.Insert(repo); err != nil {
@@ -1107,10 +1113,23 @@ func createRepository(e *xorm.Session, doer, owner *User, repo *Repository) (err
 	return repo.loadAttributes(e)
 }
 
+type ErrReachLimitOfRepo struct {
+	Limit int
+}
+
+func IsErrReachLimitOfRepo(err error) bool {
+	_, ok := err.(ErrReachLimitOfRepo)
+	return ok
+}
+
+func (err ErrReachLimitOfRepo) Error() string {
+	return fmt.Sprintf("user has reached maximum limit of repositories [limit: %d]", err.Limit)
+}
+
 // CreateRepository creates a repository for given user or organization.
 func CreateRepository(doer, owner *User, opts CreateRepoOptions) (_ *Repository, err error) {
 	if !owner.CanCreateRepo() {
-		return nil, errors.ReachLimitOfRepo{Limit: owner.RepoCreationNum()}
+		return nil, ErrReachLimitOfRepo{Limit: owner.RepoCreationNum()}
 	}
 
 	repo := &Repository{
@@ -1251,7 +1270,7 @@ func TransferOwnership(doer *User, newOwnerName string, repo *Repository) error 
 	if err != nil {
 		return fmt.Errorf("IsRepositoryExist: %v", err)
 	} else if has {
-		return ErrRepoAlreadyExist{newOwnerName, repo.Name}
+		return ErrRepoAlreadyExist{args: errutil.Args{"ownerName": newOwnerName, "name": repo.Name}}
 	}
 
 	sess := x.NewSession()
@@ -1338,7 +1357,9 @@ func TransferOwnership(doer *User, newOwnerName string, repo *Repository) error 
 	}
 
 	// Rename remote repository to new path and delete local copy.
-	os.MkdirAll(UserPath(newOwner.Name), os.ModePerm)
+	if err = os.MkdirAll(UserPath(newOwner.Name), os.ModePerm); err != nil {
+		return err
+	}
 	if err = os.Rename(RepoPath(owner.Name, repo.Name), RepoPath(newOwner.Name, repo.Name)); err != nil {
 		return fmt.Errorf("rename repository directory: %v", err)
 	}
@@ -1367,7 +1388,7 @@ func deleteRepoLocalCopy(repo *Repository) {
 func ChangeRepositoryName(u *User, oldRepoName, newRepoName string) (err error) {
 	oldRepoName = strings.ToLower(oldRepoName)
 	newRepoName = strings.ToLower(newRepoName)
-	if err = IsUsableRepoName(newRepoName); err != nil {
+	if err = isRepoNameAllowed(newRepoName); err != nil {
 		return err
 	}
 
@@ -1375,7 +1396,7 @@ func ChangeRepositoryName(u *User, oldRepoName, newRepoName string) (err error) 
 	if err != nil {
 		return fmt.Errorf("IsRepositoryExist: %v", err)
 	} else if has {
-		return ErrRepoAlreadyExist{u.Name, newRepoName}
+		return ErrRepoAlreadyExist{args: errutil.Args{"ownerID": u.ID, "name": newRepoName}}
 	}
 
 	repo, err := GetRepositoryByName(u.ID, oldRepoName)
@@ -1408,6 +1429,16 @@ func getRepositoriesByForkID(e Engine, forkID int64) ([]*Repository, error) {
 // GetRepositoriesByForkID returns all repositories with given fork ID.
 func GetRepositoriesByForkID(forkID int64) ([]*Repository, error) {
 	return getRepositoriesByForkID(x, forkID)
+}
+
+func getNonMirrorRepositories(e Engine) ([]*Repository, error) {
+	repos := make([]*Repository, 0, 10)
+	return repos, e.Where("is_mirror = ?", false).Find(&repos)
+}
+
+// GetRepositoriesMirror returns only mirror repositories with user.
+func GetNonMirrorRepositories() ([]*Repository, error) {
+	return getNonMirrorRepositories(x)
 }
 
 func updateRepository(e Engine, repo *Repository, visibilityChanged bool) (err error) {
@@ -1484,17 +1515,17 @@ func UpdateRepository(repo *Repository, visibilityChanged bool) (err error) {
 }
 
 // DeleteRepository deletes a repository for a user or organization.
-func DeleteRepository(uid, repoID int64) error {
-	repo := &Repository{ID: repoID, OwnerID: uid}
+func DeleteRepository(ownerID, repoID int64) error {
+	repo := &Repository{ID: repoID, OwnerID: ownerID}
 	has, err := x.Get(repo)
 	if err != nil {
 		return err
 	} else if !has {
-		return errors.RepoNotExist{ID: repoID, UserID: uid}
+		return ErrRepoNotExist{args: map[string]interface{}{"ownerID": ownerID, "repoID": repoID}}
 	}
 
 	// In case is a organization.
-	org, err := GetUserByID(uid)
+	org, err := GetUserByID(ownerID)
 	if err != nil {
 		return err
 	}
@@ -1536,6 +1567,7 @@ func DeleteRepository(uid, repoID int64) error {
 		&ProtectBranchWhitelist{RepoID: repoID},
 		&Webhook{RepoID: repoID},
 		&HookTask{RepoID: repoID},
+		&LFSObject{RepoID: repoID},
 	); err != nil {
 		return fmt.Errorf("deleteBeans: %v", err)
 	}
@@ -1574,7 +1606,7 @@ func DeleteRepository(uid, repoID int64) error {
 		}
 	}
 
-	if _, err = sess.Exec("UPDATE `user` SET num_repos=num_repos-1 WHERE id=?", uid); err != nil {
+	if _, err = sess.Exec("UPDATE `user` SET num_repos=num_repos-1 WHERE id=?", ownerID); err != nil {
 		return err
 	}
 
@@ -1620,6 +1652,7 @@ func GetRepositoryByRef(ref string) (*Repository, error) {
 }
 
 // GetRepositoryByName returns the repository by given name under user if exists.
+// Deprecated: Use Repos.GetByName instead.
 func GetRepositoryByName(ownerID int64, name string) (*Repository, error) {
 	repo := &Repository{
 		OwnerID:   ownerID,
@@ -1629,7 +1662,7 @@ func GetRepositoryByName(ownerID int64, name string) (*Repository, error) {
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, errors.RepoNotExist{UserID: ownerID, Name: name}
+		return nil, ErrRepoNotExist{args: map[string]interface{}{"ownerID": ownerID, "name": name}}
 	}
 	return repo, repo.LoadAttributes()
 }
@@ -1640,7 +1673,7 @@ func getRepositoryByID(e Engine, id int64) (*Repository, error) {
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, errors.RepoNotExist{ID: id}
+		return nil, ErrRepoNotExist{args: map[string]interface{}{"repoID": id}}
 	}
 	return repo, repo.loadAttributes(e)
 }
@@ -2364,7 +2397,7 @@ func HasForkedRepo(ownerID, repoID int64) (*Repository, bool, error) {
 // ForkRepository creates a fork of target repository under another user domain.
 func ForkRepository(doer, owner *User, baseRepo *Repository, name, desc string) (_ *Repository, err error) {
 	if !owner.CanCreateRepo() {
-		return nil, errors.ReachLimitOfRepo{Limit: owner.RepoCreationNum()}
+		return nil, ErrReachLimitOfRepo{Limit: owner.RepoCreationNum()}
 	}
 
 	repo := &Repository{

@@ -8,29 +8,27 @@ import (
 	"fmt"
 
 	log "unknwon.dev/clog/v2"
-
-	"github.com/G-Node/gogs/internal/db/errors"
 )
 
 type AccessMode int
 
 const (
-	ACCESS_MODE_NONE  AccessMode = iota // 0
-	ACCESS_MODE_READ                    // 1
-	ACCESS_MODE_WRITE                   // 2
-	ACCESS_MODE_ADMIN                   // 3
-	ACCESS_MODE_OWNER                   // 4
+	AccessModeNone  AccessMode = iota // 0
+	AccessModeRead                    // 1
+	AccessModeWrite                   // 2
+	AccessModeAdmin                   // 3
+	AccessModeOwner                   // 4
 )
 
 func (mode AccessMode) String() string {
 	switch mode {
-	case ACCESS_MODE_READ:
+	case AccessModeRead:
 		return "read"
-	case ACCESS_MODE_WRITE:
+	case AccessModeWrite:
 		return "write"
-	case ACCESS_MODE_ADMIN:
+	case AccessModeAdmin:
 		return "admin"
-	case ACCESS_MODE_OWNER:
+	case AccessModeOwner:
 		return "owner"
 	default:
 		return "none"
@@ -41,15 +39,15 @@ func (mode AccessMode) String() string {
 func ParseAccessMode(permission string) AccessMode {
 	switch permission {
 	case "write":
-		return ACCESS_MODE_WRITE
+		return AccessModeWrite
 	case "admin":
-		return ACCESS_MODE_ADMIN
+		return AccessModeAdmin
 	default:
-		return ACCESS_MODE_READ
+		return AccessModeRead
 	}
 }
 
-// Access represents the highest access level of a user to the repository. The only access type
+// Access represents the highest access level of a user to a repository. The only access type
 // that is not in this table is the real owner of a repository. In case of an organization
 // repository, the members of the owners team are in this table.
 type Access struct {
@@ -60,10 +58,10 @@ type Access struct {
 }
 
 func userAccessMode(e Engine, userID int64, repo *Repository) (AccessMode, error) {
-	mode := ACCESS_MODE_NONE
+	mode := AccessModeNone
 	// Everyone has read access to public repository
 	if !repo.IsPrivate {
-		mode = ACCESS_MODE_READ
+		mode = AccessModeRead
 	}
 
 	if userID <= 0 {
@@ -71,7 +69,7 @@ func userAccessMode(e Engine, userID int64, repo *Repository) (AccessMode, error
 	}
 
 	if userID == repo.OwnerID {
-		return ACCESS_MODE_OWNER, nil
+		return AccessModeOwner, nil
 	}
 
 	access := &Access{
@@ -95,6 +93,7 @@ func hasAccess(e Engine, userID int64, repo *Repository, testMode AccessMode) (b
 }
 
 // HasAccess returns true if someone has the request access level. User can be nil!
+// Deprecated: Use Perms.Authorize instead.
 func HasAccess(userID int64, repo *Repository, testMode AccessMode) (bool, error) {
 	return hasAccess(x, userID, repo, testMode)
 }
@@ -110,8 +109,8 @@ func (u *User) GetRepositoryAccesses() (map[*Repository]AccessMode, error) {
 	for _, access := range accesses {
 		repo, err := GetRepositoryByID(access.RepoID)
 		if err != nil {
-			if errors.IsRepoNotExist(err) {
-				log.Error("GetRepositoryByID: %v", err)
+			if IsErrRepoNotExist(err) {
+				log.Error("Failed to get repository by ID: %v", err)
 				continue
 			}
 			return nil, err
@@ -138,7 +137,7 @@ func (user *User) GetAccessibleRepositories(limit int) (repos []*Repository, _ e
 }
 
 func maxAccessMode(modes ...AccessMode) AccessMode {
-	max := ACCESS_MODE_NONE
+	max := AccessModeNone
 	for _, mode := range modes {
 		if mode > max {
 			max = mode
@@ -147,7 +146,7 @@ func maxAccessMode(modes ...AccessMode) AccessMode {
 	return max
 }
 
-// FIXME: do corss-comparison so reduce deletions and additions to the minimum?
+// Deprecated: Use Perms.SetRepoPerms instead.
 func (repo *Repository) refreshAccesses(e Engine, accessMap map[int64]AccessMode) (err error) {
 	newAccesses := make([]Access, 0, len(accessMap))
 	for userID, mode := range accessMap {
@@ -207,7 +206,7 @@ func (repo *Repository) recalculateTeamAccesses(e Engine, ignTeamID int64) (err 
 		// Owner team gets owner access, and skip for teams that do not
 		// have relations with repository.
 		if t.IsOwnerTeam() {
-			t.Authorize = ACCESS_MODE_OWNER
+			t.Authorize = AccessModeOwner
 		} else if !t.hasRepository(e, repo.ID) {
 			continue
 		}

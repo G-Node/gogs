@@ -12,16 +12,17 @@ import (
 )
 
 func TestModuler_ListTagsAfter(t *testing.T) {
-	MockModule.RepoTags = func(string, ...git.TagsOptions) ([]string, error) {
-		return []string{
-			"v2.3.0", "v2.2.1", "v2.1.0",
-			"v1.3.0", "v1.2.0", "v1.1.0",
-			"v0.8.0", "v0.5.0", "v0.1.0",
-		}, nil
-	}
-	defer func() {
-		MockModule = MockModuleStore{}
-	}()
+	SetMockModuleStore(t, &MockModuleStore{
+		repoTags: func(string, ...git.TagsOptions) ([]string, error) {
+			return []string{
+				"v2.3.0", "v2.2.1", "v2.1.0",
+				"v1.3.0", "v1.2.0", "v1.1.0",
+				"v0.8.0", "v0.5.0", "v0.1.0",
+			}, nil
+		},
+
+		listTagsAfter: Module.ListTagsAfter,
+	})
 
 	tests := []struct {
 		name        string

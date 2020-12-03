@@ -19,7 +19,7 @@ import (
 	api "github.com/gogs/go-gogs-client"
 
 	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/db/errors"
+	"github.com/G-Node/gogs/internal/errutil"
 	"github.com/G-Node/gogs/internal/osutil"
 	"github.com/G-Node/gogs/internal/process"
 	"github.com/G-Node/gogs/internal/sync"
@@ -89,25 +89,25 @@ func (pr *PullRequest) AfterSet(colName string, _ xorm.Cell) {
 func (pr *PullRequest) loadAttributes(e Engine) (err error) {
 	if pr.HeadRepo == nil {
 		pr.HeadRepo, err = getRepositoryByID(e, pr.HeadRepoID)
-		if err != nil && !errors.IsRepoNotExist(err) {
-			return fmt.Errorf("getRepositoryByID.(HeadRepo) [%d]: %v", pr.HeadRepoID, err)
+		if err != nil && !IsErrRepoNotExist(err) {
+			return fmt.Errorf("get head repository by ID: %v", err)
 		}
 	}
 
 	if pr.BaseRepo == nil {
 		pr.BaseRepo, err = getRepositoryByID(e, pr.BaseRepoID)
 		if err != nil {
-			return fmt.Errorf("getRepositoryByID.(BaseRepo) [%d]: %v", pr.BaseRepoID, err)
+			return fmt.Errorf("get base repository by ID: %v", err)
 		}
 	}
 
 	if pr.HasMerged && pr.Merger == nil {
 		pr.Merger, err = getUserByID(e, pr.MergerID)
-		if errors.IsUserNotExist(err) {
+		if IsErrUserNotExist(err) {
 			pr.MergerID = -1
 			pr.Merger = NewGhostUser()
 		} else if err != nil {
-			return fmt.Errorf("getUserByID [%d]: %v", pr.MergerID, err)
+			return fmt.Errorf("get merger by ID: %v", err)
 		}
 	}
 
@@ -219,8 +219,12 @@ func (pr *PullRequest) Merge(doer *User, baseGitRepo *git.Repository, mergeStyle
 	// Create temporary directory to store temporary copy of the base repository,
 	// and clean it up when operation finished regardless of succeed or not.
 	tmpBasePath := filepath.Join(conf.Server.AppDataPath, "tmp", "repos", com.ToStr(time.Now().Nanosecond())+".git")
-	os.MkdirAll(filepath.Dir(tmpBasePath), os.ModePerm)
-	defer os.RemoveAll(filepath.Dir(tmpBasePath))
+	if err = os.MkdirAll(filepath.Dir(tmpBasePath), os.ModePerm); err != nil {
+		return err
+	}
+	defer func() {
+		_ = os.RemoveAll(filepath.Dir(tmpBasePath))
+	}()
 
 	// Clone the base repository to the defined temporary directory,
 	// and checks out to base branch directly.
@@ -521,7 +525,12 @@ func GetUnmergedPullRequest(headRepoID, baseRepoID int64, headBranch, baseBranch
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, ErrPullRequestNotExist{0, 0, headRepoID, baseRepoID, headBranch, baseBranch}
+		return nil, ErrPullRequestNotExist{args: map[string]interface{}{
+			"headRepoID": headRepoID,
+			"baseRepoID": baseRepoID,
+			"headBranch": headBranch,
+			"baseBranch": baseBranch,
+		}}
 	}
 
 	return pr, nil
@@ -545,13 +554,32 @@ func GetUnmergedPullRequestsByBaseInfo(repoID int64, branch string) ([]*PullRequ
 		Join("INNER", "issue", "issue.id=pull_request.issue_id").Find(&prs)
 }
 
+var _ errutil.NotFound = (*ErrPullRequestNotExist)(nil)
+
+type ErrPullRequestNotExist struct {
+	args map[string]interface{}
+}
+
+func IsErrPullRequestNotExist(err error) bool {
+	_, ok := err.(ErrPullRequestNotExist)
+	return ok
+}
+
+func (err ErrPullRequestNotExist) Error() string {
+	return fmt.Sprintf("pull request does not exist: %v", err.args)
+}
+
+func (ErrPullRequestNotExist) NotFound() bool {
+	return true
+}
+
 func getPullRequestByID(e Engine, id int64) (*PullRequest, error) {
 	pr := new(PullRequest)
 	has, err := e.ID(id).Get(pr)
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, ErrPullRequestNotExist{id, 0, 0, 0, "", ""}
+		return nil, ErrPullRequestNotExist{args: map[string]interface{}{"pullRequestID": id}}
 	}
 	return pr, pr.loadAttributes(e)
 }
@@ -569,7 +597,7 @@ func getPullRequestByIssueID(e Engine, issueID int64) (*PullRequest, error) {
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, ErrPullRequestNotExist{0, issueID, 0, 0, "", ""}
+		return nil, ErrPullRequestNotExist{args: map[string]interface{}{"issueID": issueID}}
 	}
 	return pr, pr.loadAttributes(e)
 }
@@ -821,7 +849,7 @@ func (pr *PullRequest) checkAndUpdateStatus() {
 // TODO: test more pull requests at same time.
 func TestPullRequests() {
 	prs := make([]*PullRequest, 0, 10)
-	x.Iterate(PullRequest{
+	_ = x.Iterate(PullRequest{
 		Status: PULL_REQUEST_STATUS_CHECKING,
 	},
 		func(idx int, bean interface{}) error {

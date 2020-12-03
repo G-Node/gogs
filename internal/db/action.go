@@ -20,7 +20,6 @@ import (
 	api "github.com/gogs/go-gogs-client"
 
 	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/db/errors"
 	"github.com/G-Node/gogs/internal/lazyregexp"
 	"github.com/G-Node/gogs/internal/tool"
 )
@@ -58,9 +57,9 @@ var (
 	IssueCloseKeywords  = []string{"close", "closes", "closed", "fix", "fixes", "fixed", "resolve", "resolves", "resolved"}
 	IssueReopenKeywords = []string{"reopen", "reopens", "reopened"}
 
-	IssueCloseKeywordsPat     = lazyregexp.New(assembleKeywordsPattern(IssueCloseKeywords))
-	IssueReopenKeywordsPat    = lazyregexp.New(assembleKeywordsPattern(IssueReopenKeywords))
-	IssueReferenceKeywordsPat = lazyregexp.New(`(?i)(?:)(^| )\S+`)
+	IssueCloseKeywordsPat  = lazyregexp.New(assembleKeywordsPattern(IssueCloseKeywords))
+	IssueReopenKeywordsPat = lazyregexp.New(assembleKeywordsPattern(IssueReopenKeywords))
+	issueReferencePattern  = lazyregexp.New(`(?i)(?:)(^| )\S*#\d+`)
 )
 
 func assembleKeywordsPattern(words []string) string {
@@ -256,16 +255,16 @@ func (pc *PushCommits) ToApiPayloadCommits(repoPath, repoURL string) ([]*api.Pay
 		author, err := GetUserByEmail(commit.AuthorEmail)
 		if err == nil {
 			authorUsername = author.Name
-		} else if !errors.IsUserNotExist(err) {
-			return nil, fmt.Errorf("GetUserByEmail: %v", err)
+		} else if !IsErrUserNotExist(err) {
+			return nil, fmt.Errorf("get user by email: %v", err)
 		}
 
 		committerUsername := ""
 		committer, err := GetUserByEmail(commit.CommitterEmail)
 		if err == nil {
 			committerUsername = committer.Name
-		} else if !errors.IsUserNotExist(err) {
-			return nil, fmt.Errorf("GetUserByEmail: %v", err)
+		} else if !IsErrUserNotExist(err) {
+			return nil, fmt.Errorf("get user by email: %v", err)
 		}
 
 		nameStatus, err := git.RepoShowNameStatus(repoPath, commit.Sha1)
@@ -304,8 +303,8 @@ func (pcs *PushCommits) AvatarLink(email string) string {
 		u, err := GetUserByEmail(email)
 		if err != nil {
 			pcs.avatars[email] = tool.AvatarLink(email)
-			if !errors.IsUserNotExist(err) {
-				log.Error("GetUserByEmail: %v", err)
+			if !IsErrUserNotExist(err) {
+				log.Error("get user by email: %v", err)
 			}
 		} else {
 			pcs.avatars[email] = u.RelAvatarLink()
@@ -322,8 +321,8 @@ func UpdateIssuesCommit(doer *User, repo *Repository, commits []*PushCommit) err
 		c := commits[i]
 
 		refMarked := make(map[int64]bool)
-		for _, ref := range IssueReferenceKeywordsPat.FindAllString(c.Message, -1) {
-			ref = ref[strings.IndexByte(ref, byte(' '))+1:]
+		for _, ref := range issueReferencePattern.FindAllString(c.Message, -1) {
+			ref = strings.TrimSpace(ref)
 			ref = strings.TrimRightFunc(ref, issueIndexTrimRight)
 
 			if len(ref) == 0 {
@@ -341,7 +340,7 @@ func UpdateIssuesCommit(doer *User, repo *Repository, commits []*PushCommit) err
 
 			issue, err := GetIssueByRef(ref)
 			if err != nil {
-				if errors.IsIssueNotExist(err) {
+				if IsErrIssueNotExist(err) {
 					continue
 				}
 				return err
@@ -383,7 +382,7 @@ func UpdateIssuesCommit(doer *User, repo *Repository, commits []*PushCommit) err
 
 			issue, err := GetIssueByRef(ref)
 			if err != nil {
-				if errors.IsIssueNotExist(err) {
+				if IsErrIssueNotExist(err) {
 					continue
 				}
 				return err
@@ -423,7 +422,7 @@ func UpdateIssuesCommit(doer *User, repo *Repository, commits []*PushCommit) err
 
 			issue, err := GetIssueByRef(ref)
 			if err != nil {
-				if errors.IsIssueNotExist(err) {
+				if IsErrIssueNotExist(err) {
 					continue
 				}
 				return err
@@ -456,7 +455,7 @@ type CommitRepoActionOptions struct {
 	Commits     *PushCommits
 }
 
-// CommitRepoAction adds new commit actio to the repository, and prepare corresponding webhooks.
+// CommitRepoAction adds new commit action to the repository, and prepare corresponding webhooks.
 func CommitRepoAction(opts CommitRepoActionOptions) error {
 	pusher, err := GetUserByName(opts.PusherName)
 	if err != nil {

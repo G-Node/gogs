@@ -18,7 +18,6 @@ import (
 
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/db/errors"
 )
 
 const (
@@ -39,7 +38,7 @@ var Serv = cli.Command{
 // logs error message on the server side. When not in "prod" mode,
 // error message is also printed to the client for easier debugging.
 func fail(userMessage, errMessage string, args ...interface{}) {
-	fmt.Fprintln(os.Stderr, "GIN:", userMessage)
+	_, _ = fmt.Fprintln(os.Stderr, "GIN:", userMessage)
 
 	if len(errMessage) > 0 {
 		if !conf.IsProdMode() {
@@ -48,10 +47,11 @@ func fail(userMessage, errMessage string, args ...interface{}) {
 		log.Error(errMessage, args...)
 	}
 
+	log.Stop()
 	os.Exit(1)
 }
 
-func setup(c *cli.Context, logPath string, connectDB bool) {
+func setup(c *cli.Context, logFile string, connectDB bool) {
 	conf.HookMode = true
 
 	var customConf string
@@ -74,7 +74,7 @@ func setup(c *cli.Context, logPath string, connectDB bool) {
 
 	err = log.NewFile(log.FileConfig{
 		Level:    level,
-		Filename: filepath.Join(conf.Log.RootPath, logPath),
+		Filename: filepath.Join(conf.Log.RootPath, "hooks", logFile),
 		FileRotationConfig: log.FileRotationConfig{
 			Rotate:  true,
 			Daily:   true,
@@ -94,7 +94,7 @@ func setup(c *cli.Context, logPath string, connectDB bool) {
 		_ = os.Chdir(conf.WorkDir())
 	}
 
-	if err := db.SetEngine(); err != nil {
+	if _, err := db.SetEngine(); err != nil {
 		fail("Internal error", "Failed to set database engine: %v", err)
 	}
 }
@@ -135,10 +135,10 @@ func checkDeployKey(key *db.PublicKey, repo *db.Repository) {
 
 var (
 	allowedCommands = map[string]db.AccessMode{
-		"git-upload-pack":    db.ACCESS_MODE_READ,
-		"git-upload-archive": db.ACCESS_MODE_READ,
-		"git-receive-pack":   db.ACCESS_MODE_WRITE,
-		"git-annex-shell":    db.ACCESS_MODE_READ,
+		"git-upload-pack":    db.AccessModeRead,
+		"git-upload-archive": db.AccessModeRead,
+		"git-receive-pack":   db.AccessModeWrite,
+		"git-annex-shell":    db.AccessModeRead,
 	}
 )
 
@@ -173,7 +173,7 @@ func runServ(c *cli.Context) error {
 
 	owner, err := db.GetUserByName(ownerName)
 	if err != nil {
-		if errors.IsUserNotExist(err) {
+		if db.IsErrUserNotExist(err) {
 			fail("Repository owner does not exist", "Unregistered owner: %s", ownerName)
 		}
 		fail("Internal error", "Failed to get repository owner '%s': %v", ownerName, err)
@@ -181,7 +181,7 @@ func runServ(c *cli.Context) error {
 
 	repo, err := db.GetRepositoryByName(owner.ID, repoName)
 	if err != nil {
-		if errors.IsRepoNotExist(err) {
+		if db.IsErrRepoNotExist(err) {
 			fail(_ACCESS_DENIED_MESSAGE, "Repository does not exist: %s/%s", owner.Name, repoName)
 		}
 		fail("Internal error", "Failed to get repository: %v", err)
@@ -194,7 +194,7 @@ func runServ(c *cli.Context) error {
 	}
 
 	// Prohibit push to mirror repositories.
-	if requestMode > db.ACCESS_MODE_READ && repo.IsMirror {
+	if requestMode > db.AccessModeRead && repo.IsMirror {
 		fail("Mirror repository is read-only", "")
 	}
 
@@ -206,13 +206,14 @@ func runServ(c *cli.Context) error {
 		fail("Invalid key ID", "Invalid key ID '%s': %v", c.Args()[0], err)
 	}
 
+	// GIN specific code
 	if us, err := db.GetUserByKeyID(key.ID); err == nil {
 		user = us
 	} else {
 		fail("Key Error", "Cannot find key %v", err)
 	}
 
-	if requestMode == db.ACCESS_MODE_WRITE || repo.IsPrivate {
+	if requestMode == db.AccessModeWrite || repo.IsPrivate {
 		// Check deploy key or user key.
 		if key.IsDeployKey() {
 			if key.Mode < requestMode {
@@ -232,7 +233,7 @@ func runServ(c *cli.Context) error {
 
 			if mode < requestMode {
 				clientMessage := _ACCESS_DENIED_MESSAGE
-				if mode >= db.ACCESS_MODE_READ {
+				if mode >= db.AccessModeRead {
 					clientMessage = "You do not have sufficient authorization for this action"
 				}
 				fail(clientMessage,
@@ -264,7 +265,7 @@ func runServ(c *cli.Context) error {
 	}
 
 	// Special handle for Windows.
-	// Todo will break with annex
+	// GIN specific: this code alteration also breaks Windows compatibility
 	if conf.IsWindowsRuntime() {
 		verb = strings.Replace(verb, "-", " ", 1)
 	}
@@ -284,18 +285,18 @@ func runServ(c *cli.Context) error {
 		cmd = []string{verb, repoFullName}
 	}
 	runGit(cmd, requestMode, user, owner, repo)
-	if requestMode == db.ACCESS_MODE_WRITE {
+	if requestMode == db.AccessModeWrite {
 		db.StartIndexing(*repo)
 	}
 	return nil
-
 }
 
+// GIN specific: code altered from upstream, this function requires a review
 func runGit(cmd []string, requestMode db.AccessMode, user *db.User, owner *db.User,
 	repo *db.Repository) error {
 	log.Info("Running %q", cmd)
 	gitCmd := exec.Command(cmd[0], cmd[1:]...)
-	if requestMode == db.ACCESS_MODE_WRITE {
+	if requestMode == db.AccessModeWrite {
 		gitCmd.Env = append(os.Environ(), db.ComposeHookEnvs(db.ComposeHookEnvsOptions{
 			AuthUser:  user,
 			OwnerName: owner.Name,
@@ -316,7 +317,8 @@ func runGit(cmd []string, requestMode db.AccessMode, user *db.User, owner *db.Us
 	return nil
 }
 
-// Make sure git-annex-shell does not make "bad" changes (refectored from repo)
+// Make sure git-annex-shell does not make "bad" changes (refactored from repo)
+// GIN specific code
 func secureGitAnnex(path string, user *db.User, repo *db.Repository) error {
 	// "If set, disallows running git-shell to handle unknown commands."
 	err := os.Setenv("GIT_ANNEX_SHELL_LIMITED", "True")
@@ -329,14 +331,14 @@ func secureGitAnnex(path string, user *db.User, repo *db.Repository) error {
 	if err != nil {
 		return fmt.Errorf("ERROR: Could set annex shell directory.")
 	}
-	mode := db.ACCESS_MODE_NONE
+	mode := db.AccessModeNone
 	if user != nil {
 		mode, err = db.UserAccessMode(user.ID, repo)
 		if err != nil {
 			fail("Internal error", "Fail to check access: %v", err)
 		}
 	}
-	if mode < db.ACCESS_MODE_WRITE {
+	if mode < db.AccessModeWrite {
 		err = os.Setenv("GIT_ANNEX_SHELL_READONLY", "True")
 		if err != nil {
 			return fmt.Errorf("ERROR: Could set annex shell to read only.")

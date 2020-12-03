@@ -11,7 +11,7 @@ import (
 	"github.com/gogs/git-module"
 	"github.com/unknwon/com"
 
-	"github.com/G-Node/gogs/internal/db/errors"
+	"github.com/G-Node/gogs/internal/errutil"
 	"github.com/G-Node/gogs/internal/tool"
 )
 
@@ -44,9 +44,28 @@ func GetBranchesByPath(path string) ([]*Branch, error) {
 	return branches, nil
 }
 
+var _ errutil.NotFound = (*ErrBranchNotExist)(nil)
+
+type ErrBranchNotExist struct {
+	args map[string]interface{}
+}
+
+func IsErrBranchNotExist(err error) bool {
+	_, ok := err.(ErrBranchNotExist)
+	return ok
+}
+
+func (err ErrBranchNotExist) Error() string {
+	return fmt.Sprintf("branch does not exist: %v", err.args)
+}
+
+func (ErrBranchNotExist) NotFound() bool {
+	return true
+}
+
 func (repo *Repository) GetBranch(name string) (*Branch, error) {
 	if !git.RepoHasBranch(repo.RepoPath(), name) {
-		return nil, errors.ErrBranchNotExist{Name: name}
+		return nil, ErrBranchNotExist{args: map[string]interface{}{"name": name}}
 	}
 	return &Branch{
 		RepoPath: repo.RepoPath(),
@@ -102,7 +121,7 @@ func GetProtectBranchOfRepoByName(repoID int64, name string) (*ProtectBranch, er
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, errors.ErrBranchNotExist{Name: name}
+		return nil, ErrBranchNotExist{args: map[string]interface{}{"name": name}}
 	}
 	return protectBranch, nil
 }
@@ -156,7 +175,7 @@ func UpdateOrgProtectBranch(repo *Repository, protectBranch *ProtectBranch, whit
 		userIDs := tool.StringsToInt64s(strings.Split(whitelistUserIDs, ","))
 		validUserIDs = make([]int64, 0, len(userIDs))
 		for _, userID := range userIDs {
-			has, err := HasAccess(userID, repo, ACCESS_MODE_WRITE)
+			has, err := HasAccess(userID, repo, AccessModeWrite)
 			if err != nil {
 				return fmt.Errorf("HasAccess [user_id: %d, repo_id: %d]: %v", userID, protectBranch.RepoID, err)
 			} else if !has {
@@ -174,7 +193,7 @@ func UpdateOrgProtectBranch(repo *Repository, protectBranch *ProtectBranch, whit
 	if protectBranch.WhitelistTeamIDs != whitelistTeamIDs {
 		hasTeamsChanged = true
 		teamIDs := tool.StringsToInt64s(strings.Split(whitelistTeamIDs, ","))
-		teams, err := GetTeamsHaveAccessToRepo(repo.OwnerID, repo.ID, ACCESS_MODE_WRITE)
+		teams, err := GetTeamsHaveAccessToRepo(repo.OwnerID, repo.ID, AccessModeWrite)
 		if err != nil {
 			return fmt.Errorf("GetTeamsHaveAccessToRepo [org_id: %d, repo_id: %d]: %v", repo.OwnerID, repo.ID, err)
 		}

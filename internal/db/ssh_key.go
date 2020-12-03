@@ -24,6 +24,7 @@ import (
 	"xorm.io/xorm"
 
 	"github.com/G-Node/gogs/internal/conf"
+	"github.com/G-Node/gogs/internal/errutil"
 	"github.com/G-Node/gogs/internal/process"
 )
 
@@ -425,7 +426,7 @@ func AddPublicKey(ownerID int64, name, content string) (*PublicKey, error) {
 		OwnerID: ownerID,
 		Name:    name,
 		Content: content,
-		Mode:    ACCESS_MODE_WRITE,
+		Mode:    AccessModeWrite,
 		Type:    KEY_TYPE_USER,
 	}
 	if err = addKey(sess, key); err != nil {
@@ -655,7 +656,7 @@ func AddDeployKey(repoID int64, name, content string) (*DeployKey, error) {
 
 	pkey := &PublicKey{
 		Content: content,
-		Mode:    ACCESS_MODE_READ,
+		Mode:    AccessModeRead,
 		Type:    KEY_TYPE_DEPLOY,
 	}
 	has, err := x.Get(pkey)
@@ -684,6 +685,25 @@ func AddDeployKey(repoID int64, name, content string) (*DeployKey, error) {
 	return key, sess.Commit()
 }
 
+var _ errutil.NotFound = (*ErrDeployKeyNotExist)(nil)
+
+type ErrDeployKeyNotExist struct {
+	args map[string]interface{}
+}
+
+func IsErrDeployKeyNotExist(err error) bool {
+	_, ok := err.(ErrDeployKeyNotExist)
+	return ok
+}
+
+func (err ErrDeployKeyNotExist) Error() string {
+	return fmt.Sprintf("deploy key does not exist: %v", err.args)
+}
+
+func (ErrDeployKeyNotExist) NotFound() bool {
+	return true
+}
+
 // GetDeployKeyByID returns deploy key by given ID.
 func GetDeployKeyByID(id int64) (*DeployKey, error) {
 	key := new(DeployKey)
@@ -691,7 +711,7 @@ func GetDeployKeyByID(id int64) (*DeployKey, error) {
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, ErrDeployKeyNotExist{id, 0, 0}
+		return nil, ErrDeployKeyNotExist{args: map[string]interface{}{"deployKeyID": id}}
 	}
 	return key, nil
 }
@@ -706,7 +726,7 @@ func GetDeployKeyByRepo(keyID, repoID int64) (*DeployKey, error) {
 	if err != nil {
 		return nil, err
 	} else if !has {
-		return nil, ErrDeployKeyNotExist{0, keyID, repoID}
+		return nil, ErrDeployKeyNotExist{args: map[string]interface{}{"keyID": keyID, "repoID": repoID}}
 	}
 	return key, nil
 }
@@ -733,7 +753,7 @@ func DeleteDeployKey(doer *User, id int64) error {
 		if err != nil {
 			return fmt.Errorf("GetRepositoryByID: %v", err)
 		}
-		yes, err := HasAccess(doer.ID, repo, ACCESS_MODE_ADMIN)
+		yes, err := HasAccess(doer.ID, repo, AccessModeAdmin)
 		if err != nil {
 			return fmt.Errorf("HasAccess: %v", err)
 		} else if !yes {

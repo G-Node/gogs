@@ -1,4 +1,4 @@
-// +build go1.13
+// +build go1.14
 
 // Copyright 2014 The Gogs Authors. All rights reserved.
 // Use of this source code is governed by a MIT-style
@@ -18,7 +18,7 @@ import (
 )
 
 func init() {
-	conf.App.Version = "0.12.0+dev"
+	conf.App.Version = "0.12.3"
 }
 
 func main() {

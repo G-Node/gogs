@@ -5,18 +5,16 @@
 package repo
 
 import (
-	"fmt"
 	"net/http"
 	"path"
 
-	log "unknwon.dev/clog/v2"
-
 	api "github.com/gogs/go-gogs-client"
+	"github.com/pkg/errors"
+	log "unknwon.dev/clog/v2"
 
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/db/errors"
 	"github.com/G-Node/gogs/internal/form"
 	"github.com/G-Node/gogs/internal/route/api/v1/convert"
 )
@@ -89,7 +87,7 @@ func Search(c *context.APIContext) {
 func listUserRepositories(c *context.APIContext, username string) {
 	user, err := db.GetUserByName(username)
 	if err != nil {
-		c.NotFoundOrServerError("GetUserByName", errors.IsUserNotExist, err)
+		c.NotFoundOrError(err, "get user by name")
 		return
 	}
 
@@ -107,12 +105,12 @@ func listUserRepositories(c *context.APIContext, username string) {
 		})
 	}
 	if err != nil {
-		c.ServerError("GetUserRepositories", err)
+		c.Error(err, "get user repositories")
 		return
 	}
 
 	if err = db.RepositoryList(ownRepos).LoadAttributes(); err != nil {
-		c.ServerError("LoadAttributes(ownRepos)", err)
+		c.Error(err, "load attributes")
 		return
 	}
 
@@ -128,7 +126,7 @@ func listUserRepositories(c *context.APIContext, username string) {
 
 	accessibleRepos, err := user.GetRepositoryAccesses()
 	if err != nil {
-		c.ServerError("GetRepositoryAccesses", err)
+		c.Error(err, "get repositories accesses")
 		return
 	}
 
@@ -141,8 +139,8 @@ func listUserRepositories(c *context.APIContext, username string) {
 	i := numOwnRepos
 	for repo, access := range accessibleRepos {
 		repos[i] = repo.APIFormat(&api.Permission{
-			Admin: access >= db.ACCESS_MODE_ADMIN,
-			Push:  access >= db.ACCESS_MODE_WRITE,
+			Admin: access >= db.AccessModeAdmin,
+			Push:  access >= db.AccessModeWrite,
 			Pull:  true,
 		})
 		i++
@@ -175,16 +173,15 @@ func CreateUserRepo(c *context.APIContext, owner *db.User, opt api.CreateRepoOpt
 	})
 	if err != nil {
 		if db.IsErrRepoAlreadyExist(err) ||
-			db.IsErrNameReserved(err) ||
-			db.IsErrNamePatternNotAllowed(err) {
-			c.Error(http.StatusUnprocessableEntity, "", err)
+			db.IsErrNameNotAllowed(err) {
+			c.ErrorStatus(http.StatusUnprocessableEntity, err)
 		} else {
 			if repo != nil {
 				if err = db.DeleteRepository(c.User.ID, repo.ID); err != nil {
-					log.Error("DeleteRepository: %v", err)
+					log.Error("Failed to delete repository: %v", err)
 				}
 			}
-			c.ServerError("CreateRepository", err)
+			c.Error(err, "create repository")
 		}
 		return
 	}
@@ -195,7 +192,7 @@ func CreateUserRepo(c *context.APIContext, owner *db.User, opt api.CreateRepoOpt
 func Create(c *context.APIContext, opt api.CreateRepoOption) {
 	// Shouldn't reach this condition, but just in case.
 	if c.User.IsOrganization() {
-		c.Error(http.StatusUnprocessableEntity, "", "not allowed creating repository for organization")
+		c.ErrorStatus(http.StatusUnprocessableEntity, errors.New("Not allowed to create repository for organization."))
 		return
 	}
 	CreateUserRepo(c, c.User, opt)
@@ -204,12 +201,12 @@ func Create(c *context.APIContext, opt api.CreateRepoOption) {
 func CreateOrgRepo(c *context.APIContext, opt api.CreateRepoOption) {
 	org, err := db.GetOrgByName(c.Params(":org"))
 	if err != nil {
-		c.NotFoundOrServerError("GetOrgByName", errors.IsUserNotExist, err)
+		c.NotFoundOrError(err, "get organization by name")
 		return
 	}
 
 	if !org.IsOwnedBy(c.User.ID) {
-		c.Error(http.StatusForbidden, "", "given user is not owner of organization")
+		c.ErrorStatus(http.StatusForbidden, errors.New("Given user is not owner of organization."))
 		return
 	}
 	CreateUserRepo(c, org, opt)
@@ -222,28 +219,28 @@ func Migrate(c *context.APIContext, f form.MigrateRepo) {
 	if f.Uid != ctxUser.ID {
 		org, err := db.GetUserByID(f.Uid)
 		if err != nil {
-			if errors.IsUserNotExist(err) {
-				c.Error(http.StatusUnprocessableEntity, "", err)
+			if db.IsErrUserNotExist(err) {
+				c.ErrorStatus(http.StatusUnprocessableEntity, err)
 			} else {
-				c.Error(http.StatusInternalServerError, "GetUserByID", err)
+				c.Error(err, "get user by ID")
 			}
 			return
 		} else if !org.IsOrganization() && !c.User.IsAdmin {
-			c.Error(http.StatusForbidden, "", "given user is not an organization")
+			c.ErrorStatus(http.StatusForbidden, errors.New("Given user is not an organization."))
 			return
 		}
 		ctxUser = org
 	}
 
 	if c.HasError() {
-		c.Error(http.StatusUnprocessableEntity, "", c.GetErrMsg())
+		c.ErrorStatus(http.StatusUnprocessableEntity, errors.New(c.GetErrMsg()))
 		return
 	}
 
 	if ctxUser.IsOrganization() && !c.User.IsAdmin {
 		// Check ownership of organization.
 		if !ctxUser.IsOwnedBy(c.User.ID) {
-			c.Error(http.StatusForbidden, "", "Given user is not owner of organization")
+			c.ErrorStatus(http.StatusForbidden, errors.New("Given user is not owner of organization."))
 			return
 		}
 	}
@@ -254,16 +251,16 @@ func Migrate(c *context.APIContext, f form.MigrateRepo) {
 			addrErr := err.(db.ErrInvalidCloneAddr)
 			switch {
 			case addrErr.IsURLError:
-				c.Error(http.StatusUnprocessableEntity, "", err)
+				c.ErrorStatus(http.StatusUnprocessableEntity, err)
 			case addrErr.IsPermissionDenied:
-				c.Error(http.StatusUnprocessableEntity, "", "you are not allowed to import local repositories")
+				c.ErrorStatus(http.StatusUnprocessableEntity, errors.New("You are not allowed to import local repositories."))
 			case addrErr.IsInvalidPath:
-				c.Error(http.StatusUnprocessableEntity, "", "invalid local path, it does not exist or not a directory")
+				c.ErrorStatus(http.StatusUnprocessableEntity, errors.New("Invalid local path, it does not exist or not a directory."))
 			default:
-				c.ServerError("ParseRemoteAddr", fmt.Errorf("unknown error type (ErrInvalidCloneAddr): %v", err))
+				c.Error(err, "unexpected error")
 			}
 		} else {
-			c.ServerError("ParseRemoteAddr", err)
+			c.Error(err, "parse remote address")
 		}
 		return
 	}
@@ -282,10 +279,10 @@ func Migrate(c *context.APIContext, f form.MigrateRepo) {
 			}
 		}
 
-		if errors.IsReachLimitOfRepo(err) {
-			c.Error(http.StatusUnprocessableEntity, "", err)
+		if db.IsErrReachLimitOfRepo(err) {
+			c.ErrorStatus(http.StatusUnprocessableEntity, err)
 		} else {
-			c.ServerError("MigrateRepository", errors.New(db.HandleMirrorCredentials(err.Error(), true)))
+			c.Error(errors.New(db.HandleMirrorCredentials(err.Error(), true)), "migrate repository")
 		}
 		return
 	}
@@ -298,17 +295,17 @@ func Migrate(c *context.APIContext, f form.MigrateRepo) {
 func parseOwnerAndRepo(c *context.APIContext) (*db.User, *db.Repository) {
 	owner, err := db.GetUserByName(c.Params(":username"))
 	if err != nil {
-		if errors.IsUserNotExist(err) {
-			c.Error(http.StatusUnprocessableEntity, "", err)
+		if db.IsErrUserNotExist(err) {
+			c.ErrorStatus(http.StatusUnprocessableEntity, err)
 		} else {
-			c.ServerError("GetUserByName", err)
+			c.Error(err, "get user by name")
 		}
 		return nil, nil
 	}
 
 	repo, err := db.GetRepositoryByName(owner.ID, c.Params(":reponame"))
 	if err != nil {
-		c.NotFoundOrServerError("GetRepositoryByName", errors.IsRepoNotExist, err)
+		c.NotFoundOrError(err, "get repository by name")
 		return nil, nil
 	}
 
@@ -335,12 +332,12 @@ func Delete(c *context.APIContext) {
 	}
 
 	if owner.IsOrganization() && !owner.IsOwnedBy(c.User.ID) {
-		c.Error(http.StatusForbidden, "", "given user is not owner of organization")
+		c.ErrorStatus(http.StatusForbidden, errors.New("Given user is not owner of organization."))
 		return
 	}
 
 	if err := db.DeleteRepository(owner.ID, repo.ID); err != nil {
-		c.ServerError("DeleteRepository", err)
+		c.Error(err, "delete repository")
 		return
 	}
 
@@ -351,14 +348,14 @@ func Delete(c *context.APIContext) {
 func ListForks(c *context.APIContext) {
 	forks, err := c.Repo.Repository.GetForks()
 	if err != nil {
-		c.ServerError("GetForks", err)
+		c.Error(err, "get forks")
 		return
 	}
 
 	apiForks := make([]*api.Repository, len(forks))
 	for i := range forks {
 		if err := forks[i].GetOwner(); err != nil {
-			c.ServerError("GetOwner", err)
+			c.Error(err, "get owner")
 			return
 		}
 		apiForks[i] = forks[i].APIFormat(&api.Permission{
@@ -394,7 +391,7 @@ func IssueTracker(c *context.APIContext, form api.EditIssueTrackerOption) {
 	}
 
 	if err := db.UpdateRepository(repo, false); err != nil {
-		c.ServerError("UpdateRepository", err)
+		c.Error(err, "update repository")
 		return
 	}
 
@@ -412,4 +409,27 @@ func MirrorSync(c *context.APIContext) {
 
 	go db.MirrorQueue.Add(repo.ID)
 	c.Status(http.StatusAccepted)
+}
+
+func Releases(c *context.APIContext) {
+	_, repo := parseOwnerAndRepo(c)
+	releases, err := db.GetReleasesByRepoID(repo.ID)
+	if err != nil {
+		c.Error(err, "get releases by repository ID")
+		return
+	}
+	apiReleases := make([]*api.Release, 0, len(releases))
+	for _, r := range releases {
+		publisher, err := db.GetUserByID(r.PublisherID)
+		if err != nil {
+			c.Error(err, "get release publisher")
+			return
+		}
+		r.Publisher = publisher
+	}
+	for _, r := range releases {
+		apiReleases = append(apiReleases, r.APIFormat())
+	}
+
+	c.JSONSuccess(&apiReleases)
 }

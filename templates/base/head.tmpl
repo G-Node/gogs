@@ -44,8 +44,8 @@
 
 	<!-- notebook.js for rendering ipython notebooks and marked.js for rendering markdown in notebooks -->
 	{{if .IsIPythonNotebook}}
-		<script src="{{AppSubURL}}/plugins/notebookjs-0.3.0/notebook.min.js"></script>
-		<script src="{{AppSubURL}}/plugins/marked-0.3.6/marked.min.js"></script>
+		<script src="{{AppSubURL}}/plugins/notebookjs-0.4.2/notebook.min.js"></script>
+		<script src="{{AppSubURL}}/plugins/marked-0.8.1/marked.min.js"></script>
 	{{end}}
 
 	{{if .RequireSimpleMDE}}
@@ -60,7 +60,7 @@
 
 	<!-- Stylesheet -->
 	<link rel="stylesheet" href="{{AppSubURL}}/css/semantic-2.4.2.min.css">
-	<link rel="stylesheet" href="{{AppSubURL}}/css/gogs.css?v={{BuildCommit}}">
+	<link rel="stylesheet" href="{{AppSubURL}}/css/gogs.min.css?v={{BuildCommit}}">
 	<noscript>
 		<style>
 			.dropdown:hover > .menu { display: block; }

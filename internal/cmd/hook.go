@@ -23,7 +23,6 @@ import (
 
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/db/errors"
 	"github.com/G-Node/gogs/internal/email"
 	"github.com/G-Node/gogs/internal/httplib"
 )
@@ -67,7 +66,7 @@ func runHookPreReceive(c *cli.Context) error {
 	if len(os.Getenv("SSH_ORIGINAL_COMMAND")) == 0 {
 		return nil
 	}
-	setup(c, "hooks/pre-receive.log", true)
+	setup(c, "pre-receive.log", true)
 
 	isWiki := strings.Contains(os.Getenv(db.ENV_REPO_CUSTOM_HOOKS_PATH), ".wiki.git/")
 
@@ -93,7 +92,7 @@ func runHookPreReceive(c *cli.Context) error {
 		repoID := com.StrTo(os.Getenv(db.ENV_REPO_ID)).MustInt64()
 		protectBranch, err := db.GetProtectBranchOfRepoByName(repoID, branchName)
 		if err != nil {
-			if errors.IsErrBranchNotExist(err) {
+			if db.IsErrBranchNotExist(err) {
 				continue
 			}
 			fail("Internal error", "GetProtectBranchOfRepoByName [repo_id: %d, branch: %s]: %v", repoID, branchName, err)
@@ -160,7 +159,7 @@ func runHookUpdate(c *cli.Context) error {
 	if len(os.Getenv("SSH_ORIGINAL_COMMAND")) == 0 {
 		return nil
 	}
-	setup(c, "hooks/update.log", false)
+	setup(c, "update.log", false)
 
 	args := c.Args()
 	if len(args) != 3 {
@@ -194,7 +193,7 @@ func runHookPostReceive(c *cli.Context) error {
 	if len(os.Getenv("SSH_ORIGINAL_COMMAND")) == 0 {
 		return nil
 	}
-	setup(c, "hooks/post-receive.log", true)
+	setup(c, "post-receive.log", true)
 
 	// Post-receive hook does more than just gather Git information,
 	// so we need to setup additional services for email notifications.
@@ -239,9 +238,10 @@ func runHookPostReceive(c *cli.Context) error {
 		reqURL := fmt.Sprintf("%s%s/%s/tasks/trigger?%s", conf.Server.LocalRootURL, options.RepoUserName, options.RepoName, q.Encode())
 		log.Trace("Trigger task: %s", reqURL)
 
-		resp, err := httplib.Head(reqURL).SetTLSClientConfig(&tls.Config{
-			InsecureSkipVerify: true,
-		}).Response()
+		resp, err := httplib.Get(reqURL).
+			SetTLSClientConfig(&tls.Config{
+				InsecureSkipVerify: true,
+			}).Response()
 		if err == nil {
 			_ = resp.Body.Close()
 			if resp.StatusCode/100 != 2 {

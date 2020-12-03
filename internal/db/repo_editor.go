@@ -22,6 +22,7 @@ import (
 	"github.com/gogs/git-module"
 
 	"github.com/G-Node/gogs/internal/conf"
+	"github.com/G-Node/gogs/internal/cryptoutil"
 	"github.com/G-Node/gogs/internal/db/errors"
 	"github.com/G-Node/gogs/internal/gitutil"
 	"github.com/G-Node/gogs/internal/osutil"
@@ -56,7 +57,7 @@ func ComposeHookEnvs(opts ComposeHookEnvsOptions) []string {
 		ENV_AUTH_USER_NAME + "=" + opts.AuthUser.Name,
 		ENV_AUTH_USER_EMAIL + "=" + opts.AuthUser.Email,
 		ENV_REPO_OWNER_NAME + "=" + opts.OwnerName,
-		ENV_REPO_OWNER_SALT_MD5 + "=" + tool.MD5(opts.OwnerSalt),
+		ENV_REPO_OWNER_SALT_MD5 + "=" + cryptoutil.MD5(opts.OwnerSalt),
 		ENV_REPO_ID + "=" + com.ToStr(opts.RepoID),
 		ENV_REPO_NAME + "=" + opts.RepoName,
 		ENV_REPO_CUSTOM_HOOKS_PATH + "=" + filepath.Join(opts.RepoPath, "custom_hooks"),
@@ -152,7 +153,9 @@ func (repo *Repository) UpdateRepoFile(doer *User, opts UpdateRepoFileOptions) (
 
 	oldFilePath := path.Join(localPath, opts.OldTreeName)
 	filePath := path.Join(localPath, opts.NewTreeName)
-	os.MkdirAll(path.Dir(filePath), os.ModePerm)
+	if err = os.MkdirAll(path.Dir(filePath), os.ModePerm); err != nil {
+		return err
+	}
 
 	// If it's meant to be a new file, make sure it doesn't exist.
 	if opts.IsNewFile {
@@ -208,7 +211,9 @@ func (repo *Repository) GetDiffPreview(branch, treePath, content string) (diff *
 
 	localPath := repo.LocalCopyPath()
 	filePath := path.Join(localPath, treePath)
-	os.MkdirAll(filepath.Dir(filePath), os.ModePerm)
+	if err = os.MkdirAll(filepath.Dir(filePath), os.ModePerm); err != nil {
+		return nil, err
+	}
 	if err = ioutil.WriteFile(filePath, []byte(content), 0666); err != nil {
 		return nil, fmt.Errorf("write file: %v", err)
 	}
@@ -473,7 +478,9 @@ func (repo *Repository) UploadRepoFiles(doer *User, opts UploadRepoFileOptions) 
 
 	localPath := repo.LocalCopyPath()
 	dirPath := path.Join(localPath, opts.TreePath)
-	os.MkdirAll(dirPath, os.ModePerm)
+	if err = os.MkdirAll(dirPath, os.ModePerm); err != nil {
+		return err
+	}
 
 	// Copy uploaded files into repository
 	for _, upload := range uploads {

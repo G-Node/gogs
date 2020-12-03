@@ -11,13 +11,12 @@ import (
 
 	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/db/errors"
 )
 
 func ListAccessTokens(c *context.APIContext) {
-	tokens, err := db.ListAccessTokens(c.User.ID)
+	tokens, err := db.AccessTokens.List(c.User.ID)
 	if err != nil {
-		c.ServerError("ListAccessTokens", err)
+		c.Error(err, "list access tokens")
 		return
 	}
 
@@ -29,15 +28,12 @@ func ListAccessTokens(c *context.APIContext) {
 }
 
 func CreateAccessToken(c *context.APIContext, form api.CreateAccessTokenOption) {
-	t := &db.AccessToken{
-		UID:  c.User.ID,
-		Name: form.Name,
-	}
-	if err := db.NewAccessToken(t); err != nil {
-		if errors.IsAccessTokenNameAlreadyExist(err) {
-			c.Error(http.StatusUnprocessableEntity, "", err)
+	t, err := db.AccessTokens.Create(c.User.ID, form.Name)
+	if err != nil {
+		if db.IsErrAccessTokenAlreadyExist(err) {
+			c.ErrorStatus(http.StatusUnprocessableEntity, err)
 		} else {
-			c.ServerError("NewAccessToken", err)
+			c.Error(err, "new access token")
 		}
 		return
 	}

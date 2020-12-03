@@ -12,6 +12,8 @@ import (
 
 	"xorm.io/builder"
 	"xorm.io/xorm"
+
+	"github.com/G-Node/gogs/internal/errutil"
 )
 
 var (
@@ -62,8 +64,8 @@ func (org *User) TeamsHaveAccessToRepo(repoID int64, mode AccessMode) ([]*Team, 
 }
 
 // GetMembers returns all members of organization.
-func (org *User) GetMembers() error {
-	ous, err := GetOrgUsersByOrgID(org.ID)
+func (org *User) GetMembers(limit int) error {
+	ous, err := GetOrgUsersByOrgID(org.ID, limit)
 	if err != nil {
 		return err
 	}
@@ -99,7 +101,7 @@ func (org *User) RemoveOrgRepo(repoID int64) error {
 
 // CreateOrganization creates record of a new organization.
 func CreateOrganization(org, owner *User) (err error) {
-	if err = IsUsableUsername(org.Name); err != nil {
+	if err = isUsernameAllowed(org.Name); err != nil {
 		return err
 	}
 
@@ -107,7 +109,7 @@ func CreateOrganization(org, owner *User) (err error) {
 	if err != nil {
 		return err
 	} else if isExist {
-		return ErrUserAlreadyExist{org.Name}
+		return ErrUserAlreadyExist{args: errutil.Args{"name": org.Name}}
 	}
 
 	org.LowerName = strings.ToLower(org.Name)
@@ -131,7 +133,7 @@ func CreateOrganization(org, owner *User) (err error) {
 	if _, err = sess.Insert(org); err != nil {
 		return fmt.Errorf("insert organization: %v", err)
 	}
-	org.GenerateRandomAvatar()
+	_ = org.GenerateRandomAvatar()
 
 	// Add initial creator to organization and owner team.
 	if _, err = sess.Insert(&OrgUser{
@@ -148,7 +150,7 @@ func CreateOrganization(org, owner *User) (err error) {
 		OrgID:      org.ID,
 		LowerName:  strings.ToLower(OWNER_TEAM),
 		Name:       OWNER_TEAM,
-		Authorize:  ACCESS_MODE_OWNER,
+		Authorize:  AccessModeOwner,
 		NumMembers: 1,
 	}
 	if _, err = sess.Insert(t); err != nil {
@@ -177,7 +179,7 @@ func GetOrgByName(name string) (*User, error) {
 	}
 	u := &User{
 		LowerName: strings.ToLower(name),
-		Type:      USER_TYPE_ORGANIZATION,
+		Type:      UserOrganization,
 	}
 	has, err := x.Get(u)
 	if err != nil {
@@ -313,14 +315,19 @@ func GetOrgIDsByUserID(userID int64, showPrivate bool) ([]int64, error) {
 	return orgIDs, sess.Distinct("org_id").Find(&orgIDs)
 }
 
-func getOrgUsersByOrgID(e Engine, orgID int64) ([]*OrgUser, error) {
+func getOrgUsersByOrgID(e Engine, orgID int64, limit int) ([]*OrgUser, error) {
 	orgUsers := make([]*OrgUser, 0, 10)
-	return orgUsers, e.Where("org_id=?", orgID).Find(&orgUsers)
+
+	sess := e.Where("org_id=?", orgID)
+	if limit > 0 {
+		sess = sess.Limit(limit)
+	}
+	return orgUsers, sess.Find(&orgUsers)
 }
 
 // GetOrgUsersByOrgID returns all organization-user relations by organization ID.
-func GetOrgUsersByOrgID(orgID int64) ([]*OrgUser, error) {
-	return getOrgUsersByOrgID(x, orgID)
+func GetOrgUsersByOrgID(orgID int64, limit int) ([]*OrgUser, error) {
+	return getOrgUsersByOrgID(x, orgID, limit)
 }
 
 // ChangeOrgUserStatus changes public or private membership status.
@@ -356,10 +363,8 @@ func AddOrgUser(orgID, uid int64) error {
 	}
 
 	if _, err := sess.Insert(ou); err != nil {
-		sess.Rollback()
 		return err
 	} else if _, err = sess.Exec("UPDATE `user` SET num_members = num_members + 1 WHERE id = ?", orgID); err != nil {
-		sess.Rollback()
 		return err
 	}
 

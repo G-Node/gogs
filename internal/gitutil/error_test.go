@@ -10,7 +10,25 @@ import (
 
 	"github.com/gogs/git-module"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/G-Node/gogs/internal/errutil"
 )
+
+func TestError_NotFound(t *testing.T) {
+	tests := []struct {
+		err    error
+		expVal bool
+	}{
+		{err: git.ErrSubmoduleNotExist, expVal: true},
+		{err: git.ErrRevisionNotExist, expVal: true},
+		{err: git.ErrNoMergeBase, expVal: false},
+	}
+	for _, test := range tests {
+		t.Run("", func(t *testing.T) {
+			assert.Equal(t, test.expVal, errutil.IsNotFound(NewError(test.err)))
+		})
+	}
+}
 
 func TestIsErrRevisionNotExist(t *testing.T) {
 	assert.True(t, IsErrRevisionNotExist(git.ErrRevisionNotExist))

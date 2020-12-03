@@ -13,7 +13,7 @@ import (
 	log "unknwon.dev/clog/v2"
 	"xorm.io/xorm"
 
-	"github.com/G-Node/gogs/internal/tool"
+	"github.com/G-Node/gogs/internal/strutil"
 )
 
 const _MIN_DB_VER = 10
@@ -156,10 +156,10 @@ func generateOrgRandsAndSalt(x *xorm.Engine) (err error) {
 	}
 
 	for _, org := range orgs {
-		if org.Rands, err = tool.RandomString(10); err != nil {
+		if org.Rands, err = strutil.RandomChars(10); err != nil {
 			return err
 		}
-		if org.Salt, err = tool.RandomString(10); err != nil {
+		if org.Salt, err = strutil.RandomChars(10); err != nil {
 			return err
 		}
 		if _, err = sess.ID(org.ID).Update(org); err != nil {
@@ -337,7 +337,7 @@ func convertDateToUnix(x *xorm.Engine) (err error) {
 		offset := 0
 		for {
 			beans := make([]*Bean, 0, 100)
-			if err = x.Sql(fmt.Sprintf("SELECT * FROM `%s` ORDER BY id ASC LIMIT 100 OFFSET %d",
+			if err = x.SQL(fmt.Sprintf("SELECT * FROM `%s` ORDER BY id ASC LIMIT 100 OFFSET %d",
 				table.name, offset)).Find(&beans); err != nil {
 				return fmt.Errorf("select beans [table: %s, offset: %d]: %v", table.name, offset, err)
 			}

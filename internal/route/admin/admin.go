@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/json-iterator/go"
-	"github.com/unknwon/com"
 
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
@@ -23,9 +22,9 @@ import (
 )
 
 const (
-	DASHBOARD = "admin/dashboard"
-	CONFIG    = "admin/config"
-	MONITOR   = "admin/monitor"
+	tmplDashboard = "admin/dashboard"
+	tmplConfig    = "admin/config"
+	tmplMonitor   = "admin/monitor"
 )
 
 // initTime is the time when the application was initialized.
@@ -110,67 +109,10 @@ func updateSystemStatus() {
 	sysStatus.NumGC = m.NumGC
 }
 
-// Operation types.
-type AdminOperation int
-
-const (
-	CLEAN_INACTIVATE_USER AdminOperation = iota + 1
-	CLEAN_REPO_ARCHIVES
-	CLEAN_MISSING_REPOS
-	GIT_GC_REPOS
-	SYNC_SSH_AUTHORIZED_KEY
-	SYNC_REPOSITORY_HOOKS
-	REINIT_MISSING_REPOSITORY
-	REBUILD_SEARCH_INDEX
-)
-
 func Dashboard(c *context.Context) {
 	c.Title("admin.dashboard")
 	c.PageIs("Admin")
 	c.PageIs("AdminDashboard")
-
-	// Run operation.
-	op, _ := com.StrTo(c.Query("op")).Int()
-	if op > 0 {
-		var err error
-		var success string
-
-		switch AdminOperation(op) {
-		case CLEAN_INACTIVATE_USER:
-			success = c.Tr("admin.dashboard.delete_inactivate_accounts_success")
-			err = db.DeleteInactivateUsers()
-		case CLEAN_REPO_ARCHIVES:
-			success = c.Tr("admin.dashboard.delete_repo_archives_success")
-			err = db.DeleteRepositoryArchives()
-		case CLEAN_MISSING_REPOS:
-			success = c.Tr("admin.dashboard.delete_missing_repos_success")
-			err = db.DeleteMissingRepositories()
-		case GIT_GC_REPOS:
-			success = c.Tr("admin.dashboard.git_gc_repos_success")
-			err = db.GitGcRepos()
-		case SYNC_SSH_AUTHORIZED_KEY:
-			success = c.Tr("admin.dashboard.resync_all_sshkeys_success")
-			err = db.RewriteAuthorizedKeys()
-		case SYNC_REPOSITORY_HOOKS:
-			success = c.Tr("admin.dashboard.resync_all_hooks_success")
-			err = db.SyncRepositoryHooks()
-		case REINIT_MISSING_REPOSITORY:
-			success = c.Tr("admin.dashboard.reinit_missing_repos_success")
-			err = db.ReinitMissingRepositories()
-		case REBUILD_SEARCH_INDEX:
-			// TODO: Add success message to locale files
-			success = "All repositories have been submitted to the indexing service successfully."
-			err = db.RebuildIndex()
-		}
-
-		if err != nil {
-			c.Flash.Error(err.Error())
-		} else {
-			c.Flash.Success(success)
-		}
-		c.SubURLRedirect("/admin")
-		return
-	}
 
 	c.Data["GitVersion"] = conf.Git.Version
 	c.Data["GoVersion"] = runtime.Version()
@@ -181,7 +123,55 @@ func Dashboard(c *context.Context) {
 	// FIXME: update periodically
 	updateSystemStatus()
 	c.Data["SysStatus"] = sysStatus
-	c.Success(DASHBOARD)
+	c.Success(tmplDashboard)
+}
+
+// Operation types.
+type AdminOperation int
+
+const (
+	CleanInactivateUser AdminOperation = iota + 1
+	CleanRepoArchives
+	CleanMissingRepos
+	GitGCRepos
+	SyncSSHAuthorizedKey
+	SyncRepositoryHooks
+	ReinitMissingRepository
+)
+
+func Operation(c *context.Context) {
+	var err error
+	var success string
+	switch AdminOperation(c.QueryInt("op")) {
+	case CleanInactivateUser:
+		success = c.Tr("admin.dashboard.delete_inactivate_accounts_success")
+		err = db.DeleteInactivateUsers()
+	case CleanRepoArchives:
+		success = c.Tr("admin.dashboard.delete_repo_archives_success")
+		err = db.DeleteRepositoryArchives()
+	case CleanMissingRepos:
+		success = c.Tr("admin.dashboard.delete_missing_repos_success")
+		err = db.DeleteMissingRepositories()
+	case GitGCRepos:
+		success = c.Tr("admin.dashboard.git_gc_repos_success")
+		err = db.GitGcRepos()
+	case SyncSSHAuthorizedKey:
+		success = c.Tr("admin.dashboard.resync_all_sshkeys_success")
+		err = db.RewriteAuthorizedKeys()
+	case SyncRepositoryHooks:
+		success = c.Tr("admin.dashboard.resync_all_hooks_success")
+		err = db.SyncRepositoryHooks()
+	case ReinitMissingRepository:
+		success = c.Tr("admin.dashboard.reinit_missing_repos_success")
+		err = db.ReinitMissingRepositories()
+	}
+
+	if err != nil {
+		c.Flash.Error(err.Error())
+	} else {
+		c.Flash.Success(success)
+	}
+	c.RedirectSubpath("/admin")
 }
 
 func SendTestMail(c *context.Context) {
@@ -219,6 +209,7 @@ func Config(c *context.Context) {
 	c.Data["Mirror"] = conf.Mirror
 	c.Data["Webhook"] = conf.Webhook
 	c.Data["Git"] = conf.Git
+	c.Data["LFS"] = conf.LFS
 
 	c.Data["LogRootPath"] = conf.Log.RootPath
 	type logger struct {
@@ -235,7 +226,7 @@ func Config(c *context.Context) {
 	}
 	c.Data["Loggers"] = loggers
 
-	c.Success(CONFIG)
+	c.Success(tmplConfig)
 }
 
 func Monitor(c *context.Context) {
@@ -244,5 +235,5 @@ func Monitor(c *context.Context) {
 	c.Data["PageIsAdminMonitor"] = true
 	c.Data["Processes"] = process.Processes
 	c.Data["Entries"] = cron.ListTasks()
-	c.HTML(200, MONITOR)
+	c.Success(tmplMonitor)
 }

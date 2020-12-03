@@ -45,7 +45,7 @@ func DavMiddle() macaron.Handler {
 
 		// Admin has super access.
 		if c.IsLogged && c.User.IsAdmin {
-			c.Repo.AccessMode = db.ACCESS_MODE_OWNER
+			c.Repo.AccessMode = db.AccessModeOwner
 		} else {
 			mode, err := db.UserAccessMode(c.UserID(), repo)
 			if err != nil {

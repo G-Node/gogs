@@ -5,13 +5,13 @@
 package admin
 
 import (
-	org2 "github.com/G-Node/gogs/internal/route/api/v1/org"
-	user2 "github.com/G-Node/gogs/internal/route/api/v1/user"
 	api "github.com/gogs/go-gogs-client"
 
 	"github.com/G-Node/gogs/internal/context"
+	"github.com/G-Node/gogs/internal/route/api/v1/org"
+	"github.com/G-Node/gogs/internal/route/api/v1/user"
 )
 
 func CreateOrg(c *context.APIContext, form api.CreateOrgOption) {
-	org2.CreateOrgForUser(c, form, user2.GetUserByParams(c))
+	org.CreateOrgForUser(c, form, user.GetUserByParams(c))
 }

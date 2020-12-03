@@ -7,7 +7,6 @@ package repo
 import (
 	"fmt"
 	"io/ioutil"
-	"os"
 	"strings"
 	"time"
 
@@ -21,6 +20,7 @@ import (
 	"github.com/G-Node/gogs/internal/db/errors"
 	"github.com/G-Node/gogs/internal/email"
 	"github.com/G-Node/gogs/internal/form"
+	"github.com/G-Node/gogs/internal/osutil"
 	"github.com/G-Node/gogs/internal/tool"
 	petname "github.com/dustinkirkland/golang-petname"
 )
@@ -68,12 +68,10 @@ func SettingsPost(c *context.Context, f form.RepoSetting) {
 				switch {
 				case db.IsErrRepoAlreadyExist(err):
 					c.RenderWithErr(c.Tr("form.repo_name_been_taken"), SETTINGS_OPTIONS, &f)
-				case db.IsErrNameReserved(err):
-					c.RenderWithErr(c.Tr("repo.form.name_reserved", err.(db.ErrNameReserved).Name), SETTINGS_OPTIONS, &f)
-				case db.IsErrNamePatternNotAllowed(err):
-					c.RenderWithErr(c.Tr("repo.form.name_pattern_not_allowed", err.(db.ErrNamePatternNotAllowed).Pattern), SETTINGS_OPTIONS, &f)
+				case db.IsErrNameNotAllowed(err):
+					c.RenderWithErr(c.Tr("repo.form.name_not_allowed", err.(db.ErrNameNotAllowed).Value()), SETTINGS_OPTIONS, &f)
 				default:
-					c.ServerError("ChangeRepositoryName", err)
+					c.Error(err, "change repository name")
 				}
 				return
 			}
@@ -96,7 +94,7 @@ func SettingsPost(c *context.Context, f form.RepoSetting) {
 		repo.IsPrivate = f.Private
 		repo.Unlisted = !f.Listed
 		if err := db.UpdateRepository(repo, visibilityChanged); err != nil {
-			c.ServerError("UpdateRepository", err)
+			c.Error(err, "update repository")
 			return
 		}
 		log.Trace("Repository basic settings updated: %s/%s", c.Repo.Owner.Name, repo.Name)
@@ -121,12 +119,12 @@ func SettingsPost(c *context.Context, f form.RepoSetting) {
 			c.Repo.Mirror.Interval = f.Interval
 			c.Repo.Mirror.NextSync = time.Now().Add(time.Duration(f.Interval) * time.Hour)
 			if err := db.UpdateMirror(c.Repo.Mirror); err != nil {
-				c.ServerError("UpdateMirror", err)
+				c.Error(err, "update mirror")
 				return
 			}
 		}
 		if err := c.Repo.Mirror.SaveAddress(f.MirrorAddress); err != nil {
-			c.ServerError("SaveAddress", err)
+			c.Error(err, "save address")
 			return
 		}
 
@@ -158,8 +156,15 @@ func SettingsPost(c *context.Context, f form.RepoSetting) {
 		repo.PullsIgnoreWhitespace = f.PullsIgnoreWhitespace
 		repo.PullsAllowRebase = f.PullsAllowRebase
 
+		if !repo.EnableWiki || repo.EnableExternalWiki {
+			repo.AllowPublicWiki = false
+		}
+		if !repo.EnableIssues || repo.EnableExternalTracker {
+			repo.AllowPublicIssues = false
+		}
+
 		if err := db.UpdateRepository(repo, false); err != nil {
-			c.ServerError("UpdateRepository", err)
+			c.Error(err, "update repository")
 			return
 		}
 		log.Trace("Repository advanced settings updated: %s/%s", c.Repo.Owner.Name, repo.Name)
@@ -191,10 +196,10 @@ func SettingsPost(c *context.Context, f form.RepoSetting) {
 		repo.IsMirror = false
 
 		if _, err := db.CleanUpMigrateInfo(repo); err != nil {
-			c.ServerError("CleanUpMigrateInfo", err)
+			c.Error(err, "clean up migrate info")
 			return
 		} else if err = db.DeleteMirrorByRepoID(c.Repo.Repository.ID); err != nil {
-			c.ServerError("DeleteMirrorByRepoID", err)
+			c.Error(err, "delete mirror by repository ID")
 			return
 		}
 		log.Trace("Repository converted from mirror to regular: %s/%s", c.Repo.Owner.Name, repo.Name)
@@ -221,7 +226,7 @@ func SettingsPost(c *context.Context, f form.RepoSetting) {
 		newOwner := c.Query("new_owner_name")
 		isExist, err := db.IsUserExist(0, newOwner)
 		if err != nil {
-			c.ServerError("IsUserExist", err)
+			c.Error(err, "check if user exists")
 			return
 		} else if !isExist {
 			c.RenderWithErr(c.Tr("form.enterred_invalid_owner_name"), SETTINGS_OPTIONS, nil)
@@ -232,7 +237,7 @@ func SettingsPost(c *context.Context, f form.RepoSetting) {
 			if db.IsErrRepoAlreadyExist(err) {
 				c.RenderWithErr(c.Tr("repo.settings.new_owner_has_same_repo"), SETTINGS_OPTIONS, nil)
 			} else {
-				c.ServerError("TransferOwnership", err)
+				c.Error(err, "transfer ownership")
 			}
 			return
 		}
@@ -258,7 +263,7 @@ func SettingsPost(c *context.Context, f form.RepoSetting) {
 		}
 
 		if err := db.DeleteRepository(c.Repo.Owner.ID, repo.ID); err != nil {
-			c.ServerError("DeleteRepository", err)
+			c.Error(err, "delete repository")
 			return
 		}
 		log.Trace("Repository deleted: %s/%s", c.Repo.Owner.Name, repo.Name)
@@ -288,7 +293,7 @@ func SettingsPost(c *context.Context, f form.RepoSetting) {
 
 		repo.EnableWiki = false
 		if err := db.UpdateRepository(repo, false); err != nil {
-			c.ServerError("UpdateRepository", err)
+			c.Error(err, "update repository")
 			return
 		}
 
@@ -313,14 +318,14 @@ func SettingsAvatarPost(c *context.Context, f form.Avatar) {
 	} else {
 		c.Flash.Success(c.Tr("settings.update_avatar_success"))
 	}
-	c.SubURLRedirect(c.Repo.RepoLink + "/settings")
+	c.RedirectSubpath(c.Repo.RepoLink + "/settings")
 }
 
 func SettingsDeleteAvatar(c *context.Context) {
 	if err := c.Repo.Repository.DeleteAvatar(); err != nil {
 		c.Flash.Error(fmt.Sprintf("Failed to delete avatar: %v", err))
 	}
-	c.SubURLRedirect(c.Repo.RepoLink + "/settings")
+	c.RedirectSubpath(c.Repo.RepoLink + "/settings")
 }
 
 // FIXME: limit upload size
@@ -363,12 +368,12 @@ func SettingsCollaboration(c *context.Context) {
 
 	users, err := c.Repo.Repository.GetCollaborators()
 	if err != nil {
-		c.Handle(500, "GetCollaborators", err)
+		c.Error(err, "get collaborators")
 		return
 	}
 	c.Data["Collaborators"] = users
 
-	c.HTML(200, SETTINGS_COLLABORATION)
+	c.Success(SETTINGS_COLLABORATION)
 }
 
 func inviteWithMail(c *context.Context, address string) (*db.User, error) {
@@ -416,11 +421,11 @@ func SettingsCollaborationPost(c *context.Context) {
 
 	u, err := db.GetUserByName(name)
 	if err != nil {
-		if errors.IsUserNotExist(err) {
+		if db.IsErrUserNotExist(err) {
 			c.Flash.Error(c.Tr("form.user_not_exist"))
 			c.Redirect(conf.Server.Subpath + c.Req.URL.Path)
 		} else {
-			c.Handle(500, "GetUserByName", err)
+			c.Error(err, "get user by name")
 		}
 		return
 	}
@@ -433,7 +438,7 @@ func SettingsCollaborationPost(c *context.Context) {
 	}
 
 	if err = c.Repo.Repository.AddCollaborator(u); err != nil {
-		c.Handle(500, "AddCollaborator", err)
+		c.Error(err, "add collaborator")
 		return
 	}
 
@@ -463,7 +468,7 @@ func DeleteCollaboration(c *context.Context) {
 		c.Flash.Success(c.Tr("repo.settings.remove_collaborator_success"))
 	}
 
-	c.JSON(200, map[string]interface{}{
+	c.JSONSuccess(map[string]interface{}{
 		"redirect": c.Repo.RepoLink + "/settings/collaboration",
 	})
 }
@@ -474,13 +479,13 @@ func SettingsBranches(c *context.Context) {
 
 	if c.Repo.Repository.IsBare {
 		c.Flash.Info(c.Tr("repo.settings.branches_bare"), true)
-		c.HTML(200, SETTINGS_BRANCHES)
+		c.Success(SETTINGS_BRANCHES)
 		return
 	}
 
 	protectBranches, err := db.GetProtectBranchesByRepoID(c.Repo.Repository.ID)
 	if err != nil {
-		c.Handle(500, "GetProtectBranchesByRepoID", err)
+		c.Error(err, "get protect branch by repository ID")
 		return
 	}
 
@@ -493,7 +498,7 @@ func SettingsBranches(c *context.Context) {
 	}
 	c.Data["ProtectBranches"] = branches
 
-	c.HTML(200, SETTINGS_BRANCHES)
+	c.Success(SETTINGS_BRANCHES)
 }
 
 func UpdateDefaultBranch(c *context.Context) {
@@ -511,7 +516,7 @@ func UpdateDefaultBranch(c *context.Context) {
 	}
 
 	if err := db.UpdateRepository(c.Repo.Repository, false); err != nil {
-		c.Handle(500, "UpdateRepository", err)
+		c.Error(err, "update repository")
 		return
 	}
 
@@ -531,8 +536,8 @@ func SettingsProtectedBranch(c *context.Context) {
 
 	protectBranch, err := db.GetProtectBranchOfRepoByName(c.Repo.Repository.ID, branch)
 	if err != nil {
-		if !errors.IsErrBranchNotExist(err) {
-			c.Handle(500, "GetProtectBranchOfRepoByName", err)
+		if !db.IsErrBranchNotExist(err) {
+			c.Error(err, "get protect branch of repository by name")
 			return
 		}
 
@@ -545,15 +550,15 @@ func SettingsProtectedBranch(c *context.Context) {
 	if c.Repo.Owner.IsOrganization() {
 		users, err := c.Repo.Repository.GetWriters()
 		if err != nil {
-			c.Handle(500, "Repo.Repository.GetPushers", err)
+			c.Error(err, "get writers")
 			return
 		}
 		c.Data["Users"] = users
 		c.Data["whitelist_users"] = protectBranch.WhitelistUserIDs
 
-		teams, err := c.Repo.Owner.TeamsHaveAccessToRepo(c.Repo.Repository.ID, db.ACCESS_MODE_WRITE)
+		teams, err := c.Repo.Owner.TeamsHaveAccessToRepo(c.Repo.Repository.ID, db.AccessModeWrite)
 		if err != nil {
-			c.Handle(500, "Repo.Owner.TeamsHaveAccessToRepo", err)
+			c.Error(err, "get teams have access to the repository")
 			return
 		}
 		c.Data["Teams"] = teams
@@ -561,7 +566,7 @@ func SettingsProtectedBranch(c *context.Context) {
 	}
 
 	c.Data["Branch"] = protectBranch
-	c.HTML(200, SETTINGS_PROTECTED_BRANCH)
+	c.Success(SETTINGS_PROTECTED_BRANCH)
 }
 
 func SettingsProtectedBranchPost(c *context.Context, f form.ProtectBranch) {
@@ -573,8 +578,8 @@ func SettingsProtectedBranchPost(c *context.Context, f form.ProtectBranch) {
 
 	protectBranch, err := db.GetProtectBranchOfRepoByName(c.Repo.Repository.ID, branch)
 	if err != nil {
-		if !errors.IsErrBranchNotExist(err) {
-			c.Handle(500, "GetProtectBranchOfRepoByName", err)
+		if !db.IsErrBranchNotExist(err) {
+			c.Error(err, "get protect branch of repository by name")
 			return
 		}
 
@@ -594,7 +599,7 @@ func SettingsProtectedBranchPost(c *context.Context, f form.ProtectBranch) {
 		err = db.UpdateProtectBranch(protectBranch)
 	}
 	if err != nil {
-		c.Handle(500, "UpdateOrgProtectBranch/UpdateProtectBranch", err)
+		c.Error(err, "update protect branch")
 		return
 	}
 
@@ -608,12 +613,12 @@ func SettingsGitHooks(c *context.Context) {
 
 	hooks, err := c.Repo.GitRepo.Hooks("custom_hooks")
 	if err != nil {
-		c.Handle(500, "Hooks", err)
+		c.Error(err, "get hooks")
 		return
 	}
 	c.Data["Hooks"] = hooks
 
-	c.HTML(200, SETTINGS_GITHOOKS)
+	c.Success(SETTINGS_GITHOOKS)
 }
 
 func SettingsGitHooksEdit(c *context.Context) {
@@ -624,30 +629,22 @@ func SettingsGitHooksEdit(c *context.Context) {
 	name := c.Params(":name")
 	hook, err := c.Repo.GitRepo.Hook("custom_hooks", git.HookName(name))
 	if err != nil {
-		if err == os.ErrNotExist {
-			c.Handle(404, "GetHook", err)
-		} else {
-			c.Handle(500, "GetHook", err)
-		}
+		c.NotFoundOrError(osutil.NewError(err), "get hook")
 		return
 	}
 	c.Data["Hook"] = hook
-	c.HTML(200, SETTINGS_GITHOOK_EDIT)
+	c.Success(SETTINGS_GITHOOK_EDIT)
 }
 
 func SettingsGitHooksEditPost(c *context.Context) {
 	name := c.Params(":name")
 	hook, err := c.Repo.GitRepo.Hook("custom_hooks", git.HookName(name))
 	if err != nil {
-		if err == os.ErrNotExist {
-			c.Handle(404, "GetHook", err)
-		} else {
-			c.Handle(500, "GetHook", err)
-		}
+		c.NotFoundOrError(osutil.NewError(err), "get hook")
 		return
 	}
 	if err = hook.Update(c.Query("content")); err != nil {
-		c.Handle(500, "hook.Update", err)
+		c.Error(err, "update hook")
 		return
 	}
 	c.Redirect(c.Data["Link"].(string))
@@ -659,12 +656,12 @@ func SettingsDeployKeys(c *context.Context) {
 
 	keys, err := db.ListDeployKeys(c.Repo.Repository.ID)
 	if err != nil {
-		c.Handle(500, "ListDeployKeys", err)
+		c.Error(err, "list deploy keys")
 		return
 	}
 	c.Data["Deploykeys"] = keys
 
-	c.HTML(200, SETTINGS_DEPLOY_KEYS)
+	c.Success(SETTINGS_DEPLOY_KEYS)
 }
 
 func SettingsDeployKeysPost(c *context.Context, f form.AddSSHKey) {
@@ -673,13 +670,13 @@ func SettingsDeployKeysPost(c *context.Context, f form.AddSSHKey) {
 
 	keys, err := db.ListDeployKeys(c.Repo.Repository.ID)
 	if err != nil {
-		c.Handle(500, "ListDeployKeys", err)
+		c.Error(err, "list deploy keys")
 		return
 	}
 	c.Data["Deploykeys"] = keys
 
 	if c.HasError() {
-		c.HTML(200, SETTINGS_DEPLOY_KEYS)
+		c.Success(SETTINGS_DEPLOY_KEYS)
 		return
 	}
 
@@ -707,7 +704,7 @@ func SettingsDeployKeysPost(c *context.Context, f form.AddSSHKey) {
 			c.Data["Err_Title"] = true
 			c.RenderWithErr(c.Tr("repo.settings.key_name_used"), SETTINGS_DEPLOY_KEYS, &f)
 		default:
-			c.Handle(500, "AddDeployKey", err)
+			c.Error(err, "add deploy key")
 		}
 		return
 	}
@@ -724,7 +721,7 @@ func DeleteDeployKey(c *context.Context) {
 		c.Flash.Success(c.Tr("repo.settings.deploy_key_deletion_success"))
 	}
 
-	c.JSON(200, map[string]interface{}{
+	c.JSONSuccess(map[string]interface{}{
 		"redirect": c.Repo.RepoLink + "/settings/keys",
 	})
 }
