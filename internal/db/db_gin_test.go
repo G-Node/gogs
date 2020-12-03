@@ -3,12 +3,13 @@ package db
 import (
 	"io/ioutil"
 	"math/rand"
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 	"time"
 
-	"github.com/G-Node/gogs/internal/setting"
+	"github.com/G-Node/gogs/internal/conf"
 )
 
 const ALNUM = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -38,16 +39,15 @@ var blockMalicious = []string{
 	"- spammer@",
 }
 
-// Writes the filters to a file and returns the directory that contains the
-// filter file (to be set as setting.CustomPath)
-func writeFilterFile(t *testing.T, filters []string) string {
-	path := t.TempDir()
-	fname := filepath.Join(path, "addressfilters")
+// Writes the filters to a file in the specified custom directory. This file needs to
+// be cleaned up afterwards. Returns the full path to the written file as string.
+func writeCustomDirFilterFile(t *testing.T, filters []string) string {
+	fname := filepath.Join(conf.CustomDir(), "addressfilters")
 
 	if err := ioutil.WriteFile(fname, []byte(strings.Join(filters, "\n")), 0777); err != nil {
 		t.Fatalf("Failed to write line filters to file %q: %v", fname, err.Error())
 	}
-	return path
+	return fname
 }
 
 // randAlnum returns a random alphanumeric (lowercase, latin) string of length 'n'.
@@ -69,7 +69,13 @@ func randAddress() string {
 }
 
 func TestAllowGNodeFilter(t *testing.T) {
-	setting.CustomPath = writeFilterFile(t, allowGNodeFilter)
+	cdir := filepath.Join(conf.CustomDir())
+	if _, err := os.Stat(cdir); os.IsNotExist(err) {
+		_ = os.Mkdir(cdir, 0777)
+	}
+
+	ffile := writeCustomDirFilterFile(t, allowGNodeFilter)
+	defer os.Remove(ffile)
 
 	for _, address := range emails {
 		if isAddressAllowed(address) {
@@ -87,7 +93,14 @@ func TestAllowGNodeFilter(t *testing.T) {
 }
 
 func TestEverythingFilters(t *testing.T) {
-	setting.CustomPath = writeFilterFile(t, allowEverythingFilter)
+	cdir := filepath.Join(conf.CustomDir())
+	if _, err := os.Stat(cdir); os.IsNotExist(err) {
+		_ = os.Mkdir(cdir, 0777)
+	}
+
+	ffile := writeCustomDirFilterFile(t, allowEverythingFilter)
+	defer os.Remove(ffile)
+
 	rand.Seed(time.Now().UnixNano())
 
 	for idx := 0; idx < 100; idx++ {
@@ -97,7 +110,8 @@ func TestEverythingFilters(t *testing.T) {
 		}
 	}
 
-	setting.CustomPath = writeFilterFile(t, blockEverythingFilter)
+	ffile = writeCustomDirFilterFile(t, blockEverythingFilter)
+	defer os.Remove(ffile)
 
 	for idx := 0; idx < 100; idx++ {
 		randress := randAddress()
@@ -108,7 +122,13 @@ func TestEverythingFilters(t *testing.T) {
 }
 
 func TestBlockDomainFilter(t *testing.T) {
-	setting.CustomPath = writeFilterFile(t, blockMalicious)
+	cdir := filepath.Join(conf.CustomDir())
+	if _, err := os.Stat(cdir); os.IsNotExist(err) {
+		_ = os.Mkdir(cdir, 0777)
+	}
+
+	ffile := writeCustomDirFilterFile(t, blockMalicious)
+	defer os.Remove(ffile)
 
 	// 0, 3 should be allowed; 1, 2 should be blocked
 	if address := emails[0]; !isAddressAllowed(address) {
@@ -129,7 +149,6 @@ func TestBlockDomainFilter(t *testing.T) {
 }
 
 func TestFiltersNone(t *testing.T) {
-	setting.CustomPath = filepath.Join(t.TempDir(), "does", "not", "exist")
 	if address := emails[3]; !isAddressAllowed(address) {
 		t.Fatalf("Address %q should be allowed but was blocked", address)
 	}
