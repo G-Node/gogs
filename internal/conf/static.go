@@ -378,12 +378,6 @@ var (
 	CLIConfig struct {
 		RSAHostKey string
 	}
-
-	WebDav struct {
-		On        bool
-		Logged    bool
-		AuthRealm string
-	}
 )
 
 type ServerOpts struct {

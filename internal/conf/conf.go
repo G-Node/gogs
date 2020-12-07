@@ -403,8 +403,6 @@ func Init(customConf string) error {
 		return errors.Wrap(err, "mapping [doi] section")
 	} else if err = File.Section("cliconfig").MapTo(&CLIConfig); err != nil {
 		return errors.Wrap(err, "mapping [cliconfig] section")
-	} else if err = File.Section("dav").MapTo(&WebDav); err != nil {
-		return errors.Wrap(err, "mapping [dav] section")
 	}
 
 	HasRobotsTxt = osutil.IsFile(filepath.Join(CustomDir(), "robots.txt"))
