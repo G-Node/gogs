@@ -34,5 +34,5 @@ func ClientC(c *context.APIContext) {
 		return
 	}
 	c.WriteHeader(http.StatusOK)
-	c.Write(data)
+	_, _ = c.Write(data)
 }

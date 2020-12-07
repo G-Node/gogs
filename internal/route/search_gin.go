@@ -22,7 +22,7 @@ const (
 type set map[int64]interface{}
 
 func newset() set {
-	return make(map[int64]interface{}, 0)
+	return make(map[int64]interface{})
 }
 
 func (s set) add(item int64) {
