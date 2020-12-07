@@ -29,15 +29,6 @@ func (s set) add(item int64) {
 	s[item] = nil
 }
 
-func (s set) contains(item int64) bool {
-	_, yes := s[item]
-	return yes
-}
-
-func (s set) remove(item int64) {
-	delete(s, item)
-}
-
 func (s set) asSlice() []int64 {
 	slice := make([]int64, len(s))
 	idx := 0

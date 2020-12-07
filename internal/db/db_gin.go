@@ -134,23 +134,6 @@ func annexSetup(path string) {
 	}
 }
 
-func annexSync(path string) error {
-	log.Trace("Synchronising annexed data")
-	if msg, err := annex.ASync(path, "--content"); err != nil {
-		// TODO: This will also DOWNLOAD content, which is unnecessary for a simple upload
-		// TODO: Use gin-cli upload function instead
-		log.Error(2, "Annex sync failed: %v (%s)", err, msg)
-		return fmt.Errorf("git annex sync --content [%s]", path)
-	}
-
-	// run twice; required if remote annex is not initialised
-	if msg, err := annex.ASync(path, "--content"); err != nil {
-		log.Error(2, "Annex sync failed: %v (%s)", err, msg)
-		return fmt.Errorf("git annex sync --content [%s]", path)
-	}
-	return nil
-}
-
 func annexAdd(repoPath string, all bool, files ...string) error {
 	cmd := git.NewCommand("annex", "add")
 	if all {
