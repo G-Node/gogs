@@ -32,5 +32,5 @@ func ExploreSuggest(c *context.Context) {
 		return
 	}
 
-	c.Write(data)
+	_, _ = c.Write(data)
 }

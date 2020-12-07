@@ -35,5 +35,5 @@ func Suggest(c *context.APIContext) {
 		c.Status(http.StatusInternalServerError)
 		return
 	}
-	c.Write(data)
+	_, _ = c.Write(data)
 }

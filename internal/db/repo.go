@@ -174,8 +174,8 @@ type Repository struct {
 	NumTags             int `xorm:"-" gorm:"-" json:"-"`
 
 	IsPrivate bool
+	IsUnlisted  bool
 	IsBare    bool
-	Unlisted  bool
 
 	IsMirror bool
 	*Mirror  `xorm:"-" gorm:"-" json:"-"`
@@ -725,6 +725,7 @@ type MigrateRepoOptions struct {
 	Name        string
 	Description string
 	IsPrivate   bool
+	IsUnlisted  bool
 	IsMirror    bool
 	RemoteAddr  string
 }
@@ -754,6 +755,7 @@ func MigrateRepository(doer, owner *User, opts MigrateRepoOptions) (*Repository,
 		Name:        opts.Name,
 		Description: opts.Description,
 		IsPrivate:   opts.IsPrivate,
+		IsUnlisted:  opts.IsUnlisted,
 		IsMirror:    opts.IsMirror,
 	})
 	if err != nil {
@@ -928,6 +930,7 @@ type CreateRepoOptions struct {
 	License     string
 	Readme      string
 	IsPrivate   bool
+	IsUnlisted  bool
 	IsMirror    bool
 	AutoInit    bool
 }
@@ -1139,6 +1142,7 @@ func CreateRepository(doer, owner *User, opts CreateRepoOptions) (_ *Repository,
 		LowerName:    strings.ToLower(opts.Name),
 		Description:  opts.Description,
 		IsPrivate:    opts.IsPrivate,
+		IsUnlisted:   opts.IsUnlisted,
 		EnableWiki:   true,
 		EnableIssues: true,
 		EnablePulls:  true,
@@ -1486,13 +1490,14 @@ func updateRepository(e Engine, repo *Repository, visibilityChanged bool) (err e
 		}
 		for i := range forkRepos {
 			forkRepos[i].IsPrivate = repo.IsPrivate
+			forkRepos[i].IsUnlisted = repo.IsUnlisted
 			if err = updateRepository(e, forkRepos[i], true); err != nil {
 				return fmt.Errorf("updateRepository[%d]: %v", forkRepos[i].ID, err)
 			}
 		}
 
 		// Change visibility of generated actions
-		if _, err = e.Where("repo_id = ?", repo.ID).Cols("is_private").Update(&Action{IsPrivate: repo.IsPrivate}); err != nil {
+		if _, err = e.Where("repo_id = ?", repo.ID).Cols("is_private").Update(&Action{IsPrivate: repo.IsPrivate || repo.IsUnlisted}); err != nil {
 			return fmt.Errorf("change action visibility of repository: %v", err)
 		}
 	}
@@ -1695,6 +1700,7 @@ func GetUserRepositories(opts *UserRepoOptions) ([]*Repository, error) {
 	sess := x.Where("owner_id=?", opts.UserID).Desc("updated_unix")
 	if !opts.Private {
 		sess.And("is_private=?", false)
+		sess.And("is_unlisted=?", false)
 	}
 
 	if opts.Page <= 0 {
@@ -1768,11 +1774,11 @@ func SearchRepositoryByName(opts *SearchRepoOptions) (repos []*Repository, count
 	// this does not include other people's private repositories even if opts.UserID is an admin.
 	if !opts.Private && opts.UserID > 0 {
 		sess.Join("LEFT", "access", "access.repo_id = repo.id").
-			Where("repo.owner_id = ? OR access.user_id = ? OR repo.is_private = ? OR (repo.is_private = ? AND (repo.allow_public_wiki = ? OR repo.allow_public_issues = ?))", opts.UserID, opts.UserID, false, true, true, true)
+		Where("repo.owner_id = ? OR access.user_id = ? OR (repo.is_private = ? AND repo.is_unlisted = ?) OR (repo.is_private = ? AND (repo.allow_public_wiki = ? OR repo.allow_public_issues = ?))", opts.UserID, opts.UserID, false, false, true, true, true)
 	} else {
 		// Only return public repositories if opts.Private is not set
 		if !opts.Private {
-			sess.And("repo.is_private = ? OR (repo.is_private = ? AND (repo.allow_public_wiki = ? OR repo.allow_public_issues = ?))", false, true, true, true)
+			sess.And("(repo.is_private = ? AND repo.is_unlisted = ?) OR (repo.is_private = ? AND (repo.allow_public_wiki = ? OR repo.allow_public_issues = ?))", false, false, true, true, true)
 		}
 	}
 	if len(opts.Keyword) > 0 {
@@ -2408,6 +2414,7 @@ func ForkRepository(doer, owner *User, baseRepo *Repository, name, desc string) 
 		Description:   desc,
 		DefaultBranch: baseRepo.DefaultBranch,
 		IsPrivate:     baseRepo.IsPrivate,
+		IsUnlisted:    baseRepo.IsUnlisted,
 		IsFork:        true,
 		ForkID:        baseRepo.ID,
 	}

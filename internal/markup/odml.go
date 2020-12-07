@@ -14,7 +14,7 @@ func MarshalODML(buf []byte) []byte {
 	od := Odml{}
 	decoder := xml.NewDecoder(bytes.NewReader(buf))
 	decoder.CharsetReader = charset.NewReaderLabel
-	decoder.Decode(&od)
+	_ = decoder.Decode(&od)
 	data, _ := json.Marshal(od)
 	return data
 }
@@ -57,7 +57,7 @@ func (u *Property) MarshalJSON() ([]byte, error) {
 func (u *Section) MarshalJSON() ([]byte, error) {
 	type Alias Section
 	if u.Text == "" {
-		u.Text = fmt.Sprintf("%s", u.Name)
+		u.Text = u.Name
 	}
 	for _, x := range u.Properties {
 		u.Children = append(u.Children, OdMLObject{Prop: x, Type: "property"})

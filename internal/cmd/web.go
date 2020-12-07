@@ -34,7 +34,6 @@ import (
 	"github.com/G-Node/gogs/internal/assets/templates"
 	"github.com/G-Node/gogs/internal/conf"
 	"github.com/G-Node/gogs/internal/context"
-	"github.com/G-Node/gogs/internal/dav"
 	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/gogs/internal/form"
 	"github.com/G-Node/gogs/internal/osutil"
@@ -47,7 +46,6 @@ import (
 	"github.com/G-Node/gogs/internal/route/repo"
 	"github.com/G-Node/gogs/internal/route/user"
 	"github.com/G-Node/gogs/internal/template"
-	"golang.org/x/net/webdav"
 )
 
 var Web = cli.Command{
@@ -154,11 +152,6 @@ func newMacaron() *macaron.Macaron {
 			},
 		},
 	}))
-
-	// GIN specifc code: Webdav handler todo: implement
-	h := &webdav.Handler{FileSystem: &dav.GinFS{BasePath: conf.Repository.Root}, LockSystem: webdav.NewMemLS(),
-		Logger: dav.Logger}
-	m.Map(h)
 
 	return m
 }
@@ -422,8 +415,6 @@ func runWeb(c *cli.Context) error {
 			m.Combo("/fork/:repoid").Get(repo.Fork).
 				Post(bindIgnErr(form.CreateRepo{}), repo.ForkPost)
 		}, reqSignIn)
-		m.Any("/:username/:reponame/_dav/*", dav.DavMiddle(), dav.Dav) // GIN specific code
-		m.Any("/:username/:reponame/_dav", dav.DavMiddle(), dav.Dav) // GIN specific code
 
 		m.Group("/:username/:reponame", func() {
 			m.Group("/settings", func() {

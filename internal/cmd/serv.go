@@ -293,7 +293,7 @@ func runServ(c *cli.Context) error {
 
 // GIN specific: code altered from upstream, this function requires a review
 func runGit(cmd []string, requestMode db.AccessMode, user *db.User, owner *db.User,
-	repo *db.Repository) error {
+	repo *db.Repository) {
 	log.Info("Running %q", cmd)
 	gitCmd := exec.Command(cmd[0], cmd[1:]...)
 	if requestMode == db.AccessModeWrite {
@@ -313,8 +313,6 @@ func runGit(cmd []string, requestMode db.AccessMode, user *db.User, owner *db.Us
 	if err := gitCmd.Run(); err != nil {
 		fail("Internal error", "Failed to execute git command: %v", err)
 	}
-
-	return nil
 }
 
 // Make sure git-annex-shell does not make "bad" changes (refactored from repo)

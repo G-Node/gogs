@@ -6,7 +6,7 @@ func filterUnlistedRepos(repos []*db.Repository) []*db.Repository {
 	// Filter out Unlisted repositories
 	var showRep []*db.Repository
 	for _, repo := range repos {
-		if !repo.Unlisted {
+		if !repo.IsUnlisted {
 			showRep = append(showRep, repo)
 		}
 	}

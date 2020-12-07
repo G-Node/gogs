@@ -22,20 +22,11 @@ const (
 type set map[int64]interface{}
 
 func newset() set {
-	return make(map[int64]interface{}, 0)
+	return make(map[int64]interface{})
 }
 
 func (s set) add(item int64) {
 	s[item] = nil
-}
-
-func (s set) contains(item int64) bool {
-	_, yes := s[item]
-	return yes
-}
-
-func (s set) remove(item int64) {
-	delete(s, item)
 }
 
 func (s set) asSlice() []int64 {
@@ -82,7 +73,7 @@ func collectSearchableRepoIDs(c *context.Context) ([]int64, error) {
 	// If it's not unlisted, add it to the set
 	// This will add public (listed) repositories
 	for _, r := range repos {
-		if !r.Unlisted {
+		if !r.IsUnlisted {
 			repoIDSet.add(r.ID)
 		}
 	}
