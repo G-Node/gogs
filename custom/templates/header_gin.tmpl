@@ -1,0 +1,35 @@
+{{if not $.IsBareRepo}}
+	{{if or $.DOI $.IsRepositoryAdmin}} {{/* Show DOI buttons or badge */}}
+					{{if $.IsRepositoryAdmin}}
+						{{if $.IsDOIReady}} {{/* Ready to (re)register: Show button */}}
+							<a class="ui basic button" href="/{{.Repository.Owner.Name}}/{{.Repository.Name}}/doi"><i class="octicon octicon-squirrel"></i> Request {{if $.DOI}}New{{end}} DOI</a>
+						{{else if not $.DOI}} {{/*Link to registration instructions*/}}
+							<a class="ui basic button" data-tooltip="Your repository does not fulfill all requirements for a DOI yet. Click to get instructions." data-position="bottom center" href="/G-Node/Info/wiki/DOI"><i class="octicon octicon-squirrel"></i> How to publish</a>
+							{{if $.HasDataCite}}
+								<a class="ui basic button" href="{{$.RepoLink}}/_edit/{{EscapePound $.BranchName}}/dmp.json" data-position="bottom center"><i class="octicon octicon-file"></i>Edit DMP JSON</a>
+							{{else}}
+								<a class="ui basic button" href="{{$.RepoLink}}/_add/{{EscapePound $.BranchName}}/dmp.json" data-position="bottom center"><i class="octicon octicon-file"></i>Add DMP JSON</a>
+							{{end}}
+						{{end}} {{/* End registration button */}}
+					{{end}} {{/* Admin section */}}
+					{{if $.DOI}} {{/* Registered repo: Show DOI badge */}}
+						<div class="ui labeled button" tabindex="0">
+							<a href="https://doi.org/{{$.DOI}}">
+								<div class="gin doi">DOI</div>
+								<div class="gin doinr">{{$.DOI}}</div>
+							</a>
+						</div>
+					{{end}} {{/* End DOI badge */}}
+					{{/* Close original header divs and create second row below for original buttons */}}
+					</div>
+				</div>
+			</div><!--- end column -->
+		</div><!--- end grid -->
+	</div><!--- end container -->
+	<div class="ui container"><!-- start container -->
+		<div class="ui vertically padded grid head"><!-- start grid -->
+			<div class="column"><!-- start column -->
+				<div class="ui header">
+					<div class="ui right">
+	{{end}}
+{{end}}
