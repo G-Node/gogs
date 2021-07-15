@@ -178,13 +178,13 @@ func runWeb(c *cli.Context) error {
 			m.Get("", func(c *context.Context) {
 				c.Redirect(conf.Server.Subpath + "/explore/repos")
 			})
-			m.Get("/data", route.ExploreData) // GIN specific code
+			m.Get("/data", route.ExploreData)       // GIN specific code
 			m.Get("/commits", route.ExploreCommits) // GIN specific code
 			m.Get("/repos", route.ExploreRepos)
 			m.Get("/users", route.ExploreUsers)
 			m.Get("/organizations", route.ExploreOrganizations)
 			m.Get("/_suggest/:keywords", route.ExploreSuggest) // GIN specific code
-			}, ignSignIn)
+		}, ignSignIn)
 		m.Combo("/install", route.InstallInit).Get(route.Install).
 			Post(bindIgnErr(form.Install{}), route.InstallPost)
 		m.Get("/^:type(issues|pulls)$", reqSignIn, user.Issues)
@@ -542,7 +542,7 @@ func runWeb(c *cli.Context) error {
 				Post(bindIgnErr(form.NewIssue{}), repo.CompareAndPullRequestPost)
 
 			// GIN specific code
-			if _, err := conf.Asset("conf/datacite/datacite.yml"); err != nil {
+			if _, err := conf.Asset("conf/datacite/dmp.json"); err != nil {
 				log.Fatal("%v", err)
 			}
 
@@ -554,7 +554,7 @@ func runWeb(c *cli.Context) error {
 				m.Post("/_preview/*", bindIgnErr(form.EditPreviewDiff{}), repo.DiffPreviewPost)
 				m.Combo("/_delete/*").Get(repo.DeleteFile).
 					Post(bindIgnErr(form.DeleteRepoFile{}), repo.DeleteFilePost)
-				// GIN specific code: Add datacite.yml file through the repo web interface
+				// GIN specific code: Add dmp.json file through the repo web interface
 				m.Combo("/_add/*").Get(repo.CreateDatacite).Post(bindIgnErr(form.EditRepoFile{}), repo.NewFilePost)
 
 				m.Group("", func() {
