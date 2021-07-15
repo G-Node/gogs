@@ -31,6 +31,9 @@ web: build
 build: $(GENERATED)
 	go build $(BUILD_FLAGS) -ldflags '$(LDFLAGS)' -tags '$(TAGS)' -trimpath -o gogs
 
+web-dev: build-no-gen
+	./gogs web
+
 build-no-gen:
 	go build $(BUILD_FLAGS) -ldflags '$(LDFLAGS)' -tags '$(TAGS)' -trimpath -o gogs
 
