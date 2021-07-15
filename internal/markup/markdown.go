@@ -13,9 +13,9 @@ import (
 
 	"github.com/russross/blackfriday"
 
-	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/lazyregexp"
-	"github.com/G-Node/gogs/internal/tool"
+	"github.com/ivis-yoshida/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/lazyregexp"
+	"github.com/ivis-yoshida/gogs/internal/tool"
 )
 
 // IsMarkdownFile reports whether name looks like a Markdown file based on its extension.

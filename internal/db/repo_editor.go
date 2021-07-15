@@ -21,13 +21,13 @@ import (
 
 	"github.com/gogs/git-module"
 
-	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/cryptoutil"
-	"github.com/G-Node/gogs/internal/db/errors"
-	"github.com/G-Node/gogs/internal/gitutil"
-	"github.com/G-Node/gogs/internal/osutil"
-	"github.com/G-Node/gogs/internal/process"
-	"github.com/G-Node/gogs/internal/tool"
+	"github.com/ivis-yoshida/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/cryptoutil"
+	"github.com/ivis-yoshida/gogs/internal/db/errors"
+	"github.com/ivis-yoshida/gogs/internal/gitutil"
+	"github.com/ivis-yoshida/gogs/internal/osutil"
+	"github.com/ivis-yoshida/gogs/internal/process"
+	"github.com/ivis-yoshida/gogs/internal/tool"
 )
 
 const (

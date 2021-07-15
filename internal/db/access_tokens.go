@@ -11,8 +11,8 @@ import (
 	"github.com/jinzhu/gorm"
 	gouuid "github.com/satori/go.uuid"
 
-	"github.com/G-Node/gogs/internal/cryptoutil"
-	"github.com/G-Node/gogs/internal/errutil"
+	"github.com/ivis-yoshida/gogs/internal/cryptoutil"
+	"github.com/ivis-yoshida/gogs/internal/errutil"
 )
 
 // AccessTokensStore is the persistent interface for access tokens.

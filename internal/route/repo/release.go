@@ -11,12 +11,12 @@ import (
 	"github.com/gogs/git-module"
 	log "unknwon.dev/clog/v2"
 
-	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/context"
-	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/form"
-	"github.com/G-Node/gogs/internal/gitutil"
-	"github.com/G-Node/gogs/internal/markup"
+	"github.com/ivis-yoshida/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/context"
+	"github.com/ivis-yoshida/gogs/internal/db"
+	"github.com/ivis-yoshida/gogs/internal/form"
+	"github.com/ivis-yoshida/gogs/internal/gitutil"
+	"github.com/ivis-yoshida/gogs/internal/markup"
 )
 
 const (
@@ -320,7 +320,7 @@ func DeleteRelease(c *context.Context) {
 		c.Flash.Success(c.Tr("repo.release.deletion_success"))
 	}
 
-	c.JSONSuccess( map[string]interface{}{
+	c.JSONSuccess(map[string]interface{}{
 		"redirect": c.Repo.RepoLink + "/releases",
 	})
 }

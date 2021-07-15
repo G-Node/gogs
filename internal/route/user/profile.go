@@ -9,11 +9,11 @@ import (
 
 	"github.com/unknwon/paginater"
 
-	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/context"
-	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/route/repo"
-	"github.com/G-Node/gogs/internal/tool"
+	"github.com/ivis-yoshida/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/context"
+	"github.com/ivis-yoshida/gogs/internal/db"
+	"github.com/ivis-yoshida/gogs/internal/route/repo"
+	"github.com/ivis-yoshida/gogs/internal/tool"
 )
 
 const (

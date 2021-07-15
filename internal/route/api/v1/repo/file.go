@@ -7,10 +7,10 @@ package repo
 import (
 	"github.com/gogs/git-module"
 
-	"github.com/G-Node/gogs/internal/context"
-	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/gitutil"
-	"github.com/G-Node/gogs/internal/route/repo"
+	"github.com/ivis-yoshida/gogs/internal/context"
+	"github.com/ivis-yoshida/gogs/internal/db"
+	"github.com/ivis-yoshida/gogs/internal/gitutil"
+	"github.com/ivis-yoshida/gogs/internal/route/repo"
 )
 
 func GetRawFile(c *context.APIContext) {

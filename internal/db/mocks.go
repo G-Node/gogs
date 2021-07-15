@@ -7,7 +7,7 @@ package db
 import (
 	"testing"
 
-	"github.com/G-Node/gogs/internal/lfsutil"
+	"github.com/ivis-yoshida/gogs/internal/lfsutil"
 )
 
 // NOTE: Mocks are sorted in alphabetical order.

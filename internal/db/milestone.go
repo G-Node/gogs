@@ -13,8 +13,8 @@ import (
 
 	api "github.com/gogs/go-gogs-client"
 
-	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/errutil"
+	"github.com/ivis-yoshida/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/errutil"
 )
 
 // Milestone represents a milestone of repository.

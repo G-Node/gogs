@@ -14,9 +14,9 @@ import (
 
 	api "github.com/gogs/go-gogs-client"
 
-	"github.com/G-Node/gogs/internal/errutil"
-	"github.com/G-Node/gogs/internal/lazyregexp"
-	"github.com/G-Node/gogs/internal/tool"
+	"github.com/ivis-yoshida/gogs/internal/errutil"
+	"github.com/ivis-yoshida/gogs/internal/lazyregexp"
+	"github.com/ivis-yoshida/gogs/internal/tool"
 )
 
 var labelColorPattern = lazyregexp.New("#([a-fA-F0-9]{6})")

@@ -17,10 +17,10 @@ import (
 
 	"github.com/gogs/git-module"
 
-	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/db/errors"
-	"github.com/G-Node/gogs/internal/process"
-	"github.com/G-Node/gogs/internal/sync"
+	"github.com/ivis-yoshida/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/db/errors"
+	"github.com/ivis-yoshida/gogs/internal/process"
+	"github.com/ivis-yoshida/gogs/internal/sync"
 )
 
 var MirrorQueue = sync.NewUniqueQueue(1000)

@@ -7,7 +7,7 @@ package lfsutil
 import (
 	"github.com/pkg/errors"
 
-	"github.com/G-Node/gogs/internal/lazyregexp"
+	"github.com/ivis-yoshida/gogs/internal/lazyregexp"
 )
 
 // OID is an LFS object ID.

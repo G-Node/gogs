@@ -7,9 +7,9 @@ package org
 import (
 	log "unknwon.dev/clog/v2"
 
-	"github.com/G-Node/gogs/internal/context"
-	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/form"
+	"github.com/ivis-yoshida/gogs/internal/context"
+	"github.com/ivis-yoshida/gogs/internal/db"
+	"github.com/ivis-yoshida/gogs/internal/form"
 )
 
 const (

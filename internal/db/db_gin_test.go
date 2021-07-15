@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/G-Node/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/conf"
 )
 
 const ALNUM = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"

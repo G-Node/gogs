@@ -9,8 +9,8 @@ import (
 
 	"gopkg.in/macaron.v1"
 
-	"github.com/G-Node/gogs/internal/authutil"
-	"github.com/G-Node/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/authutil"
+	"github.com/ivis-yoshida/gogs/internal/conf"
 )
 
 func MetricsFilter() macaron.Handler {

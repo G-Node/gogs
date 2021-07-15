@@ -14,9 +14,9 @@ import (
 	"gopkg.in/macaron.v1"
 	log "unknwon.dev/clog/v2"
 
-	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/lfsutil"
-	"github.com/G-Node/gogs/internal/strutil"
+	"github.com/ivis-yoshida/gogs/internal/db"
+	"github.com/ivis-yoshida/gogs/internal/lfsutil"
+	"github.com/ivis-yoshida/gogs/internal/strutil"
 )
 
 const transferBasic = "basic"

@@ -11,7 +11,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/G-Node/gogs/internal/errutil"
+	"github.com/ivis-yoshida/gogs/internal/errutil"
 )
 
 func TestAccessToken_BeforeCreate(t *testing.T) {

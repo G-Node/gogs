@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/ini.v1"
 
-	"github.com/G-Node/gogs/internal/testutil"
+	"github.com/ivis-yoshida/gogs/internal/testutil"
 )
 
 func TestAsset(t *testing.T) {

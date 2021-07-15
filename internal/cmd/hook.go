@@ -21,10 +21,10 @@ import (
 
 	"github.com/gogs/git-module"
 
-	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/email"
-	"github.com/G-Node/gogs/internal/httplib"
+	"github.com/ivis-yoshida/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/db"
+	"github.com/ivis-yoshida/gogs/internal/email"
+	"github.com/ivis-yoshida/gogs/internal/httplib"
 )
 
 var (

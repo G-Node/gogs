@@ -14,8 +14,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/macaron.v1"
 
-	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/lfsutil"
+	"github.com/ivis-yoshida/gogs/internal/db"
+	"github.com/ivis-yoshida/gogs/internal/lfsutil"
 )
 
 func Test_authenticate(t *testing.T) {

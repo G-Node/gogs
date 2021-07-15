@@ -12,7 +12,7 @@ import (
 
 	log "unknwon.dev/clog/v2"
 
-	"github.com/G-Node/gogs/internal/testutil"
+	"github.com/ivis-yoshida/gogs/internal/testutil"
 )
 
 func TestMain(m *testing.M) {

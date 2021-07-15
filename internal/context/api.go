@@ -13,14 +13,14 @@ import (
 	"gopkg.in/macaron.v1"
 	log "unknwon.dev/clog/v2"
 
-	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/errutil"
+	"github.com/ivis-yoshida/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/errutil"
 )
 
 type APIContext struct {
 	*Context // TODO: Reduce to only needed fields instead of full shadow
 
-	// Base URL for the version of API endpoints, e.g. https://try.github.com/G-Node/api/v1
+	// Base URL for the version of API endpoints, e.g. https://try.github.com/ivis-yoshida/api/v1
 	BaseURL string
 
 	Org *APIOrganization

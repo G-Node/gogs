@@ -12,8 +12,8 @@ import (
 	"github.com/russross/blackfriday"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/G-Node/gogs/internal/conf"
-	. "github.com/G-Node/gogs/internal/markup"
+	"github.com/ivis-yoshida/gogs/internal/conf"
+	. "github.com/ivis-yoshida/gogs/internal/markup"
 )
 
 func Test_IsMarkdownFile(t *testing.T) {

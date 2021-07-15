@@ -11,10 +11,10 @@ import (
 	"gopkg.in/macaron.v1"
 	log "unknwon.dev/clog/v2"
 
-	"github.com/G-Node/gogs/internal/authutil"
-	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/lfsutil"
+	"github.com/ivis-yoshida/gogs/internal/authutil"
+	"github.com/ivis-yoshida/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/db"
+	"github.com/ivis-yoshida/gogs/internal/lfsutil"
 )
 
 // RegisterRoutes registers LFS routes using given router, and inherits all groups and middleware.

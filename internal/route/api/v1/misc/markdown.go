@@ -7,8 +7,8 @@ package misc
 import (
 	api "github.com/gogs/go-gogs-client"
 
-	"github.com/G-Node/gogs/internal/context"
-	"github.com/G-Node/gogs/internal/markup"
+	"github.com/ivis-yoshida/gogs/internal/context"
+	"github.com/ivis-yoshida/gogs/internal/markup"
 )
 
 func Markdown(c *context.APIContext, form api.MarkdownOption) {

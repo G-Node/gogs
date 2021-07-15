@@ -11,8 +11,8 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/G-Node/gogs/internal/errutil"
-	"github.com/G-Node/gogs/internal/lfsutil"
+	"github.com/ivis-yoshida/gogs/internal/errutil"
+	"github.com/ivis-yoshida/gogs/internal/lfsutil"
 )
 
 func Test_lfs(t *testing.T) {

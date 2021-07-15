@@ -13,8 +13,8 @@ import (
 	jsoniter "github.com/json-iterator/go"
 	"github.com/pkg/errors"
 
-	"github.com/G-Node/gogs/internal/auth/ldap"
-	"github.com/G-Node/gogs/internal/errutil"
+	"github.com/ivis-yoshida/gogs/internal/auth/ldap"
+	"github.com/ivis-yoshida/gogs/internal/errutil"
 )
 
 // LoginSourcesStore is the persistent interface for login sources.

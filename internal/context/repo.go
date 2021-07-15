@@ -16,9 +16,9 @@ import (
 
 	"github.com/gogs/git-module"
 
-	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/db"
 	"github.com/G-Node/libgin/libgin"
+	"github.com/ivis-yoshida/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/db"
 )
 
 type PullRequest struct {

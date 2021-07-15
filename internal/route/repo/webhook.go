@@ -15,11 +15,11 @@ import (
 	jsoniter "github.com/json-iterator/go"
 	"gopkg.in/macaron.v1"
 
-	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/context"
-	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/db/errors"
-	"github.com/G-Node/gogs/internal/form"
+	"github.com/ivis-yoshida/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/context"
+	"github.com/ivis-yoshida/gogs/internal/db"
+	"github.com/ivis-yoshida/gogs/internal/db/errors"
+	"github.com/ivis-yoshida/gogs/internal/form"
 )
 
 const (

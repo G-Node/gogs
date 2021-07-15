@@ -13,9 +13,9 @@ import (
 	"github.com/unknwon/com"
 	"golang.org/x/net/html"
 
-	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/lazyregexp"
-	"github.com/G-Node/gogs/internal/tool"
+	"github.com/ivis-yoshida/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/lazyregexp"
+	"github.com/ivis-yoshida/gogs/internal/tool"
 )
 
 // IsReadmeFile reports whether name looks like a README file based on its extension.

@@ -8,7 +8,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/G-Node/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/conf"
 )
 
 var (

@@ -11,11 +11,11 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/context"
-	"github.com/G-Node/gogs/internal/tool"
 	"github.com/G-Node/libgin/libgin"
 	"github.com/gogs/git-module"
+	"github.com/ivis-yoshida/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/context"
+	"github.com/ivis-yoshida/gogs/internal/tool"
 	log "gopkg.in/clog.v1"
 	"gopkg.in/yaml.v2"
 )

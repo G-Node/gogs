@@ -1,6 +1,6 @@
 package route
 
-import "github.com/G-Node/gogs/internal/db"
+import "github.com/ivis-yoshida/gogs/internal/db"
 
 func filterUnlistedRepos(repos []*db.Repository) []*db.Repository {
 	// Filter out Unlisted repositories

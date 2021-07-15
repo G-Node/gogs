@@ -11,9 +11,9 @@ import (
 	"github.com/unknwon/paginater"
 	log "unknwon.dev/clog/v2"
 
-	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/context"
-	"github.com/G-Node/gogs/internal/db"
+	"github.com/ivis-yoshida/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/context"
+	"github.com/ivis-yoshida/gogs/internal/db"
 )
 
 const (
@@ -64,7 +64,7 @@ func DeleteNotices(c *context.Context) {
 
 func EmptyNotices(c *context.Context) {
 	if err := db.DeleteNotices(0, 0); err != nil {
-		c.Error(err,"delete notices")
+		c.Error(err, "delete notices")
 		return
 	}
 

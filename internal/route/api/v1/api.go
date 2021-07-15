@@ -13,15 +13,15 @@ import (
 
 	api "github.com/gogs/go-gogs-client"
 
-	"github.com/G-Node/gogs/internal/context"
-	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/form"
-	"github.com/G-Node/gogs/internal/route/api/v1/admin"
-	"github.com/G-Node/gogs/internal/route/api/v1/misc"
-	"github.com/G-Node/gogs/internal/route/api/v1/org"
-	"github.com/G-Node/gogs/internal/route/api/v1/repo"
-	"github.com/G-Node/gogs/internal/route/api/v1/search"
-	"github.com/G-Node/gogs/internal/route/api/v1/user"
+	"github.com/ivis-yoshida/gogs/internal/context"
+	"github.com/ivis-yoshida/gogs/internal/db"
+	"github.com/ivis-yoshida/gogs/internal/form"
+	"github.com/ivis-yoshida/gogs/internal/route/api/v1/admin"
+	"github.com/ivis-yoshida/gogs/internal/route/api/v1/misc"
+	"github.com/ivis-yoshida/gogs/internal/route/api/v1/org"
+	"github.com/ivis-yoshida/gogs/internal/route/api/v1/repo"
+	"github.com/ivis-yoshida/gogs/internal/route/api/v1/search"
+	"github.com/ivis-yoshida/gogs/internal/route/api/v1/user"
 )
 
 // repoAssignment extracts information from URL parameters to retrieve the repository,

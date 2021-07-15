@@ -18,14 +18,14 @@ import (
 	"github.com/unknwon/paginater"
 	log "unknwon.dev/clog/v2"
 
-	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/context"
-	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/gitutil"
-	"github.com/G-Node/gogs/internal/markup"
-	"github.com/G-Node/gogs/internal/template"
-	"github.com/G-Node/gogs/internal/template/highlight"
-	"github.com/G-Node/gogs/internal/tool"
+	"github.com/ivis-yoshida/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/context"
+	"github.com/ivis-yoshida/gogs/internal/db"
+	"github.com/ivis-yoshida/gogs/internal/gitutil"
+	"github.com/ivis-yoshida/gogs/internal/markup"
+	"github.com/ivis-yoshida/gogs/internal/template"
+	"github.com/ivis-yoshida/gogs/internal/template/highlight"
+	"github.com/ivis-yoshida/gogs/internal/tool"
 )
 
 const (

@@ -13,16 +13,16 @@ import (
 
 	log "unknwon.dev/clog/v2"
 
-	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/context"
-	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/db/errors"
-	"github.com/G-Node/gogs/internal/form"
-	"github.com/G-Node/gogs/internal/gitutil"
-	"github.com/G-Node/gogs/internal/markup"
-	"github.com/G-Node/gogs/internal/pathutil"
-	"github.com/G-Node/gogs/internal/template"
-	"github.com/G-Node/gogs/internal/tool"
+	"github.com/ivis-yoshida/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/context"
+	"github.com/ivis-yoshida/gogs/internal/db"
+	"github.com/ivis-yoshida/gogs/internal/db/errors"
+	"github.com/ivis-yoshida/gogs/internal/form"
+	"github.com/ivis-yoshida/gogs/internal/gitutil"
+	"github.com/ivis-yoshida/gogs/internal/markup"
+	"github.com/ivis-yoshida/gogs/internal/pathutil"
+	"github.com/ivis-yoshida/gogs/internal/template"
+	"github.com/ivis-yoshida/gogs/internal/tool"
 )
 
 const (

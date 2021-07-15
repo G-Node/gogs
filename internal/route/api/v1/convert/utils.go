@@ -5,7 +5,7 @@
 package convert
 
 import (
-	"github.com/G-Node/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/conf"
 )
 
 // ToCorrectPageSize makes sure page size is in allowed range.

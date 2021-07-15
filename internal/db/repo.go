@@ -29,15 +29,15 @@ import (
 	"github.com/gogs/git-module"
 	api "github.com/gogs/go-gogs-client"
 
-	"github.com/G-Node/gogs/internal/avatar"
-	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/db/errors"
-	"github.com/G-Node/gogs/internal/errutil"
-	"github.com/G-Node/gogs/internal/markup"
-	"github.com/G-Node/gogs/internal/osutil"
-	"github.com/G-Node/gogs/internal/process"
-	"github.com/G-Node/gogs/internal/semverutil"
-	"github.com/G-Node/gogs/internal/sync"
+	"github.com/ivis-yoshida/gogs/internal/avatar"
+	"github.com/ivis-yoshida/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/db/errors"
+	"github.com/ivis-yoshida/gogs/internal/errutil"
+	"github.com/ivis-yoshida/gogs/internal/markup"
+	"github.com/ivis-yoshida/gogs/internal/osutil"
+	"github.com/ivis-yoshida/gogs/internal/process"
+	"github.com/ivis-yoshida/gogs/internal/semverutil"
+	"github.com/ivis-yoshida/gogs/internal/sync"
 )
 
 // REPO_AVATAR_URL_PREFIX is used to identify a URL is to access repository avatar.
@@ -173,9 +173,9 @@ type Repository struct {
 	NumOpenMilestones   int `xorm:"-" gorm:"-" json:"-"`
 	NumTags             int `xorm:"-" gorm:"-" json:"-"`
 
-	IsPrivate bool
-	IsUnlisted  bool
-	IsBare    bool
+	IsPrivate  bool
+	IsUnlisted bool
+	IsBare     bool
 
 	IsMirror bool
 	*Mirror  `xorm:"-" gorm:"-" json:"-"`
@@ -1774,7 +1774,7 @@ func SearchRepositoryByName(opts *SearchRepoOptions) (repos []*Repository, count
 	// this does not include other people's private repositories even if opts.UserID is an admin.
 	if !opts.Private && opts.UserID > 0 {
 		sess.Join("LEFT", "access", "access.repo_id = repo.id").
-		Where("repo.owner_id = ? OR access.user_id = ? OR (repo.is_private = ? AND repo.is_unlisted = ?) OR (repo.is_private = ? AND (repo.allow_public_wiki = ? OR repo.allow_public_issues = ?))", opts.UserID, opts.UserID, false, false, true, true, true)
+			Where("repo.owner_id = ? OR access.user_id = ? OR (repo.is_private = ? AND repo.is_unlisted = ?) OR (repo.is_private = ? AND (repo.allow_public_wiki = ? OR repo.allow_public_issues = ?))", opts.UserID, opts.UserID, false, false, true, true, true)
 	} else {
 		// Only return public repositories if opts.Private is not set
 		if !opts.Private {

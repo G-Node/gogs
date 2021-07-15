@@ -12,7 +12,7 @@ import (
 	"github.com/unknwon/com"
 	"gopkg.in/macaron.v1"
 
-	"github.com/G-Node/gogs/internal/db"
+	"github.com/ivis-yoshida/gogs/internal/db"
 )
 
 // _______________________________________    _________.______________________ _______________.___.

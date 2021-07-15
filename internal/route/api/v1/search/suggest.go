@@ -6,13 +6,13 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/G-Node/gogs/internal/conf"
-	"github.com/G-Node/gogs/internal/context"
 	"github.com/G-Node/libgin/libgin"
+	"github.com/ivis-yoshida/gogs/internal/conf"
+	"github.com/ivis-yoshida/gogs/internal/context"
 )
 
 func Suggest(c *context.APIContext) {
-	// TODO: API calls shouldn't use cookie (see https://github.com/G-Node/gin-dex/issues/2)
+	// TODO: API calls shouldn't use cookie (see https://github.com/ivis-yoshida/gin-dex/issues/2)
 	if conf.Search.SearchURL == "" {
 		c.Status(http.StatusNotImplemented)
 		return

@@ -7,7 +7,7 @@ package gitutil
 import (
 	"github.com/gogs/git-module"
 
-	"github.com/G-Node/gogs/internal/errutil"
+	"github.com/ivis-yoshida/gogs/internal/errutil"
 )
 
 var _ errutil.NotFound = (*Error)(nil)

@@ -9,8 +9,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/G-Node/gogs/internal/db"
-	"github.com/G-Node/gogs/internal/mocks"
+	"github.com/ivis-yoshida/gogs/internal/db"
+	"github.com/ivis-yoshida/gogs/internal/mocks"
 )
 
 func Test_isLocalHostname(t *testing.T) {
