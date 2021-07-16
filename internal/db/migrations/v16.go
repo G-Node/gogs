@@ -68,7 +68,7 @@ func updateRepositorySizes(x *xorm.Engine) (err error) {
 			}
 
 			repo.Size = countObject.Size + countObject.SizePack
-			if _, err = x.Id(repo.ID).Cols("size").Update(repo); err != nil {
+			if _, err = x.ID(repo.ID).Cols("size").Update(repo); err != nil {
 				return fmt.Errorf("update size: %v", err)
 			}
 		}
