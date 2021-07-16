@@ -104,7 +104,7 @@ func hasDataCite(c *Context) bool {
 		log.Trace("Couldn't get commit: %v", err)
 		return false
 	}
-	_, err = commit.Blob("/datacite.yml")
+	_, err = commit.Blob("/dmp.json")
 
 	log.Trace("Found datacite? %t", err == nil)
 	return err == nil

@@ -72,8 +72,8 @@ func serveAnnexedKey(ctx *context.Context, name string, contentPath string) erro
 }
 
 func readDataciteFile(c *context.Context) {
-	log.Trace("Reading datacite.yml file")
-	entry, err := c.Repo.Commit.Blob("/datacite.yml")
+	log.Trace("Reading dmp.json file")
+	entry, err := c.Repo.Commit.Blob("/dmp.json")
 	if err != nil || entry == nil {
 		log.Error(2, "datacite.yml blob could not be retrieved: %v", err)
 		c.Data["HasDataCite"] = false

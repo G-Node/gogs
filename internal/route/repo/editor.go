@@ -580,14 +580,15 @@ func RemoveUploadFileFromServer(c *context.Context, f form.RemoveUploadFile) {
 
 // CreateDatacite is GIN specific code
 func CreateDatacite(c *context.Context) {
-	dcname := path.Join("conf/datacite/datacite.yml")
+	dcname := path.Join("conf/dmp/dmp.json")
 	treeNames, treePaths := getParentTreeFields(c.Repo.TreePath)
 
 	c.PageIs("Edit")
 	c.RequireHighlightJS()
 	c.RequireSimpleMDE()
 
-	c.Data["IsYAML"] = true
+	c.Data["IsYAML"] = false
+	c.Data["IsJSON"] = true
 	// safe to ignore error since we check for the asset at startup
 	data, _ := conf.Asset(dcname)
 	c.Data["FileContent"] = string(data)
@@ -595,7 +596,7 @@ func CreateDatacite(c *context.Context) {
 	c.Data["TreeNames"] = treeNames
 	c.Data["TreePaths"] = treePaths
 	c.Data["BranchLink"] = c.Repo.RepoLink + "/src/" + c.Repo.BranchName
-	c.Data["commit_summary"] = "Add information for publishing with DataCite"
+	c.Data["commit_summary"] = "Add information for publishing with DMP"
 	c.Data["commit_message"] = ""
 	c.Data["commit_choice"] = "direct"
 	c.Data["new_branch_name"] = ""
