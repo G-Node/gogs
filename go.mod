@@ -3,7 +3,7 @@ module github.com/ivis-yoshida/gogs
 go 1.16
 
 require (
-	github.com/G-Node/libgin v0.5.6
+	github.com/G-Node/libgin v0.3.2
 	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/bgentry/speakeasy v0.1.0 // indirect
 	github.com/dustinkirkland/golang-petname v0.0.0-20191129215211-8e5a1ed0cff0
@@ -18,7 +18,7 @@ require (
 	github.com/go-macaron/toolbox v0.0.0-20200329073429-4401f4ce0f55
 	github.com/gogs/chardet v0.0.0-20191104214054-4b6791f73a28
 	github.com/gogs/cron v0.0.0-20171120032916-9f6c956d3e14
-	github.com/gogs/git-module v1.1.5
+	github.com/gogs/git-module v1.1.2
 	github.com/gogs/go-gogs-client v0.0.0-20210131175652-1d7215cd8d85
 	github.com/gogs/go-libravatar v0.0.0-20191106065024-33a75213d0a0
 	github.com/gogs/minwinsvc v0.0.0-20170301035411-95be6356811a
@@ -59,7 +59,7 @@ require (
 	gopkg.in/macaron.v1 v1.4.0
 	gopkg.in/yaml.v2 v2.3.0
 	unknwon.dev/clog/v2 v2.2.0
-	xorm.io/builder v0.3.9
-	xorm.io/core v0.7.3
-	xorm.io/xorm v1.1.2
+	xorm.io/builder v0.3.6
+	xorm.io/core v0.7.2
+	xorm.io/xorm v0.8.0
 )

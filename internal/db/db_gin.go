@@ -137,9 +137,9 @@ func annexSetup(path string) {
 func annexAdd(repoPath string, all bool, files ...string) error {
 	cmd := git.NewCommand("annex", "add")
 	if all {
-		cmd.AddArguments(".")
+		cmd.AddArgs(".")
 	}
-	_, err := cmd.AddArguments(files...).RunInDir(repoPath)
+	_, err := cmd.AddArgs(files...).RunInDir(repoPath)
 	return err
 }
 

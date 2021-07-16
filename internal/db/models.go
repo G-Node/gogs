@@ -36,7 +36,7 @@ type Engine interface {
 	Insert(...interface{}) (int64, error)
 	InsertOne(interface{}) (int64, error)
 	Iterate(interface{}, xorm.IterFunc) error
-	SQL(string, ...interface{}) *xorm.Session
+	Sql(string, ...interface{}) *xorm.Session
 	Table(interface{}) *xorm.Session
 	Where(interface{}, ...interface{}) *xorm.Session
 }
