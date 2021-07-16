@@ -16,3 +16,5 @@ output*
 *.sublime-project
 *.sublime-workspace
 /release
+
+node_modules
