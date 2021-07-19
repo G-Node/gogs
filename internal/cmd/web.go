@@ -542,7 +542,7 @@ func runWeb(c *cli.Context) error {
 				Post(bindIgnErr(form.NewIssue{}), repo.CompareAndPullRequestPost)
 
 			// GIN specific code
-			if _, err := conf.Asset("conf/datacite/dmp.json"); err != nil {
+			if _, err := conf.Asset("conf/dmp/dmp.json"); err != nil {
 				log.Fatal("%v", err)
 			}
 

@@ -7,8 +7,7 @@
 // ../../../conf/auth.d/pam.conf.example (168B)
 // ../../../conf/auth.d/smtp.conf.example (310B)
 // ../../../conf/datacite/datacite.yml (2.323kB)
-// ../../../conf/datacite/dmp.json (40B)
-// ../../../conf/dmp/dmp.json (40B)
+// ../../../conf/dmp/dmp.json (129B)
 // ../../../conf/gitignore/Actionscript (300B)
 // ../../../conf/gitignore/Ada (51B)
 // ../../../conf/gitignore/Agda (8B)
@@ -452,27 +451,7 @@ func confDataciteDataciteYml() (*asset, error) {
 	return a, nil
 }
 
-var _confDataciteDmpJson = "\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\xaa\xe6\x52\x50\x50\x50\x50\xca\x4b\xcc\x4d\x55\xb2\x52\x50\xf2\xca\xcf\xc8\x53\xd2\x81\x88\x25\xa6\x83\x85\x8c\x8d\x94\xb8\x6a\xb9\x00\x01\x00\x00\xff\xff\xf9\x81\xf1\xb6\x28\x00\x00\x00"
-
-func confDataciteDmpJsonBytes() ([]byte, error) {
-	return bindataRead(
-		_confDataciteDmpJson,
-		"conf/datacite/dmp.json",
-	)
-}
-
-func confDataciteDmpJson() (*asset, error) {
-	bytes, err := confDataciteDmpJsonBytes()
-	if err != nil {
-		return nil, err
-	}
-
-	info := bindataFileInfo{name: "conf/datacite/dmp.json", size: 40, mode: os.FileMode(0664), modTime: time.Unix(1626396951, 0)}
-	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xf9, 0x97, 0xc5, 0x60, 0x6d, 0x5c, 0xeb, 0x68, 0x9b, 0xfc, 0x98, 0x18, 0xb5, 0x87, 0x28, 0x5c, 0xfd, 0xfb, 0x6a, 0x62, 0xb8, 0x9b, 0x78, 0x46, 0x0, 0xee, 0x45, 0xe3, 0x31, 0x49, 0x15, 0x93}}
-	return a, nil
-}
-
-var _confDmpDmpJson = "\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\xaa\xe6\x52\x50\x50\x50\x50\xca\x4b\xcc\x4d\x55\xb2\x52\x50\xf2\xca\xcf\xc8\x53\xd2\x81\x88\x25\xa6\x83\x85\x8c\x8d\x94\xb8\x6a\xb9\x00\x01\x00\x00\xff\xff\xf9\x81\xf1\xb6\x28\x00\x00\x00"
+var _confDmpDmpJson = "\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\xaa\xe6\x52\x50\x50\x50\x50\x2a\x4a\x2d\x4e\x4d\x2c\x4a\xce\x48\x2d\x56\xb2\x52\x88\x06\x8b\x81\x40\x35\x9c\x05\x56\x95\x9c\x58\x9a\x9e\x51\xe2\x92\x58\x92\xa8\x64\x05\xe3\x29\xe9\xa0\xaa\x29\xce\xcc\x2d\xcd\x49\x2c\xc9\xcc\xcf\x83\xa9\x43\x88\x28\xc1\x95\xd6\x82\x59\xb1\x5c\xb5\x5c\x80\x00\x00\x00\xff\xff\x85\xb0\xb7\x91\x81\x00\x00\x00"
 
 func confDmpDmpJsonBytes() ([]byte, error) {
 	return bindataRead(
@@ -487,8 +466,8 @@ func confDmpDmpJson() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "conf/dmp/dmp.json", size: 40, mode: os.FileMode(0664), modTime: time.Unix(1626415459, 0)}
-	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xf9, 0x97, 0xc5, 0x60, 0x6d, 0x5c, 0xeb, 0x68, 0x9b, 0xfc, 0x98, 0x18, 0xb5, 0x87, 0x28, 0x5c, 0xfd, 0xfb, 0x6a, 0x62, 0xb8, 0x9b, 0x78, 0x46, 0x0, 0xee, 0x45, 0xe3, 0x31, 0x49, 0x15, 0x93}}
+	info := bindataFileInfo{name: "conf/dmp/dmp.json", size: 129, mode: os.FileMode(0664), modTime: time.Unix(1626420694, 0)}
+	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x5e, 0x69, 0xed, 0x12, 0x70, 0x71, 0xcb, 0x5d, 0xfe, 0x66, 0x7c, 0xd5, 0xfe, 0xdc, 0xd2, 0xdb, 0x70, 0x5c, 0xbb, 0x27, 0x47, 0x1a, 0x6a, 0xa2, 0xc, 0x32, 0x49, 0x8c, 0xb9, 0x57, 0x6b, 0xf8}}
 	return a, nil
 }
 
@@ -5270,7 +5249,6 @@ var _bindata = map[string]func() (*asset, error){
 	"conf/auth.d/pam.conf.example":                    confAuthDPamConfExample,
 	"conf/auth.d/smtp.conf.example":                   confAuthDSmtpConfExample,
 	"conf/datacite/datacite.yml":                      confDataciteDataciteYml,
-	"conf/datacite/dmp.json":                          confDataciteDmpJson,
 	"conf/dmp/dmp.json":                               confDmpDmpJson,
 	"conf/gitignore/Actionscript":                     confGitignoreActionscript,
 	"conf/gitignore/Ada":                              confGitignoreAda,
@@ -5563,7 +5541,6 @@ var _bintree = &bintree{nil, map[string]*bintree{
 		}},
 		"datacite": {nil, map[string]*bintree{
 			"datacite.yml": {confDataciteDataciteYml, map[string]*bintree{}},
-			"dmp.json":     {confDataciteDmpJson, map[string]*bintree{}},
 		}},
 		"dmp": {nil, map[string]*bintree{
 			"dmp.json": {confDmpDmpJson, map[string]*bintree{}},

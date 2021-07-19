@@ -28,6 +28,7 @@ require (
 	github.com/jaytaylor/html2text v0.0.0-20200412013138-3577fbdbcff7
 	github.com/jinzhu/gorm v1.9.16
 	github.com/json-iterator/go v1.1.11
+	github.com/kevinburke/go-bindata v3.22.0+incompatible // indirect
 	github.com/microcosm-cc/bluemonday v1.0.15
 	github.com/msteinert/pam v0.0.0-20201130170657-e61372126161
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
@@ -57,7 +58,6 @@ require (
 	gopkg.in/ini.v1 v1.62.0
 	gopkg.in/ldap.v2 v2.5.1
 	gopkg.in/macaron.v1 v1.4.0
-	gopkg.in/yaml.v2 v2.3.0
 	unknwon.dev/clog/v2 v2.2.0
 	xorm.io/builder v0.3.6
 	xorm.io/core v0.7.2

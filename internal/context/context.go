@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -129,6 +130,11 @@ func (c *Context) HasValue(name string) bool {
 // HTML responses template with given status.
 func (c *Context) HTML(status int, name string) {
 	log.Trace("Template: %s", name)
+
+	// FIXME
+	log.Trace(strconv.FormatBool(c.Data["HasDataCite"].(bool)))
+	log.Trace(strconv.FormatBool(c.Data["IsTextFile"].(bool)))
+
 	c.Context.HTML(status, name)
 }
 

@@ -1,4 +1,8 @@
 {
-    "name": "John",
-    "age": "32"
+    "researches": [
+        {
+            "caughtData": "caught",
+            "simulationData": "simulation"
+        }
+    ]
 }

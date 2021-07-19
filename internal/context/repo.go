@@ -16,7 +16,6 @@ import (
 
 	"github.com/gogs/git-module"
 
-	"github.com/G-Node/libgin/libgin"
 	"github.com/ivis-yoshida/gogs/internal/conf"
 	"github.com/ivis-yoshida/gogs/internal/db"
 )
@@ -303,7 +302,11 @@ func RepoAssignment(pages ...bool) macaron.Handler {
 			c.Data["IsDOIReady"] = isDOIReady(c)
 		}
 
-		if doi := getRepoDOI(c); doi != "" && libgin.IsRegisteredDOI(doi) {
+		// if doi := getRepoDOI(c); doi != "" && libgin.IsRegisteredDOI(doi) {
+		// 	c.Data["DOI"] = doi
+		// }
+
+		if doi := getRepoDOI(c); doi != "" {
 			c.Data["DOI"] = doi
 		}
 

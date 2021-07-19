@@ -11,14 +11,23 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/G-Node/libgin/libgin"
+	"encoding/json"
+
 	"github.com/gogs/git-module"
 	"github.com/ivis-yoshida/gogs/internal/conf"
 	"github.com/ivis-yoshida/gogs/internal/context"
 	"github.com/ivis-yoshida/gogs/internal/tool"
 	log "gopkg.in/clog.v1"
-	"gopkg.in/yaml.v2"
 )
+
+// FIXME These are sample structs for RCOS development.
+type DMP struct {
+	CaughtData     string
+	SimulationData string
+}
+type DMPRegInfo struct {
+	Researches []DMP
+}
 
 func serveAnnexedData(ctx *context.Context, name string, buf []byte) error {
 	keyparts := strings.Split(strings.TrimSpace(string(buf)), "/")
@@ -85,14 +94,18 @@ func readDataciteFile(c *context.Context) {
 		c.Data["HasDataCite"] = false
 		return
 	}
-	doiInfo := libgin.DOIRegInfo{}
-	err = yaml.Unmarshal(buf, &doiInfo)
+	doiInfo := DMPRegInfo{}
+	err = json.Unmarshal(buf, &doiInfo)
+
 	if err != nil {
 		log.Error(2, "datacite.yml data could not be unmarshalled: %v", err)
 		c.Data["HasDataCite"] = false
 		return
 	}
 	c.Data["DOIInfo"] = &doiInfo
+
+	// FIXME
+	c.Data["IsTextFile"] = true
 }
 
 // resolveAnnexedContent takes a buffer with the contents of a git-annex

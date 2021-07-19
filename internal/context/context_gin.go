@@ -95,7 +95,7 @@ func getRepoDOI(c *Context) string {
 }
 
 // hasDataCite returns 'true' if a repository includes a file called
-// 'datacite.yml' in its root.  No checks are made to determine if the file is
+// 'dmp.json' in its root.  No checks are made to determine if the file is
 // valid.  If any error occurs, for example due to an uninitialised repository
 // or missing repository root, it returns 'false' without error.
 func hasDataCite(c *Context) bool {
