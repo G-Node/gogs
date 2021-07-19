@@ -11,10 +11,23 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td>Researches</td>
-				<td>{{.DOIInfo.Researches}}</td>
-			</tr>
+            {{ range $i, $val := .DOIInfo.Researches}}
+                <tr>
+                    <td>Research{{ $i }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 5%">CaughtData</td>
+                    <td>
+                        {{ $val.CaughtData }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 5%">SimulationData</td>
+                    <td>
+                        {{ $val.SimulationData }}
+                    </td>
+                </tr>
+            {{end}}
 		</tbody>
 	</table>
 </div>
