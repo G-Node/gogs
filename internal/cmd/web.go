@@ -41,6 +41,7 @@ import (
 	"github.com/ivis-yoshida/gogs/internal/route/admin"
 	apiv1 "github.com/ivis-yoshida/gogs/internal/route/api/v1"
 	"github.com/ivis-yoshida/gogs/internal/route/dev"
+	"github.com/ivis-yoshida/gogs/internal/route/fa"
 	"github.com/ivis-yoshida/gogs/internal/route/lfs"
 	"github.com/ivis-yoshida/gogs/internal/route/org"
 	"github.com/ivis-yoshida/gogs/internal/route/repo"
@@ -292,6 +293,14 @@ func runWeb(c *cli.Context) error {
 			})
 		}, reqAdmin)
 		// ***** END: Admin *****
+
+		// ***** START: FA *****
+		m.Group("/fa", func() {
+			m.Group("/repos", func() {
+				m.Get("", fa.Repos)
+			})
+		})
+		// ***** END: FA *****
 
 		m.Group("", func() {
 			m.Group("/:username", func() {
