@@ -22,11 +22,24 @@ import (
 
 // FIXME These are sample structs for RCOS development.
 type DMP struct {
-	CaughtData     string
-	SimulationData string
+	Index         int
+	Title         string
+	Description   string
+	Manager       string
+	DataType      string
+	ReleaseLevel  int
+	ConcealReason string
+	ConcealPeriod string
+	Acquirer      string
+	AcquireMethod string
 }
 type DMPRegInfo struct {
-	Researches []DMP
+	DmpType        string
+	AgreementTitle string
+	AgreementDate  string // FIXME: to date type
+	SubmitDate     string // FIXME: to date type
+	CorporateName  string
+	Researches     []DMP
 }
 
 func serveAnnexedData(ctx *context.Context, name string, buf []byte) error {
