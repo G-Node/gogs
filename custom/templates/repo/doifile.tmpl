@@ -11,21 +11,76 @@
 			</tr>
 		</thead>
 		<tbody>
-            {{ range $i, $val := .DOIInfo.Researches}}
+            <tr>
+                <td>区別</td>
+                <td>{{ .DOIInfo.DmpType }}</td>
+            </tr>
+            <tr>
+                <td>契約件名</td>
+                <td>{{ .DOIInfo.AgreementTitle }}</td>
+            </tr>
+            <tr>
+                <td>契約締結日</td>
+                <td>{{ .DOIInfo.AgreementDate }}</td>
+            </tr>
+            <tr>
+                <td>提出日</td>
+                <td>{{ .DOIInfo.SubmitDate }}</td>
+            </tr>
+            <tr>
+                <td>法人名等</td>
+                <td>{{ .DOIInfo.CorporateName }}</td>
+            </tr>
+
+            {{ range $val := .DOIInfo.Researches}}
                 <tr>
-                    <td>Research[{{ $i }}]</td>
+                    <td>研究データ</td>
                 </tr>
                 <tr>
-                    <td style="padding-left: 5%">CaughtData</td>
+                    <td style="padding-left: 5%">データNo.</td>
                     <td>
-                        {{ $val.CaughtData }}
+                        {{ $val.Index }}
                     </td>
                 </tr>
                 <tr>
-                    <td style="padding-left: 5%">SimulationData</td>
+                    <td style="padding-left: 5%">データ名称</td>
                     <td>
-                        {{ $val.SimulationData }}
+                        {{ $val.Title }}
                     </td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 5%">説明</td>
+                    <td>{{ $val.Description }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 5%">管理者</td>
+                    <td>{{ $val.Manager }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 5%">分類</td>
+                    <td>{{ $val.DataType }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 5%">公開レベル</td>
+                    <td>{{ $val.ReleaseLevel}}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 5%">秘匿理由</td>
+                    <td>{{ $val.ConcealReason }}</td>
+                </tr>
+
+                <!-- TODO make IF-THEN below -->
+                <tr>
+                    <td style="padding-left: 5%">秘匿期間</td>
+                    <td>{{ $val.ConcealPeriod }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 5%">取得者</td>
+                    <td>{{ $val.Acquirer }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 5%">取得方法</td>
+                    <td>{{ $val.AcquireMethod }}</td>
                 </tr>
             {{end}}
 		</tbody>

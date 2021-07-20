@@ -1,8 +1,22 @@
 {
+    "dmpType": "",
+    "agreementTitle": "The Data Management Plan",
+    "agreementDate": "2021/07/20",
+    "submitDate": "2021/08/01",
+    "corporateName": "The Corporate",
     "researches": [
         {
-            "caughtData": "caught",
-            "simulationData": "simulation"
+            "index": 1,
+            "title": "The Research Data",
+            "description": "This is description.",
+            "manager": "John Doe",
+            "dataType": "My Data",
+            "releaseLevel": 4,
+            "concealReason": "nothing",
+            "concealPeriod": "",
+            "acquirer": "John Lab",
+            "acquireMethod": "by download link",
+            "remarks": ""
         }
     ]
 }
