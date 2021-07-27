@@ -1,9 +1,16 @@
 {
+    "schema": "JST",
     "createDate": "2021/07/21",
     "amedNumber": "0000",
     "project": {
-        "fiscalYear": 2021
-
+        "fiscalYear": 2021,
+        "title": "The Project",
+        "problemName": "",
+        "representative": {
+            "belongTo": "NII",
+            "post": "",
+            "name": "John Doe"
+        }
     },
     "forPublication": {
         "hasUsed": false,
@@ -11,8 +18,20 @@
     },
     "researches": [
         {
-            "title": "The Title"
-
+            "title": "The Title",
+            "type": ["ヒト個人（研究参加者及びヒト試料由来のデータ）"],
+            "description": "",
+            "releasePolicy": "",
+            "concealReason": "",
+            "hasOfferPolicy": false,
+            "policyName": "This is just content when 'hasOfferPolicy' is true",
+            "repositoryType": "",
+            "repositoryName": "",
+            "dataAmount": "",
+            "dataSchema": "Excel",
+            "processingPolicy": "",
+            "isRegistered": false,
+            "registeredInfo": ""
         }
     ],
     "researchers": {
