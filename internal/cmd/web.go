@@ -565,9 +565,7 @@ func runWeb(c *cli.Context) error {
 				m.Combo("/_delete/*").Get(repo.DeleteFile).
 					Post(bindIgnErr(form.DeleteRepoFile{}), repo.DeleteFilePost)
 				// GIN specific code: Add dmp.json file through the repo web interface
-				// FIXME : RCOS modified for multiple schema
-				// m.Combo("/_add/*").Get(repo.CreateDmp).Post(bindIgnErr(form.EditRepoFile{}), repo.NewFilePost)
-				m.Combo("/_add/master/dmp.json/?schema=:schema").Get(repo.CreateDmp).Post(bindIgnErr(form.EditRepoFile{}), repo.NewFilePost)
+				m.Combo("/_add/*").Get(repo.CreateDmp).Post(bindIgnErr(form.EditRepoFile{}), repo.NewFilePost)
 
 				m.Group("", func() {
 					m.Combo("/_upload/*").Get(repo.UploadFile).
