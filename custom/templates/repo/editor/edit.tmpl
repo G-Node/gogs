@@ -13,8 +13,6 @@
 						{{ $n := len .TreeNames}}
 						{{ $l := Subtract $n 1}}
 
-                        <p>len .TreeNames == {{$n}}</p>
-
 						{{range $i, $v := .TreeNames}}
 							<div class="divider"> / </div>
 							{{if eq $i $l}}

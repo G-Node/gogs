@@ -592,7 +592,6 @@ func CreateDmp(c *context.Context) {
 	}
 
 	treeNames, treePaths := getParentTreeFields(c.Repo.TreePath)
-	log.Trace("getParentTreeFields() passed")
 
 	c.PageIs("Edit")
 	c.RequireHighlightJS()
@@ -617,6 +616,5 @@ func CreateDmp(c *context.Context) {
 	c.Data["PreviewableFileModes"] = strings.Join(conf.Repository.Editor.PreviewableFileModes, ",")
 	c.Data["EditorconfigURLPrefix"] = fmt.Sprintf("%s/api/v1/repos/%s/editorconfig/", conf.Server.Subpath, c.Repo.Repository.FullName())
 
-	log.Trace("displaying tmplEditorEdit...")
 	c.Success(tmplEditorEdit)
 }
