@@ -16,31 +16,33 @@ import (
 	"github.com/gogs/git-module"
 	"github.com/ivis-yoshida/gogs/internal/conf"
 	"github.com/ivis-yoshida/gogs/internal/context"
+	"github.com/ivis-yoshida/gogs/internal/route/repo/dmp_schema"
 	"github.com/ivis-yoshida/gogs/internal/tool"
 	log "gopkg.in/clog.v1"
 )
 
 // FIXME These are sample structs for RCOS development.
-type DMP struct {
-	Index         int
-	Title         string
-	Description   string
-	Manager       string
-	DataType      string
-	ReleaseLevel  int
-	ConcealReason string
-	ConcealPeriod string
-	Acquirer      string
-	AcquireMethod string
-}
-type DMPRegInfo struct {
-	DmpType        string
-	AgreementTitle string
-	AgreementDate  string // FIXME: to date type
-	SubmitDate     string // FIXME: to date type
-	CorporateName  string
-	Researches     []DMP
-}
+// type MetiDmp struct {
+// 	Index         int
+// 	Title         string
+// 	Description   string
+// 	Manager       string
+// 	DataType      string
+// 	ReleaseLevel  int
+// 	ConcealReason string
+// 	ConcealPeriod string
+// 	Acquirer      string
+// 	AcquireMethod string
+// }
+// type MetiDmpInfo struct {
+// 	Schema         string
+// 	DmpType        string
+// 	AgreementTitle string
+// 	AgreementDate  string // FIXME: to date type
+// 	SubmitDate     string // FIXME: to date type
+// 	CorporateName  string
+// 	Researches     []MetiDmp
+// }
 
 func serveAnnexedData(ctx *context.Context, name string, buf []byte) error {
 	keyparts := strings.Split(strings.TrimSpace(string(buf)), "/")
@@ -107,16 +109,55 @@ func readDataciteFile(c *context.Context) {
 		c.Data["HasDataCite"] = false
 		return
 	}
-	doiInfo := DMPRegInfo{}
-	err = json.Unmarshal(buf, &doiInfo)
 
-	if err != nil {
-		log.Error(2, "datacite.yml data could not be unmarshalled: %v", err)
+	// judge DMP schema
+	schema := &struct{ Schema string }{}
+	err_schema := json.Unmarshal(buf, &schema)
+	if err_schema != nil {
+		log.Error(2, "dmp.json data could not be unmarshalled: %v", err_schema)
 		c.Data["HasDataCite"] = false
 		return
 	}
-	c.Data["DOIInfo"] = &doiInfo
+	log.Trace(schema.Schema)
 
+	// FIXME: DRY principle
+	if schema.Schema == "METI" {
+		doiInfo := dmp_schema.MetiDmpInfo{}
+
+		err = json.Unmarshal(buf, &doiInfo)
+		if err != nil {
+			log.Error(2, "dmp.json data could not be unmarshalled: %v", err)
+			c.Data["HasDataCite"] = false
+			return
+		}
+
+		log.Trace(doiInfo.Schema)
+		c.Data["DOIInfo"] = &doiInfo
+	} else if schema.Schema == "AMED" {
+		doiInfo := dmp_schema.AmedDmpInfo{}
+
+		err = json.Unmarshal(buf, &doiInfo)
+		if err != nil {
+			log.Error(2, "dmp.json data could not be unmarshalled: %v", err)
+			c.Data["HasDataCite"] = false
+			return
+		}
+
+		log.Trace(doiInfo.Schema)
+		c.Data["DOIInfo"] = &doiInfo
+	} else if schema.Schema == "JST" {
+		doiInfo := dmp_schema.JstDmpInfo{}
+
+		err = json.Unmarshal(buf, &doiInfo)
+		if err != nil {
+			log.Error(2, "dmp.json data could not be unmarshalled: %v", err)
+			c.Data["HasDataCite"] = false
+			return
+		}
+
+		log.Trace(doiInfo.Schema)
+		c.Data["DOIInfo"] = &doiInfo
+	}
 	// FIXME
 	c.Data["IsTextFile"] = true
 }
