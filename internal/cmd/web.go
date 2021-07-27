@@ -551,7 +551,8 @@ func runWeb(c *cli.Context) error {
 				Post(bindIgnErr(form.NewIssue{}), repo.CompareAndPullRequestPost)
 
 			// GIN specific code
-			if _, err := conf.Asset("conf/dmp/dmp.json"); err != nil {
+			// FIXME : add  all schema PATH
+			if _, err := conf.Asset("conf/dmp/dmp_meti.json"); err != nil {
 				log.Fatal("%v", err)
 			}
 
@@ -564,7 +565,9 @@ func runWeb(c *cli.Context) error {
 				m.Combo("/_delete/*").Get(repo.DeleteFile).
 					Post(bindIgnErr(form.DeleteRepoFile{}), repo.DeleteFilePost)
 				// GIN specific code: Add dmp.json file through the repo web interface
-				m.Combo("/_add/*").Get(repo.CreateDatacite).Post(bindIgnErr(form.EditRepoFile{}), repo.NewFilePost)
+				// FIXME : RCOS modified for multiple schema
+				// m.Combo("/_add/*").Get(repo.CreateDmp).Post(bindIgnErr(form.EditRepoFile{}), repo.NewFilePost)
+				m.Combo("/_add/master/dmp.json/?schema=:schema").Get(repo.CreateDmp).Post(bindIgnErr(form.EditRepoFile{}), repo.NewFilePost)
 
 				m.Group("", func() {
 					m.Combo("/_upload/*").Get(repo.UploadFile).

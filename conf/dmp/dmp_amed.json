@@ -1,0 +1,59 @@
+{
+    "createDate": "2021/07/21",
+    "project": {
+        "fiscalYear": 2021,
+        "title": "The Project",
+        "problemName": "",
+        "representative": {
+            "belongTo": "NII",
+            "post": "",
+            "name": "John Doe"
+        }
+    },
+    "required": {
+        "hasRegistNecessity": false,
+        "noRegistReason": ""
+    },
+    "researches": {
+        "description": "",
+        "data": [
+            {
+                "title": "The Data",
+                "releasePolicy": "",
+                "concealReason": "",
+                "repositoryType": "",
+                "repositoryName": "",
+                "dataAmmount": ""
+            }
+        ]
+    },
+    "forPublication": {
+        "hasOfferPolicy": false,
+        "policyName": "This is just content when 'hasOfferPolicy' is true"
+    },
+    "researchers": {
+        "numberOfPeople": 1,
+        "manager": {
+            "isConcurrent": false,
+            "personal": {
+                "belongTo": "NII",
+                "post": "",
+                "name":"Bill Doe"
+            }
+        },
+        "staff": [
+            {
+                "belongTo": "NII",
+                "post": "",
+                "name": "Mary Doe",
+                "e-Rad": "0000",
+                "canPublished": false,
+                "postType": "Professor",
+                "financialResource": "AMED",
+                "employmentStatus": "full-time",
+                "roles": "data curation",
+                "remarks": ""
+            }
+        ]
+    }
+}

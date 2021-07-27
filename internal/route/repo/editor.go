@@ -578,10 +578,21 @@ func RemoveUploadFileFromServer(c *context.Context, f form.RemoveUploadFile) {
 	c.Status(http.StatusNoContent)
 }
 
-// CreateDatacite is GIN specific code
-func CreateDatacite(c *context.Context) {
-	dcname := path.Join("conf/dmp/dmp.json")
+// CreateDmp is GIN specific code
+// FIXME : RCOS modified for multiple schema
+func CreateDmp(c *context.Context) {
+	schema := c.QueryEscape("schema")
+	dcname := ""
+	if schema == "meti" {
+		dcname = path.Join("conf/dmp/dmp_meti.json")
+	} else if schema == "amed" {
+		dcname = path.Join("conf/dmp/dmp_amed.json")
+	} else if schema == "jst" {
+		dcname = path.Join("conf/dmp/dmp_jst.json")
+	}
+
 	treeNames, treePaths := getParentTreeFields(c.Repo.TreePath)
+	log.Trace("getParentTreeFields() passed")
 
 	c.PageIs("Edit")
 	c.RequireHighlightJS()
@@ -606,5 +617,6 @@ func CreateDatacite(c *context.Context) {
 	c.Data["PreviewableFileModes"] = strings.Join(conf.Repository.Editor.PreviewableFileModes, ",")
 	c.Data["EditorconfigURLPrefix"] = fmt.Sprintf("%s/api/v1/repos/%s/editorconfig/", conf.Server.Subpath, c.Repo.Repository.FullName())
 
+	log.Trace("displaying tmplEditorEdit...")
 	c.Success(tmplEditorEdit)
 }

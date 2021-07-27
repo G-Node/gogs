@@ -1,0 +1,43 @@
+{
+    "createDate": "2021/07/21",
+    "amedNumber": "0000",
+    "project": {
+        "fiscalYear": 2021
+
+    },
+    "forPublication": {
+        "hasUsed": false,
+        "unwriteReason": "This is just content when 'hasUsed' is true"
+    },
+    "researches": [
+        {
+            "title": "The Title"
+
+        }
+    ],
+    "researchers": {
+        "numberOfPeople": 1,
+        "manager": {
+            "isConcurrent": false,
+            "personal": {
+                "belongTo": "NII",
+                "post": "",
+                "name": "Bill Doe"
+            }
+        },
+        "staff": [
+            {
+                "belongTo": "NII",
+                "post": "",
+                "name": "Mary Doe",
+                "e-Rad": "0000",
+                "canPublished": false,
+                "postType": "Professor",
+                "financialResource": "AMED",
+                "employmentStatus": "full-time",
+                "roles": "data curation",
+                "remarks": ""
+            }
+        ]
+    }
+}
