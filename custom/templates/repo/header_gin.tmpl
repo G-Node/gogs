@@ -8,8 +8,6 @@
 							{{if $.HasDataCite}}
 								<a class="ui basic button" href="{{$.RepoLink}}/_edit/{{EscapePound $.BranchName}}/dmp.json" data-position="bottom center"><i class="octicon octicon-file"></i>Edit DMP JSON</a>
 							{{else}}
-								<a class="ui basic button" href="{{$.RepoLink}}/_add/{{EscapePound $.BranchName}}/dmp.json" data-position="bottom center"><i class="octicon octicon-file"></i>Add DMP JSON</a>
-
 								<select class="ui basic button" name="addDmp" onChange="location.href=value;">
 									<option value="" selected>Add DMP</option>
 									<option value="{{$.RepoLink}}/_add/{{EscapePound $.BranchName}}/dmp.json/?schema=meti">METI Schema</option>
