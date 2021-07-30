@@ -98,6 +98,7 @@ func ExploreMetadata(c *context.Context) {
 		page = 1
 	}
 
+	// fetch query parameter
 	keyword := c.Query("q")
 	repos, count, err := db.SearchRepositoryByName(&db.SearchRepoOptions{
 		Keyword:  keyword,
@@ -111,7 +112,7 @@ func ExploreMetadata(c *context.Context) {
 		return
 	}
 
-	// 	Get context.Repository from db.Repository
+	// 	Get dmp.json contents
 	gitRepo, repoErr := git.Open(repos[0].RepoPath())
 	if repoErr != nil {
 		c.Error(repoErr, "open repository")
@@ -130,19 +131,19 @@ func ExploreMetadata(c *context.Context) {
 		c.Data["HasDataCite"] = false
 		return
 	}
-	doiInfo := dmp_schema.MetiDmpInfo{}
+	dmpContents := dmp_schema.MetiDmpInfo{}
 
-	err = json.Unmarshal(buf, &doiInfo)
+	err = json.Unmarshal(buf, &dmpContents)
 	if err != nil {
 		log.Error(2, "dmp.json data could not be unmarshalled: %v", err)
 		c.Data["HasDataCite"] = false
 		return
 	}
 
-	log.Trace(doiInfo.Schema)
-	c.Data["DOIInfo"] = &doiInfo
-	c.Data["RepoPath"] = entry
+	log.Trace(dmpContents.Schema)
+	c.Data["DOIInfo"] = &dmpContents
 
+	// below is search result
 	c.Data["Keyword"] = keyword
 	c.Data["Total"] = count
 	c.Data["Page"] = paginater.New(int(count), conf.UI.ExplorePagingNum, page, 5)
