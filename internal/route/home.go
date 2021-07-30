@@ -5,16 +5,20 @@
 package route
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
 	"github.com/go-macaron/i18n"
+	"github.com/gogs/git-module"
 	"github.com/unknwon/paginater"
+	log "gopkg.in/clog.v1"
 	"gopkg.in/macaron.v1"
 
 	"github.com/ivis-yoshida/gogs/internal/conf"
 	"github.com/ivis-yoshida/gogs/internal/context"
 	"github.com/ivis-yoshida/gogs/internal/db"
+	"github.com/ivis-yoshida/gogs/internal/route/repo/dmp_schema"
 	"github.com/ivis-yoshida/gogs/internal/route/user"
 )
 
@@ -23,6 +27,7 @@ const (
 	EXPLORE_REPOS         = "explore/repos"
 	EXPLORE_USERS         = "explore/users"
 	EXPLORE_ORGANIZATIONS = "explore/organizations"
+	EXPLORE_METADATA      = "explore/metadata"
 )
 
 func Home(c *context.Context) {
@@ -80,6 +85,75 @@ func ExploreRepos(c *context.Context) {
 	c.Data["Repos"] = filterUnlistedRepos(repos)
 
 	c.Success(EXPLORE_REPOS)
+}
+
+// ExploreMetadata is RCOS specific code
+func ExploreMetadata(c *context.Context) {
+	c.Data["Title"] = c.Tr("explore")
+	c.Data["PageIsExplore"] = true
+	c.Data["PageIsExploreRepositories"] = true
+
+	page := c.QueryInt("page")
+	if page <= 0 {
+		page = 1
+	}
+
+	keyword := c.Query("q")
+	repos, count, err := db.SearchRepositoryByName(&db.SearchRepoOptions{
+		Keyword:  keyword,
+		UserID:   c.UserID(),
+		OrderBy:  "updated_unix DESC",
+		Page:     page,
+		PageSize: conf.UI.ExplorePagingNum,
+	})
+	if err != nil {
+		c.Error(err, "search repository by name")
+		return
+	}
+
+	// 	Get context.Repository from db.Repository
+	gitRepo, repoErr := git.Open(repos[0].RepoPath())
+	if repoErr != nil {
+		c.Error(repoErr, "open repository")
+		return
+	}
+	commit, err := gitRepo.CatFileCommit("refs/heads/master")
+	entry, err := commit.Blob("/dmp.json")
+	if err != nil || entry == nil {
+		log.Error(2, "datacite.yml blob could not be retrieved: %v", err)
+		c.Data["HasDataCite"] = false
+		return
+	}
+	buf, err := entry.Bytes()
+	if err != nil {
+		log.Error(2, "datacite.yml data could not be read: %v", err)
+		c.Data["HasDataCite"] = false
+		return
+	}
+	doiInfo := dmp_schema.MetiDmpInfo{}
+
+	err = json.Unmarshal(buf, &doiInfo)
+	if err != nil {
+		log.Error(2, "dmp.json data could not be unmarshalled: %v", err)
+		c.Data["HasDataCite"] = false
+		return
+	}
+
+	log.Trace(doiInfo.Schema)
+	c.Data["DOIInfo"] = &doiInfo
+	c.Data["RepoPath"] = entry
+
+	c.Data["Keyword"] = keyword
+	c.Data["Total"] = count
+	c.Data["Page"] = paginater.New(int(count), conf.UI.ExplorePagingNum, page, 5)
+
+	if err = db.RepositoryList(repos).LoadAttributes(); err != nil {
+		c.Error(err, "load attributes")
+		return
+	}
+	c.Data["Repos"] = filterUnlistedRepos(repos)
+
+	c.Success(EXPLORE_METADATA)
 }
 
 type UserSearchOptions struct {

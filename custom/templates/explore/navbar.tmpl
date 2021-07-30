@@ -1,0 +1,28 @@
+<div class="four wide column">
+	<div class="ui vertical menu navbar">
+		<div class="header item">{{.i18n.Tr "explore"}}</div>
+		<a class="{{if .PageIsExploreRepositories}}active{{end}} item" href="{{AppSubURL}}/explore/repos">
+			<span class="octicon octicon-repo"></span> {{.i18n.Tr "explore.repos"}}
+		</a>
+		<a class="item" href="https://doid.gin.g-node.org">
+			<span class="octicon octicon-mortar-board"></span> {{.i18n.Tr "gindoi"}}
+		</a>
+		<a class="{{if .PageIsExploreData}}active{{end}} item" href="{{AppSubURL}}/explore/data">
+			<span class="octicon octicon-file"></span> {{.i18n.Tr "explore.data"}}
+		</a>
+		<a class="{{if .PageIsExploreCommits}}active{{end}} item" href="{{AppSubURL}}/explore/commits">
+			<span class="octicon octicon-git-commit"></span> {{.i18n.Tr "explore.commits"}}
+		</a>
+		{{if .LoggedUser}}
+		<a class="{{if .PageIsExploreUsers}}active{{end}} item" href="{{AppSubURL}}/explore/users">
+			<span class="octicon octicon-person"></span> {{.i18n.Tr "explore.users"}}
+		</a>
+		<a class="{{if .PageIsExploreOrganizations}}active{{end}} item" href="{{AppSubURL}}/explore/organizations">
+			<span class="octicon octicon-organization"></span> {{.i18n.Tr "explore.organizations"}}
+		</a>
+        <a class="{{if .PageIsExploreMetadata}}active{{end}} item" href="{{AppSubURL}}/explore/metadata">
+			<span class="octicon octicon-file"></span> Metadata
+		</a>
+		{{end}}
+	</div>
+</div>
