@@ -91,7 +91,7 @@ func ExploreRepos(c *context.Context) {
 func ExploreMetadata(c *context.Context) {
 	c.Data["Title"] = c.Tr("explore")
 	c.Data["PageIsExplore"] = true
-	c.Data["PageIsExploreRepositories"] = true
+	c.Data["PageIsExploreMetadata"] = true
 
 	page := c.QueryInt("page")
 	if page <= 0 {
@@ -131,6 +131,8 @@ func ExploreMetadata(c *context.Context) {
 		c.Data["HasDataCite"] = false
 		return
 	}
+
+	// FIXME : multiple schema
 	dmpContents := dmp_schema.MetiDmpInfo{}
 
 	err = json.Unmarshal(buf, &dmpContents)
@@ -143,7 +145,7 @@ func ExploreMetadata(c *context.Context) {
 	log.Trace(dmpContents.Schema)
 	c.Data["DOIInfo"] = &dmpContents
 
-	// below is search result
+	// below is search
 	c.Data["Keyword"] = keyword
 	c.Data["Total"] = count
 	c.Data["Page"] = paginater.New(int(count), conf.UI.ExplorePagingNum, page, 5)
