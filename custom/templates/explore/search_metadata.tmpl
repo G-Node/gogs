@@ -1,0 +1,14 @@
+<!-- based on explore/search.tmpl -->
+<form class="ui form">
+	<div class="ui fluid action input">
+        <select name="selectKey" style="width: 20%;">
+            <option value="" selected>Select Key</option>
+            <option value="0">schema</option>
+            <option value="1">dmpType</option>
+            <option value="2">agreementTitle</option>
+        </select>
+		<input name="q" value="{{.Keyword}}" placeholder="{{.i18n.Tr " explore.search"}}..." autofocus>
+		<button class="ui blue button">{{.i18n.Tr "explore.search"}}</button>
+	</div>
+</form>
+<div class="ui divider"></div>

@@ -173,9 +173,10 @@ type Repository struct {
 	NumOpenMilestones   int `xorm:"-" gorm:"-" json:"-"`
 	NumTags             int `xorm:"-" gorm:"-" json:"-"`
 
-	IsPrivate  bool
-	IsUnlisted bool
-	IsBare     bool
+	IsPrivate   bool
+	IsUnlisted  bool
+	IsBare      bool
+	HasMetadata bool // RCOS specific code
 
 	IsMirror bool
 	*Mirror  `xorm:"-" gorm:"-" json:"-"`

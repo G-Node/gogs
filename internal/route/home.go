@@ -8,7 +8,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strings"
+	"reflect"
+	"strconv"
 
 	"github.com/go-macaron/i18n"
 	"github.com/gogs/git-module"
@@ -101,6 +102,7 @@ func ExploreMetadata(c *context.Context) {
 
 	// fetch query parameter
 	keyword := c.Query("q")
+	selectedKey := c.Query("selectKey")
 	repos, count, err := db.SearchRepositoryByName(&db.SearchRepoOptions{
 		Keyword:  "",
 		UserID:   c.UserID(),
@@ -114,6 +116,8 @@ func ExploreMetadata(c *context.Context) {
 	}
 
 	// 	Get dmp.json contents
+	// for _, repo := range repos {
+	repos[0].HasMetadata = false
 	gitRepo, repoErr := git.Open(repos[0].RepoPath())
 	if repoErr != nil {
 		c.Error(repoErr, "open repository")
@@ -143,14 +147,20 @@ func ExploreMetadata(c *context.Context) {
 		return
 	}
 
-	log.Trace(dmpContents.Schema)
 	c.Data["DOIInfo"] = &dmpContents
 
+	if selectedKey != "" && keyword != "" && isContained(dmpContents, selectedKey, keyword) {
+		c.Data["SelectedKey"] = selectedKey
+		c.Data["SearchResult"] = keyword
+		repos[0].HasMetadata = true
+		// c.Data["HasContent"] = true
+
+		c.Data["TmpString"] = isContained(dmpContents, selectedKey, keyword)
+	}
+	// }
 	// below is search
-	keywords := pickOutKeyword(buf, keyword)
 
 	c.Data["Keyword"] = keyword
-	c.Data["Keywords"] = keywords
 	c.Data["Total"] = count
 	c.Data["Page"] = paginater.New(int(count), conf.UI.ExplorePagingNum, page, 5)
 
@@ -163,14 +173,15 @@ func ExploreMetadata(c *context.Context) {
 	c.Success(EXPLORE_METADATA)
 }
 
-func pickOutKeyword(buf []byte, keyword string) (keywords []string) {
-	strBuf := string(buf)
-
-	if keyword != "" && strings.Contains(strBuf, keyword) {
-		keywords = append(keywords, strBuf)
+func isContained(srt dmp_schema.MetiDmpInfo, selectedIndex, keyword string) bool {
+	srtValue := reflect.ValueOf(srt)
+	i, err := strconv.Atoi(selectedIndex)
+	if err != nil {
+		log.Error(2, "selectedIndex can't parse int: %v", err)
 	}
+	v := srtValue.Field(i)
 
-	return keywords
+	return v.String() == keyword
 }
 
 type UserSearchOptions struct {

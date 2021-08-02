@@ -1,6 +1,7 @@
 <!-- based on ./repo_list -->
 <div class="ui repository list">
 	{{range .Repos}}
+	{{if .HasMetadata}}
 		<div class="item">
 			<div class="ui grid">
 				<div class="ui two wide column middle aligned center">
@@ -24,10 +25,11 @@
 							<span class="text grey"><i class="octicon octicon-git-branch"></i> {{.NumForks}}</span>
 						</div>
 					</div>
-					{{if .Description}}<p class="has-emoji">{{.Description | Str2HTML}}</p>{{end}}
+					<p>"{{ $.SelectedKey }}": "{{ $.SearchResult }}"</p>
 					<p class="time">{{$.i18n.Tr "org.repo_updated"}} {{TimeSince .Updated $.i18n.Lang}}</p>
 				</div>
 			</div>
 		</div>
+	{{end}}
 	{{end}}
 </div>
