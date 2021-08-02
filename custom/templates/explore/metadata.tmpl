@@ -5,8 +5,12 @@
 			{{template "explore/navbar" .}}
 			<div class="twelve wide column content">
 				{{template "explore/search" .}}
-				{{template "explore/metadata_list" .}}
+                {{template "explore/metadata_list" .}}
 				{{template "explore/page" .}}
+
+                {{ range $keyword := .Keywords }}
+                    <p>{{ $keyword }} </p>
+                {{ end }}
 			</div>
 		</div>
 

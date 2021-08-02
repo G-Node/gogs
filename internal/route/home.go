@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/go-macaron/i18n"
 	"github.com/gogs/git-module"
@@ -101,7 +102,7 @@ func ExploreMetadata(c *context.Context) {
 	// fetch query parameter
 	keyword := c.Query("q")
 	repos, count, err := db.SearchRepositoryByName(&db.SearchRepoOptions{
-		Keyword:  keyword,
+		Keyword:  "",
 		UserID:   c.UserID(),
 		OrderBy:  "updated_unix DESC",
 		Page:     page,
@@ -146,7 +147,10 @@ func ExploreMetadata(c *context.Context) {
 	c.Data["DOIInfo"] = &dmpContents
 
 	// below is search
+	keywords := pickOutKeyword(buf, keyword)
+
 	c.Data["Keyword"] = keyword
+	c.Data["Keywords"] = keywords
 	c.Data["Total"] = count
 	c.Data["Page"] = paginater.New(int(count), conf.UI.ExplorePagingNum, page, 5)
 
@@ -157,6 +161,16 @@ func ExploreMetadata(c *context.Context) {
 	c.Data["Repos"] = filterUnlistedRepos(repos)
 
 	c.Success(EXPLORE_METADATA)
+}
+
+func pickOutKeyword(buf []byte, keyword string) (keywords []string) {
+	strBuf := string(buf)
+
+	if keyword != "" && strings.Contains(strBuf, keyword) {
+		keywords = append(keywords, strBuf)
+	}
+
+	return keywords
 }
 
 type UserSearchOptions struct {
