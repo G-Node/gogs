@@ -115,49 +115,56 @@ func ExploreMetadata(c *context.Context) {
 		return
 	}
 
-	// 	Get dmp.json contents
-	// for _, repo := range repos {
-	repos[0].HasMetadata = false
-	gitRepo, repoErr := git.Open(repos[0].RepoPath())
-	if repoErr != nil {
-		c.Error(repoErr, "open repository")
-		return
-	}
-	commit, err := gitRepo.CatFileCommit("refs/heads/master")
-	entry, err := commit.Blob("/dmp.json")
-	if err != nil || entry == nil {
-		log.Error(2, "datacite.yml blob could not be retrieved: %v", err)
-		c.Data["HasDataCite"] = false
-		return
-	}
-	buf, err := entry.Bytes()
-	if err != nil {
-		log.Error(2, "datacite.yml data could not be read: %v", err)
-		c.Data["HasDataCite"] = false
-		return
-	}
+	// Get dmp.json contents
+	for _, repo := range repos {
+		repo.HasMetadata = false
+		gitRepo, repoErr := git.Open(repo.RepoPath())
+		if repoErr != nil {
+			c.Error(repoErr, "open repository")
+			continue
+		}
 
-	// FIXME : multiple schema
-	dmpContents := dmp_schema.MetiDmpInfo{}
+		commit, commintErr := gitRepo.CatFileCommit("refs/heads/master")
+		if commintErr != nil || commit == nil {
+			log.Error(2, "%s commit could not be retrieved: %v", repo.Name, err)
+			c.Data["HasDataCite"] = false
+			continue
+		}
 
-	err = json.Unmarshal(buf, &dmpContents)
-	if err != nil {
-		log.Error(2, "dmp.json data could not be unmarshalled: %v", err)
-		c.Data["HasDataCite"] = false
-		return
+		entry, err := commit.Blob("/dmp.json")
+		if err != nil || entry == nil {
+			log.Error(2, "dmp.json blob could not be retrieved: %v", err)
+			c.Data["HasDataCite"] = false
+			continue
+		}
+		buf, err := entry.Bytes()
+		if err != nil {
+			log.Error(2, "dmp.json data could not be read: %v", err)
+			c.Data["HasDataCite"] = false
+			continue
+		}
+
+		// FIXME : multiple schema
+		dmpContents := dmp_schema.MetiDmpInfo{}
+
+		err = json.Unmarshal(buf, &dmpContents)
+		if err != nil {
+			log.Error(2, "dmp.json data could not be unmarshalled: %v", err)
+			c.Data["HasDataCite"] = false
+			break
+		}
+
+		c.Data["DOIInfo"] = &dmpContents
+
+		if selectedKey != "" && keyword != "" && isContained(dmpContents, selectedKey, keyword) {
+			c.Data["SelectedKey"] = selectedKey
+			c.Data["SearchResult"] = keyword
+			repo.HasMetadata = true
+			// c.Data["HasContent"] = true
+
+			c.Data["TmpString"] = isContained(dmpContents, selectedKey, keyword)
+		}
 	}
-
-	c.Data["DOIInfo"] = &dmpContents
-
-	if selectedKey != "" && keyword != "" && isContained(dmpContents, selectedKey, keyword) {
-		c.Data["SelectedKey"] = selectedKey
-		c.Data["SearchResult"] = keyword
-		repos[0].HasMetadata = true
-		// c.Data["HasContent"] = true
-
-		c.Data["TmpString"] = isContained(dmpContents, selectedKey, keyword)
-	}
-	// }
 	// below is search
 
 	c.Data["Keyword"] = keyword
