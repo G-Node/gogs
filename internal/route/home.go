@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
-	"strconv"
 
 	"github.com/go-macaron/i18n"
 	"github.com/gogs/git-module"
@@ -160,13 +159,10 @@ func ExploreMetadata(c *context.Context) {
 			c.Data["SelectedKey"] = selectedKey
 			c.Data["SearchResult"] = keyword
 			repo.HasMetadata = true
-			// c.Data["HasContent"] = true
-
-			c.Data["TmpString"] = isContained(dmpContents, selectedKey, keyword)
 		}
 	}
-	// below is search
 
+	// below is search
 	c.Data["Keyword"] = keyword
 	c.Data["Total"] = count
 	c.Data["Page"] = paginater.New(int(count), conf.UI.ExplorePagingNum, page, 5)
@@ -180,13 +176,9 @@ func ExploreMetadata(c *context.Context) {
 	c.Success(EXPLORE_METADATA)
 }
 
-func isContained(srt dmp_schema.MetiDmpInfo, selectedIndex, keyword string) bool {
+func isContained(srt dmp_schema.MetiDmpInfo, selectedKey, keyword string) bool {
 	srtValue := reflect.ValueOf(srt)
-	i, err := strconv.Atoi(selectedIndex)
-	if err != nil {
-		log.Error(2, "selectedIndex can't parse int: %v", err)
-	}
-	v := srtValue.Field(i)
+	v := srtValue.FieldByName(selectedKey)
 
 	return v.String() == keyword
 }
