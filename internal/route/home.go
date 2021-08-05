@@ -182,7 +182,7 @@ func DmpBrowsing(c *context.Context) {
 	if page <= 0 {
 		page = 1
 	}
-	ownerName := c.Query("o")
+	ownerName := c.Query("owner")
 	repoName := c.Query("repo")
 
 	repos, _, err := db.SearchRepositoryByName(&db.SearchRepoOptions{
