@@ -198,6 +198,7 @@ func DmpBrowsing(c *context.Context) {
 	}
 
 	// Get dmp.json contents
+	// FIXME: refactor same-name-bug & non-loop
 	for _, repo := range repos {
 		repo.HasMetadata = false
 		gitRepo, repoErr := git.Open(repo.RepoPath())
