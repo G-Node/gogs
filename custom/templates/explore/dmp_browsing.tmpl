@@ -1,0 +1,10 @@
+<!-- based on repo/home.tmpl-->
+{{template "base/head" .}}
+<div class="repository file list">
+	<div class="ui container">
+        <h2>{{.OwnerName}} / {{.RepoName}}</h2>
+		{{template "base/alert" .}}
+        {{template "repo/doifile" .}}
+	</div>
+</div>
+{{template "base/footer" .}}

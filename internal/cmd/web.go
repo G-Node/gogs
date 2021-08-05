@@ -186,6 +186,9 @@ func runWeb(c *cli.Context) error {
 			m.Get("/organizations", route.ExploreOrganizations)
 			m.Get("/_suggest/:keywords", route.ExploreSuggest) // GIN specific code
 			m.Get("/metadata", route.ExploreMetadata)          // RCOS specific code
+			m.Group("/dmp", func() {
+				m.Get("/browsing/", route.DmpBrowsing)
+			})
 		}, ignSignIn)
 		m.Combo("/install", route.InstallInit).Get(route.Install).
 			Post(bindIgnErr(form.Install{}), route.InstallPost)

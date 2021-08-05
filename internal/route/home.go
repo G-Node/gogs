@@ -29,6 +29,7 @@ const (
 	EXPLORE_USERS         = "explore/users"
 	EXPLORE_ORGANIZATIONS = "explore/organizations"
 	EXPLORE_METADATA      = "explore/metadata"
+	DMP_BROWSING          = "explore/dmp_browsing"
 )
 
 func Home(c *context.Context) {
@@ -94,14 +95,14 @@ func ExploreMetadata(c *context.Context) {
 	c.Data["PageIsExplore"] = true
 	c.Data["PageIsExploreMetadata"] = true
 
+	selectedKey := c.Query("selectKey")
+	keyword := c.Query("q")
+
 	page := c.QueryInt("page")
 	if page <= 0 {
 		page = 1
 	}
 
-	// fetch query parameter
-	keyword := c.Query("q")
-	selectedKey := c.Query("selectKey")
 	repos, count, err := db.SearchRepositoryByName(&db.SearchRepoOptions{
 		Keyword:  "",
 		UserID:   c.UserID(),
@@ -174,6 +175,72 @@ func ExploreMetadata(c *context.Context) {
 	c.Data["Repos"] = filterUnlistedRepos(repos)
 
 	c.Success(EXPLORE_METADATA)
+}
+
+func DmpBrowsing(c *context.Context) {
+	page := c.QueryInt("page")
+	if page <= 0 {
+		page = 1
+	}
+	ownerName := c.Query("o")
+	repoName := c.Query("repo")
+
+	repos, _, err := db.SearchRepositoryByName(&db.SearchRepoOptions{
+		Keyword:  repoName,
+		UserID:   c.UserID(),
+		OrderBy:  "updated_unix DESC",
+		Page:     page,
+		PageSize: conf.UI.ExplorePagingNum,
+	})
+	if err != nil {
+		c.Error(err, "search repository by name")
+		return
+	}
+
+	// Get dmp.json contents
+	for _, repo := range repos {
+		repo.HasMetadata = false
+		gitRepo, repoErr := git.Open(repo.RepoPath())
+		if repoErr != nil {
+			c.Error(repoErr, "open repository")
+			continue
+		}
+
+		commit, commintErr := gitRepo.CatFileCommit("refs/heads/master")
+		if commintErr != nil || commit == nil {
+			log.Error(2, "%s commit could not be retrieved: %v", repo.Name, err)
+			c.Data["HasDataCite"] = false
+			continue
+		}
+
+		entry, err := commit.Blob("/dmp.json")
+		if err != nil || entry == nil {
+			log.Error(2, "dmp.json blob could not be retrieved: %v", err)
+			c.Data["HasDataCite"] = false
+			continue
+		}
+		buf, err := entry.Bytes()
+		if err != nil {
+			log.Error(2, "dmp.json data could not be read: %v", err)
+			c.Data["HasDataCite"] = false
+			continue
+		}
+
+		// FIXME : multiple schema
+		dmpContents := dmp_schema.MetiDmpInfo{}
+
+		err = json.Unmarshal(buf, &dmpContents)
+		if err != nil {
+			log.Error(2, "dmp.json data could not be unmarshalled: %v", err)
+			c.Data["HasDataCite"] = false
+			break
+		}
+
+		c.Data["OwnerName"] = ownerName
+		c.Data["RepoName"] = repoName
+		c.Data["DOIInfo"] = &dmpContents
+	}
+	c.Success(DMP_BROWSING)
 }
 
 func isContained(srt dmp_schema.MetiDmpInfo, selectedKey, keyword string) bool {
