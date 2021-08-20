@@ -95,7 +95,7 @@ func serveAnnexedKey(ctx *context.Context, name string, contentPath string) erro
 	return err
 }
 
-func readDataciteFile(c *context.Context) {
+func readDmpJson(c *context.Context) {
 	log.Trace("Reading dmp.json file")
 	entry, err := c.Repo.Commit.Blob("/dmp.json")
 	if err != nil || entry == nil {

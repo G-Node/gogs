@@ -59,7 +59,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 		return
 	}
 	if c.Data["HasDataCite"].(bool) {
-		readDataciteFile(c)
+		readDmpJson(c)
 	}
 	var readmeFile *git.Blob
 	for _, entry := range entries {
