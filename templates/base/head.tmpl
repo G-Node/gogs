@@ -110,8 +110,7 @@
 									</div>
 									</div>*/}}
 
-								<a class="item" href="/G-Node/info/wiki" rel="noreferrer"><i class="octicon octicon-question"></i>{{.i18n.Tr "help"}}</a>
-								<a class="item" href="/G-Node/Info/wiki/News">News</a>
+								{{template "base/head_gin" $}}
 								{{if .IsLogged}}
 									<div class="right menu">
 										<div class="ui dropdown head link jump item poping up" data-content="{{.i18n.Tr "create_new"}}" data-variation="tiny inverted">
