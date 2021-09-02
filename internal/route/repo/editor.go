@@ -582,14 +582,7 @@ func RemoveUploadFileFromServer(c *context.Context, f form.RemoveUploadFile) {
 // FIXME : RCOS modified for multiple schema
 func CreateDmp(c *context.Context) {
 	schema := c.QueryEscape("schema")
-	dcname := ""
-	if schema == "meti" {
-		dcname = path.Join("conf/dmp/dmp_meti.json")
-	} else if schema == "amed" {
-		dcname = path.Join("conf/dmp/dmp_amed.json")
-	} else if schema == "jst" {
-		dcname = path.Join("conf/dmp/dmp_jst.json")
-	}
+	dcname := path.Join("conf/dmp/dmp_" + schema + ".json")
 
 	treeNames, treePaths := getParentTreeFields(c.Repo.TreePath)
 
