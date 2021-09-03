@@ -25,6 +25,12 @@ check: test
 
 dist: release
 
+createSchema:
+	# rm conf/dmp/dmp_json_schema2.json
+	# ~/gogs/node_modules/.bin/generate-schema conf/dmp/dmp_meti.json -j >> conf/dmp/dmp_json_schema2.json
+	# ~/gogs/node_modules/.bin/json-schema-generator conf/dmp/dmp_meti.json -o conf/dmp/dmp_json_schema2.json
+	~/go/bin/schematyper conf/dmp/dmp_json_schema2.json --package="dmp_schema" --out-file="internal/route/repo/dmp_schema/sample.go"
+
 web: build
 	./gogs web
 
