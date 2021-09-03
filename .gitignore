@@ -18,3 +18,4 @@ output*
 /release
 
 node_modules
+/internal/route/repo/dmp_schema
