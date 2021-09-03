@@ -21,29 +21,6 @@ import (
 	log "gopkg.in/clog.v1"
 )
 
-// FIXME These are sample structs for RCOS development.
-// type MetiDmp struct {
-// 	Index         int
-// 	Title         string
-// 	Description   string
-// 	Manager       string
-// 	DataType      string
-// 	ReleaseLevel  int
-// 	ConcealReason string
-// 	ConcealPeriod string
-// 	Acquirer      string
-// 	AcquireMethod string
-// }
-// type MetiDmpInfo struct {
-// 	Schema         string
-// 	DmpType        string
-// 	AgreementTitle string
-// 	AgreementDate  string // FIXME: to date type
-// 	SubmitDate     string // FIXME: to date type
-// 	CorporateName  string
-// 	Researches     []MetiDmp
-// }
-
 func serveAnnexedData(ctx *context.Context, name string, buf []byte) error {
 	keyparts := strings.Split(strings.TrimSpace(string(buf)), "/")
 	key := keyparts[len(keyparts)-1]
@@ -99,13 +76,13 @@ func readDmpJson(c *context.Context) {
 	log.Trace("Reading dmp.json file")
 	entry, err := c.Repo.Commit.Blob("/dmp.json")
 	if err != nil || entry == nil {
-		log.Error(2, "datacite.yml blob could not be retrieved: %v", err)
+		log.Error(2, "dmp.json blob could not be retrieved: %v", err)
 		c.Data["HasDataCite"] = false
 		return
 	}
 	buf, err := entry.Bytes()
 	if err != nil {
-		log.Error(2, "datacite.yml data could not be read: %v", err)
+		log.Error(2, "dmp.json data could not be read: %v", err)
 		c.Data["HasDataCite"] = false
 		return
 	}
