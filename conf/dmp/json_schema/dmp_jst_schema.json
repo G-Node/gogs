@@ -1,0 +1,242 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Generated schema for Root",
+    "type": "object",
+    "properties": {
+        "schema": {
+            "type": "string"
+        },
+        "createDate": {
+            "type": "string"
+        },
+        "amedNumber": {
+            "type": "string"
+        },
+        "project": {
+            "type": "object",
+            "properties": {
+                "fiscalYear": {
+                    "type": "number"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "problemName": {
+                    "type": "string"
+                },
+                "representative": {
+                    "type": "object",
+                    "properties": {
+                        "belongTo": {
+                            "type": "string"
+                        },
+                        "post": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "belongTo",
+                        "post",
+                        "name"
+                    ]
+                }
+            },
+            "required": [
+                "fiscalYear",
+                "title",
+                "problemName",
+                "representative"
+            ]
+        },
+        "forPublication": {
+            "type": "object",
+            "properties": {
+                "hasUsed": {
+                    "type": "boolean"
+                },
+                "unwriteReason": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "hasUsed",
+                "unwriteReason"
+            ]
+        },
+        "researches": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "releasePolicy": {
+                        "type": "string"
+                    },
+                    "concealReason": {
+                        "type": "string"
+                    },
+                    "hasOfferPolicy": {
+                        "type": "boolean"
+                    },
+                    "policyName": {
+                        "type": "string"
+                    },
+                    "repositoryType": {
+                        "type": "string"
+                    },
+                    "repositoryName": {
+                        "type": "string"
+                    },
+                    "dataAmount": {
+                        "type": "string"
+                    },
+                    "dataSchema": {
+                        "type": "string"
+                    },
+                    "processingPolicy": {
+                        "type": "string"
+                    },
+                    "isRegistered": {
+                        "type": "boolean"
+                    },
+                    "registeredInfo": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "title",
+                    "type",
+                    "description",
+                    "releasePolicy",
+                    "concealReason",
+                    "hasOfferPolicy",
+                    "policyName",
+                    "repositoryType",
+                    "repositoryName",
+                    "dataAmount",
+                    "dataSchema",
+                    "processingPolicy",
+                    "isRegistered",
+                    "registeredInfo"
+                ]
+            }
+        },
+        "researchers": {
+            "type": "object",
+            "properties": {
+                "numberOfPeople": {
+                    "type": "number"
+                },
+                "manager": {
+                    "type": "object",
+                    "properties": {
+                        "isConcurrent": {
+                            "type": "boolean"
+                        },
+                        "personal": {
+                            "type": "object",
+                            "properties": {
+                                "belongTo": {
+                                    "type": "string"
+                                },
+                                "post": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "belongTo",
+                                "post",
+                                "name"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "isConcurrent",
+                        "personal"
+                    ]
+                },
+                "staff": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "belongTo": {
+                                "type": "string"
+                            },
+                            "post": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "e-Rad": {
+                                "type": "string"
+                            },
+                            "canPublished": {
+                                "type": "boolean"
+                            },
+                            "postType": {
+                                "type": "string"
+                            },
+                            "financialResource": {
+                                "type": "string"
+                            },
+                            "employmentStatus": {
+                                "type": "string"
+                            },
+                            "roles": {
+                                "type": "string"
+                            },
+                            "remarks": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "belongTo",
+                            "post",
+                            "name",
+                            "e-Rad",
+                            "canPublished",
+                            "postType",
+                            "financialResource",
+                            "employmentStatus",
+                            "roles",
+                            "remarks"
+                        ]
+                    }
+                }
+            },
+            "required": [
+                "numberOfPeople",
+                "manager",
+                "staff"
+            ]
+        }
+    },
+    "required": [
+        "schema",
+        "createDate",
+        "amedNumber",
+        "project",
+        "forPublication",
+        "researches",
+        "researchers"
+    ]
+}

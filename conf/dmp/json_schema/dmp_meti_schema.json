@@ -1,0 +1,92 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://example.com/product.schema.json",
+    "title": "DMPschema-METI",
+    "description": "DMP schema of METI",
+    "type": "object",
+    "properties": {
+        "schema": {
+            "type": "string"
+        },
+        "dmpType": {
+            "type": "string"
+        },
+        "agreementTitle": {
+            "type": "string"
+        },
+        "agreementDate": {
+            "type": "string"
+        },
+        "submitDate": {
+            "type": "string"
+        },
+        "corporateName": {
+            "type": "string"
+        },
+        "researches": {
+            "type": "array",
+            "items": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "index": {
+                            "type": "integer"
+                        },
+                        "title": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "manager": {
+                            "type": "string"
+                        },
+                        "dataType": {
+                            "type": "string"
+                        },
+                        "releaseLevel": {
+                            "type": "integer"
+                        },
+                        "concealReason": {
+                            "type": "string"
+                        },
+                        "concealPeriod": {
+                            "type": "string"
+                        },
+                        "acquirer": {
+                            "type": "string"
+                        },
+                        "acquireMethod": {
+                            "type": "string"
+                        },
+                        "remarks": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "index",
+                        "title",
+                        "description",
+                        "manager",
+                        "dataType",
+                        "releaseLevel",
+                        "concealReason",
+                        "concealPeriod",
+                        "acquirer",
+                        "acquireMethod",
+                        "remarks"
+                    ]
+                }
+            ]
+        }
+    },
+    "required": [
+        "schema",
+        "dmpType",
+        "agreementTitle",
+        "agreementDate",
+        "submitDate",
+        "corporateName",
+        "researches"
+    ]
+}
