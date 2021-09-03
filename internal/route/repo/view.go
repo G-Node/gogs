@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"fmt"
 	gotemplate "html/template"
+	"io/ioutil"
 	"path"
 	"strings"
 	"time"
@@ -58,9 +59,13 @@ func renderDirectory(c *context.Context, treeLink string) {
 		c.Error(err, "get commits info")
 		return
 	}
+
 	if c.Data["HasDataCite"].(bool) {
 		readDmpJson(c)
+	} else {
+		fetchDmpSchema(c, "conf/dmp")
 	}
+
 	var readmeFile *git.Blob
 	for _, entry := range entries {
 		if entry.IsTree() || !markup.IsReadmeFile(entry.Name()) {
@@ -127,6 +132,25 @@ func renderDirectory(c *context.Context, treeLink string) {
 		c.Data["CanAddFile"] = true
 		c.Data["CanUploadFile"] = conf.Repository.Upload.Enabled
 	}
+}
+
+// fetchDmpSchema is RCOS specific code.
+func fetchDmpSchema(c *context.Context, dirPath string) {
+	files, err := ioutil.ReadDir(dirPath)
+	if err != nil {
+		panic(err)
+	}
+
+	var schemaList []string
+	for _, file := range files {
+		// ignore directory
+		if file.IsDir() {
+			continue
+		}
+		schemaList = append(schemaList, file.Name())
+	}
+
+	c.Data["SchemaList"] = schemaList
 }
 
 func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink string) {

@@ -10,9 +10,11 @@
 							{{else}}
 								<select class="ui basic button" name="addDmp" onChange="location.href=value;">
 									<option value="" selected>Add DMP</option>
-									<option value="{{$.RepoLink}}/_add/{{EscapePound $.BranchName}}/dmp.json/?schema=meti">METI Schema</option>
-									<option value="{{$.RepoLink}}/_add/{{EscapePound $.BranchName}}/dmp.json/?schema=amed">AMED Schema</option>
-									<option value="{{$.RepoLink}}/_add/{{EscapePound $.BranchName}}/dmp.json/?schema=jst">JST Schema</option>
+
+									{{ range $v := $.SchemaList }}
+										<option value="{{$.RepoLink}}/_add/{{EscapePound $.BranchName}}/dmp.json/?schema={{$v}}">{{ $v }}</option>
+									{{ end }}
+
 								</select>
 							{{end}}
 						{{end}} {{/* End registration button */}}

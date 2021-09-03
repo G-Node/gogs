@@ -579,16 +579,18 @@ func RemoveUploadFileFromServer(c *context.Context, f form.RemoveUploadFile) {
 }
 
 // CreateDmp is GIN specific code
-// FIXME : RCOS modified for multiple schema
 func CreateDmp(c *context.Context) {
 	schema := c.QueryEscape("schema")
-	dcname := path.Join("conf/dmp/dmp_" + schema + ".json")
+	dcname := path.Join("conf/dmp/", schema)
 
 	treeNames, treePaths := getParentTreeFields(c.Repo.TreePath)
 
 	c.PageIs("Edit")
 	c.RequireHighlightJS()
 	c.RequireSimpleMDE()
+
+	// data binding for "Add DMP" pulldown
+	fetchDmpSchema(c, "conf/dmp")
 
 	c.Data["IsYAML"] = false
 	c.Data["IsJSON"] = true
