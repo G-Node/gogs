@@ -127,20 +127,20 @@ func ExploreMetadata(c *context.Context) {
 		commit, commintErr := gitRepo.CatFileCommit("refs/heads/master")
 		if commintErr != nil || commit == nil {
 			log.Error(2, "%s commit could not be retrieved: %v", repo.Name, err)
-			c.Data["HasDataCite"] = false
+			c.Data["HasDmpJson"] = false
 			continue
 		}
 
 		entry, err := commit.Blob("/dmp.json")
 		if err != nil || entry == nil {
 			log.Error(2, "dmp.json blob could not be retrieved: %v", err)
-			c.Data["HasDataCite"] = false
+			c.Data["HasDmpJson"] = false
 			continue
 		}
 		buf, err := entry.Bytes()
 		if err != nil {
 			log.Error(2, "dmp.json data could not be read: %v", err)
-			c.Data["HasDataCite"] = false
+			c.Data["HasDmpJson"] = false
 			continue
 		}
 
@@ -150,7 +150,7 @@ func ExploreMetadata(c *context.Context) {
 		err = json.Unmarshal(buf, &dmpContents)
 		if err != nil {
 			log.Error(2, "dmp.json data could not be unmarshalled: %v", err)
-			c.Data["HasDataCite"] = false
+			c.Data["HasDmpJson"] = false
 			break
 		}
 
@@ -210,20 +210,20 @@ func DmpBrowsing(c *context.Context) {
 		commit, commintErr := gitRepo.CatFileCommit("refs/heads/master")
 		if commintErr != nil || commit == nil {
 			log.Error(2, "%s commit could not be retrieved: %v", repo.Name, err)
-			c.Data["HasDataCite"] = false
+			c.Data["HasDmpJson"] = false
 			continue
 		}
 
 		entry, err := commit.Blob("/dmp.json")
 		if err != nil || entry == nil {
 			log.Error(2, "dmp.json blob could not be retrieved: %v", err)
-			c.Data["HasDataCite"] = false
+			c.Data["HasDmpJson"] = false
 			continue
 		}
 		buf, err := entry.Bytes()
 		if err != nil {
 			log.Error(2, "dmp.json data could not be read: %v", err)
-			c.Data["HasDataCite"] = false
+			c.Data["HasDmpJson"] = false
 			continue
 		}
 
@@ -233,7 +233,7 @@ func DmpBrowsing(c *context.Context) {
 		err = json.Unmarshal(buf, &dmpContents)
 		if err != nil {
 			log.Error(2, "dmp.json data could not be unmarshalled: %v", err)
-			c.Data["HasDataCite"] = false
+			c.Data["HasDmpJson"] = false
 			break
 		}
 

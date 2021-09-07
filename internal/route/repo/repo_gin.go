@@ -77,13 +77,13 @@ func readDmpJson(c *context.Context) {
 	entry, err := c.Repo.Commit.Blob("/dmp.json")
 	if err != nil || entry == nil {
 		log.Error(2, "dmp.json blob could not be retrieved: %v", err)
-		c.Data["HasDataCite"] = false
+		c.Data["HasDmpJson"] = false
 		return
 	}
 	buf, err := entry.Bytes()
 	if err != nil {
 		log.Error(2, "dmp.json data could not be read: %v", err)
-		c.Data["HasDataCite"] = false
+		c.Data["HasDmpJson"] = false
 		return
 	}
 
@@ -92,7 +92,7 @@ func readDmpJson(c *context.Context) {
 	err_schema := json.Unmarshal(buf, &schema)
 	if err_schema != nil {
 		log.Error(2, "dmp.json data could not be unmarshalled: %v", err_schema)
-		c.Data["HasDataCite"] = false
+		c.Data["HasDmpJson"] = false
 		return
 	}
 	log.Trace(schema.Schema)
@@ -104,7 +104,7 @@ func readDmpJson(c *context.Context) {
 		err = json.Unmarshal(buf, &doiInfo)
 		if err != nil {
 			log.Error(2, "dmp.json data could not be unmarshalled: %v", err)
-			c.Data["HasDataCite"] = false
+			c.Data["HasDmpJson"] = false
 			return
 		}
 
@@ -116,7 +116,7 @@ func readDmpJson(c *context.Context) {
 		err = json.Unmarshal(buf, &doiInfo)
 		if err != nil {
 			log.Error(2, "dmp.json data could not be unmarshalled: %v", err)
-			c.Data["HasDataCite"] = false
+			c.Data["HasDmpJson"] = false
 			return
 		}
 
@@ -128,7 +128,7 @@ func readDmpJson(c *context.Context) {
 		err = json.Unmarshal(buf, &doiInfo)
 		if err != nil {
 			log.Error(2, "dmp.json data could not be unmarshalled: %v", err)
-			c.Data["HasDataCite"] = false
+			c.Data["HasDmpJson"] = false
 			return
 		}
 

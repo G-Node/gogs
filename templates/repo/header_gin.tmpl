@@ -5,7 +5,7 @@
 							<a class="ui basic button" href="/{{.Repository.Owner.Name}}/{{.Repository.Name}}/doi"><i class="octicon octicon-squirrel"></i> Request {{if $.DOI}}New{{end}} DOI</a>
 						{{else if not $.DOI}} {{/*Link to registration instructions*/}}
 							<a class="ui basic button" data-tooltip="Your repository does not fulfill all requirements for a DOI yet. Click to get instructions." data-position="bottom center" href="/G-Node/Info/wiki/DOI"><i class="octicon octicon-squirrel"></i> How to publish</a>
-							{{if $.HasDataCite}}
+							{{if $.HasDmpJson}}
 								<a class="ui basic button" href="{{$.RepoLink}}/_edit/{{EscapePound $.BranchName}}/datacite.yml" data-position="bottom center"><i class="octicon octicon-file"></i>Edit DataCite file</a>
 							{{else}}
 								<a class="ui basic button" href="{{$.RepoLink}}/_add/{{EscapePound $.BranchName}}/datacite.yml" data-position="bottom center"><i class="octicon octicon-file"></i>Add DataCite file</a>

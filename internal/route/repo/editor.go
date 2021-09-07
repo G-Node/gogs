@@ -76,7 +76,7 @@ func editFile(c *context.Context, isNewFile bool) {
 		}
 
 		if blob.Name() == "dmp.json" {
-			fetchDmpSchema(c, filepath.Join(conf.WorkDir(), "conf/dmp/json_schema/dmp_meti_schema.json"))
+			fetchDmpSchema(c, filepath.Join(conf.WorkDir(), "conf/dmp/json_schema/schema_dmp_meti.json"))
 		}
 
 		c.Data["FileSize"] = blob.Size()
@@ -596,8 +596,11 @@ func CreateDmp(c *context.Context) {
 	// data binding for "Add DMP" pulldown
 	bidingDmpSchemaList(c, "conf/dmp")
 
+	fetchDmpSchema(c, filepath.Join(conf.WorkDir(), "conf/dmp/json_schema/schema_dmp_meti.json"))
+
 	c.Data["IsYAML"] = false
 	c.Data["IsJSON"] = true
+	c.Data["IsDmpJson"] = true
 	// safe to ignore error since we check for the asset at startup
 	data, _ := conf.Asset(dcname)
 	c.Data["FileContent"] = string(data)

@@ -60,7 +60,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 		return
 	}
 
-	if c.Data["HasDataCite"].(bool) {
+	if c.Data["HasDmpJson"].(bool) {
 		readDmpJson(c)
 	} else {
 		bidingDmpSchemaList(c, "conf/dmp")

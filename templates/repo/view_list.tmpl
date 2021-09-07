@@ -52,6 +52,6 @@
 {{if and .ReadmeExist .IsTextFile}}
 	{{template "repo/view_file" .}}
 {{end}}
-{{if and .HasDataCite .IsTextFile}}
+{{if and .HasDmpJson .IsTextFile}}
 	{{template "repo/doifile" .}}
 {{end}}
