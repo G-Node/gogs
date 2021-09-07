@@ -82,15 +82,20 @@
 					var container = document.getElementById("jsoneditor");
 					var options = {
 						{{ if .IsDmpJson }}schema: {{.Schema| Str2JS}},{{ end }}
-						mode:"form",
+						mode:"tree",
 						onChange:function(){
 							var  ct = JSON.stringify(jsonEditor.get(), null, 2);
 							$('#edit_area').val(ct);
 							codeMirrorEditor.setValue(ct);
 						},
-						onError(error) {
-							console.error("error: ", error);
-						}
+						onEditable: function(node) {
+							switch(node.field) {
+								case "schema":
+									return {field: false, value: false};
+								default:
+									return {field: false, value: true};
+							}
+						},
 					};
 					var jsonEditor = new JSONEditor(container, options, json);
 					jsonEditor.expandAll();
