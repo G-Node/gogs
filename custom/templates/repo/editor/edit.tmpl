@@ -69,7 +69,7 @@
 				</div>
 
 				{{if .IsJSON}}
-				<div class="ui bottom attached tab segment {{.IsDmpJson}}active{{end}}" data-tab="editor">
+				<div class="ui bottom attached tab segment {{if .IsDmpJson}}active{{end}}" data-tab="editor">
 				<div id="jsoneditor"></div>
 				<script>
 					var json = {{.FileContent| Str2JS}}
