@@ -16,7 +16,11 @@
 						{{range $i, $v := .TreeNames}}
 							<div class="divider"> / </div>
 							{{if eq $i $l}}
-								<input id="file-name" value="{{$v}}" placeholder="{{$.i18n.Tr "repo.editor.name_your_file"}}" data-ec-url-prefix="{{$.EditorconfigURLPrefix}}" required autofocus>
+								{{if $.IsDmpJson}}
+									<input id="file-name" value="{{$v}}" placeholder="{{$.i18n.Tr "repo.editor.name_your_file"}}" data-ec-url-prefix="{{$.EditorconfigURLPrefix}}" required autofocus readonly>
+								{{else}}
+									<input id="file-name" value="{{$v}}" placeholder="{{$.i18n.Tr "repo.editor.name_your_file"}}" data-ec-url-prefix="{{$.EditorconfigURLPrefix}}" required autofocus>
+								{{end}}
 								<span class="octicon octicon-info poping up" data-content="{{$.i18n.Tr "repo.editor.filename_help"}}" data-position="bottom center" data-variation="tiny inverted"></span>
 							{{else}}
 								<span class="section"><a href="{{EscapePound $.BranchLink}}/{{index $.TreePaths $i | EscapePound}}">{{$v}}</a></span>
@@ -48,18 +52,17 @@
 					{{end}}
 				</div>
 
-				{{if not .IsDmpJson}}
-					<div class="ui bottom attached active tab segment codewriter" data-tab="write">
-						{{if or .IsYAML .IsJSON}}<div class="ui message" id="parseerr">Change content to check for validity</div>{{end}}
-						<textarea id="edit_area" name="content" data-id="repo-{{.Repository.Name}}-{{.TreePath}}"
-							data-url="{{AppSubURL}}/api/v1/markdown"
-							data-context="{{.RepoLink}}"
-							data-markdown-file-exts="{{.MarkdownFileExts}}"
-							data-line-wrap-extensions="{{.LineWrapExtensions}}">
-								{{.FileContent}}
-							</textarea required>
-					</div>
-				{{end}}
+				<div class="ui bottom attached tab segment codewriter {{if not .IsDmpJson}}active{{end}}" data-tab="write">
+					{{if or .IsYAML .IsJSON}}<div class="ui message" id="parseerr">Change content to check for validity</div>{{end}}
+					<textarea id="edit_area" name="content" data-id="repo-{{.Repository.Name}}-{{.TreePath}}"
+						data-url="{{AppSubURL}}/api/v1/markdown"
+						data-context="{{.RepoLink}}"
+						data-markdown-file-exts="{{.MarkdownFileExts}}"
+						data-line-wrap-extensions="{{.LineWrapExtensions}}">
+							{{.FileContent}}
+						</textarea required>
+				</div>
+
 
 				<div class="ui bottom attached tab segment markdown" data-tab="preview">
 					{{.i18n.Tr "repo.release.loading"}}
@@ -74,7 +77,6 @@
 				<script>
 					var json = {{.FileContent| Str2JS}}
 					console.log("IsDmpJson: ", {{.IsDmpJson}})
-					console.log("Schema: ", {{.Schema| Str2JS}})
 
 					// create the editor
 					var container = document.getElementById("jsoneditor");
