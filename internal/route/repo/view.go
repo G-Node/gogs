@@ -63,7 +63,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 	if c.Data["HasDataCite"].(bool) {
 		readDmpJson(c)
 	} else {
-		fetchDmpSchema(c, "conf/dmp")
+		bidingDmpSchemaList(c, "conf/dmp")
 	}
 
 	var readmeFile *git.Blob
@@ -134,8 +134,9 @@ func renderDirectory(c *context.Context, treeLink string) {
 	}
 }
 
-// fetchDmpSchema is RCOS specific code.
-func fetchDmpSchema(c *context.Context, dirPath string) {
+// bidingDmpSchemaList is RCOS specific code.
+// This function bind DMP template file.
+func bidingDmpSchemaList(c *context.Context, dirPath string) {
 	files, err := ioutil.ReadDir(dirPath)
 	if err != nil {
 		panic(err)
@@ -151,6 +152,18 @@ func fetchDmpSchema(c *context.Context, dirPath string) {
 	}
 
 	c.Data["SchemaList"] = schemaList
+}
+
+// fetchDmpSchema is RCOS specific code.
+// This function fetch&bind JSON Schema of DMP for validation.
+func fetchDmpSchema(c *context.Context, filePath string) {
+	scheme, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		panic(err)
+	}
+
+	c.Data["IsDmpJson"] = true
+	c.Data["Schema"] = string(scheme)
 }
 
 func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink string) {

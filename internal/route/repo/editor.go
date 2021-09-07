@@ -75,6 +75,10 @@ func editFile(c *context.Context, isNewFile bool) {
 			return
 		}
 
+		if blob.Name() == "dmp.json" {
+			fetchDmpSchema(c, filepath.Join(conf.WorkDir(), "conf/dmp/json_schema/dmp_meti_schema.json"))
+		}
+
 		c.Data["FileSize"] = blob.Size()
 		c.Data["FileName"] = blob.Name()
 		c.Data["IsJSON"] = markup.IsJSON(blob.Name())
@@ -590,7 +594,7 @@ func CreateDmp(c *context.Context) {
 	c.RequireSimpleMDE()
 
 	// data binding for "Add DMP" pulldown
-	fetchDmpSchema(c, "conf/dmp")
+	bidingDmpSchemaList(c, "conf/dmp")
 
 	c.Data["IsYAML"] = false
 	c.Data["IsJSON"] = true

@@ -29,30 +29,38 @@
 			</div>
 			<div class="field">
 				<div class="ui top attached tabular menu" data-write="write" data-preview="preview" data-diff="diff">
-					<a class="active item" data-tab="write"><i class="octicon octicon-code"></i> {{if .IsNewFile}}{{.i18n.Tr "repo.editor.new_file"}}{{else}}{{.i18n.Tr "repo.editor.edit_file"}}{{end}}</a>
+					{{if not .IsDmpJson}}
+						<a class="active item" data-tab="write"><i class="octicon octicon-code"></i> {{if .IsNewFile}}{{.i18n.Tr "repo.editor.new_file"}}{{else}}{{.i18n.Tr "repo.editor.edit_file"}}{{end}}</a>
+					{{end}}
+
 					{{if .IsJSON}}
-					<a class="item" data-tab="editor"><i class="octicon octicon-file"></i>Graphical Editor</a>
+						<a class="{{if .IsDmpJson}}active {{end}}item" data-tab="editor"><i class="octicon octicon-file"></i>Graphical Editor</a>
 					{{end}}
 					{{if .IsYAML}}
-					<a class="item" data-tab="yamleditor" data-tooltip="Using the graphical YAML editor will change the file layout and remove comments!"><i class="octicon octicon-file"></i>Graphical Editor</a>
+						<a class="item" data-tab="yamleditor" data-tooltip="Using the graphical YAML editor will change the file layout and remove comments!"><i class="octicon octicon-file"></i>Graphical Editor</a>
 					{{end}}
 					{{if .IsODML}}
-					<a class="item" data-tab="odmleditor"><i class="octicon octicon-file"></i>Graphical Editor</a>
+						<a class="item" data-tab="odmleditor"><i class="octicon octicon-file"></i>Graphical Editor</a>
 					{{end}}
 					{{if not .IsNewFile}}
-					<a class="item" id="preview-tab" data-tab="preview" data-url="{{AppSubURL}}/api/v1/markdown" data-root-context="{{.BranchLink}}/" data-context="{{.BranchLink}}/{{.ParentTreePath}}" data-preview-file-modes="{{.PreviewableFileModes}}"><i class="octicon octicon-eye"></i> {{.i18n.Tr "repo.release.preview"}}</a>
-					<a class="item" data-tab="diff" data-url="{{.RepoLink}}/_preview/{{.BranchName}}/{{.TreePath}}"><i class="octicon octicon-diff"></i> {{.i18n.Tr "repo.editor.preview_changes"}}</a>
+						<a class="item" id="preview-tab" data-tab="preview" data-url="{{AppSubURL}}/api/v1/markdown" data-root-context="{{.BranchLink}}/" data-context="{{.BranchLink}}/{{.ParentTreePath}}" data-preview-file-modes="{{.PreviewableFileModes}}"><i class="octicon octicon-eye"></i> {{.i18n.Tr "repo.release.preview"}}</a>
+						<a class="item" data-tab="diff" data-url="{{.RepoLink}}/_preview/{{.BranchName}}/{{.TreePath}}"><i class="octicon octicon-diff"></i> {{.i18n.Tr "repo.editor.preview_changes"}}</a>
 					{{end}}
 				</div>
-				<div class="ui bottom attached active tab segment codewriter" data-tab="write">
-					{{if or .IsYAML .IsJSON}}<div class="ui message" id="parseerr">Change content to check for validity</div>{{end}}
-					<textarea id="edit_area" name="content" data-id="repo-{{.Repository.Name}}-{{.TreePath}}"
-						data-url="{{AppSubURL}}/api/v1/markdown"
-						data-context="{{.RepoLink}}"
-						data-markdown-file-exts="{{.MarkdownFileExts}}"
-						data-line-wrap-extensions="{{.LineWrapExtensions}}">
-{{.FileContent}}</textarea required>
-				</div>
+
+				{{if not .IsDmpJson}}
+					<div class="ui bottom attached active tab segment codewriter" data-tab="write">
+						{{if or .IsYAML .IsJSON}}<div class="ui message" id="parseerr">Change content to check for validity</div>{{end}}
+						<textarea id="edit_area" name="content" data-id="repo-{{.Repository.Name}}-{{.TreePath}}"
+							data-url="{{AppSubURL}}/api/v1/markdown"
+							data-context="{{.RepoLink}}"
+							data-markdown-file-exts="{{.MarkdownFileExts}}"
+							data-line-wrap-extensions="{{.LineWrapExtensions}}">
+								{{.FileContent}}
+							</textarea required>
+					</div>
+				{{end}}
+
 				<div class="ui bottom attached tab segment markdown" data-tab="preview">
 					{{.i18n.Tr "repo.release.loading"}}
 				</div>
@@ -61,25 +69,37 @@
 				</div>
 
 				{{if .IsJSON}}
-				<div class="ui bottom attached tab segment" data-tab="editor">
+				<div class="ui bottom attached tab segment {{.IsDmpJson}}active{{end}}" data-tab="editor">
 				<div id="jsoneditor"></div>
 				<script>
+					var json = {{.FileContent| Str2JS}}
+					console.log("IsDmpJson: ", {{.IsDmpJson}})
+					console.log("Schema: ", {{.Schema| Str2JS}})
+
 					// create the editor
 					var container = document.getElementById("jsoneditor");
-					var options = {mode:"tree",
+					var options = {
+						{{ if .IsDmpJson }}schema: {{.Schema| Str2JS}},{{ end }}
+						mode:"form",
 						onChange:function(){
 							var  ct = JSON.stringify(jsonEditor.get(), null, 2);
 							$('#edit_area').val(ct);
 							codeMirrorEditor.setValue(ct);
-						}};
-					var jsonEditor = new JSONEditor(container, options);
+						},
+						onError(error) {
+							console.error("error: ", error);
+						}
+					};
+					var jsonEditor = new JSONEditor(container, options, json);
+					jsonEditor.expandAll();
 
 					// set json
-					var json = {{.FileContent| Str2JS}}
-					jsonEditor.set(json);
+					// var json = {{.FileContent| Str2JS}}
+					// jsonEditor.set(json);
 
 					// get json
 					var json = jsonEditor.get();
+
 				</script>
 				</div>
 				{{end}}
