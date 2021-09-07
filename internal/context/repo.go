@@ -296,9 +296,9 @@ func RepoAssignment(pages ...bool) macaron.Handler {
 
 		c.Data["IsGuest"] = !c.Repo.HasAccess()
 
-		hasDC := hasDataCite(c)
-		c.Data["HasDataCite"] = hasDC
-		if hasDC {
+		hasDmp := hasDmpJson(c)
+		c.Data["HasDmpJson"] = hasDmp
+		if hasDmp {
 			c.Data["IsDOIReady"] = isDOIReady(c)
 		}
 
