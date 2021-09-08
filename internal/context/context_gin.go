@@ -94,11 +94,11 @@ func getRepoDOI(c *Context) string {
 	return doiBase + uuid[:6]
 }
 
-// hasDataCite returns 'true' if a repository includes a file called
+// hasDmpJson returns 'true' if a repository includes a file called
 // 'dmp.json' in its root.  No checks are made to determine if the file is
 // valid.  If any error occurs, for example due to an uninitialised repository
 // or missing repository root, it returns 'false' without error.
-func hasDataCite(c *Context) bool {
+func hasDmpJson(c *Context) bool {
 	commit, err := c.Repo.GitRepo.BranchCommit(c.Repo.Repository.DefaultBranch)
 	if err != nil {
 		log.Trace("Couldn't get commit: %v", err)
@@ -113,7 +113,7 @@ func hasDataCite(c *Context) bool {
 // True if repository is not Private, is not registered, or is registered and
 // has changes (HEAD is not registered)
 func isDOIReady(c *Context) bool {
-	if hasDC, ok := c.Data["HasDataCite"]; !ok || !hasDC.(bool) {
+	if hasDC, ok := c.Data["HasDmpJson"]; !ok || !hasDC.(bool) {
 		return false
 	}
 	dbrepo := c.Repo.Repository
