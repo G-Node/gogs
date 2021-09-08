@@ -1,6 +1,6 @@
 {
-    "schema": "METI",
-    "dmpType": "",
+    "schema": "meti",
+    "dmpType": "New",
     "agreementTitle": "The Data Management Plan",
     "agreementDate": "2021/07/20",
     "submitDate": "2021/08/01",
