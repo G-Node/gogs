@@ -5,6 +5,7 @@
 package repo
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"path"
@@ -69,14 +70,20 @@ func editFile(c *context.Context, isNewFile bool) {
 		}
 
 		blob := entry.Blob()
-		p, err := blob.Bytes()
+		buf, err := blob.Bytes()
 		if err != nil {
 			c.Error(err, "get blob data")
 			return
 		}
 
 		if blob.Name() == "dmp.json" {
-			fetchDmpSchema(c, filepath.Join(conf.WorkDir(), "conf/dmp/json_schema/schema_dmp_meti.json"))
+			dmpSchema := &struct{ Schema string }{}
+			if err := json.Unmarshal(buf, &dmpSchema); err != nil {
+				log.Error("DMP data can't be unmarshalled: %v", err)
+				c.Data["HasDmpJson"] = false
+			} else {
+				fetchDmpSchema(c, filepath.Join(conf.WorkDir(), "conf/dmp/json_schema/schema_dmp_"+dmpSchema.Schema+".json"))
+			}
 		}
 
 		c.Data["FileSize"] = blob.Size()
@@ -85,18 +92,18 @@ func editFile(c *context.Context, isNewFile bool) {
 		c.Data["IsYAML"] = markup.IsYAML(blob.Name())
 
 		// Only text file are editable online.
-		if !tool.IsTextFile(p) {
+		if !tool.IsTextFile(buf) {
 			c.NotFound()
 			return
 		}
 
-		c.Data["IsODML"] = tool.IsODMLFile(p)
+		c.Data["IsODML"] = tool.IsODMLFile(buf)
 
-		if err, content := template.ToUTF8WithErr(p); err != nil {
+		if err, content := template.ToUTF8WithErr(buf); err != nil {
 			if err != nil {
 				log.Error("Failed to convert encoding to UTF-8: %v", err)
 			}
-			c.Data["FileContent"] = string(p)
+			c.Data["FileContent"] = string(buf)
 		} else {
 			c.Data["FileContent"] = content
 		}
@@ -585,7 +592,7 @@ func RemoveUploadFileFromServer(c *context.Context, f form.RemoveUploadFile) {
 // CreateDmp is GIN specific code
 func CreateDmp(c *context.Context) {
 	schema := c.QueryEscape("schema")
-	dcname := path.Join("conf/dmp/", schema)
+	dcname := path.Join("conf/dmp", schema)
 
 	treeNames, treePaths := getParentTreeFields(c.Repo.TreePath)
 
@@ -596,7 +603,7 @@ func CreateDmp(c *context.Context) {
 	// data binding for "Add DMP" pulldown
 	bidingDmpSchemaList(c, "conf/dmp")
 
-	fetchDmpSchema(c, filepath.Join(conf.WorkDir(), "conf/dmp/json_schema/schema_dmp_meti.json"))
+	fetchDmpSchema(c, filepath.Join(conf.WorkDir(), "conf/dmp/json_schema/schema_"+schema))
 
 	c.Data["IsYAML"] = false
 	c.Data["IsJSON"] = true
