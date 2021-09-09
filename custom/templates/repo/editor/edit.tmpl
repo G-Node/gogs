@@ -74,6 +74,7 @@
 				{{if .IsJSON}}
 				<div class="ui bottom attached tab segment {{if .IsDmpJson}}active{{end}}" data-tab="editor">
 				<div id="jsoneditor"></div>
+				<div id="onValidationOutput"></div>
 				<script>
 					var json = {{.FileContent| Str2JS}}
 					console.log("IsDmpJson: ", {{.IsDmpJson}})
@@ -84,9 +85,10 @@
 						{{ if .IsDmpJson }}schema: {{.Schema| Str2JS}},{{ end }}
 						mode:"tree",
 						onChange:function(){
-							var  ct = JSON.stringify(jsonEditor.get(), null, 2);
+							var ct = JSON.stringify(jsonEditor.get(), null, 2);
 							$('#edit_area').val(ct);
 							codeMirrorEditor.setValue(ct);
+							console.log("changed");
 						},
 						onEditable: function(node) {
 							switch(node.field) {
@@ -95,6 +97,9 @@
 								default:
 									return {field: false, value: true};
 							}
+						},
+						onError: function(error) {
+							console.log("error: ", error);
 						},
 					};
 					var jsonEditor = new JSONEditor(container, options, json);
