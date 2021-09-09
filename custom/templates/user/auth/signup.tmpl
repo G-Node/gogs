@@ -1,0 +1,68 @@
+{{template "base/head" .}}
+<div class="user signup">
+	<div class="ui middle very relaxed page grid">
+		<div class="column">
+			<form class="ui form" action="{{.Link}}" method="post">
+				{{.CSRFTokenHTML}}
+				<h3 class="ui top attached header">
+					{{.i18n.Tr "sign_up"}}
+				</h3>
+				<div class="ui attached segment">
+					{{template "base/alert" .}}
+					{{if .DisableRegistration}}
+						<p>{{.i18n.Tr "auth.disable_register_prompt"}}</p>
+					{{else}}
+					<div class="ui piled segment">
+						For Registration we require only username, password, and a valid email address, but adding your name and affiliation is recommended.
+						Please use an institutional email address for registration to benefit from the full set of features of GIN.
+					</div>
+					<div class="ui required inline field {{if .Err_UserName}}error{{end}}"
+							 data-tooltip="Username is used to create and to display your repositories. Choose wisely">
+						<label for="user_name">{{.i18n.Tr "username"}}</label>
+						<input id="user_name" name="user_name" value="{{.user_name}}" autofocus required>
+					</div>
+					<div class="required inline field {{if .Err_Email}}error{{end}}"
+							 data-tooltip="Please register with an institutional email (see above)">
+						<label for="email">{{.i18n.Tr "email"}}</label>
+						<input id="email" name="email" type="email" value="{{.email}}" required>
+					</div>
+					<div class="required inline field {{if .Err_Password}}error{{end}}">
+						<label for="password">{{.i18n.Tr "password"}}</label>
+						<input id="password" name="password" type="password" value="{{.password}}" required>
+					</div>
+					<div class="required inline field {{if .Err_Password}}error{{end}}">
+						<label for="retype">{{.i18n.Tr "re_type"}}</label>
+						<input id="retype" name="retype" type="password" value="{{.retype}}" required>
+					</div>
+					<div class="inline field">
+						<label for="full_name">Full Name</label>
+						<input id="full_name" name="full_name" value="{{.full_name}}">
+					</div>
+					<div class="inline field">
+						<label for="affiliation">Affiliation</label>
+						<input id="affiliation" name="affiliation" value="{{.affiliation}}">
+					</div>
+					{{if .EnableCaptcha}}
+                        <div class="inline field">
+                            <label></label>
+                            {{.Captcha.CreateHtml}}
+                        </div>
+                        <div class="required inline field {{if .Err_Captcha}}error{{end}}">
+                            <label for="captcha">{{.i18n.Tr "captcha"}}</label>
+                            <input id="captcha" name="captcha" value="{{.captcha}}" autocomplete="off">
+                        </div>
+					{{end}}
+					<div class="ui segment">
+						By clicking "{{.i18n.Tr "auth.create_new_account"}}"</a>, you agree to our <a href="/G-Node/Info/wiki/Terms+of+Use">Terms of Use</a> and <a href="/G-Node/Info/wiki/Datenschutz">Data Processing Policy</a>.
+					</div>
+					<div class="inline field">
+						<label></label>
+						<button class="ui green button">{{.i18n.Tr "auth.create_new_account"}}</button>
+					</div>
+					{{end}}
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{{template "base/footer" .}}
