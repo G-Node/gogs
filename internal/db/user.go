@@ -44,6 +44,7 @@ type UserType int
 const (
 	UserIndividual UserType = iota // Historic reason to make it starts at 0.
 	UserOrganization
+	UserFA
 )
 
 // User represents the object of individual and member of organization.
