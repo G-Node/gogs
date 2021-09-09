@@ -2,8 +2,8 @@
     "schema": "meti",
     "dmpType": "New",
     "agreementTitle": "The Data Management Plan",
-    "agreementDate": "2021/07/20",
-    "submitDate": "2021/08/01",
+    "agreementDate": "2021-09-20",
+    "submitDate": "2021-10-01",
     "corporateName": "The Corporate",
     "researches": [
         {
@@ -16,6 +16,19 @@
             "concealReason": "nothing",
             "concealPeriod": "",
             "acquirer": "John Lab",
+            "acquireMethod": "by download link",
+            "remarks": ""
+        },
+        {
+            "index": 2,
+            "title": "The Research Data2",
+            "description": "This is description.",
+            "manager": "Jumpei Kuwata",
+            "dataType": "My Data",
+            "releaseLevel": 4,
+            "concealReason": "nothing",
+            "concealPeriod": "",
+            "acquirer": "IVIS Lab",
             "acquireMethod": "by download link",
             "remarks": ""
         }

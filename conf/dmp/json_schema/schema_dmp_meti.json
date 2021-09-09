@@ -4,19 +4,30 @@
     "type": "object",
     "properties": {
         "schema": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+                "meti",
+                "amed",
+                "jst"
+            ]
         },
         "dmpType": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+                "New",
+                "Continued"
+            ]
         },
         "agreementTitle": {
             "type": "string"
         },
         "agreementDate": {
-            "type": "string"
+            "type": "string",
+            "format": "date"
         },
         "submitDate": {
-            "type": "string"
+            "type": "string",
+            "format": "date"
         },
         "corporateName": {
             "type": "string"
