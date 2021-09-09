@@ -11,12 +11,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"encoding/json"
-
 	"github.com/gogs/git-module"
 	"github.com/ivis-yoshida/gogs/internal/conf"
 	"github.com/ivis-yoshida/gogs/internal/context"
-	"github.com/ivis-yoshida/gogs/internal/route/repo/dmp_schema"
 	"github.com/ivis-yoshida/gogs/internal/tool"
 	log "gopkg.in/clog.v1"
 )
@@ -86,56 +83,7 @@ func readDmpJson(c *context.Context) {
 		c.Data["HasDmpJson"] = false
 		return
 	}
-
-	// judge DMP schema
-	schema := &struct{ Schema string }{}
-	err_schema := json.Unmarshal(buf, &schema)
-	if err_schema != nil {
-		log.Error(2, "dmp.json data could not be unmarshalled: %v", err_schema)
-		c.Data["HasDmpJson"] = false
-		return
-	}
-	log.Trace(schema.Schema)
-
-	// FIXME: DRY principle
-	if schema.Schema == "METI" {
-		doiInfo := dmp_schema.MetiDmpInfo{}
-
-		err = json.Unmarshal(buf, &doiInfo)
-		if err != nil {
-			log.Error(2, "dmp.json data could not be unmarshalled: %v", err)
-			c.Data["HasDmpJson"] = false
-			return
-		}
-
-		log.Trace(doiInfo.Schema)
-		c.Data["DOIInfo"] = &doiInfo
-	} else if schema.Schema == "AMED" {
-		doiInfo := dmp_schema.AmedDmpInfo{}
-
-		err = json.Unmarshal(buf, &doiInfo)
-		if err != nil {
-			log.Error(2, "dmp.json data could not be unmarshalled: %v", err)
-			c.Data["HasDmpJson"] = false
-			return
-		}
-
-		log.Trace(doiInfo.Schema)
-		c.Data["DOIInfo"] = &doiInfo
-	} else if schema.Schema == "JST" {
-		doiInfo := dmp_schema.JstDmpInfo{}
-
-		err = json.Unmarshal(buf, &doiInfo)
-		if err != nil {
-			log.Error(2, "dmp.json data could not be unmarshalled: %v", err)
-			c.Data["HasDmpJson"] = false
-			return
-		}
-
-		log.Trace(doiInfo.Schema)
-		c.Data["DOIInfo"] = &doiInfo
-	}
-	// FIXME
+	c.Data["DOIInfo"] = string(buf)
 	c.Data["IsTextFile"] = true
 }
 
