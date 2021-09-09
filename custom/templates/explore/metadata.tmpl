@@ -4,12 +4,13 @@
 		<div class="ui grid">
 			{{template "explore/navbar" .}}
 			<div class="twelve wide column content">
-				{{if eq .UserRightErr ""}}
+				{{if .UserRightErr}}
 					{{template "explore/search_metadata" .}}
 					{{template "explore/metadata_list" .}}
 					{{template "explore/page" .}}
 				{{ else }}
-					<h2>{{.UserRightErr}}</h2>
+					<h1>ACCEESS RIGHT ERROR</h1>
+					<h2>You don't have the right of searching metadata.</h2>
 				{{ end }}
 			</div>
 		</div>

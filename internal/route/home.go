@@ -95,8 +95,10 @@ func ExploreMetadata(c *context.Context) {
 	c.Data["PageIsExplore"] = true
 	c.Data["PageIsExploreMetadata"] = true
 
-	if c.User.Type != db.UserFA {
-		c.Data["UserRightErr"] = "You don't have rights of searching metadata."
+	if c.User.Type == db.UserFA {
+		c.Data["UserRightErr"] = true
+	} else {
+		c.Data["UserRightErr"] = false
 	}
 
 	selectedKey := c.Query("selectKey")

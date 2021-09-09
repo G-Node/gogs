@@ -20,9 +20,11 @@
 		<a class="{{if .PageIsExploreOrganizations}}active{{end}} item" href="{{AppSubURL}}/explore/organizations">
 			<span class="octicon octicon-organization"></span> {{.i18n.Tr "explore.organizations"}}
 		</a>
-        <a class="{{if .PageIsExploreMetadata}}active{{end}} item" href="{{AppSubURL}}/explore/metadata">
-			<span class="octicon octicon-file"></span> Metadata
-		</a>
+		{{if .UserRightErr }}
+			<a class="{{if .PageIsExploreMetadata}}active{{end}} item" href="{{AppSubURL}}/explore/metadata">
+				<span class="octicon octicon-file"></span> Metadata
+			</a>
+		{{end}}
 		{{end}}
 	</div>
 </div>
