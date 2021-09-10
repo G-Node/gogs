@@ -7,6 +7,7 @@ package user
 import (
 	"fmt"
 	"net/url"
+	"strings"
 
 	"github.com/go-macaron/captcha"
 	"github.com/pkg/errors"
@@ -358,6 +359,15 @@ func SignUpPost(c *context.Context, cpt *captcha.Captcha, f form.Register) {
 		return
 	}
 	log.Trace("Account created: %s", u.Name)
+
+	// temporally implementation
+	if strings.HasPrefix(f.UserName, "fa-") {
+		u.Type = db.UserFA
+		if err := db.UpdateUser(u); err != nil {
+			c.Error(err, "update user: UserType")
+			return
+		}
+	}
 
 	// Auto-set admin for the only user.
 	if db.CountUsers() == 1 {
