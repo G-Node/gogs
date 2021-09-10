@@ -59,6 +59,9 @@ func ExploreRepos(c *context.Context) {
 	c.Data["PageIsExplore"] = true
 	c.Data["PageIsExploreRepositories"] = true
 
+	// for "Metadata" link on navbar
+	c.Data["UserRightErr"] = (c.User.Type >= db.UserFA)
+
 	page := c.QueryInt("page")
 	if page <= 0 {
 		page = 1
@@ -94,12 +97,7 @@ func ExploreMetadata(c *context.Context) {
 	c.Data["Title"] = c.Tr("explore")
 	c.Data["PageIsExplore"] = true
 	c.Data["PageIsExploreMetadata"] = true
-
-	if c.User.Type == db.UserFA {
-		c.Data["UserRightErr"] = true
-	} else {
-		c.Data["UserRightErr"] = false
-	}
+	c.Data["UserRightErr"] = (c.User.Type >= db.UserFA)
 
 	selectedKey := c.Query("selectKey")
 	keyword := c.Query("q")
@@ -312,6 +310,9 @@ func ExploreUsers(c *context.Context) {
 	c.Data["PageIsExplore"] = true
 	c.Data["PageIsExploreUsers"] = true
 
+	// for "Metadata" link on navbar
+	c.Data["UserRightErr"] = (c.User.Type >= db.UserFA)
+
 	RenderUserSearch(c, &UserSearchOptions{
 		Type:     db.UserIndividual,
 		Counter:  db.CountUsers,
@@ -326,6 +327,9 @@ func ExploreOrganizations(c *context.Context) {
 	c.Data["Title"] = c.Tr("explore")
 	c.Data["PageIsExplore"] = true
 	c.Data["PageIsExploreOrganizations"] = true
+
+	// for "Metadata" link on navbar
+	c.Data["UserRightErr"] = (c.User.Type >= db.UserFA)
 
 	RenderUserSearch(c, &UserSearchOptions{
 		Type:     db.UserOrganization,
