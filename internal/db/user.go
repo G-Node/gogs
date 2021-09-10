@@ -44,6 +44,8 @@ type UserType int
 const (
 	UserIndividual UserType = iota // Historic reason to make it starts at 0.
 	UserOrganization
+
+	// :caution: more "UserFA" have the rights of searching metadata
 	UserFA
 )
 
