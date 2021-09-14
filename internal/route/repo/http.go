@@ -158,6 +158,7 @@ Please create and use personal access token on user settings page`)
 			return
 		}
 
+		log.Trace("[HTTPContexter] isPull: " + strconv.FormatBool(isPull))
 		log.Trace("[Git] Authenticated user: %s", authUser.Name)
 
 		mode := db.AccessModeWrite
