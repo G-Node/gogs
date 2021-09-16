@@ -5,10 +5,9 @@
 package route
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
+	"strings"
 
 	"github.com/go-macaron/i18n"
 	"github.com/gogs/git-module"
@@ -19,7 +18,6 @@ import (
 	"github.com/ivis-yoshida/gogs/internal/conf"
 	"github.com/ivis-yoshida/gogs/internal/context"
 	"github.com/ivis-yoshida/gogs/internal/db"
-	"github.com/ivis-yoshida/gogs/internal/route/repo/dmp_schema"
 	"github.com/ivis-yoshida/gogs/internal/route/user"
 )
 
@@ -148,19 +146,9 @@ func ExploreMetadata(c *context.Context) {
 			continue
 		}
 
-		// FIXME : multiple schema
-		dmpContents := dmp_schema.MetiDmpInfo{}
+		c.Data["DOIInfo"] = string(buf)
 
-		err = json.Unmarshal(buf, &dmpContents)
-		if err != nil {
-			log.Error(2, "dmp.json data could not be unmarshalled: %v", err)
-			c.Data["HasDmpJson"] = false
-			break
-		}
-
-		c.Data["DOIInfo"] = &dmpContents
-
-		if selectedKey != "" && keyword != "" && isContained(dmpContents, selectedKey, keyword) {
+		if selectedKey != "" && keyword != "" && isContained(string(buf), selectedKey, keyword) {
 			c.Data["SelectedKey"] = selectedKey
 			c.Data["SearchResult"] = keyword
 			repo.HasMetadata = true
@@ -181,16 +169,21 @@ func ExploreMetadata(c *context.Context) {
 	c.Success(EXPLORE_METADATA)
 }
 
+// DmpBrowsing is RCOS specific code
 func DmpBrowsing(c *context.Context) {
 	page := c.QueryInt("page")
 	if page <= 0 {
 		page = 1
 	}
-	ownerName := c.Query("owner")
 	repoName := c.Query("repo")
+	owner, err := db.Users.GetByUsername(c.Query("owner"))
+	if err != nil {
+		c.Error(err, "get owner information")
+	}
 
 	repos, _, err := db.SearchRepositoryByName(&db.SearchRepoOptions{
 		Keyword:  repoName,
+		OwnerID:  owner.ID,
 		UserID:   c.UserID(),
 		OrderBy:  "updated_unix DESC",
 		Page:     page,
@@ -202,7 +195,6 @@ func DmpBrowsing(c *context.Context) {
 	}
 
 	// Get dmp.json contents
-	// FIXME: refactor same-name-bug & non-loop
 	for _, repo := range repos {
 		repo.HasMetadata = false
 		gitRepo, repoErr := git.Open(repo.RepoPath())
@@ -231,28 +223,16 @@ func DmpBrowsing(c *context.Context) {
 			continue
 		}
 
-		// FIXME : multiple schema
-		dmpContents := dmp_schema.MetiDmpInfo{}
-
-		err = json.Unmarshal(buf, &dmpContents)
-		if err != nil {
-			log.Error(2, "dmp.json data could not be unmarshalled: %v", err)
-			c.Data["HasDmpJson"] = false
-			break
-		}
-
-		c.Data["OwnerName"] = ownerName
+		c.Data["OwnerName"] = owner.Name
 		c.Data["RepoName"] = repoName
-		c.Data["DOIInfo"] = &dmpContents
+		c.Data["DOIInfo"] = string(buf)
 	}
 	c.Success(DMP_BROWSING)
 }
 
-func isContained(srt dmp_schema.MetiDmpInfo, selectedKey, keyword string) bool {
-	srtValue := reflect.ValueOf(srt)
-	v := srtValue.FieldByName(selectedKey)
-
-	return v.String() == keyword
+// isContained is RCOS specific code
+func isContained(bufStr, selectedKey, keyword string) bool {
+	return strings.Contains(bufStr, "\""+selectedKey+"\": \""+keyword+"\"")
 }
 
 type UserSearchOptions struct {
