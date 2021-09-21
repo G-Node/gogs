@@ -9,6 +9,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/unknwon/com"
@@ -293,6 +294,13 @@ func Download(c *context.Context) {
 		return
 	}
 	refName = strings.TrimSuffix(uri, ext)
+
+	if !c.Repo.Repository.IsOwnedBy(c.User.ID) {
+		c.Repo.Repository.Downloaded = c.Repo.Repository.Downloaded + 1
+		db.UpdateRepository(c.Repo.Repository, true)
+	}
+
+	log.Info("Downloaded " + c.Repo.Repository.Name + "-" + refName + ext + " by " + c.User.Name + "(total: " + strconv.FormatUint(c.Repo.Repository.Downloaded, 10) + " downloaded)")
 
 	if !com.IsDir(archivePath) {
 		if err := os.MkdirAll(archivePath, os.ModePerm); err != nil {

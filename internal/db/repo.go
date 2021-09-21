@@ -16,6 +16,7 @@ import (
 	"path"
 	"path/filepath"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 
@@ -205,6 +206,8 @@ type Repository struct {
 	CreatedUnix int64
 	Updated     time.Time `xorm:"-" gorm:"-" json:"-"`
 	UpdatedUnix int64
+
+	Downloaded uint64 `xorm:"NOT NULL DEFAULT 0" gorm:"NOT NULL;DEFAULT:0"`
 }
 
 func (repo *Repository) BeforeInsert() {
@@ -2467,6 +2470,12 @@ func ForkRepository(doer, owner *User, baseRepo *Repository, name, desc string) 
 	}); err != nil {
 		log.Error("PrepareWebhooks [repo_id: %d]: %v", baseRepo.ID, err)
 	}
+
+	if !baseRepo.IsOwnedBy(owner.ID) {
+		baseRepo.Downloaded = baseRepo.Downloaded + 1
+		UpdateRepository(baseRepo, true)
+	}
+	log.Info(baseRepo.Name + " is forked by " + owner.Name + " (total: " + strconv.FormatUint(baseRepo.Downloaded, 10) + " downloaded)")
 	return repo, nil
 }
 
