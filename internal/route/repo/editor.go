@@ -107,15 +107,17 @@ func editFile(c *context.Context, isNewFile bool) {
 		} else {
 			c.Data["FileContent"] = content
 		}
+		c.Data["commit_summary"] = "実施事項: " + blob.Name() + "を編集"
 	} else {
 		treeNames = append(treeNames, "") // Append empty string to allow user name the new file.
+		c.Data["commit_summary"] = "実施事項: ファイルを新規作成"
 	}
 
 	c.Data["ParentTreePath"] = path.Dir(c.Repo.TreePath)
 	c.Data["TreeNames"] = treeNames
 	c.Data["TreePaths"] = treePaths
 	c.Data["BranchLink"] = c.Repo.RepoLink + "/src/" + c.Repo.BranchName
-	c.Data["commit_summary"] = ""
+
 	c.Data["commit_message"] = ""
 	c.Data["commit_choice"] = "direct"
 	c.Data["new_branch_name"] = ""
@@ -338,9 +340,23 @@ func DiffPreviewPost(c *context.Context, f form.EditPreviewDiff) {
 
 func DeleteFile(c *context.Context) {
 	c.PageIs("Delete")
+
+	entry, err := c.Repo.Commit.TreeEntry(c.Repo.TreePath)
+	if err != nil {
+		c.NotFoundOrError(gitutil.NewError(err), "get tree entry")
+		return
+	}
+
+	// No way to edit a directory online.
+	if entry.IsTree() {
+		c.NotFound()
+		return
+	}
+	blob := entry.Blob()
+
 	c.Data["BranchLink"] = c.Repo.RepoLink + "/src/" + c.Repo.BranchName
 	c.Data["TreePath"] = c.Repo.TreePath
-	c.Data["commit_summary"] = ""
+	c.Data["commit_summary"] = "実施事項: " + blob.Name() + "を削除"
 	c.Data["commit_message"] = ""
 	c.Data["commit_choice"] = "direct"
 	c.Data["new_branch_name"] = ""
@@ -428,7 +444,7 @@ func UploadFile(c *context.Context) {
 	c.Data["TreeNames"] = treeNames
 	c.Data["TreePaths"] = treePaths
 	c.Data["BranchLink"] = c.Repo.RepoLink + "/src/" + c.Repo.BranchName
-	c.Data["commit_summary"] = ""
+	c.Data["commit_summary"] = "実施事項: ファイルをアップロード"
 	c.Data["commit_message"] = ""
 	c.Data["commit_choice"] = "direct"
 	c.Data["new_branch_name"] = ""
@@ -615,7 +631,7 @@ func CreateDmp(c *context.Context) {
 	c.Data["TreeNames"] = treeNames
 	c.Data["TreePaths"] = treePaths
 	c.Data["BranchLink"] = c.Repo.RepoLink + "/src/" + c.Repo.BranchName
-	c.Data["commit_summary"] = "Add information for publishing with DMP"
+	c.Data["commit_summary"] = "実施事項: dmp.jsonを新規作成"
 	c.Data["commit_message"] = ""
 	c.Data["commit_choice"] = "direct"
 	c.Data["new_branch_name"] = ""
