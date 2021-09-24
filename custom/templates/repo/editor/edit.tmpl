@@ -75,44 +75,10 @@
 				<div class="ui bottom attached tab segment {{if .IsDmpJson}}active{{end}}" data-tab="editor">
 				<div id="jsoneditor"></div>
 				<div id="onValidationOutput"></div>
-				<script>
-					var json = {{.FileContent| Str2JS}}
-					console.log("IsDmpJson: ", {{.IsDmpJson}})
-
-					// create the editor
-					var container = document.getElementById("jsoneditor");
-					var options = {
-						{{ if .IsDmpJson }}schema: {{.Schema| Str2JS}},{{ end }}
-						mode:"tree",
-						onChange:function(){
-							var ct = JSON.stringify(jsonEditor.get(), null, 2);
-							$('#edit_area').val(ct);
-							codeMirrorEditor.setValue(ct);
-							console.log("changed");
-						},
-						onEditable: function(node) {
-							switch(node.field) {
-								case "schema":
-									return {field: false, value: false};
-								default:
-									return {field: false, value: true};
-							}
-						},
-						onError: function(error) {
-							console.log("error: ", error);
-						},
-					};
-					var jsonEditor = new JSONEditor(container, options, json);
-					jsonEditor.expandAll();
-
-					// set json
-					// var json = {{.FileContent| Str2JS}}
-					// jsonEditor.set(json);
-
-					// get json
-					var json = jsonEditor.get();
-
-				</script>
+				<input type="hidden" id="fileContent" value={{.FileContent| Str2JS}} readonly>
+				<input type="hidden" id="isDmpJson" value={{.IsDmpJson}} readonly>
+				<input type="hidden" id="schema" value={{.Schema| Str2JS}} readonly>
+				<script type="module" src="{{AppSubURL}}/js/rcos_custom/attach_jsoneditor.js?v={{BuildCommit}}"></script>
 				</div>
 				{{end}}
 
