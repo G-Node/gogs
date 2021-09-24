@@ -77,7 +77,9 @@
 				<div id="onValidationOutput"></div>
 				<input type="hidden" id="fileContent" value={{.FileContent| Str2JS}} readonly>
 				<input type="hidden" id="isDmpJson" value={{.IsDmpJson}} readonly>
-				<input type="hidden" id="schema" value={{.Schema| Str2JS}} readonly>
+				{{ if .IsDmpJson }}
+					<input type="hidden" id="schema" value={{.Schema| Str2JS}} readonly>
+				{{ end }}
 				<script type="module" src="{{AppSubURL}}/js/rcos_custom/attach_jsoneditor.js?v={{BuildCommit}}"></script>
 				</div>
 				{{end}}
