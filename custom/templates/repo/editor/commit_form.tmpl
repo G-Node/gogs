@@ -43,15 +43,4 @@
 	</button>
 	<a class="ui button red" href="{{EscapePound $.BranchLink}}/{{EscapePound .TreePath}}">{{.i18n.Tr "repo.editor.cancel"}}</a>
 </div>
-
-<script>
-$(function() {
-    $("#commit_message").on('input', function(event) {
-        if ($(this).val() === "") {
-            $("#commit").prop('disabled', true)
-        } else {
-            $("#commit").prop('disabled', false)
-        }
-    })
-})
-</script>
+<script src="{{AppSubURL}}/js/rcos_custom/commit.js?v={{BuildCommit}}"></script>
