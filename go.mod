@@ -8,6 +8,7 @@ require (
 	github.com/bgentry/speakeasy v0.1.0 // indirect
 	github.com/dustinkirkland/golang-petname v0.0.0-20191129215211-8e5a1ed0cff0
 	github.com/editorconfig/editorconfig-core-go/v2 v2.4.2
+	github.com/gedex/inflector v0.0.0-20170307190818-16278e9db813 // indirect
 	github.com/go-macaron/binding v1.1.1
 	github.com/go-macaron/cache v0.0.0-20200329073519-53bb48172687
 	github.com/go-macaron/captcha v0.2.0
@@ -24,6 +25,7 @@ require (
 	github.com/gogs/minwinsvc v0.0.0-20170301035411-95be6356811a
 	github.com/google/go-github v17.0.0+incompatible
 	github.com/google/go-querystring v1.1.0 // indirect
+	github.com/idubinskiy/schematyper v0.0.0-20190118213059-f71b40dac30d // indirect
 	github.com/issue9/identicon v1.2.0
 	github.com/jaytaylor/html2text v0.0.0-20200412013138-3577fbdbcff7
 	github.com/jinzhu/gorm v1.9.16
