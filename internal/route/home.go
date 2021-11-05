@@ -231,6 +231,7 @@ func DmpBrowsing(c *context.Context) {
 }
 
 // isContained is RCOS specific code
+// ExploreMetadata()で検索結果表示の制御に利用している
 func isContained(bufStr, selectedKey, keyword string) bool {
 	return strings.Contains(bufStr, "\""+selectedKey+"\": \""+keyword+"\"")
 }
