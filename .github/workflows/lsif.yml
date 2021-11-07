@@ -2,7 +2,7 @@ name: LSIF
 on: [push]
 jobs:
   lsif-go:
-    if: github.repository == 'gogs/gogs'
+    if: github.repository == 'ivis-kuwata/gogs' # verify CI
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
