@@ -1,20 +1,20 @@
-name: LSIF
-on: [push]
-jobs:
-  lsif-go:
-    if: github.repository == 'ivis-kuwata/gogs' # verify CI
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Generate LSIF data
-        uses: sourcegraph/lsif-go-action@master
-      - name: Upload LSIF data to sourcegraph.com
-        continue-on-error: true
-        uses: docker://sourcegraph/src-cli:latest
-        with:
-          args: lsif upload -github-token=${{ secrets.GITHUB_TOKEN }}
-      - name: Upload LSIF data to sourcegraph.unknwon.cn
-        continue-on-error: true
-        uses: docker://sourcegraph/src-cli:latest
-        with:
-          args: -endpoint=https://sourcegraph.unknwon.cn lsif upload -github-token=${{ secrets.GITHUB_TOKEN }}
+# name: LSIF
+# on: [push]
+# jobs:
+#   lsif-go:
+#     if: github.repository == 'ivis-kuwata/gogs' # verify CI
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v1
+#       - name: Generate LSIF data
+#         uses: sourcegraph/lsif-go-action@master
+#       - name: Upload LSIF data to sourcegraph.com
+#         continue-on-error: true
+#         uses: docker://sourcegraph/src-cli:latest
+#         with:
+#           args: lsif upload -github-token=${{ secrets.GITHUB_TOKEN }}
+#       - name: Upload LSIF data to sourcegraph.unknwon.cn
+#         continue-on-error: true
+#         uses: docker://sourcegraph/src-cli:latest
+#         with:
+#           args: -endpoint=https://sourcegraph.unknwon.cn lsif upload -github-token=${{ secrets.GITHUB_TOKEN }}
