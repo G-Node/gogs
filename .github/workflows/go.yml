@@ -33,7 +33,7 @@ jobs:
     name: Test
     strategy:
       matrix:
-        go-version: [1.14.x, 1.15.x, 1.16.x]
+        go-version: [1.14.x, 1.16.x] # 1.15.x is temporally removed
         platform: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.platform }}
     steps:
