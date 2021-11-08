@@ -7,7 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Generate LSIF data
-        uses: sourcegraph/lsif-go-action@master
+        uses: sourcegraph/lsif-go-action@b0788e86e374fce875bff160952489cca16604ec
       - name: Upload LSIF data to sourcegraph.com
         continue-on-error: true
         uses: docker://sourcegraph/src-cli:latest
