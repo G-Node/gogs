@@ -5,7 +5,7 @@ on:
       - master
       - main
       - 'release/**'
-      - feature/build-ci # verify GitHub Actions
+      - 'feature/*' # verify GitHub Actions
     paths:
       - '**.go'
   pull_request:
