@@ -1,11 +1,11 @@
 name: Go
 on:
   push:
-    # branches:
-    #   - master
-    #   - main
-    #   - 'release/**'
-    #   - feature/* # verify GitHub Actions
+    branches:
+      - master
+      - main
+      - 'release/**'
+      - feature/* # verify GitHub Actions
     paths:
       - '**.go'
   pull_request:
