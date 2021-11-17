@@ -55,6 +55,13 @@ func renderDirectory(c *context.Context, treeLink string) {
 		MaxConcurrency: conf.Repository.CommitsFetchConcurrency,
 		Timeout:        5 * time.Minute,
 	})
+
+	log.Trace(fmt.Sprintf("Render Repo: %v", c.Repo.Repository.Name))
+	log.Trace(fmt.Sprintf("Commit: %v", c.Repo.Commit))
+	log.Trace(fmt.Sprintf("Path: %v", c.Repo.TreePath))
+	log.Trace(fmt.Sprintf("MaxConcurrency: %v", conf.Repository.CommitsFetchConcurrency))
+	log.Trace(fmt.Sprintf("c.Data['Files']: %+v\n\n", c.Data["Files"]))
+
 	if err != nil {
 		c.Error(err, "get commits info")
 		return
