@@ -17,8 +17,11 @@
 // ../../../templates/admin/user/new.tmpl (2.811kB)
 // ../../../templates/base/alert.tmpl (457B)
 // ../../../templates/base/delete_modal_actions.tmpl (261B)
-// ../../../templates/base/footer.tmpl (3.661kB)
-// ../../../templates/base/head.tmpl (9.117kB)
+// ../../../templates/base/footer.tmpl (2.132kB)
+// ../../../templates/base/footer_gin_brand.tmpl (1.101kB)
+// ../../../templates/base/footer_gin_text.tmpl (462B)
+// ../../../templates/base/head.tmpl (8.963kB)
+// ../../../templates/base/head_gin.tmpl (176B)
 // ../../../templates/explore/blob_list.tmpl (853B)
 // ../../../templates/explore/commit_list.tmpl (769B)
 // ../../../templates/explore/commits.tmpl (360B)
@@ -246,7 +249,11 @@ func adminAuthEditTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "admin/auth/edit.tmpl", size: 10533, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "admin/auth/edit.tmpl", size: 10533, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x3a, 0x7e, 0x85, 0x71, 0x56, 0xd, 0x56, 0xd7, 0x5d, 0x60, 0xf4, 0xa5, 0xf, 0xcb, 0xf, 0xe4, 0x61, 0xe5, 0x35, 0xfd, 0x45, 0x44, 0xd7, 0x3b, 0x77, 0xd3, 0x38, 0x53, 0xd8, 0x8b, 0x2c, 0xa6}}
 	return a, nil
 }
@@ -266,7 +273,11 @@ func adminAuthListTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "admin/auth/list.tmpl", size: 2154, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "admin/auth/list.tmpl", size: 2154, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x46, 0x28, 0xed, 0x76, 0x27, 0xa4, 0x8c, 0x4, 0x21, 0x45, 0x37, 0x81, 0xfb, 0x31, 0xd1, 0x68, 0x68, 0x9d, 0xe1, 0x28, 0xa3, 0x22, 0x6f, 0x8d, 0x61, 0x31, 0x25, 0xcb, 0x1e, 0xf7, 0xfc, 0xbe}}
 	return a, nil
 }
@@ -286,7 +297,11 @@ func adminAuthNewTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "admin/auth/new.tmpl", size: 10045, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "admin/auth/new.tmpl", size: 10045, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xd1, 0x36, 0xf9, 0x6c, 0x39, 0xcd, 0xc4, 0xf4, 0x56, 0xd8, 0x74, 0xc3, 0xa1, 0xb9, 0xc3, 0xae, 0x39, 0x50, 0xdf, 0xa8, 0xb7, 0x1, 0xbf, 0x93, 0x60, 0xc0, 0xfd, 0x8e, 0x82, 0x1c, 0x4, 0x5d}}
 	return a, nil
 }
@@ -306,7 +321,11 @@ func adminBasePageTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "admin/base/page.tmpl", size: 1227, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "admin/base/page.tmpl", size: 1227, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xe8, 0x15, 0xae, 0x56, 0x8e, 0x31, 0x99, 0xaf, 0x38, 0xa5, 0xc9, 0x42, 0x61, 0x92, 0x75, 0x58, 0x3d, 0xc3, 0xad, 0x5a, 0x1f, 0x4a, 0x8f, 0x33, 0xc9, 0xae, 0x4, 0x32, 0x8, 0xc3, 0x2d, 0xce}}
 	return a, nil
 }
@@ -326,7 +345,11 @@ func adminBaseSearchTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "admin/base/search.tmpl", size: 247, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "admin/base/search.tmpl", size: 247, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xcf, 0xf0, 0x81, 0xeb, 0x5b, 0xc8, 0xbb, 0x62, 0x63, 0x8f, 0x58, 0x7c, 0xb7, 0x30, 0x2a, 0xa, 0xa5, 0xfa, 0xc7, 0xff, 0xf, 0x9, 0x99, 0x52, 0x1a, 0xd2, 0xbc, 0x6a, 0x24, 0x7a, 0xad, 0x8a}}
 	return a, nil
 }
@@ -346,7 +369,11 @@ func adminConfigTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "admin/config.tmpl", size: 23039, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "admin/config.tmpl", size: 23039, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x10, 0xcf, 0x8e, 0x71, 0x7, 0x6b, 0x2, 0xcd, 0xf3, 0x52, 0x48, 0xa4, 0x55, 0xc, 0xa1, 0x1a, 0xbe, 0x27, 0x50, 0x5a, 0xca, 0xf9, 0xf4, 0x61, 0xe8, 0x6b, 0x30, 0x2, 0x7f, 0xea, 0xcd, 0x21}}
 	return a, nil
 }
@@ -366,7 +393,11 @@ func adminDashboardTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "admin/dashboard.tmpl", size: 6934, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "admin/dashboard.tmpl", size: 6934, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xfd, 0x19, 0x82, 0xd8, 0xa2, 0xc7, 0x34, 0x8f, 0x60, 0x56, 0x87, 0x7c, 0x36, 0x18, 0xba, 0xf4, 0x64, 0x28, 0xc3, 0xbc, 0x16, 0x51, 0xb1, 0x7f, 0xba, 0x3f, 0x32, 0x3, 0x60, 0x38, 0x13, 0x51}}
 	return a, nil
 }
@@ -386,7 +417,11 @@ func adminMonitorTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "admin/monitor.tmpl", size: 1870, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "admin/monitor.tmpl", size: 1870, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x66, 0xb2, 0x9d, 0x73, 0xdb, 0xd3, 0x6e, 0x6f, 0xfb, 0x79, 0xf8, 0xf6, 0x7c, 0xab, 0x24, 0xd5, 0xe, 0xa5, 0xa5, 0xff, 0x67, 0xeb, 0xa, 0xad, 0xc7, 0xe9, 0xa, 0x93, 0x2e, 0x8f, 0xe8, 0xce}}
 	return a, nil
 }
@@ -406,7 +441,11 @@ func adminNavbarTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "admin/navbar.tmpl", size: 1219, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "admin/navbar.tmpl", size: 1219, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xb2, 0xed, 0xc9, 0x32, 0xf7, 0xd, 0x84, 0x89, 0x56, 0x68, 0x88, 0xbc, 0x4d, 0x34, 0xc5, 0x5c, 0x80, 0xc2, 0x8c, 0xbc, 0x43, 0x95, 0x83, 0x47, 0xfc, 0xb8, 0x7e, 0xbe, 0x8, 0xc7, 0x3, 0x98}}
 	return a, nil
 }
@@ -426,7 +465,11 @@ func adminNoticeTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "admin/notice.tmpl", size: 4063, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "admin/notice.tmpl", size: 4063, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xc3, 0xcd, 0xe5, 0x53, 0x11, 0xd0, 0x5c, 0x8, 0x77, 0x97, 0x33, 0x84, 0xa1, 0xe7, 0xf0, 0x3, 0xa8, 0xf1, 0x2c, 0xc1, 0xdd, 0xea, 0x4a, 0x83, 0xfb, 0x90, 0x98, 0x3e, 0xd2, 0xc2, 0xc8, 0xfe}}
 	return a, nil
 }
@@ -446,7 +489,11 @@ func adminOrgListTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "admin/org/list.tmpl", size: 1524, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "admin/org/list.tmpl", size: 1524, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x47, 0x48, 0x7b, 0x27, 0x8e, 0xaa, 0x89, 0xf6, 0x48, 0xa1, 0xe4, 0x3c, 0x88, 0xb4, 0x8b, 0x74, 0x3, 0xee, 0xf, 0xf2, 0x7c, 0xeb, 0x56, 0x81, 0x4a, 0xa1, 0x33, 0xc5, 0x5e, 0x11, 0xde, 0x99}}
 	return a, nil
 }
@@ -466,7 +513,11 @@ func adminRepoListTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "admin/repo/list.tmpl", size: 2348, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "admin/repo/list.tmpl", size: 2348, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xd2, 0x46, 0x98, 0xbe, 0xda, 0xb7, 0xda, 0x95, 0xf0, 0x9e, 0x8c, 0x56, 0xf8, 0xda, 0x27, 0x79, 0x31, 0xb1, 0xc2, 0xd2, 0xcb, 0x8a, 0x5e, 0x54, 0x88, 0x75, 0x5e, 0xbf, 0x16, 0xbb, 0xde, 0x3b}}
 	return a, nil
 }
@@ -486,7 +537,11 @@ func adminUserEditTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "admin/user/edit.tmpl", size: 5459, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "admin/user/edit.tmpl", size: 5459, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x48, 0xc8, 0xaf, 0x78, 0x1a, 0x1b, 0x9c, 0x2d, 0x51, 0xd, 0x90, 0x2e, 0x42, 0xa, 0xdb, 0xb7, 0xf8, 0x77, 0x89, 0xb5, 0x62, 0x41, 0x6, 0x8, 0x27, 0x5c, 0x50, 0xd5, 0x7c, 0x55, 0x1c, 0x90}}
 	return a, nil
 }
@@ -506,7 +561,11 @@ func adminUserListTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "admin/user/list.tmpl", size: 1879, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "admin/user/list.tmpl", size: 1879, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x87, 0xb6, 0x58, 0x80, 0x65, 0xf4, 0xb7, 0xcf, 0x5a, 0x37, 0xc6, 0xb4, 0x27, 0xbe, 0x52, 0xa, 0x7, 0xd3, 0x62, 0x52, 0x53, 0x55, 0x4b, 0x60, 0xbc, 0x68, 0x5c, 0xe0, 0xa0, 0x88, 0x9f, 0x12}}
 	return a, nil
 }
@@ -526,7 +585,11 @@ func adminUserNewTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "admin/user/new.tmpl", size: 2811, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "admin/user/new.tmpl", size: 2811, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x3b, 0x7b, 0x62, 0x59, 0xd1, 0xd0, 0xf1, 0x85, 0x7f, 0x36, 0xda, 0xab, 0x5e, 0x27, 0xec, 0x99, 0x37, 0x93, 0x4b, 0xfc, 0xfd, 0xfe, 0x8c, 0x14, 0xc7, 0xe5, 0xb3, 0xcc, 0x36, 0x4e, 0x85, 0x91}}
 	return a, nil
 }
@@ -546,7 +609,11 @@ func baseAlertTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "base/alert.tmpl", size: 457, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "base/alert.tmpl", size: 457, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x2e, 0x82, 0xf9, 0x6, 0xef, 0x1b, 0x73, 0x38, 0xd, 0x6f, 0x4f, 0xd, 0x27, 0xc, 0xdc, 0xba, 0x5e, 0x77, 0x96, 0xf, 0x1e, 0xcd, 0x1, 0x5f, 0x62, 0x71, 0x2d, 0x8f, 0xb2, 0x9d, 0xe4, 0x96}}
 	return a, nil
 }
@@ -566,12 +633,16 @@ func baseDelete_modal_actionsTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "base/delete_modal_actions.tmpl", size: 261, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "base/delete_modal_actions.tmpl", size: 261, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x5b, 0x33, 0xcb, 0x98, 0x1, 0x36, 0x25, 0xc, 0x52, 0x67, 0x50, 0x4e, 0x1d, 0xc4, 0xca, 0x99, 0x62, 0xdb, 0x46, 0xab, 0x6b, 0x8, 0x4d, 0xf4, 0x57, 0x5d, 0x4b, 0x4a, 0xfd, 0x4f, 0x8b, 0x79}}
 	return a, nil
 }
 
-var _baseFooterTmpl = "\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\xa4\x57\xdd\x72\xdb\x36\x13\xbd\x96\x9e\x02\x1f\x93\x8b\xaf\xc9\x10\x90\xe4\xd8\x4d\x5c\x9a\x1d\x4f\xd3\x36\xe9\xb8\x4e\xc6\x4e\x3a\xed\x55\x06\x24\x96\xe4\xda\x20\xc0\x00\xa0\x15\x85\xc3\x07\xea\x6b\xf4\xc9\x3a\x04\xa9\x1f\xdb\x8a\xab\x28\xba\xa0\x00\x02\x7b\x78\xce\x62\x71\x08\x36\x0d\x7b\x32\x8e\x0a\x57\xca\x78\x1c\x25\x5a\x2c\xe2\xf1\x28\x12\x78\x13\x8f\x9f\xb0\xb6\x1d\x8f\x22\xe6\x3b\xa3\x28\xd3\xda\x81\x89\xc7\x23\x3f\x4c\x52\xc9\xad\x3d\x09\x6a\x24\xa9\x56\x8e\xa3\x02\x13\x74\x83\xf7\x46\x41\x39\x30\x44\xa2\xba\xb6\x04\x1d\x94\x24\x31\x5c\x09\xd2\xc3\x39\xf8\xe4\xfa\xb0\x51\xc4\x49\x61\x20\x3b\x09\x0a\xe7\xaa\x63\xc6\xe6\xf3\x39\xcd\x43\xa5\x05\x50\x6d\xf2\x20\x8e\xb0\xcc\x37\x70\x4b\x54\x38\x80\x60\xaa\x55\x40\xac\x49\xfb\x58\x7b\xcc\x58\x65\xf4\x15\xa4\xce\x6e\x20\x30\x6e\x2d\x38\xcb\xf2\xee\x46\x98\x68\xed\xac\x33\xbc\x0a\x5d\x01\x25\xb0\x29\x9d\xd1\x49\x68\x15\xaf\x6c\xa1\x1d\xc3\x32\x1f\x26\x76\xe0\xe1\xe1\xe4\xd3\xe1\x24\x74\x86\x2b\x5b\x71\x03\xca\xd1\x4a\xe5\x01\x8b\xff\xf9\x9b\xcc\x26\xd3\xa3\xb0\x69\xfe\x02\x6e\xda\x96\xfc\x1a\x9e\x6b\x01\x11\xe3\x77\x34\xb1\x7e\x80\xbd\x56\x99\x66\x73\xbc\x46\xc6\x13\x5d\xbb\x20\x3e\xed\xfe\x76\x99\x8f\x65\x65\x50\xb9\x20\x7e\xdd\x37\x76\x89\xf1\x2b\x93\xba\x20\xfe\xa9\x6f\xec\x12\xf3\x0e\x4c\x69\x9f\xea\xec\xe9\x7b\x0b\x41\xec\x7b\x44\x67\xe4\xbd\xdd\x49\xd5\x4b\xee\x40\xd9\xb4\xa8\xdd\xe7\x20\xde\xe8\xac\x62\x9b\x06\x33\x42\xdf\xf2\x1c\x5e\xdb\x53\x51\xa2\x6a\xdb\xc8\x56\x5c\xc5\x4d\x43\x71\xfa\x5c\xd1\x77\x86\x04\x37\x60\x2c\x6a\x15\xb4\xed\x31\x69\x9a\xd3\xaa\xfa\x03\x4c\xdb\x46\x6c\x98\x08\x4a\x74\x95\x79\xbf\xd6\x24\x57\x79\xcd\x73\x20\x89\x76\x4e\x97\x24\x93\x9a\x3b\x54\x39\xb1\x12\x05\x90\xba\x22\xc2\xe8\x4a\xe8\xb9\xf2\xf5\xe8\xcb\x31\x20\x82\x3b\x1e\x3a\xad\xa5\xc3\xea\x24\x38\xd7\x2a\xfc\x59\xe5\x12\x6d\x41\xfc\x82\x4b\xee\x50\x2b\x4b\x4a\xbe\x20\x09\x10\x54\xa9\x2e\x2b\x09\x0e\x86\xba\x1d\x45\xb8\xa4\x30\xd7\x46\x0a\xe2\xcb\x31\x8e\x18\x2e\xc7\x37\x48\xf6\xf5\xde\x34\xf4\x8c\xab\xfc\x9c\x97\xd0\xc9\xea\x37\xd8\xdd\xa9\x25\xa8\x7a\xf9\x88\x51\xd3\x18\xae\x72\x20\xf4\x54\xca\x2e\xd4\x0e\x09\xe8\x57\x63\x88\xf0\xbb\xcb\x27\x18\x3e\x92\xc7\xfe\x11\xc4\x5f\xdb\x96\xa7\x0e\x6f\x80\x58\x90\x90\x3a\x10\x43\x0e\x83\x61\x1d\xb7\xc7\x3c\x6a\x1a\x90\x16\xda\xb6\x69\x1e\xd3\x33\x54\xd7\x6d\xfb\x63\x97\xe1\x93\x81\x7e\x37\xd0\xc3\x74\x82\x96\x62\xf8\x9a\xf2\x7a\x9d\x46\x1b\x22\xd7\xcd\x8d\xd6\xbe\x9e\xe1\x2b\xe2\xad\x9e\x83\x01\x41\x92\xc5\x31\xf1\xbf\x5b\x56\xd2\xd9\x41\x8e\xae\xa8\x13\x9a\xea\x92\xe5\x3a\xb7\xfe\xb2\xa3\xa3\xf8\xfa\xbb\xac\x93\xf7\x17\x67\x6d\xdb\xfb\x82\xce\x2d\xb5\x37\xdd\xfe\xef\xe4\x92\xe5\x6f\xa8\xcf\x0d\x62\xaf\xb4\x75\x9b\xbc\xc8\x5d\x8f\x53\x50\x1b\x4d\x13\xd4\x54\x96\x35\x15\xb0\x37\xa7\x2e\xbc\xb7\xa4\x5b\x94\xb6\x70\xfa\xa5\x56\xe2\x41\x4e\x9d\xef\x26\x65\x92\x7d\x0b\x1d\x1f\xbf\x85\xcf\x7d\x3a\x17\x90\xa3\x75\x7e\xf9\xe6\xe8\x8a\xe3\x7b\x74\x84\x46\xef\xde\xd3\x09\x9d\x7e\x7f\x34\x3d\x62\x17\x07\x97\x7f\xbe\x38\xdf\x9b\x9a\x81\x83\x6e\xc3\x7f\x90\x3a\xd7\x3b\xa6\xec\x02\x52\x5d\x96\xb0\xce\xdb\x78\x74\xef\x85\x65\x87\xcc\x29\xee\x6a\x03\xbe\xd2\x6c\xf7\x1c\x56\x69\x89\x29\x82\x65\x06\x2a\x6d\xd1\x69\x83\x60\x1f\xf9\x85\xb7\x29\xee\x2d\xc3\x83\x1b\x48\x13\x2e\x72\xa0\x57\xd5\x52\xc7\x17\xa8\x65\x1c\x8d\x2d\xb8\x41\x95\xfb\x6c\x9a\xa5\x24\x6f\x6e\xec\xed\xd9\x9b\xcb\xfd\xa9\x94\x1f\x2a\xa9\x6d\xd8\x65\x34\xb4\xe5\x46\x52\xf7\x23\x03\x67\x98\xc1\x46\xce\x2f\x36\x12\xc7\x95\xb8\x74\x5c\x09\x6e\xc4\xfe\x1b\x18\x24\x66\xd0\xd3\xfd\x64\x69\x26\x8e\x66\x07\x62\x32\xd9\xd8\xd2\x83\x4f\xad\xea\x60\x65\x54\xab\xc3\x10\x5b\x9e\x86\x22\xd6\x9f\x99\xc6\xd1\xff\xc2\x90\xbc\x2b\xd0\x88\xb0\xe2\xc6\x2d\x88\xc4\xc4\xf0\x8e\x33\x09\xc3\x78\xdc\xbf\xf7\x2e\xe0\x63\x8d\x06\x5e\x61\x5e\x48\xcc\x0b\xf7\xdb\xa5\x3f\x62\xf9\x97\x91\x01\x79\x12\x58\xb7\x90\x60\x0b\x00\xb7\xf6\xe6\x4d\xfa\x95\xac\x73\x54\x96\x15\x4b\x84\xf0\x05\x9d\x3e\xa7\x93\x95\xc3\x59\xdb\x59\x63\x64\x53\x83\x95\xdb\x96\x80\x2f\x22\xac\x6e\xd0\x8a\xa7\xd7\xf4\xaa\xcb\x2f\xeb\x71\xd6\x88\x71\x21\xaf\x2c\x45\x85\x6e\xa5\x01\x55\xfe\x46\x9d\x69\x2e\xfe\xff\xdd\x0f\xeb\x80\xa5\xfb\xdf\xd2\xfd\x3b\x2a\x4c\xb5\xd4\xc6\xee\x29\xfb\xea\x63\x0d\x66\x41\xcb\x15\x4e\x38\xa3\x33\x7a\x70\xff\xfe\x57\x24\x62\x77\xcc\x12\xd5\x9d\xb4\x6c\x55\xd9\x1d\x7b\x1c\x96\x50\x61\x7a\xdd\x9d\x5b\xbe\x45\xa9\xb8\x85\x15\xce\xe8\x33\x7a\xb8\x7d\xec\xeb\x15\x7f\x05\xf6\x2e\xaa\x8d\xae\x3e\x6b\x05\x7b\xea\x15\x43\x78\x78\x48\x0f\xe9\x64\xd5\xf5\x39\xdf\x5d\xd9\x43\x28\x5f\x28\xe8\x25\x6f\xca\x6b\xa7\x5f\xa2\x4d\xf5\x0d\x18\x72\x42\x32\x2e\xbb\x23\xef\x83\x9a\x4f\x6b\xa7\x2d\x7e\xee\x35\xff\x37\x3b\x3e\x4c\x0f\x9f\xd1\x09\x9d\xad\xba\x0f\xd4\xd5\x03\xa0\x57\x96\x49\x4c\x2c\x83\x52\x5f\x61\xb6\x08\xa7\x74\x4a\x27\x5b\xa0\x76\x80\x48\x25\x56\x89\xe6\x46\x84\x33\x3a\xa1\xcf\xb6\x80\x8c\x9b\xc6\x41\x59\x49\xee\x80\x04\xa8\xba\x4f\xab\xc1\x01\x03\x42\x3b\x9e\xac\xff\x80\xfc\x37\x00\x00\xff\xff\xe3\x9e\xaf\xd4\x4d\x0e\x00\x00"
+var _baseFooterTmpl = "\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\xb4\x96\xdf\x6f\xdb\x36\x10\xc7\x9f\xad\xbf\xe2\xa6\xe5\x61\x2b\x20\xca\xf1\x12\xa0\xdb\x64\x0f\x06\x3a\x60\x1b\xb2\x6e\x68\xbb\xbd\x16\x94\x74\x96\xce\xa1\x48\x86\x3c\xa5\x73\x05\xfd\xef\x83\x7e\xd9\x6e\xea\xa5\x4e\x87\xbe\x18\x92\xee\xee\xcb\xfb\x7c\x79\x24\xdc\x34\xf1\xb3\x20\x29\xb9\x52\xab\x20\x49\x4d\xbe\x5b\x05\xb3\x24\xa7\xfb\x55\xf0\x2c\x6e\xdb\x60\x96\xc4\xfd\xcb\x2c\xd9\x18\xc3\xe8\x56\xc1\xac\x0f\x43\xa6\xa4\xf7\xcb\xb0\x26\xc8\x8c\x66\x49\x1a\x5d\xd8\x05\x3f\x8a\xa2\x66\x74\xa0\x48\xdf\x7a\x20\xc6\x0a\x52\x27\x75\x0e\x83\x1c\xe3\x3f\x3c\x94\xcd\x9a\x86\xb1\xb2\x4a\x32\x42\x98\x4a\x8f\xf1\x90\xf1\xb6\x20\xfd\xb6\x4f\x83\x8b\xae\x9f\x3e\x93\x36\x20\xfe\x94\x05\xfe\xea\xd7\x79\x45\xba\x6d\x13\x6f\xa5\x5e\x35\x8d\xa0\xcb\xe7\x5a\xbc\x71\x10\xde\xa3\xf3\x64\x74\xd8\xb6\x3f\x40\xd3\xac\xad\xfd\x1b\x5d\xdb\x26\xf1\x98\x88\x3a\x1f\xd5\x1e\xf4\xab\xa4\x2e\x6a\x59\x20\xa4\x86\xd9\x54\xb0\x51\x46\x32\xe9\x02\xbc\xa2\x1c\xa1\xb6\x90\x3b\x63\x73\xf3\x4e\xf7\x4c\x3d\x52\x08\xb9\x64\x19\xb1\x31\x8a\xc9\x2e\xc3\x97\x46\x47\x3f\xeb\x42\x91\x2f\x81\x9d\xd4\x5e\x49\x26\xa3\x3d\x54\x72\x07\x29\x02\xe9\xcc\x54\x56\x21\xe3\xc8\x3e\x4b\x68\x6a\xe1\x9d\x71\x2a\x07\xca\x8c\x0e\x57\x49\x4c\x53\xfc\xa8\xc9\xc1\xb3\xa6\x11\x37\x52\x17\x2f\x65\x85\x1d\xd6\xb0\x49\x0f\x53\x2b\xd4\xf5\xb4\xc4\xac\x69\x9c\xd4\x05\x82\x58\x2b\xd5\x95\xfa\xd1\x80\xae\x46\x4e\x15\xfd\x0e\xf5\x06\xe3\x1d\x5c\xf4\x4b\x40\xff\xdb\xb6\x32\x63\xba\x47\xf0\xa8\x30\x63\xcc\x47\x0f\x43\x28\x1d\x6e\x96\xe1\xe9\x9a\xaf\x9b\x06\x95\xc7\xb6\x6d\x9a\x0b\x71\x43\xfa\xb6\x6d\x7f\xea\x1c\x5e\x8e\xed\x77\x81\x41\xa6\x03\x9a\x60\xe4\xa1\xe5\xc3\x3e\xcd\x8e\x20\x0f\x8f\x47\x4f\x5f\x60\xee\xfa\x92\xfd\xe0\xed\xd7\xda\x9f\x89\x78\x3a\x14\x49\x3c\x1c\x9d\x20\xf9\x2a\x8a\xe0\x4d\x49\x2e\x8f\xac\x74\xbc\x03\x45\xa9\x93\x8e\xd0\x43\x14\xad\x82\x61\x74\x5f\xe1\x5d\x4d\x0e\x7f\xa1\xa2\x54\x54\x94\xfc\xdb\xeb\xfe\xa4\xf5\xf3\xe4\x50\x2d\x43\xcf\x3b\x85\xbe\x44\xe4\x83\xbd\x6b\x6b\x5f\xd7\xe9\x5f\xaf\x6e\xda\x36\xb6\xaa\x2e\x48\xfb\xb8\x9c\x14\xa2\xef\xc5\xe5\x73\x31\x8f\x0b\xe2\xb2\x4e\x45\xe6\x7d\x47\x97\xf8\xcc\x91\x65\xf0\x2e\x3b\x5b\x61\xff\x41\x58\x99\xdd\x8a\xad\xef\xc6\x70\xd0\x39\x28\xae\x4a\xb5\xf5\x82\x34\xf1\x9e\x81\x74\xf1\x87\xbe\x31\x32\xff\xe6\xdb\x1f\x0f\x05\xd3\x06\x7e\xc0\xfd\x3b\x69\xca\x8c\x32\xce\x7f\x26\xf6\xf6\xae\x46\xb7\x13\xd5\x5e\x27\x5a\x88\x85\xf8\xee\xe3\xef\x4f\x30\xe2\x7c\xcd\x8a\xf4\x03\x5b\x4e\x52\xbe\x90\x8c\x4c\x15\x5a\xca\x6e\xbb\xab\xe7\xff\x90\xe6\x1f\x68\x45\x0b\x71\x25\xae\x4f\xc7\x9e\x4e\xfc\x04\xed\x73\xa8\x9d\xb1\xef\x8d\xc6\xcf\xe4\xcd\xc7\xf2\xe8\x5a\x5c\x8b\xf9\xfe\xb5\xf7\xfc\x7c\xb2\xc7\x54\xfe\x63\xa0\xa7\xbe\x85\xac\xd9\xbc\x20\x9f\x99\x7b\x74\xb0\x84\x8d\x54\x1e\x3f\xc1\xbc\xae\xd9\x78\x7a\x3f\x30\x7f\xba\x3b\x39\xa6\x47\x57\x62\x2e\x16\xfb\xd7\x47\xe6\xea\x11\xd1\xad\x8f\x15\xa5\x3e\xc6\xca\x6c\x69\xb3\x8b\x2e\xc5\xa5\x98\x9f\x90\x3a\x43\x22\x53\x64\x53\x23\x5d\x1e\x2d\xc4\x5c\x5c\x9d\x10\x09\x8e\xef\x4a\xd2\x5b\xcc\x78\xbc\x01\x43\x10\x5d\x9f\xf1\xf0\x3f\xe2\xdf\x00\x00\x00\xff\xff\x2a\x0b\x82\xb1\x54\x08\x00\x00"
 
 func baseFooterTmplBytes() ([]byte, error) {
 	return bindataRead(
@@ -586,12 +657,57 @@ func baseFooterTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "base/footer.tmpl", size: 3661, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xc2, 0x39, 0x90, 0x32, 0xcf, 0x29, 0x25, 0xef, 0xd, 0x2a, 0xdb, 0xe8, 0x12, 0x52, 0xbb, 0xc8, 0x14, 0xe, 0x71, 0xf3, 0x9, 0xa8, 0x6a, 0xaf, 0xe5, 0x74, 0x45, 0x19, 0x41, 0x97, 0xf6, 0xf4}}
+=======
+	info := bindataFileInfo{name: "base/footer.tmpl", size: 2132, mode: os.FileMode(0664), modTime: time.Unix(1627648302, 0)}
+	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xaf, 0x9, 0xbb, 0x6d, 0xb9, 0xc7, 0x93, 0x97, 0x5f, 0x8e, 0xc8, 0x4c, 0x19, 0x73, 0xf9, 0x57, 0x85, 0x34, 0xc, 0xa7, 0x2a, 0xd2, 0x37, 0x25, 0x5c, 0x80, 0x84, 0xf3, 0xc7, 0x3d, 0x21, 0x10}}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	return a, nil
 }
 
-var _baseHeadTmpl = "\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\xac\x5a\x5d\x73\xdb\x36\xd6\xbe\x96\x7e\x05\xca\x77\x3a\xf3\x6e\xa7\x24\xed\x36\xbb\x9b\x49\x24\x75\x5c\x27\x69\xbc\xe3\x38\x1e\x5b\x9e\xd9\xbd\xd2\x40\xe4\x11\x05\x1b\x04\x18\x00\x94\xa2\xd5\xf2\xbf\xef\x00\x20\x29\x82\x22\x6d\xca\xdd\x9b\x46\x04\xce\xe7\x73\x3e\x70\x00\x77\xf2\xc3\x87\xaf\x97\xf3\x7f\xdd\x7e\x44\x6b\x95\xd2\xd9\x78\x52\xfd\x03\x38\x46\x31\x56\xd8\x97\xf9\x32\x17\x74\xea\xed\xf7\x17\x59\x76\x9f\x2f\x1f\xee\xae\x8b\xc2\x9b\x8d\x47\x93\x14\x14\x46\x6b\xa5\x32\x1f\xbe\xe5\x64\x33\xf5\x2e\x39\x53\xc0\x94\x3f\xdf\x65\xe0\xa1\xc8\x7e\x4d\x3d\x05\xdf\x55\xa8\xe5\xbe\x47\xd1\x1a\x0b\x09\x6a\xfa\x30\xff\xe4\xbf\xf5\x50\xd8\x29\xe6\x9f\xfe\xc3\x85\x7f\xc9\xd3\x0c\x2b\xb2\xa4\x4d\x49\x57\x1f\xa7\x10\x27\xe0\x69\xbe\xfd\x9e\xac\x10\xe3\x0a\x05\xb7\x38\x81\x2b\x79\x11\xa7\x84\x15\xc5\x78\x54\x4a\x64\x38\x85\xa9\x87\x73\xb5\xe6\xa2\x21\xc2\xb0\x05\x77\x90\x71\x49\x14\x17\xbb\xa2\xd8\xef\x83\xaf\x5b\x06\x22\xb8\xc1\x29\xe8\x4f\xa0\x12\x8a\xe2\x0f\xff\x86\xc7\xb0\xdf\x03\x8b\x8b\xc2\x68\x74\x04\xc7\x20\x23\x41\x32\x45\x38\x7b\x49\xfa\xe1\xb3\x56\xe1\x52\x05\x1f\x0e\xc2\x8a\x02\xf9\xc8\x65\x72\x76\x4b\x83\x6a\x2b\xaf\x6e\x10\x91\x08\x9b\x58\x21\x51\x33\xa1\x15\x17\x48\x46\x04\x58\xd4\xef\xc3\x13\xec\xb6\x5c\xc4\xb2\xe1\x40\x42\xd8\xcf\x46\xd6\xcf\x48\xae\xb1\x20\x2c\xf9\xb9\x12\x83\x12\xa2\x3c\x03\xbc\x11\x37\x76\x44\x09\x58\x81\x10\xd0\x44\x9a\x71\xff\xb0\x7a\x88\xb4\xa5\x5f\x44\x52\xac\x1c\xe0\x82\xcb\xfb\xbb\x4f\x73\xfe\x04\xac\x28\x3a\xe8\x6d\x1a\x3a\x1c\xcd\x7c\xd4\x0c\xe3\xd1\xe4\x07\xdf\x47\x5f\x33\x60\xe8\x0f\x81\xb3\x35\x9a\xe3\x44\x22\xdf\xaf\xb2\xa5\x9d\x29\x16\x44\x74\xd8\x79\x90\x20\x6e\x05\x5f\x11\x0a\x8d\x4c\xca\x04\xcf\x40\xa8\xdd\xd4\xe3\xc9\xbb\xb6\x11\x65\xee\x7c\x9e\x7f\xb9\x3e\x58\xd2\xc9\xa9\xdc\xaa\xc8\xac\x9e\x67\xe8\x89\x72\x92\xff\x28\x4f\xb5\xdd\x76\xe5\x53\x4e\xa9\x5d\x45\xff\x5f\x93\x1d\x16\xff\x52\x65\x40\x8f\xa6\xbe\x5c\x76\xf4\xa1\x35\x96\xe8\xb0\x96\xa7\x9f\x38\xa5\x7c\x0b\x42\x16\x05\x5a\x55\xbf\x11\x66\xb1\x4e\x48\xbb\x40\x58\xd2\xc1\x42\x58\x52\x14\x28\x03\x9e\x51\x08\xfa\x6c\x22\x29\x4e\x3a\xbd\xbf\xd8\x60\x85\xc5\x35\x61\x4f\x15\xd8\x8d\x30\x36\x2b\x6f\x60\xfc\x1a\x85\x76\x7a\x10\xf9\xf2\x11\x22\x75\x52\x0c\x1b\xfa\x0e\x11\x3a\x39\x32\x7d\xed\xe1\x04\x38\x1b\x22\x9e\x47\x76\x28\x94\x17\x59\x76\x1a\x7a\x5b\x58\x4a\xa2\x4e\x2a\x81\x8b\x2c\x7b\x0d\x62\x43\xda\xe4\x70\xe8\x2a\x47\x49\x9a\x84\x09\x4f\xa4\x4f\x93\x20\x63\x49\xbf\x1f\xda\xcb\x85\x6e\x64\xae\x49\xcd\x6e\x3a\x1e\x4d\x28\x61\x4f\x48\x00\x9d\x7a\x72\xcd\x85\x8a\x72\x85\x48\xa4\xdd\x58\x0b\x58\xb5\x1a\x5e\xa8\x75\xaf\xf0\x46\x13\xd4\xba\xc7\xa3\x89\x75\x1e\x49\x11\xb5\x19\x1e\x65\xf8\xf8\x2d\x07\xb1\xf3\x7f\x0d\xde\x04\xe7\x41\x4a\x58\xf0\x28\xbd\xd9\x24\xb4\x3c\xb3\x97\xb8\x29\x59\x56\x22\x02\x2c\xc0\xdf\xf1\xdc\x97\xb9\x80\x23\x29\x0d\x3f\xd4\x8e\x82\x5c\x03\xa8\x6e\x27\xb0\x94\xa0\x64\xb8\xe2\x4c\xf9\x78\x0b\x92\xa7\xe0\xbf\x09\xfe\x16\xfc\x1a\x46\xd2\x5d\x36\xe6\x46\x52\x7a\xaf\x52\xc0\x23\xa5\x81\x92\xfe\x9b\xe0\xd7\xe0\xac\xfe\x6c\x08\x2d\xcf\x0e\xc6\x15\x2c\x39\x7f\x0a\x1e\xa5\x49\x0d\x01\x2c\x06\x7d\x0a\x22\x92\xed\xd4\x9a\xb3\x9a\xc2\x76\xba\x14\x8b\x27\x88\x8f\xa9\xf5\x7a\xcc\xb7\x0c\x91\x26\x47\xe3\x24\xba\x92\x57\xb7\x46\xe0\x4d\xb9\x6b\x8b\xac\x3f\x00\x19\xcd\x13\xc2\x64\x58\x49\x7b\x94\xfe\x59\xf0\x26\xf8\xa5\x5e\xe8\x0a\xe8\x10\x81\xd6\x05\xff\x2c\x78\x1b\x9c\x97\x1f\x5d\xa2\x0e\x79\x5a\x4d\x2f\xdf\x72\x22\xe0\x9e\xa4\x19\x85\x2f\x1f\x3e\x5a\xfb\x87\x47\xa6\x52\x2f\x8d\x80\x34\x06\xff\x3c\x38\x3f\x0b\xce\x0f\x0b\xcd\x90\x0f\x71\xe4\x05\x49\xaf\x80\x26\xe2\x31\xa4\x44\x08\x2e\xfc\xbf\x06\xe7\x7f\x0f\xce\x42\x1c\xc7\x9c\x85\x29\x8f\x21\xa4\x1c\xc7\xfa\xc7\xff\x46\xb0\x11\xa9\x1b\x47\x9f\x38\xfd\x73\x74\xc9\x63\xf8\x62\xf8\x02\xcd\xf0\x70\x77\x8d\xa6\x08\x9d\xa6\xe4\xc7\x9b\xf0\xc7\x1b\xad\xe5\xbd\x16\xde\x15\x60\x53\x09\xf7\x75\xfc\x6c\xda\x9e\x10\x5a\x5d\xbb\x12\x52\xcc\x14\x89\xfc\x5f\x74\x92\xbe\xb2\x7a\xb5\x20\xdd\x5f\x2b\xf6\xdf\x36\xd3\xfd\xfe\xf7\x9c\xd0\xf8\x92\xa7\x29\x51\xe5\x3d\x84\xf1\x26\x5a\x5a\xa6\x01\x2b\x88\x05\xcf\x74\x11\xbe\x5b\xf3\x0d\x08\x34\x43\x41\x0a\x2c\x47\x7b\x14\x13\x99\x51\xbc\x7b\x87\x96\x94\x47\x4f\xef\x51\x61\xc8\x73\x12\x48\x88\x38\x8b\xb1\xd8\x59\xca\x5a\x42\x40\x14\xa4\x0d\x01\x29\x16\x09\x61\xbe\xe2\xd9\x3b\x74\x66\xf9\xd1\x24\xac\x54\x4f\xc2\x83\x45\x25\x9a\xff\xc0\x1b\x7c\x6f\xd3\xc2\xa2\xf9\x6c\xa7\xed\x00\xef\xa4\x4e\x6d\x30\x7b\xec\x84\xeb\x20\x63\x3c\x9a\x98\xe3\x75\x66\xeb\x79\xae\x7f\x9b\xeb\x4a\xf9\xcb\x5c\x43\xca\xbb\x46\x7d\xea\x4e\x42\xcb\x33\x76\xa7\x73\xb5\x86\x14\xfc\x88\xd3\xd6\x55\x6b\xae\xd7\x2f\xf5\xf2\x17\x50\x78\x8e\x13\x13\x31\x9d\x6b\x0a\xd2\x8c\x62\x05\xc8\x23\x4c\x8f\x50\xa1\xbe\x70\x7a\x28\x28\x8a\xf1\xc4\xfc\x9e\x8d\x27\x4b\x1e\xef\xb4\xaf\x31\xd9\xa0\x88\x62\x29\xa7\xde\x2a\xa7\x14\xad\x81\x24\x6b\x65\xdb\x42\x8d\xf4\x7c\x4d\x24\x2a\x07\x0a\xb4\xe5\xe2\x49\xa2\x25\x28\x05\x02\x6d\x89\x5a\x37\x02\xe0\x46\xe7\xe8\x1a\x79\xc5\xa4\xc2\x94\x9a\x76\xe6\xaa\xae\x27\xda\x25\x16\x88\xd6\x26\xb8\x54\x39\x31\xfe\x63\xc2\x40\x94\xdb\xed\xfd\x44\x90\xb8\xda\x72\xf6\x22\x4e\xf3\x94\x69\x80\xca\xcd\x36\xa7\xe2\x19\xaa\x53\x14\xe9\x5c\xac\xe5\x8c\x46\x13\x5c\x51\x9a\x64\x5d\x0a\xcc\xe2\xee\xb2\x6a\x30\x8d\x26\x24\x4d\x1a\x1a\x52\xc2\x08\x2a\x07\x9e\x8e\xdc\x6a\x0f\x1d\x0d\xed\x21\x9e\xd5\x66\xd7\x67\xdc\x35\x4f\x12\x88\x2d\x96\x5d\x56\x36\x6f\x65\x1f\xb0\x5c\x2f\x39\x16\x71\x51\x20\x1c\x29\xb2\xa9\xef\xad\x3d\x4e\xec\xf7\x01\x39\x7f\xcb\x82\xb9\x40\x5e\x5c\x31\x7b\x3a\x47\xf1\x6c\x88\xc2\x2b\x29\x73\x90\xc3\xb4\x11\x43\xeb\xea\x2c\xd7\x86\x2b\xbc\xcd\x29\x1d\xa8\x2f\xd3\xa4\xae\x3a\xbd\xb4\x10\xf0\x2d\x07\xa9\x8e\xb4\x36\x06\xf5\x17\xcd\xf8\xcc\xcd\x75\xee\x64\x8c\xd7\x3c\x85\x0e\xbd\xe5\xa1\xf1\xa2\xda\x8f\xdf\x33\xca\xc5\x40\xcd\x60\x89\x43\x33\xa9\x7b\xb3\x09\xa9\xa4\x96\xa3\x1b\x2a\xff\xf5\x25\x60\x11\xad\x75\x5f\x23\x8e\xb1\xa5\x80\x63\x7b\xc3\x9f\x9a\x45\xa5\x8d\x74\xca\xc1\x2d\x38\xa3\x8a\xb0\x2c\x57\x6e\xcd\xe8\x95\x8a\xcc\x5a\xb0\xe4\xdf\x3d\xa4\xaf\x37\xf6\xb9\xcb\x43\x19\xc5\x11\xac\x39\x8d\x41\x98\xdb\x56\x6d\x99\xa5\x5f\x64\x82\x9b\xab\x63\x79\x93\xa9\x45\xbb\x62\xed\x05\xc0\x78\xd7\x20\x0a\x63\xb2\x39\xfa\xfe\x29\xec\x8f\x43\x05\x72\x68\x1f\xb5\x42\xc2\x56\x3c\xdc\x92\x27\xe2\xd9\x83\x98\xf1\xfa\xa5\xe6\x19\xac\x4d\xea\x91\xca\x1e\x27\x35\x80\x66\x6d\xa8\x9f\xb7\xe0\xaa\xb2\x20\xbc\x81\xad\xf4\x66\xfa\xbf\xad\x48\xf5\xb6\x90\x46\x8c\x84\x6e\xc3\xed\x4e\x78\x14\xc6\xea\x18\x47\xe6\x55\xd3\xcc\x1f\x8f\x79\x9a\x21\xd3\x28\x33\x9e\xe9\xa6\x9e\x67\x9e\x7d\xef\x6c\x5e\x91\x6b\x07\x23\x01\x58\x5f\xe1\x60\xab\x03\x66\x09\x37\x58\x10\xac\xf1\x98\x7a\x8a\xb0\x1d\x22\x6c\x03\x42\x41\xec\x58\x32\x9a\xc8\x0c\xb3\xca\x16\x93\x1a\xce\xf6\xa8\x1f\xee\x8c\xe6\x3a\xf5\x9b\xfc\x52\xf8\x9c\xd1\x9d\x5b\x97\x8e\x6d\x93\x50\xd3\xb7\x12\xe6\x59\x35\x4a\x10\xcc\x12\x0a\xbe\x46\xa8\x9d\x6a\x66\x42\xd4\x02\x9d\xa5\x06\xba\x47\xd0\xf7\x05\xde\xad\x6f\x5d\xd7\xa1\x35\xbc\xc5\xfd\x32\x20\x21\x99\xa1\xa6\xff\x0c\xb6\x0b\x2d\xcf\x6b\x26\x49\x75\x24\xbd\xca\xb0\x94\x24\xe2\x24\xcb\x34\x97\x1f\x51\xce\xa0\xc7\xbe\x4a\xe2\x4b\x26\xda\xac\xb7\x39\xff\x20\x41\x04\x97\x98\x5d\x1a\x98\xbe\x8a\x04\x33\xf2\x6f\x6c\x9f\x79\x4e\xf6\x8b\x8b\xe4\x64\xbc\x79\x43\x65\x8f\x5f\x5c\x24\x03\x7c\x2a\xdf\x8b\x9b\x34\xba\x63\x99\xc9\x18\x58\x5c\x4d\x8c\xc8\x1a\x88\x18\x6c\x4d\x49\xdb\x51\xb9\x8f\xa9\x2e\x6a\x43\xda\x60\xd5\x5c\x7f\xbe\x17\x28\xbc\x24\x2c\x86\xef\x53\xcf\x3f\x7f\xae\x33\xe4\x12\xc4\xa2\x7c\xcb\x5d\x60\x16\x2f\x52\x7b\xec\xfc\xb9\x26\x81\xb0\x79\x8b\x3b\xea\x15\xce\xb0\x26\x53\x4c\x29\x12\x3c\x67\x31\xc4\xad\xa9\xad\x99\x43\x77\x40\x9d\xa7\xbd\x96\xd0\x17\x1b\x4c\x9f\x8b\x1d\xad\x61\x70\x9f\x71\xf1\x7d\x55\xd7\x69\x89\x70\xcd\x70\x83\xae\x63\x0d\x6d\x34\x47\xce\xa9\x4c\x12\x06\xf1\x82\xb0\x05\xd6\xc3\x15\x9a\x48\x25\x38\x4b\x66\x2e\x92\xd5\x25\xa8\xdc\x6c\xe5\xbd\x39\x95\x7b\xcd\x88\xc9\x86\x18\x23\xda\xc7\xf7\xc0\x0a\xee\xb2\xe4\x84\xde\x09\x42\x76\x56\xf1\x8e\xe7\x75\x70\x4f\xe8\xa0\xcd\xc9\x4e\x1b\x74\x0f\x4a\x11\x96\xc8\xa2\x70\xa6\x3b\xd4\xef\x8f\xce\xaa\x50\x96\x6c\xc3\x1d\x39\x70\x74\xbb\x52\xef\x0f\x6b\xb5\xcd\xbf\x1b\x0e\x0c\x5c\x8b\xb2\x13\x92\x52\xe8\x50\x2c\xb0\x26\x6f\x63\xd0\x00\xc1\x20\xf0\x8c\xe7\x86\x7f\x91\x61\x06\xb4\xed\x77\x7f\x3f\x1e\x9c\xa9\x2e\xe1\x8a\x8b\x14\x91\x78\xea\x51\x9e\xf0\x5c\xf9\xfa\xdb\x73\xd3\x57\xbb\xad\x3b\x5e\x47\xc0\x2d\x93\x87\x52\x50\x6b\x1e\x4f\xbd\xdb\xaf\xf7\xf3\x8e\xba\xac\xff\x16\xf8\x79\xfe\xe5\xfa\xb9\xe0\xc8\x7c\x99\x12\xe5\x2f\x73\xa5\x38\x2b\x7b\xae\xb6\x68\xea\xfd\x5f\xd3\xbe\x7e\x68\x8f\xf2\x8b\x24\xcc\xd7\x26\x1e\xa3\xac\xb7\x16\x7a\xeb\x18\xe2\xe3\x8a\x0e\xb5\xde\xd9\x80\x43\xcf\x76\xfa\x53\x0e\xbc\x5e\x8e\x16\x83\xed\x69\x48\xe3\x8e\x0e\x83\xb2\x7b\x3e\xd6\x17\xc7\x93\xe6\x6b\x9b\xea\xf7\x6b\xbe\xbd\x83\x84\x48\x25\xcc\x11\xf7\xbb\x09\x42\xeb\xa4\xef\xbd\x0f\xde\x93\x84\x3d\x64\xc3\xae\x83\xb6\x57\x68\xf8\xf3\x6c\xf8\xfc\xdc\xd7\xf2\x84\xb1\x19\x84\xd7\x1e\x4a\xb0\xeb\x63\x7b\x6c\x79\xde\x97\x2b\x76\x82\x2f\x94\x27\x84\xfd\x26\x20\x26\x02\x22\xb5\x50\x7c\xaa\xdb\x7b\xc7\xf1\xfc\x42\xa2\x92\x2e\xff\x0c\x50\x84\xb9\xee\xb5\x1e\x29\xdc\x4c\xc1\x8c\xb3\x5d\xca\x73\xf9\x5c\x9e\x34\xd1\x68\xf1\x2b\x9e\xb5\xd3\xf1\x28\xdb\x69\x9e\xb2\xc3\x7e\x6b\x3b\x11\x24\xae\x37\x3b\x0a\xc5\xbc\xa7\x55\x04\xad\xfd\x25\xae\x76\x1a\x9d\xad\xcc\x50\x10\x1b\x10\x37\x5c\x91\x08\x8e\x5f\xf4\x9a\x6f\x75\xd6\x82\x2d\x16\xcc\xfc\xf9\x06\xa4\xd4\xd3\xd4\xf1\xfb\x5e\x59\xb5\x55\x90\xf6\x7b\x47\x07\xfa\x0f\xba\x57\xe2\x97\x46\xd3\x3a\xb4\x86\xfa\x57\x65\xe5\x7e\x1f\xfe\x34\xae\x96\x27\xa1\x7d\xed\x9c\x84\xf6\x7f\xc0\x31\xb7\xf9\xff\x06\x00\x00\xff\xff\x75\xba\x17\xb9\x9d\x23\x00\x00"
+var _baseFooter_gin_brandTmpl = "\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\xa4\xd3\xc1\x8a\xdb\x30\x10\x06\xe0\x7b\x9e\xc2\xb8\xe7\x95\x92\x06\x52\x1a\x9c\x40\x2f\xa5\x87\xd0\x2e\x0e\x85\xde\x16\x59\x1a\xcb\x53\x2c\x8d\xd0\xc8\x75\xcb\xb2\xef\x5e\xa2\xc5\xd4\xdb\x84\x52\xbc\x3a\xf8\x36\xd6\x37\xff\x68\x2a\x0e\xca\x1f\xef\x69\x84\x08\xa6\x68\x7e\xed\x8b\x7c\x2a\x55\x74\x11\xda\x43\xd9\xa5\x14\x78\x2f\xa5\xc5\xd4\x0d\x8d\xd0\xe4\xa4\x25\xcb\xf9\x53\x1e\x2b\x74\xb6\xd0\xbd\x62\x3e\x94\x03\x16\x0e\x3d\x16\x2d\x51\x82\x88\x9a\x7c\x59\x70\xd4\x87\xf2\xf1\xf1\x43\x08\xe7\xa1\xf9\x5a\x9f\x9e\x9e\x24\x3a\x9b\x8b\x05\xff\xb0\xa5\x3c\x56\x52\x1d\x8b\xe9\x54\x32\x6b\x56\xcf\xa8\x4f\xc4\x69\x6e\x7a\x89\xda\x4b\xe9\x61\x88\x24\x1a\x24\xd1\xbb\x41\x18\x58\xec\xb9\x94\x07\x7f\xc5\xf9\xcb\xf3\x71\xf0\xe6\x9f\x9e\x71\x1c\x45\xe3\x9a\xf6\x35\x94\x5c\x7f\xc3\xf2\x92\x52\x83\x45\x4e\x79\x64\x23\xa6\x6e\x7f\x45\x31\x84\x82\xa2\x95\x9b\xb5\xd8\xbc\xdb\x6d\x76\xb2\xde\x9e\xbf\xbd\xff\xbc\x98\x15\x61\x6b\x54\x52\x0f\x3d\x59\xfa\x8f\xa8\x6a\xd0\xe4\x1c\xfc\xc9\x6b\x75\xf3\x51\x5d\x02\xf3\x2a\x0d\x11\xf2\xc3\xe2\xcb\x15\x32\x50\x8f\x1a\x81\x65\x84\x40\x8c\x89\x22\x02\xbf\xc9\xb3\x66\x8d\x8b\x3b\xc8\x3f\x8f\xa0\x1b\x65\x2c\x88\xef\x61\x6a\xe1\xb6\xac\x55\x18\xb9\x53\x11\xbd\xcd\x39\xc6\xa9\x21\x95\x90\xbc\xbc\x3f\x7d\x39\x2f\x97\xb8\x87\xd0\x13\xdf\x5d\xb2\xbc\x63\x37\x8b\x73\x91\x05\x4e\xd8\xc2\x2c\xf0\x7a\x16\x9b\xf2\xe6\x9c\x94\x37\x2a\x9a\xe5\xdb\x0a\x3d\xb6\xf0\xac\xfd\xc9\xa2\x35\xbb\xb7\x5b\xb3\x5e\xcf\xf6\x77\x35\x0d\xff\x77\x00\x00\x00\xff\xff\x2e\x00\xfb\x08\x4d\x04\x00\x00"
+
+func baseFooter_gin_brandTmplBytes() ([]byte, error) {
+	return bindataRead(
+		_baseFooter_gin_brandTmpl,
+		"base/footer_gin_brand.tmpl",
+	)
+}
+
+func baseFooter_gin_brandTmpl() (*asset, error) {
+	bytes, err := baseFooter_gin_brandTmplBytes()
+	if err != nil {
+		return nil, err
+	}
+
+	info := bindataFileInfo{name: "base/footer_gin_brand.tmpl", size: 1101, mode: os.FileMode(0664), modTime: time.Unix(1627647101, 0)}
+	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x3, 0x58, 0xbd, 0x74, 0xe9, 0x1e, 0x59, 0x66, 0xcf, 0x6f, 0x2b, 0xd5, 0xe0, 0x2f, 0x8f, 0x4d, 0x8a, 0xb5, 0x95, 0xfc, 0xda, 0xdb, 0xdd, 0x7d, 0x35, 0x31, 0x72, 0x0, 0x77, 0xe, 0xea, 0xfd}}
+	return a, nil
+}
+
+var _baseFooter_gin_textTmpl = "\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x84\x8f\xb1\x6a\xf3\x40\x10\x84\xfb\xff\x29\x8e\x6b\xcd\x69\x65\x83\xff\xc2\xd8\x07\x21\x81\xe0\x26\x55\x5c\xa4\x5c\x9f\x57\xd2\x25\xd1\xed\x71\xbb\x46\x21\xc6\x0f\x94\xd7\xc8\x93\x05\x5b\x21\xb8\x53\xb5\x3b\xc3\x37\x03\xb3\x46\xd3\x15\x6a\x36\xb6\x53\xcd\x2b\x80\x61\x18\xaa\xd6\x25\x3e\x50\xc5\xa5\xb5\x7e\x1d\xfb\xd6\x84\x77\x14\xd9\xd8\x63\x34\x7d\x4c\xd1\x34\xcc\x4a\x25\x06\x4e\xd6\x48\x09\x63\x56\x56\x00\xb9\xf0\x2b\x05\x95\x9b\x06\x40\x11\x52\x81\xf6\x62\xb8\x3d\xb3\x8a\x16\xcc\x4e\x3b\xea\x09\xe6\xd5\xa2\xaa\x9d\x24\xcc\xd2\xb1\x42\xec\xdb\x5f\xf0\x52\xee\x96\xf5\xc7\xb2\x76\x5a\x30\x49\xc6\x42\x49\xab\x9c\x5a\x0b\xfe\xfb\xcb\x2c\xea\xf9\x7f\x77\x3a\xbd\x10\x96\xf3\xd9\x3c\xba\x27\x3e\xd0\x1a\xd0\xff\xfb\xdb\x03\xa3\x09\xdb\xd4\x30\x0c\xf1\x2d\x02\xee\xf9\xa8\xd6\xdf\x5d\xce\x14\x1b\xfb\x5c\x62\x52\xeb\xb7\xe3\x33\xc5\x07\x4e\x8a\x41\xad\xbf\x1f\x9f\x29\xfe\x99\x4a\x2f\x33\x6e\x66\x3b\x21\xeb\xaf\xca\x70\x63\x76\x32\xb9\xe2\x01\x95\x92\x84\xee\xa8\x9f\xd6\xdf\x88\x6b\xee\x27\x00\x00\xff\xff\x34\x85\xbf\x46\xce\x01\x00\x00"
+
+func baseFooter_gin_textTmplBytes() ([]byte, error) {
+	return bindataRead(
+		_baseFooter_gin_textTmpl,
+		"base/footer_gin_text.tmpl",
+	)
+}
+
+func baseFooter_gin_textTmpl() (*asset, error) {
+	bytes, err := baseFooter_gin_textTmplBytes()
+	if err != nil {
+		return nil, err
+	}
+
+	info := bindataFileInfo{name: "base/footer_gin_text.tmpl", size: 462, mode: os.FileMode(0664), modTime: time.Unix(1627647115, 0)}
+	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x14, 0x75, 0x8d, 0x71, 0x1d, 0xae, 0x45, 0xe2, 0x7f, 0xd9, 0xda, 0xd7, 0xe7, 0x7e, 0xa6, 0x0, 0xd2, 0xad, 0x21, 0xcc, 0xf3, 0x13, 0x2f, 0xd2, 0xd6, 0xc8, 0xd8, 0xff, 0xd7, 0x8a, 0x8f, 0x8f}}
+	return a, nil
+}
+
+var _baseHeadTmpl = "\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\xac\x5a\xdd\x72\xdb\xb8\x15\xbe\x96\x9e\x02\xcb\x76\x67\xda\x9d\x90\xb4\x93\xb4\xcd\x24\x92\x76\xbc\x4e\xb2\x71\xc7\x71\x3c\xb6\x3c\xd3\x5e\x69\x20\xf2\x98\x84\x0d\x02\x0c\x00\x4a\x51\x55\xbe\x7b\x07\x00\x49\x81\x14\x65\x53\xde\x5e\x45\x04\xce\xef\x77\x7e\x70\x00\x67\xf2\xd3\xc7\x6f\xe7\xf3\x7f\x5f\x7f\x42\xa9\xca\xe8\x6c\x3c\xa9\xff\x01\x1c\xa3\x18\x2b\xec\xcb\x62\x59\x08\x3a\xf5\xb6\xdb\xb3\x3c\xbf\x2d\x96\x77\x37\x97\x65\xe9\xcd\xc6\xa3\x49\x06\x0a\xa3\x54\xa9\xdc\x87\xef\x05\x59\x4d\xbd\x73\xce\x14\x30\xe5\xcf\x37\x39\x78\x28\xb2\x5f\x53\x4f\xc1\x0f\x15\x6a\xb9\x1f\x50\x94\x62\x21\x41\x4d\xef\xe6\x9f\xfd\x77\x1e\x0a\x7b\xc5\xfc\xcb\xbf\x3b\xf3\xcf\x79\x96\x63\x45\x96\xd4\x95\x74\xf1\x69\x0a\x71\x02\x9e\xe6\xdb\x6e\xc9\x3d\x62\x5c\xa1\xe0\x1a\x27\x70\x21\xcf\xe2\x8c\xb0\xb2\x1c\x8f\x2a\x89\x0c\x67\x30\xf5\x70\xa1\x52\x2e\x1c\x11\x86\x2d\xb8\x81\x9c\x4b\xa2\xb8\xd8\x94\xe5\x76\x1b\x7c\x5b\x33\x10\xc1\x15\xce\x40\x7f\x02\x95\x50\x96\xbf\xfb\x57\x3c\x86\xed\x16\x58\x5c\x96\x46\x63\x4b\x70\x0c\x32\x12\x24\x57\x84\xb3\xe7\xa4\xef\x3e\x1b\x15\x6d\xaa\xe0\xe3\x4e\x58\x59\x22\x1f\xb5\x99\x5a\xbb\x95\x41\x8d\x95\x17\x57\x88\x48\x84\x4d\xac\x90\x68\x98\xd0\x3d\x17\x48\x46\x04\x58\x74\xd8\x87\x47\xd8\xac\xb9\x88\xa5\xe3\x40\x42\xd8\x2b\x23\xeb\x15\x92\x29\x16\x84\x25\xaf\x6a\x31\x28\x21\xca\x33\xc0\x1b\x71\xe3\x96\x28\x01\xf7\x20\x04\xb8\x48\x33\xee\xef\x56\x77\x91\xb6\xf4\x8b\x48\x8a\xfb\x16\x70\xc1\xf9\xed\xcd\xe7\x39\x7f\x04\x56\x96\x3d\xf4\x36\x0d\x5b\x1c\x6e\x3e\x6a\x86\xf1\x68\xf2\x93\xef\xa3\x6f\x39\x30\xf4\xbb\xc0\x79\x8a\xe6\x38\x91\xc8\xf7\xeb\x6c\xe9\x66\x8a\x05\x11\xed\x76\xee\x24\x88\x6b\xc1\xef\x09\x05\x27\x93\x72\xc1\x73\x10\x6a\x33\xf5\x78\xf2\xbe\x6b\x44\x95\x3b\x5f\xe6\x5f\x2f\x77\x96\xf4\x72\xaa\x76\x55\xe4\x56\xcf\x13\xf4\x44\xb5\x92\x7f\x2f\x4f\xb5\xdd\x76\xe5\x73\x41\xa9\x5d\x45\x7f\x69\xc8\x76\x8b\x7f\xad\x33\xe0\x80\xa6\x43\xb9\xdc\xd2\x87\x52\x2c\xd1\x6e\xad\xc8\x3e\x73\x4a\xf9\x1a\x84\x2c\x4b\x74\x5f\xff\x46\x98\xc5\x3a\x21\xed\x02\x61\x49\x0f\x0b\x61\x49\x59\xa2\x1c\x78\x4e\x21\x38\x64\x13\xc9\x70\xd2\xeb\xfd\xd9\x0a\x2b\x2c\x2e\x09\x7b\xac\xc1\x76\xc2\xe8\x56\xde\xc0\xf8\x39\x85\x76\x7c\x10\xf9\xf2\x01\x22\x75\x54\x0c\x1d\x7d\xbb\x08\x1d\x1d\x99\x43\xed\xe1\x08\x38\x1d\x11\x4f\x23\x3b\x14\xca\xb3\x3c\x3f\x0e\xbd\x35\x2c\x25\x51\x47\x95\xc0\x59\x9e\xbf\x04\xb1\x21\x6d\x72\x38\x74\xb5\xa3\x24\x4b\xc2\x84\x27\xd2\xa7\x49\x90\xb3\xe4\xb0\x1f\xda\xcb\x85\x6e\x64\x6d\x93\xdc\x6e\x3a\x1e\x4d\x28\x61\x8f\x48\x00\x9d\x7a\x32\xe5\x42\x45\x85\x42\x24\xd2\x6e\xa4\x02\xee\x3b\x0d\x2f\xd4\xba\xef\xf1\x4a\x13\x34\xba\xc7\xa3\x89\x75\x1e\x49\x11\x75\x19\x1e\x64\xf8\xf0\xbd\x00\xb1\xf1\xdf\x04\x6f\x83\xd3\x20\x23\x2c\x78\x90\xde\x6c\x12\x5a\x9e\xd9\x73\xdc\x94\x2c\x6b\x11\x01\x16\xe0\x6f\x78\xe1\xcb\x42\xc0\x9e\x14\xc7\x0f\xb5\xa1\x20\x53\x00\xd5\xef\x04\x96\x12\x94\x0c\xef\x39\x53\x3e\x5e\x83\xe4\x19\xf8\x6f\x83\xbf\x07\x6f\xc2\x48\xb6\x97\x8d\xb9\x91\x94\xde\x8b\x14\xf0\x48\x69\xa0\xa4\xff\x36\x78\x13\x9c\x34\x9f\x8e\xd0\xea\xec\x60\x5c\xc1\x92\xf3\xc7\xe0\x41\x9a\xd4\x10\xc0\x62\xd0\xa7\x20\x22\xf9\x46\xa5\x9c\x35\x14\xb6\xd3\x65\x58\x3c\x42\xbc\x4f\xad\xd7\x63\xbe\x66\x88\xb8\x1c\xce\x49\x74\x21\x2f\xae\x8d\xc0\xab\x6a\xd7\x16\xd9\xe1\x00\xe4\xb4\x48\x08\x93\x61\x2d\xed\x41\xfa\x27\xc1\xdb\xe0\x75\xb3\xd0\x17\xd0\x21\x02\xad\x0b\xfe\x49\xf0\x2e\x38\xad\x3e\xfa\x44\xed\xf2\xb4\x9e\x5e\xbe\x17\x44\xc0\x2d\xc9\x72\x0a\x5f\x3f\x7e\xb2\xf6\x0f\x8f\x4c\xad\x5e\x1a\x01\x59\x0c\xfe\x69\x70\x7a\x12\x9c\xee\x16\xdc\x90\x0f\x71\xe4\x19\x49\x2f\x80\x26\xe2\x31\x64\x44\x08\x2e\xfc\xbf\x05\xa7\xff\x08\x4e\x42\x1c\xc7\x9c\x85\x19\x8f\x21\xa4\x1c\xc7\xfa\xc7\xff\x47\xb0\x11\xa9\x1b\xc7\x21\x71\xfa\xe7\xe8\x9c\xc7\xf0\xd5\xf0\x05\x9a\xe1\xee\xe6\x12\x4d\x11\x3a\x4e\xc9\xcf\x57\xe1\xcf\x57\x5a\xcb\x07\x2d\xbc\x2f\xc0\xa6\x12\x6e\x9b\xf8\xd9\xb4\x3d\x22\xb4\xba\x76\x25\x64\x98\x29\x12\xf9\xaf\x75\x92\xbe\xb0\x7a\xb5\x20\xdd\x5f\x6b\xf6\x5f\x57\xd3\xed\xf6\xb7\x82\xd0\xf8\x9c\x67\x19\x51\xd5\x3d\x84\x71\x17\x2d\x2d\xd3\x80\x15\xc4\x82\xe7\xba\x08\xdf\xa7\x7c\x05\x02\xcd\x50\x90\x01\x2b\xd0\x16\xc5\x44\xe6\x14\x6f\xde\xa3\x25\xe5\xd1\xe3\x07\x54\x1a\xf2\x82\x04\x12\x22\xce\x62\x2c\x36\x96\xb2\x91\x10\x10\x05\x99\x23\x20\xc3\x22\x21\xcc\x57\x3c\x7f\x8f\x4e\x2c\x3f\x9a\x84\xb5\xea\x49\xb8\xb3\xa8\x42\xf3\x9f\x78\x85\x6f\x6d\x5a\x58\x34\x9f\xec\xb4\x3d\xe0\x1d\xd5\xa9\x0d\x66\x0f\xbd\x70\xed\x64\x8c\x47\x13\x73\xbc\xce\x6c\x3d\xcf\xf5\x6f\x73\x5d\xa9\x7e\x99\x6b\x48\x75\xd7\x68\x4e\xdd\x49\x68\x79\xc6\xed\xe9\x5c\xa5\x90\x81\x1f\x71\xda\xb9\x6a\xcd\xf5\xfa\xb9\x5e\xfe\x0a\x0a\xcf\x71\x62\x22\xa6\x73\x4d\x41\x96\x53\xac\x00\x79\x84\xe9\x11\x2a\xd4\x17\x4e\x0f\x05\x65\x39\x9e\x98\xdf\xb3\xf1\x64\xc9\xe3\x8d\xf6\x35\x26\x2b\x14\x51\x2c\xe5\xd4\xbb\x2f\x28\x45\x29\x90\x24\x55\xb6\x2d\x34\x48\xcf\x53\x22\x51\x35\x50\xa0\x35\x17\x8f\x12\x2d\x41\x29\x10\x68\x4d\x54\xea\x04\xa0\x1d\x9d\xbd\x6b\xe4\x05\x93\x0a\x53\x6a\xda\x59\x5b\x75\x33\xd1\x2e\xb1\x40\xb4\x31\xa1\x4d\x55\x10\xe3\x3f\x26\x0c\x44\xb5\xdd\xdd\x4f\x04\x89\xeb\xad\xd6\x5e\xc4\x69\x91\x31\x0d\x50\xb5\xd9\xe5\x54\x3c\x47\x4d\x8a\x22\x9d\x8b\x8d\x9c\xd1\x68\x82\x6b\x4a\x93\xac\x4b\x81\x59\xdc\x5f\x56\x0e\xd3\x68\x42\xb2\xc4\xd1\x90\x11\x46\x50\x35\xf0\xf4\xe4\x56\x77\xe8\x70\xb4\x87\x78\xd6\x98\xdd\x9c\x71\x97\x3c\x49\x20\xb6\x58\xf6\x59\xe9\xde\xca\x3e\x62\x99\x2e\x39\x16\x71\x59\x22\x1c\x29\xb2\x6a\xee\xad\x07\x9c\xd8\x6e\x03\x72\xfa\x8e\x05\x73\x81\xbc\xb8\x66\xf6\x74\x8e\xe2\xd9\x10\x85\x17\x52\x16\x20\x87\x69\x23\x86\xb6\xad\xb3\x5a\x1b\xae\xf0\xba\xa0\x74\xa0\xbe\x5c\x93\xb6\xd5\xe9\xa5\x85\x80\xef\x05\x48\xb5\xa7\xd5\x19\xd4\x9f\x35\xe3\x0b\x37\xd7\xb9\xa3\x31\x4e\x79\x06\x3d\x7a\xab\x43\xe3\x59\xb5\x9f\x7e\xe4\x94\x8b\x81\x9a\xc1\x12\x87\x66\x52\xf7\x66\x13\x52\x4b\xad\x46\x37\x54\xfd\xeb\x4b\xc0\x22\x4a\x75\x5f\x23\x2d\x63\x2b\x01\xfb\xf6\x86\xbf\xb8\x45\xa5\x8d\x6c\x95\x43\xbb\xe0\x8c\x2a\xc2\xf2\x42\xb5\x6b\x46\xaf\xd4\x64\xd6\x82\x25\xff\xe1\x21\x7d\xbd\xb1\xcf\x5d\x1e\xca\x29\x8e\x20\xe5\x34\x06\x61\x6e\x5b\x8d\x65\x96\x7e\x91\x0b\x6e\xae\x8e\xd5\x4d\xa6\x11\xdd\x16\x6b\x2f\x00\xc6\x3b\x87\x28\x8c\xc9\x6a\xef\xfb\x97\xd0\x8d\x83\xdb\x61\x97\x58\x82\xe9\xa9\x8b\x84\x30\x0f\xfd\xd9\x49\x93\x27\x0a\xd5\x41\x42\xe8\x66\xd7\xed\x37\x7b\x60\xd5\x87\x25\x32\x6f\x87\xe6\x94\x7f\x28\xb2\x1c\x99\x76\x94\xf3\x5c\xb7\xce\x22\xf7\xec\xab\xa2\x7b\x11\x6d\xa0\x89\x04\x60\x7d\x51\x82\xb5\x86\xc5\x12\xae\xb0\x20\x58\xdf\xe6\xa6\x9e\x22\x6c\x83\x08\x5b\x81\x50\x10\xb7\x2c\x19\x4d\x64\x8e\x59\x6d\x8b\x09\x40\x6b\x7b\x74\x38\x81\x72\x5a\xe8\x04\x73\xf9\xa5\xf0\x39\xa3\x9b\x76\xf6\xb7\x6c\x9b\x84\x9a\xbe\x13\x96\x27\xd5\x28\x41\x30\x4b\x28\xf8\x1a\xa1\x6e\x40\xcd\x1c\xa6\x05\xb6\x96\x1c\x74\xf7\xa0\xef\x16\x5a\x7f\x15\xe9\xea\x09\xad\xe1\x1d\xee\xe7\x01\x09\xc9\x0c\xb9\xfe\x33\x58\x2f\xb4\x3c\xcf\x4d\x92\xba\xf1\xbf\xc8\xb0\x8c\x24\xe2\x28\xcb\x34\x97\x1f\x51\xce\xe0\x80\x7d\xb5\xc4\xe7\x4c\xb4\x59\x6f\x73\xfe\x4e\x82\x08\xce\x31\x3b\x37\x30\x7d\x13\x09\x66\xe4\x3f\xd8\x3e\xa6\x1c\xed\x17\x17\xc9\xd1\x78\x73\x47\xe5\x01\xbf\xb8\x48\x06\xf8\x54\xbd\xca\xba\x34\xba\x2f\x98\xf9\x13\x58\x5c\xcf\x65\xc8\x1a\x88\x18\xac\x4d\x49\xdb\x81\xf4\x10\x53\x53\xd4\x86\xd4\x61\xd5\x5c\x7f\xbc\x17\x28\xbc\x24\x2c\x86\x1f\x53\xcf\x3f\x7d\xaa\x33\x14\x12\xc4\xa2\x7a\x31\x5d\x60\x16\x2f\x32\xdb\xdc\xff\x58\x93\x40\xd8\xbc\x78\xed\xf5\x8a\xd6\x48\x24\x33\x4c\x29\x12\xbc\x60\x31\xc4\x9d\xd9\xc8\xcd\xa1\x1b\xa0\xad\x07\xb4\x8e\xd0\x67\x1b\xcc\x21\x17\x7b\x5a\xc3\xe0\x3e\xd3\xc6\xf7\x45\x5d\xa7\x23\xa2\x6d\x46\x3b\xe8\x3a\xd6\xd0\x45\x73\xd4\x3a\xfb\x48\xc2\x20\x5e\x10\xb6\xc0\x7a\x84\x41\x13\xa9\x04\x67\xc9\xac\x8d\x64\x7d\xd5\xa8\x36\x3b\x79\x6f\xce\xbe\x83\x66\xc4\x64\x45\x8c\x11\xdd\x43\x72\x60\x05\xf7\x59\x72\x44\xef\x04\x21\x7b\xab\x78\xc3\x8b\x26\xb8\x47\x74\x50\x77\x7e\xd2\x06\xdd\x82\x52\x84\x25\xb2\x2c\x5b\x33\x14\x3a\xec\x8f\xce\xaa\x50\x56\x6c\xc3\x1d\xd9\x71\xf4\xbb\xd2\xec\x0f\x6b\xb5\xee\x5f\xe7\x06\x06\xae\x43\xd9\x0b\x49\x25\x74\x28\x16\x58\x93\x77\x31\x70\x40\x30\x08\x3c\xe1\xb9\xe1\x5f\xe4\x98\x01\xed\xfa\x7d\xb8\x1f\x0f\xce\xd4\x36\xe1\x3d\x17\x19\x22\xf1\xd4\xa3\x3c\xe1\x85\xf2\xf5\xb7\xd7\x4e\x5f\xed\xb6\xee\x78\x3d\x01\xb7\x4c\x1e\xca\x40\xa5\x3c\x9e\x7a\xd7\xdf\x6e\xe7\x3d\x75\xd9\xfc\xc5\xed\xcb\xfc\xeb\xe5\x53\xc1\x91\xc5\x32\x23\xca\x5f\x16\x4a\x71\x56\xf5\x5c\x6d\xd1\xd4\xfb\x93\x6b\xdf\x61\x68\xf7\xf2\x8b\x24\xcc\xd7\x26\xee\xa3\xac\xb7\x16\x7a\x6b\x1f\xe2\xfd\x8a\x0e\xb5\xde\xd9\x80\x43\xcf\x76\xfa\x63\x0e\xbc\x83\x1c\x1d\x06\xdb\xd3\x90\xc6\x1d\xed\x06\xe5\xf6\xf9\xd8\x5c\xcf\x8e\x9a\xaf\x6d\xaa\xdf\xa6\x7c\x7d\x03\x09\x91\x4a\x98\x23\xee\x37\x13\x84\xce\x49\x7f\xf0\xd6\x75\x4b\x12\x76\x97\x0f\xbb\x74\xd9\x5e\xa1\xe1\x2f\xf2\xe1\xf3\xf3\xa1\x96\x27\x8c\xcd\x20\xbc\xee\x50\x82\xdb\x3e\x76\xc7\x96\xa7\x7d\xb9\x60\x47\xf8\x42\x79\x42\xd8\xaf\x02\x62\x22\x20\x52\x0b\xc5\xa7\xba\xbd\xf7\x1c\xcf\xcf\x24\x2a\xe9\xf3\xcf\x00\x45\x58\xdb\xbd\xce\x53\x40\x3b\x53\x30\xe3\x6c\x93\xf1\x42\x3e\x95\x27\x2e\x1a\x1d\x7e\xc5\xf3\x6e\x3a\xee\x65\x3b\x2d\x32\xb6\xdb\xef\x6c\x27\x82\xc4\xcd\x66\x4f\xa1\x98\x57\xab\x9a\xa0\xb3\xbf\xc4\xf5\x8e\xd3\xd9\xaa\x0c\x05\xb1\x02\x71\xc5\x15\x89\x60\xff\xdd\xcc\x7d\x11\xb3\x16\xac\xb1\x60\xe6\x8f\x24\x20\xa5\x9e\xa6\xf6\x5f\xd1\xaa\xaa\xad\x83\xb4\xdd\xb6\x74\xa0\xff\xa2\x5b\x25\x5e\x3b\x4d\x6b\xd7\x1a\x9a\x5f\xb5\x95\xfa\xc6\x3f\xae\x97\x27\xa1\x7d\x53\x9c\x84\xf6\xbf\xb9\x98\x3b\xf3\xff\x02\x00\x00\xff\xff\x35\xab\x99\x76\x03\x23\x00\x00"
 
 func baseHeadTmplBytes() ([]byte, error) {
 	return bindataRead(
@@ -606,8 +722,33 @@ func baseHeadTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "base/head.tmpl", size: 9117, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xc1, 0x43, 0x63, 0x7a, 0x7f, 0x61, 0x67, 0x84, 0x91, 0xe5, 0x63, 0x63, 0x63, 0xad, 0x86, 0x60, 0x74, 0xf8, 0x3, 0x71, 0x8f, 0xec, 0x84, 0x35, 0xdf, 0xe3, 0xd8, 0x1b, 0x1d, 0x24, 0xf9, 0x79}}
+=======
+	info := bindataFileInfo{name: "base/head.tmpl", size: 8963, mode: os.FileMode(0664), modTime: time.Unix(1627648302, 0)}
+	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xc0, 0x67, 0x6f, 0x97, 0x35, 0x7f, 0x15, 0x81, 0xd9, 0xc, 0x52, 0x75, 0x8f, 0x6f, 0x5e, 0x17, 0x62, 0x25, 0x95, 0xe, 0xd, 0x3e, 0x49, 0xac, 0xd9, 0x8, 0x8b, 0x98, 0xd6, 0x8b, 0x5d, 0xf5}}
+	return a, nil
+}
+
+var _baseHead_ginTmpl = "\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x7c\xcd\xb1\xae\xc2\x30\x0c\x85\xe1\xfd\x3e\x45\xe4\xbd\xb5\xee\xc6\x90\x64\x45\x2c\x9d\x78\x81\x28\x38\xaa\x45\xb0\xc1\x09\xea\x50\xf5\xdd\x51\x25\xba\xb2\x9c\x33\xfd\xfa\x7c\x72\xb9\xa6\xd6\x02\x70\xa7\x07\xb8\xd9\xa8\x04\xc0\xf3\x30\xe9\x8d\x90\xa5\x28\x2e\x7c\x67\x70\x46\x35\x80\xa8\x51\x21\x33\x32\x88\x9e\x8f\x52\x73\xe7\xac\xe2\xbe\x3f\xbc\xde\xd4\x3a\xab\x40\xf4\xc8\x71\x5d\x47\xfe\x3f\xc9\x78\x35\x07\x33\xd5\x27\x6c\x9b\xc7\x14\xff\x7e\xcb\x97\x43\xc6\x89\x96\x06\x71\xdf\x3d\xfb\x04\x00\x00\xff\xff\x69\x88\x0c\x8e\xb0\x00\x00\x00"
+
+func baseHead_ginTmplBytes() ([]byte, error) {
+	return bindataRead(
+		_baseHead_ginTmpl,
+		"base/head_gin.tmpl",
+	)
+}
+
+func baseHead_ginTmpl() (*asset, error) {
+	bytes, err := baseHead_ginTmplBytes()
+	if err != nil {
+		return nil, err
+	}
+
+	info := bindataFileInfo{name: "base/head_gin.tmpl", size: 176, mode: os.FileMode(0664), modTime: time.Unix(1627646032, 0)}
+	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x51, 0xeb, 0xbb, 0x27, 0xb5, 0x93, 0x3a, 0x82, 0x48, 0x6f, 0x96, 0x33, 0xc0, 0x5f, 0x5f, 0x6d, 0xfc, 0x2c, 0x19, 0x2c, 0x0, 0xd5, 0x36, 0xcb, 0xac, 0x8f, 0x2c, 0x7c, 0xf8, 0x3e, 0x49, 0xd4}}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	return a, nil
 }
 
@@ -626,7 +767,11 @@ func exploreBlob_listTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "explore/blob_list.tmpl", size: 853, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "explore/blob_list.tmpl", size: 853, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x85, 0xdc, 0xb1, 0x78, 0x76, 0xf4, 0x1b, 0x12, 0xc1, 0xdf, 0xf1, 0xe7, 0x5, 0x78, 0x8d, 0xe6, 0xbf, 0xfe, 0xfe, 0x32, 0x4d, 0x44, 0x62, 0x54, 0xe1, 0x9b, 0x9b, 0x3d, 0xe5, 0x8e, 0x59, 0xbb}}
 	return a, nil
 }
@@ -646,7 +791,11 @@ func exploreCommit_listTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "explore/commit_list.tmpl", size: 769, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "explore/commit_list.tmpl", size: 769, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xd2, 0x45, 0xd6, 0x61, 0xb5, 0x76, 0xc3, 0x78, 0xc9, 0xf8, 0x29, 0xa6, 0x1d, 0xa5, 0x54, 0x87, 0xbc, 0x25, 0xcc, 0xcf, 0xc1, 0x45, 0x5d, 0xa8, 0x45, 0x6a, 0xc4, 0xc7, 0xaa, 0x7d, 0x22, 0x3e}}
 	return a, nil
 }
@@ -666,7 +815,11 @@ func exploreCommitsTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "explore/commits.tmpl", size: 360, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "explore/commits.tmpl", size: 360, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xb2, 0xfb, 0x18, 0x4b, 0xaf, 0xd3, 0x1a, 0x71, 0x56, 0x33, 0x6e, 0xb5, 0xef, 0x72, 0xfe, 0x54, 0x97, 0xbe, 0x9, 0x0, 0x20, 0xb3, 0x18, 0xaf, 0xcb, 0x4e, 0x15, 0x4c, 0xc5, 0xc, 0x63, 0x14}}
 	return a, nil
 }
@@ -686,7 +839,11 @@ func exploreDataTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "explore/data.tmpl", size: 362, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "explore/data.tmpl", size: 362, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x1a, 0xfa, 0x79, 0xea, 0x11, 0x13, 0x99, 0x90, 0x65, 0xf5, 0xd8, 0x22, 0x36, 0x96, 0xa0, 0xf9, 0x3d, 0x2, 0xee, 0xb8, 0x4d, 0x51, 0x97, 0x3f, 0xd0, 0x95, 0x79, 0x1a, 0x3b, 0x95, 0x44, 0xa3}}
 	return a, nil
 }
@@ -706,7 +863,7 @@ func exploreDmp_browsingTmpl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "explore/dmp_browsing.tmpl", size: 74, mode: os.FileMode(0664), modTime: time.Unix(1629414584, 0)}
+	info := bindataFileInfo{name: "explore/dmp_browsing.tmpl", size: 74, mode: os.FileMode(0664), modTime: time.Unix(1635227272, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xea, 0xd8, 0x53, 0xef, 0xb9, 0xf5, 0xc8, 0xe0, 0x31, 0x5f, 0xba, 0x39, 0x28, 0x64, 0xb8, 0x8a, 0x2b, 0x28, 0xb4, 0x40, 0xfd, 0xe8, 0x12, 0xaa, 0x19, 0x54, 0xdb, 0x1e, 0x5e, 0xf, 0x56, 0xa9}}
 	return a, nil
 }
@@ -726,7 +883,7 @@ func exploreMetadataTmpl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "explore/metadata.tmpl", size: 424, mode: os.FileMode(0664), modTime: time.Unix(1627966515, 0)}
+	info := bindataFileInfo{name: "explore/metadata.tmpl", size: 424, mode: os.FileMode(0664), modTime: time.Unix(1635227272, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xd6, 0xaf, 0x66, 0xbe, 0xfb, 0x1f, 0x6b, 0x29, 0x59, 0xef, 0x2d, 0xd7, 0xf3, 0x51, 0x9, 0x4f, 0x10, 0x48, 0xcd, 0xf1, 0xff, 0xb2, 0xff, 0x4, 0x9f, 0xb4, 0xc0, 0xf, 0x2a, 0x21, 0x5, 0x7d}}
 	return a, nil
 }
@@ -746,7 +903,7 @@ func exploreMetadata_listTmpl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "explore/metadata_list.tmpl", size: 1472, mode: os.FileMode(0664), modTime: time.Unix(1627966515, 0)}
+	info := bindataFileInfo{name: "explore/metadata_list.tmpl", size: 1472, mode: os.FileMode(0664), modTime: time.Unix(1635227272, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xd6, 0x48, 0x89, 0x14, 0xaa, 0x1e, 0x6f, 0xc2, 0x1f, 0x9e, 0xaf, 0x42, 0x76, 0x6a, 0xaa, 0x7b, 0xd2, 0xc7, 0x41, 0xdc, 0x11, 0xa5, 0xb0, 0xe3, 0xf2, 0xf8, 0x44, 0xd8, 0xa0, 0x9d, 0xc9, 0x24}}
 	return a, nil
 }
@@ -766,7 +923,11 @@ func exploreNavbarTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "explore/navbar.tmpl", size: 1239, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "explore/navbar.tmpl", size: 1239, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x1b, 0xd, 0xea, 0x35, 0x98, 0x6e, 0xfc, 0x13, 0xfd, 0xa6, 0xcd, 0xcb, 0x35, 0x83, 0x7e, 0xdd, 0xc0, 0xb0, 0xb2, 0x77, 0xab, 0x52, 0xdc, 0x10, 0x51, 0xd3, 0x82, 0x6a, 0xb1, 0xd1, 0xa9, 0x5b}}
 	return a, nil
 }
@@ -786,7 +947,11 @@ func exploreOrganizationsTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "explore/organizations.tmpl", size: 1054, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "explore/organizations.tmpl", size: 1054, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x50, 0xb0, 0x83, 0x1a, 0xa7, 0x39, 0xc8, 0x5d, 0x6c, 0x97, 0x22, 0xe8, 0x1b, 0x71, 0xd8, 0xa0, 0x79, 0xf, 0x8c, 0xb0, 0xcd, 0xc6, 0x8c, 0x1b, 0xf8, 0x4, 0x2b, 0x6, 0xd2, 0x9, 0xe9, 0x3c}}
 	return a, nil
 }
@@ -806,7 +971,11 @@ func explorePageTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "explore/page.tmpl", size: 852, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "explore/page.tmpl", size: 852, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xc9, 0xc, 0x9, 0x83, 0xc2, 0x1e, 0x65, 0x9, 0xc1, 0x82, 0x15, 0xf9, 0x1c, 0xfd, 0x0, 0x91, 0x4, 0x62, 0xa7, 0x9c, 0x32, 0xd, 0x7f, 0xd4, 0xdd, 0x76, 0x87, 0x4b, 0x97, 0xc8, 0x16, 0x4f}}
 	return a, nil
 }
@@ -826,7 +995,11 @@ func exploreRepo_listTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "explore/repo_list.tmpl", size: 1442, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "explore/repo_list.tmpl", size: 1442, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xb5, 0x96, 0xf4, 0x9d, 0xb9, 0x48, 0x2d, 0x78, 0xb1, 0xfa, 0x4c, 0x89, 0x51, 0x49, 0xd4, 0x1f, 0x71, 0x64, 0x7c, 0x7f, 0x9, 0x4b, 0xd5, 0x21, 0x40, 0x4a, 0x90, 0xad, 0x61, 0x62, 0x3, 0x38}}
 	return a, nil
 }
@@ -846,7 +1019,11 @@ func exploreReposTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "explore/repos.tmpl", size: 365, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "explore/repos.tmpl", size: 365, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xca, 0xb1, 0x58, 0x8, 0xeb, 0x89, 0x96, 0xa5, 0xd6, 0xec, 0x9f, 0xb5, 0x54, 0x1f, 0x8e, 0x6f, 0xf8, 0x92, 0x55, 0x2f, 0x11, 0x55, 0xc0, 0x9f, 0xe3, 0xfd, 0xf2, 0x5a, 0x3f, 0x9c, 0xd4, 0xad}}
 	return a, nil
 }
@@ -866,7 +1043,11 @@ func exploreSearchTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "explore/search.tmpl", size: 277, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "explore/search.tmpl", size: 277, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xc9, 0xd, 0x91, 0xa0, 0x58, 0x62, 0xdd, 0x3, 0x47, 0x50, 0x34, 0x3f, 0x1a, 0x53, 0x2b, 0x9a, 0x37, 0xa7, 0x12, 0xae, 0x79, 0x34, 0xe, 0x2b, 0xa5, 0x12, 0xfd, 0x83, 0xeb, 0x41, 0x38, 0x56}}
 	return a, nil
 }
@@ -886,7 +1067,11 @@ func exploreSearch_extTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "explore/search_ext.tmpl", size: 1162, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "explore/search_ext.tmpl", size: 1162, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xeb, 0xb, 0x3c, 0xde, 0x65, 0x93, 0xea, 0xcf, 0x6c, 0xd1, 0x74, 0xda, 0x44, 0xa4, 0xfb, 0xd0, 0x5d, 0xf9, 0x38, 0x47, 0x7b, 0xc1, 0xaa, 0x2f, 0x24, 0xd5, 0xd3, 0xf9, 0x75, 0x9c, 0x6e, 0xc8}}
 	return a, nil
 }
@@ -906,7 +1091,7 @@ func exploreSearch_metadataTmpl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "explore/search_metadata.tmpl", size: 309, mode: os.FileMode(0664), modTime: time.Unix(1627966515, 0)}
+	info := bindataFileInfo{name: "explore/search_metadata.tmpl", size: 309, mode: os.FileMode(0664), modTime: time.Unix(1635227272, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x9, 0x56, 0x60, 0x78, 0x47, 0x4e, 0x3c, 0x1b, 0xf0, 0xb7, 0x42, 0x7b, 0x19, 0xec, 0x92, 0xeb, 0xc, 0x93, 0x8d, 0xac, 0xa2, 0x76, 0x83, 0xb2, 0x6d, 0x16, 0xb0, 0x7f, 0xda, 0xb4, 0x4, 0xae}}
 	return a, nil
 }
@@ -926,7 +1111,11 @@ func exploreUsersTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "explore/users.tmpl", size: 896, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "explore/users.tmpl", size: 896, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xfe, 0x82, 0xfd, 0xec, 0xed, 0xe7, 0xff, 0x71, 0x2d, 0xb, 0xa7, 0x32, 0x6b, 0x81, 0xa3, 0x52, 0x66, 0x94, 0xc2, 0xa, 0x84, 0xf8, 0x67, 0x42, 0x4e, 0xec, 0x92, 0x3d, 0x1c, 0x7d, 0x49, 0x1f}}
 	return a, nil
 }
@@ -946,7 +1135,7 @@ func faRepoListTmpl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "fa/repo/list.tmpl", size: 1716, mode: os.FileMode(0664), modTime: time.Unix(1627966515, 0)}
+	info := bindataFileInfo{name: "fa/repo/list.tmpl", size: 1716, mode: os.FileMode(0664), modTime: time.Unix(1635227272, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xca, 0xa3, 0x64, 0x2c, 0xe8, 0xf2, 0xeb, 0x44, 0x85, 0xd2, 0x2e, 0x4d, 0xf5, 0x13, 0x27, 0x8e, 0xf5, 0x96, 0x6c, 0x8e, 0xfa, 0x27, 0x6c, 0xb1, 0xf3, 0x20, 0x3b, 0x12, 0x1c, 0x33, 0xca, 0x8f}}
 	return a, nil
 }
@@ -966,7 +1155,11 @@ func homeTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "home.tmpl", size: 2233, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "home.tmpl", size: 2233, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xf5, 0xa5, 0x20, 0x96, 0x5b, 0x28, 0x9d, 0xa4, 0xc4, 0xbf, 0x9e, 0x5a, 0xb1, 0xe1, 0xd7, 0xd7, 0x96, 0x5e, 0x54, 0x57, 0x2e, 0x14, 0x4, 0x9c, 0xc6, 0x41, 0xa5, 0xa, 0xb0, 0x2, 0xec, 0xa6}}
 	return a, nil
 }
@@ -986,7 +1179,11 @@ func injectFooterTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "inject/footer.tmpl", size: 0, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "inject/footer.tmpl", size: 0, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xe3, 0xb0, 0xc4, 0x42, 0x98, 0xfc, 0x1c, 0x14, 0x9a, 0xfb, 0xf4, 0xc8, 0x99, 0x6f, 0xb9, 0x24, 0x27, 0xae, 0x41, 0xe4, 0x64, 0x9b, 0x93, 0x4c, 0xa4, 0x95, 0x99, 0x1b, 0x78, 0x52, 0xb8, 0x55}}
 	return a, nil
 }
@@ -1006,7 +1203,11 @@ func injectHeadTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "inject/head.tmpl", size: 1696, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "inject/head.tmpl", size: 1696, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xc1, 0x6c, 0xb3, 0xa6, 0x8a, 0x50, 0xdc, 0xe5, 0xba, 0x8d, 0xde, 0xe7, 0xa8, 0x47, 0xd9, 0xbc, 0x20, 0x68, 0x23, 0x26, 0x4, 0x94, 0x6c, 0x47, 0x79, 0x19, 0x9f, 0xc5, 0xe9, 0x42, 0xc8, 0x29}}
 	return a, nil
 }
@@ -1026,7 +1227,11 @@ func installTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "install.tmpl", size: 14499, mode: os.FileMode(0664), modTime: time.Unix(1626317558, 0)}
+=======
+	info := bindataFileInfo{name: "install.tmpl", size: 14499, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x84, 0xa8, 0x1f, 0xf0, 0x87, 0xa7, 0xc9, 0xe2, 0x46, 0xf1, 0x70, 0xfa, 0x81, 0x83, 0x13, 0xc1, 0x15, 0xfb, 0xb8, 0x98, 0xa8, 0xda, 0x59, 0x2d, 0x35, 0x88, 0x18, 0xeb, 0xe0, 0x73, 0x69, 0x2b}}
 	return a, nil
 }
@@ -1046,7 +1251,11 @@ func mailAuthActivateTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "mail/auth/activate.tmpl", size: 641, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "mail/auth/activate.tmpl", size: 641, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x6f, 0x25, 0xcd, 0x91, 0x64, 0x71, 0x0, 0x8d, 0xbb, 0x35, 0xa4, 0x58, 0x2c, 0x82, 0x75, 0xdb, 0xd8, 0xd5, 0x51, 0x19, 0x3f, 0xa, 0x27, 0x9e, 0xdf, 0xf6, 0xab, 0xd0, 0x21, 0xb5, 0xb6, 0x31}}
 	return a, nil
 }
@@ -1066,7 +1275,11 @@ func mailAuthActivate_emailTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "mail/auth/activate_email.tmpl", size: 652, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "mail/auth/activate_email.tmpl", size: 652, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x1e, 0xde, 0x29, 0xdf, 0xf8, 0x29, 0x32, 0xb8, 0x4d, 0x44, 0x43, 0xfe, 0xe5, 0x57, 0x76, 0xf1, 0xe7, 0x17, 0x50, 0xb0, 0xc3, 0xf7, 0x88, 0x5a, 0x7, 0x6e, 0x10, 0x8a, 0xaa, 0xd5, 0xc4, 0x5}}
 	return a, nil
 }
@@ -1086,7 +1299,11 @@ func mailAuthInvite_emailTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "mail/auth/invite_email.tmpl", size: 985, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "mail/auth/invite_email.tmpl", size: 985, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xf0, 0x2a, 0x1d, 0x37, 0xac, 0x80, 0xd8, 0xb5, 0x31, 0xc5, 0xb3, 0x86, 0xa9, 0xd5, 0x48, 0x53, 0xbd, 0x7, 0xa8, 0xf1, 0x7e, 0x60, 0x80, 0xad, 0xd9, 0xf0, 0x8d, 0x49, 0x93, 0xe3, 0x32, 0xe6}}
 	return a, nil
 }
@@ -1106,7 +1323,11 @@ func mailAuthRegister_notifyTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "mail/auth/register_notify.tmpl", size: 500, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "mail/auth/register_notify.tmpl", size: 500, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x75, 0xab, 0xb5, 0xb5, 0x7a, 0x99, 0x32, 0xbe, 0xa4, 0x44, 0x74, 0xda, 0xf7, 0xb0, 0x95, 0xf9, 0x7c, 0xd1, 0xe4, 0xa1, 0xb, 0xa6, 0x6e, 0x84, 0xe3, 0x4d, 0x4, 0x50, 0x10, 0xcc, 0x5f, 0xda}}
 	return a, nil
 }
@@ -1126,7 +1347,11 @@ func mailAuthReset_passwdTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "mail/auth/reset_passwd.tmpl", size: 621, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "mail/auth/reset_passwd.tmpl", size: 621, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x5e, 0xe3, 0x82, 0x85, 0x37, 0x62, 0x5f, 0x10, 0x2b, 0xdb, 0x7b, 0x9a, 0xb6, 0x54, 0xd5, 0xa, 0xbf, 0x8d, 0x3e, 0x72, 0x7b, 0x3a, 0xc2, 0xc1, 0xf0, 0xb0, 0xbb, 0x78, 0x3c, 0x60, 0xc8, 0x93}}
 	return a, nil
 }
@@ -1146,7 +1371,11 @@ func mailIssueCommentTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "mail/issue/comment.tmpl", size: 385, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "mail/issue/comment.tmpl", size: 385, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x37, 0xc4, 0x73, 0xf3, 0xaa, 0xc0, 0xcd, 0x6a, 0x41, 0xb9, 0xe2, 0x63, 0x64, 0xc3, 0x80, 0x75, 0x5c, 0x40, 0x8e, 0xf, 0x92, 0x84, 0xe8, 0x5c, 0x3, 0xe1, 0xa5, 0x87, 0x3b, 0x86, 0x2f, 0xf6}}
 	return a, nil
 }
@@ -1166,7 +1395,11 @@ func mailIssueMentionTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "mail/issue/mention.tmpl", size: 431, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "mail/issue/mention.tmpl", size: 431, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xb4, 0xb7, 0x7e, 0x51, 0x65, 0x23, 0x92, 0x39, 0xd7, 0x4d, 0xf6, 0x72, 0x79, 0xf0, 0xa3, 0xdf, 0xab, 0xf5, 0x9a, 0x19, 0x3b, 0xd7, 0x5f, 0x84, 0xba, 0xaf, 0xbd, 0xed, 0x24, 0x77, 0xa, 0x79}}
 	return a, nil
 }
@@ -1186,7 +1419,11 @@ func mailNotifyCollaboratorTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "mail/notify/collaborator.tmpl", size: 444, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "mail/notify/collaborator.tmpl", size: 444, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x3a, 0x70, 0x74, 0x5b, 0x5e, 0x31, 0x1e, 0x45, 0xe3, 0xb1, 0x3e, 0x73, 0x63, 0x41, 0x4f, 0x12, 0xd6, 0x2a, 0xf7, 0xc9, 0x40, 0x22, 0xe6, 0x88, 0x25, 0xa9, 0xf8, 0xb1, 0x3a, 0xbb, 0xf7, 0x63}}
 	return a, nil
 }
@@ -1206,7 +1443,11 @@ func orgCreateTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "org/create.tmpl", size: 981, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "org/create.tmpl", size: 981, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x28, 0x6, 0x35, 0xc, 0x29, 0xc8, 0x24, 0xfd, 0x5b, 0xee, 0xcd, 0x94, 0x71, 0xd1, 0xc6, 0xeb, 0xe3, 0x2a, 0x65, 0x33, 0x2c, 0x30, 0x11, 0x2e, 0x3f, 0x7b, 0x39, 0x3f, 0xcd, 0x7c, 0x81, 0x7d}}
 	return a, nil
 }
@@ -1226,7 +1467,11 @@ func orgHeaderTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "org/header.tmpl", size: 938, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "org/header.tmpl", size: 938, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xa8, 0x16, 0x82, 0x4a, 0xa1, 0xb3, 0xa6, 0x4c, 0x6f, 0xf2, 0xb7, 0x7e, 0xb5, 0x51, 0x50, 0x10, 0x8a, 0x26, 0x45, 0x88, 0xa9, 0x73, 0x6, 0x9e, 0xed, 0xbb, 0xfa, 0x4a, 0xc2, 0xae, 0xf1, 0x3b}}
 	return a, nil
 }
@@ -1246,7 +1491,11 @@ func orgHomeTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "org/home.tmpl", size: 3338, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "org/home.tmpl", size: 3338, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xe9, 0x4b, 0x25, 0x87, 0xdf, 0xc4, 0xe3, 0x95, 0xdf, 0x40, 0xda, 0xcb, 0xfb, 0x6c, 0xd5, 0x74, 0xca, 0xab, 0x81, 0xb9, 0x69, 0xac, 0xb3, 0x8d, 0x5e, 0x6, 0x8c, 0x10, 0xc4, 0x59, 0x31, 0xa4}}
 	return a, nil
 }
@@ -1266,7 +1515,11 @@ func orgMemberInviteTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "org/member/invite.tmpl", size: 803, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "org/member/invite.tmpl", size: 803, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x45, 0xe8, 0xb1, 0xd8, 0xd9, 0x7, 0x88, 0x2e, 0xeb, 0xaa, 0xac, 0x46, 0x53, 0x45, 0xcb, 0x94, 0x4f, 0x99, 0xcb, 0x72, 0xe1, 0x18, 0xb5, 0xf3, 0x69, 0x8a, 0xb5, 0x4d, 0x34, 0xd2, 0xd0, 0x36}}
 	return a, nil
 }
@@ -1286,7 +1539,11 @@ func orgMemberMembersTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "org/member/members.tmpl", size: 2423, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "org/member/members.tmpl", size: 2423, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xc2, 0x10, 0xf8, 0xb0, 0x47, 0xa4, 0x61, 0x14, 0x9d, 0x9, 0x3, 0x9c, 0xb2, 0x34, 0x2a, 0x60, 0x0, 0x8, 0xf1, 0x66, 0x3a, 0x6a, 0xd6, 0xe0, 0x3e, 0x57, 0xce, 0x66, 0x6e, 0x11, 0x19, 0x5b}}
 	return a, nil
 }
@@ -1306,7 +1563,11 @@ func orgSettingsDeleteTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "org/settings/delete.tmpl", size: 1502, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "org/settings/delete.tmpl", size: 1502, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x27, 0x91, 0x36, 0xa1, 0x14, 0x91, 0xd7, 0x17, 0x8d, 0x3f, 0x2d, 0x4e, 0x86, 0xc9, 0x4b, 0x18, 0x27, 0x8a, 0xea, 0x9, 0xd2, 0x41, 0xb, 0xcc, 0x2f, 0x3, 0xd9, 0x9d, 0xec, 0x12, 0xf8, 0xee}}
 	return a, nil
 }
@@ -1326,7 +1587,11 @@ func orgSettingsNavbarTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "org/settings/navbar.tmpl", size: 558, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "org/settings/navbar.tmpl", size: 558, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xb7, 0x42, 0x8e, 0xd9, 0xec, 0xa7, 0x79, 0x7d, 0xfb, 0x70, 0x3e, 0xb8, 0xc1, 0xe6, 0x54, 0xf7, 0x9d, 0xda, 0x4f, 0x8c, 0x6d, 0xe5, 0x38, 0x7c, 0x6f, 0xf5, 0x93, 0xa5, 0x17, 0x34, 0x5b, 0xd1}}
 	return a, nil
 }
@@ -1346,7 +1611,11 @@ func orgSettingsOptionsTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "org/settings/options.tmpl", size: 3025, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "org/settings/options.tmpl", size: 3025, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x87, 0xaf, 0x13, 0x8, 0xaf, 0xb7, 0x28, 0x1d, 0xf6, 0xaf, 0x5c, 0x76, 0x14, 0x4f, 0xd7, 0xe2, 0xdd, 0x30, 0x74, 0x9c, 0x30, 0xae, 0xdb, 0x9e, 0xd0, 0x9f, 0x12, 0x41, 0x77, 0xbc, 0xa9, 0xaf}}
 	return a, nil
 }
@@ -1366,7 +1635,11 @@ func orgSettingsWebhook_newTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "org/settings/webhook_new.tmpl", size: 1060, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "org/settings/webhook_new.tmpl", size: 1060, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x8b, 0x27, 0xcc, 0xe6, 0xdc, 0x57, 0x1c, 0xf1, 0x47, 0xe3, 0xa3, 0xa3, 0x4e, 0x98, 0x48, 0x37, 0xe0, 0xbe, 0x93, 0x1b, 0x9b, 0xfc, 0x13, 0xb6, 0x48, 0x0, 0x90, 0xa4, 0xc5, 0xf2, 0x2a, 0x9a}}
 	return a, nil
 }
@@ -1386,7 +1659,11 @@ func orgSettingsWebhooksTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "org/settings/webhooks.tmpl", size: 293, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "org/settings/webhooks.tmpl", size: 293, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x12, 0xb6, 0xd1, 0xbe, 0xff, 0x50, 0xc9, 0x16, 0xb1, 0x73, 0x4b, 0x74, 0xd7, 0x2, 0x41, 0xf7, 0x52, 0xa0, 0xc3, 0xc2, 0x5b, 0xc3, 0xa0, 0xa6, 0x3f, 0x28, 0xbb, 0xee, 0x94, 0x37, 0x2a, 0xd9}}
 	return a, nil
 }
@@ -1406,7 +1683,11 @@ func orgTeamMembersTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "org/team/members.tmpl", size: 1652, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "org/team/members.tmpl", size: 1652, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xe6, 0x4, 0x89, 0x3f, 0xaa, 0x37, 0x28, 0xc4, 0xa6, 0xc5, 0x2c, 0x72, 0xe1, 0x69, 0xd7, 0xb2, 0x98, 0x7a, 0x51, 0xfc, 0xda, 0x69, 0x4b, 0xeb, 0xa8, 0x39, 0xd9, 0x53, 0xbf, 0x15, 0xac, 0x74}}
 	return a, nil
 }
@@ -1426,7 +1707,11 @@ func orgTeamNewTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "org/team/new.tmpl", size: 3594, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "org/team/new.tmpl", size: 3594, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xe0, 0x54, 0x86, 0x29, 0xe7, 0x52, 0x16, 0x83, 0x12, 0xe6, 0x30, 0x25, 0xfb, 0x1a, 0xee, 0xc4, 0xe3, 0xa5, 0x53, 0xf, 0x72, 0xa5, 0xf4, 0xc0, 0x98, 0x50, 0xda, 0x6, 0x12, 0x1f, 0xde, 0x7}}
 	return a, nil
 }
@@ -1446,7 +1731,11 @@ func orgTeamRepositoriesTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "org/team/repositories.tmpl", size: 1852, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "org/team/repositories.tmpl", size: 1852, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x3f, 0x7c, 0xbd, 0xc7, 0x77, 0x77, 0x1f, 0x36, 0xfd, 0x70, 0x9c, 0xad, 0xca, 0xd1, 0x80, 0x61, 0xbf, 0xc0, 0x77, 0xeb, 0xce, 0xe8, 0x3c, 0x7f, 0x41, 0x8b, 0x87, 0xf3, 0x7e, 0x39, 0x32, 0xc0}}
 	return a, nil
 }
@@ -1466,7 +1755,11 @@ func orgTeamSidebarTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "org/team/sidebar.tmpl", size: 1895, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "org/team/sidebar.tmpl", size: 1895, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xfc, 0xdf, 0xf2, 0x87, 0x2, 0x35, 0x92, 0x5b, 0x97, 0xe8, 0xda, 0x20, 0x69, 0x4b, 0x5a, 0x10, 0xec, 0x10, 0x4f, 0x4a, 0x99, 0x32, 0x46, 0x7, 0xd3, 0xc8, 0x59, 0xa8, 0x61, 0xcf, 0x4f, 0xc4}}
 	return a, nil
 }
@@ -1486,7 +1779,11 @@ func orgTeamTeamsTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "org/team/teams.tmpl", size: 1576, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "org/team/teams.tmpl", size: 1576, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x5b, 0x30, 0xdf, 0xd1, 0x9, 0x14, 0x5e, 0x53, 0x6, 0x72, 0x6f, 0xa, 0x97, 0x9, 0x71, 0x45, 0xc0, 0x18, 0xcc, 0xf1, 0x69, 0x48, 0xa7, 0x44, 0x14, 0x88, 0x11, 0xf2, 0xf7, 0xd0, 0x3b, 0x19}}
 	return a, nil
 }
@@ -1506,7 +1803,11 @@ func repoBareTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/bare.tmpl", size: 2931, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/bare.tmpl", size: 2931, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x41, 0xc2, 0x99, 0xf2, 0xbb, 0xaa, 0xa6, 0x96, 0x3d, 0x72, 0x35, 0xe7, 0x27, 0xdd, 0xc1, 0xc, 0xc1, 0x58, 0xbb, 0xb8, 0x80, 0x40, 0xf5, 0xfb, 0x58, 0xf2, 0x81, 0xb7, 0x83, 0x2a, 0x69, 0xce}}
 	return a, nil
 }
@@ -1526,7 +1827,11 @@ func repoBranch_dropdownTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/branch_dropdown.tmpl", size: 1912, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/branch_dropdown.tmpl", size: 1912, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x81, 0x1f, 0x2d, 0xeb, 0xc9, 0xbc, 0x95, 0xf6, 0xe6, 0xe0, 0xa3, 0x19, 0x53, 0xad, 0x5a, 0xac, 0x78, 0xc7, 0xa, 0x8b, 0xa9, 0xc7, 0xf4, 0x6a, 0x4c, 0x37, 0xa9, 0x39, 0xa1, 0x9b, 0x67, 0xa5}}
 	return a, nil
 }
@@ -1546,7 +1851,11 @@ func repoBranchesAllTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/branches/all.tmpl", size: 1418, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/branches/all.tmpl", size: 1418, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xd8, 0x74, 0xc0, 0xce, 0x6b, 0x2, 0x7d, 0xc0, 0xeb, 0xd3, 0x41, 0x41, 0x98, 0x5, 0x7b, 0xb0, 0x78, 0xcf, 0x38, 0x1, 0x66, 0x83, 0x38, 0xca, 0xf1, 0x29, 0xd, 0x1e, 0xa7, 0x66, 0xfb, 0x1d}}
 	return a, nil
 }
@@ -1566,7 +1875,11 @@ func repoBranchesNavbarTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/branches/navbar.tmpl", size: 303, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/branches/navbar.tmpl", size: 303, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x5b, 0xeb, 0xf5, 0x4f, 0xaf, 0xee, 0xeb, 0x73, 0x2a, 0xa0, 0x47, 0x23, 0xe9, 0x65, 0x3d, 0xea, 0xf0, 0xf8, 0xf1, 0xbb, 0x88, 0xc, 0xb2, 0xf1, 0xf9, 0xaf, 0x74, 0xcb, 0xc6, 0x3c, 0xd3, 0x76}}
 	return a, nil
 }
@@ -1586,7 +1899,11 @@ func repoBranchesOverviewTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/branches/overview.tmpl", size: 3195, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/branches/overview.tmpl", size: 3195, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x17, 0xc0, 0xfd, 0x3c, 0x16, 0x4f, 0x9c, 0x97, 0x34, 0x97, 0xce, 0xdc, 0xc4, 0x74, 0xb4, 0x4e, 0x8, 0x81, 0x45, 0xbe, 0x3d, 0x6b, 0xcc, 0xd, 0xbd, 0x4e, 0xdf, 0xca, 0x15, 0x9f, 0xbb, 0x3b}}
 	return a, nil
 }
@@ -1606,7 +1923,11 @@ func repoCommitsTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/commits.tmpl", size: 240, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/commits.tmpl", size: 240, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xee, 0xe9, 0x9e, 0x58, 0xcb, 0x2b, 0xf8, 0x50, 0x88, 0xea, 0x52, 0x4f, 0x54, 0x13, 0xcf, 0xb7, 0x65, 0x42, 0x95, 0xeb, 0xe1, 0x38, 0xdc, 0xe4, 0x3, 0xb8, 0xb3, 0x2b, 0xe9, 0xa6, 0xb2, 0xc6}}
 	return a, nil
 }
@@ -1626,7 +1947,11 @@ func repoCommits_tableTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/commits_table.tmpl", size: 3074, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/commits_table.tmpl", size: 3074, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x8, 0xd, 0x2f, 0xee, 0xde, 0xc0, 0xf0, 0x3b, 0x7b, 0x6b, 0x27, 0x4a, 0xbe, 0x99, 0xdf, 0x1e, 0xa2, 0x93, 0x77, 0x72, 0xe9, 0x48, 0xee, 0x6f, 0xb9, 0x74, 0xdd, 0xd2, 0xd, 0x27, 0xe5, 0x92}}
 	return a, nil
 }
@@ -1646,7 +1971,11 @@ func repoCreateTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/create.tmpl", size: 5223, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/create.tmpl", size: 5223, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x4e, 0xba, 0x35, 0x18, 0x14, 0xff, 0x5, 0x23, 0x90, 0xb7, 0xc6, 0x86, 0x97, 0xd5, 0x82, 0xac, 0x69, 0xc9, 0xd4, 0x8c, 0xbc, 0x80, 0xbc, 0xe9, 0xd0, 0x31, 0xc7, 0x1d, 0x28, 0xa5, 0x91, 0xfd}}
 	return a, nil
 }
@@ -1666,7 +1995,11 @@ func repoDiffBoxTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/diff/box.tmpl", size: 6683, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/diff/box.tmpl", size: 6683, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xfa, 0xbf, 0xac, 0xd5, 0xea, 0x25, 0x2, 0xe9, 0x98, 0xb1, 0xc6, 0x1e, 0x41, 0x64, 0xc8, 0xf0, 0x9d, 0x13, 0xdc, 0xbd, 0x7d, 0x5e, 0xd9, 0x81, 0xf6, 0x93, 0xeb, 0x17, 0xe0, 0x98, 0xd, 0x6}}
 	return a, nil
 }
@@ -1686,7 +2019,11 @@ func repoDiffPageTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/diff/page.tmpl", size: 1714, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/diff/page.tmpl", size: 1714, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xba, 0x16, 0xee, 0x6d, 0x55, 0xd1, 0xee, 0x49, 0xf3, 0x6e, 0x27, 0x9b, 0x4e, 0xd7, 0xad, 0x6, 0x78, 0x92, 0xc1, 0xe7, 0x22, 0xc1, 0xa0, 0x61, 0x93, 0x65, 0x9b, 0x9e, 0x60, 0xb4, 0xcc, 0xf}}
 	return a, nil
 }
@@ -1706,7 +2043,11 @@ func repoDiffSection_unifiedTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/diff/section_unified.tmpl", size: 918, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/diff/section_unified.tmpl", size: 918, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xc0, 0xb7, 0x77, 0x2d, 0x3b, 0x94, 0x4e, 0x53, 0xfa, 0x2c, 0xea, 0xfe, 0xa2, 0xd1, 0xf6, 0x1e, 0x5, 0xe7, 0x9b, 0x6d, 0x9b, 0x72, 0x39, 0x6e, 0x61, 0x2, 0x1b, 0x7, 0x2a, 0x6e, 0x64, 0x8d}}
 	return a, nil
 }
@@ -1726,7 +2067,11 @@ func repoDoifileTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/doifile.tmpl", size: 1507, mode: os.FileMode(0664), modTime: time.Unix(1626139849, 0)}
+=======
+	info := bindataFileInfo{name: "repo/doifile.tmpl", size: 1507, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x11, 0xd8, 0x41, 0x1d, 0x5e, 0x9c, 0xdd, 0x29, 0x4a, 0x9f, 0xaa, 0x9c, 0xb3, 0x52, 0x89, 0xf8, 0xa4, 0xed, 0x97, 0x36, 0x79, 0x4f, 0x29, 0x82, 0x99, 0x94, 0x1a, 0x5a, 0xf8, 0xd5, 0x6c, 0x78}}
 	return a, nil
 }
@@ -1746,7 +2091,11 @@ func repoDownloadTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/download.tmpl", size: 908, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/download.tmpl", size: 908, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x8f, 0x89, 0xfe, 0xa8, 0xcd, 0xb8, 0x8e, 0x6e, 0x29, 0x6, 0xaf, 0x25, 0x6e, 0x8, 0xab, 0x37, 0x66, 0x2f, 0x46, 0x36, 0x9d, 0x36, 0xb3, 0x7b, 0x43, 0x1b, 0xb8, 0xa, 0xe7, 0xb8, 0x58, 0x5c}}
 	return a, nil
 }
@@ -1766,7 +2115,11 @@ func repoEditorCommit_formTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/editor/commit_form.tmpl", size: 2557, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/editor/commit_form.tmpl", size: 2557, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x8c, 0xcf, 0xc6, 0xdc, 0x7b, 0x68, 0x9e, 0xc3, 0x17, 0x39, 0x1a, 0x29, 0xc2, 0xb8, 0xf1, 0xd8, 0x1e, 0xf5, 0xd2, 0xf5, 0xfa, 0x6d, 0x2, 0x18, 0xd9, 0x43, 0x55, 0x8c, 0x23, 0xe1, 0x91, 0x78}}
 	return a, nil
 }
@@ -1786,7 +2139,11 @@ func repoEditorDeleteTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/editor/delete.tmpl", size: 317, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/editor/delete.tmpl", size: 317, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x42, 0xa3, 0xdc, 0x40, 0x99, 0x3c, 0x71, 0xd3, 0xb5, 0xf2, 0x59, 0xa8, 0x79, 0xfb, 0xa2, 0xe5, 0x47, 0xf8, 0xd9, 0x6e, 0xd7, 0xe4, 0x52, 0xd4, 0x65, 0x4b, 0x79, 0xa8, 0x3f, 0x0, 0x48, 0x43}}
 	return a, nil
 }
@@ -1806,7 +2163,11 @@ func repoEditorDiff_previewTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/editor/diff_preview.tmpl", size: 291, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/editor/diff_preview.tmpl", size: 291, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xc7, 0x57, 0xa1, 0x3b, 0xd, 0x50, 0xb6, 0xf2, 0x2c, 0xc8, 0xeb, 0x6b, 0xc9, 0x62, 0x11, 0x96, 0xba, 0x4, 0xfc, 0xbe, 0x6d, 0xa1, 0x8c, 0x8d, 0xfa, 0x9e, 0xd0, 0x31, 0x29, 0x6e, 0x8f, 0x12}}
 	return a, nil
 }
@@ -1826,7 +2187,11 @@ func repoEditorEditTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/editor/edit.tmpl", size: 5281, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/editor/edit.tmpl", size: 5281, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xb2, 0x6b, 0x45, 0x21, 0x9a, 0x34, 0x43, 0x0, 0xd1, 0xb5, 0x68, 0x2f, 0x10, 0xa4, 0x65, 0x7f, 0xb1, 0xd9, 0x29, 0x93, 0xde, 0x24, 0x65, 0x5b, 0x77, 0x28, 0xda, 0xf, 0xf5, 0x36, 0x25, 0xf6}}
 	return a, nil
 }
@@ -1846,7 +2211,11 @@ func repoEditorUploadTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/editor/upload.tmpl", size: 2127, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/editor/upload.tmpl", size: 2127, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x7d, 0x5c, 0x21, 0x91, 0xc3, 0x94, 0x1a, 0xcb, 0xa1, 0x74, 0xb7, 0x56, 0x7e, 0xde, 0xc3, 0xe, 0x28, 0x9c, 0x44, 0x2b, 0xd4, 0x17, 0xb0, 0xad, 0xb5, 0x9a, 0xf, 0x80, 0xee, 0xf4, 0xd4, 0x1d}}
 	return a, nil
 }
@@ -1866,7 +2235,11 @@ func repoForksTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/forks.tmpl", size: 575, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/forks.tmpl", size: 575, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xbb, 0xb2, 0x95, 0xd5, 0xc, 0x55, 0xb3, 0xd8, 0xc3, 0x68, 0x18, 0x74, 0xf7, 0xfb, 0xb0, 0x7c, 0x87, 0x9f, 0x36, 0x84, 0x1c, 0xfe, 0xa2, 0xb2, 0x34, 0xf9, 0x75, 0x5b, 0x7e, 0x1d, 0xe7, 0x4f}}
 	return a, nil
 }
@@ -1886,7 +2259,11 @@ func repoHeaderTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/header.tmpl", size: 4832, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/header.tmpl", size: 4832, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x95, 0x94, 0x20, 0x59, 0x9, 0xa6, 0xc0, 0x96, 0x42, 0x9c, 0x8, 0xcc, 0x82, 0x0, 0x19, 0x9c, 0x1a, 0x5b, 0x79, 0x7f, 0x12, 0x64, 0xc6, 0x8, 0x1, 0x42, 0xe, 0xb1, 0x17, 0xac, 0x8a, 0xdc}}
 	return a, nil
 }
@@ -1906,8 +2283,13 @@ func repoHeader_ginTmpl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "repo/header_gin.tmpl", size: 1974, mode: os.FileMode(0664), modTime: time.Unix(1630980889, 0)}
+<<<<<<< HEAD
+	info := bindataFileInfo{name: "repo/header_gin.tmpl", size: 1974, mode: os.FileMode(0664), modTime: time.Unix(1635227272, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x63, 0x97, 0x17, 0xed, 0xb2, 0x74, 0x32, 0xe8, 0xe0, 0x8a, 0xac, 0x19, 0xd3, 0x1d, 0x2f, 0xc7, 0x65, 0x3a, 0xfd, 0xfa, 0xcb, 0x88, 0x3f, 0xa8, 0x41, 0x6a, 0x6a, 0x75, 0x97, 0x8c, 0x1e, 0xa2}}
+=======
+	info := bindataFileInfo{name: "repo/header_gin.tmpl", size: 1975, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xd1, 0xa9, 0x67, 0x4e, 0x5c, 0x29, 0x1, 0x9f, 0x5e, 0x8b, 0xff, 0x90, 0xdb, 0x32, 0x5b, 0xd8, 0x5f, 0x40, 0x14, 0xd8, 0x54, 0x53, 0xb4, 0xc6, 0x44, 0x8b, 0x4a, 0x3, 0xa5, 0xa0, 0x42, 0x93}}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	return a, nil
 }
 
@@ -1926,7 +2308,11 @@ func repoHomeTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/home.tmpl", size: 5506, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/home.tmpl", size: 5506, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x0, 0xbd, 0x38, 0x26, 0x6f, 0xd8, 0xa6, 0x25, 0x78, 0xb0, 0x2d, 0xb7, 0xc3, 0xe7, 0x87, 0x35, 0x8c, 0x21, 0x3a, 0x7f, 0xb2, 0x8b, 0xf5, 0xe4, 0xce, 0x4d, 0x27, 0x72, 0x91, 0xc5, 0x4a, 0x1f}}
 	return a, nil
 }
@@ -1946,7 +2332,11 @@ func repoIssueComment_tabTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/issue/comment_tab.tmpl", size: 1406, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/issue/comment_tab.tmpl", size: 1406, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x82, 0xaf, 0x1e, 0x31, 0x30, 0x23, 0x12, 0x84, 0x59, 0x19, 0x20, 0x50, 0x6e, 0x73, 0x48, 0x62, 0x4f, 0xc, 0x11, 0x57, 0xfb, 0xc, 0x8a, 0x3b, 0x44, 0x15, 0x2d, 0x75, 0x5f, 0x70, 0x6b, 0xa3}}
 	return a, nil
 }
@@ -1966,7 +2356,11 @@ func repoIssueLabel_precolorsTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/issue/label_precolors.tmpl", size: 1280, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/issue/label_precolors.tmpl", size: 1280, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x11, 0xf1, 0xfd, 0xde, 0x5d, 0xf0, 0x1e, 0xbf, 0x36, 0x4b, 0xe, 0x62, 0xc2, 0x41, 0x30, 0x6b, 0x82, 0x1e, 0xcb, 0x3a, 0x24, 0xdd, 0xff, 0xd8, 0x21, 0xa5, 0xb1, 0xe9, 0xef, 0x36, 0xaa, 0xa6}}
 	return a, nil
 }
@@ -1986,7 +2380,11 @@ func repoIssueLabelsTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/issue/labels.tmpl", size: 5223, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/issue/labels.tmpl", size: 5223, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xa5, 0x5c, 0x33, 0x21, 0xb5, 0x9, 0x17, 0x69, 0xfc, 0x6e, 0x73, 0x5b, 0x1, 0x69, 0xe1, 0x7f, 0x1b, 0x3d, 0x2c, 0xe2, 0xb3, 0x6, 0xb0, 0xcf, 0xbd, 0xf1, 0x53, 0xf6, 0x70, 0x12, 0x9e, 0xd4}}
 	return a, nil
 }
@@ -2006,7 +2404,11 @@ func repoIssueListTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/issue/list.tmpl", size: 9811, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/issue/list.tmpl", size: 9811, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xe, 0x57, 0x4f, 0x7e, 0xc6, 0x24, 0x2d, 0x8a, 0x92, 0xb3, 0x5e, 0x1e, 0x82, 0xd9, 0xa4, 0x8, 0x96, 0x52, 0xc5, 0xbc, 0x3f, 0x4e, 0xc5, 0xd8, 0xb2, 0x4f, 0x76, 0x56, 0x44, 0xe4, 0x73, 0x96}}
 	return a, nil
 }
@@ -2026,7 +2428,11 @@ func repoIssueMilestone_newTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/issue/milestone_new.tmpl", size: 2353, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/issue/milestone_new.tmpl", size: 2353, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x85, 0xe4, 0x75, 0xe9, 0xab, 0x38, 0x32, 0xef, 0xe1, 0xbc, 0xdd, 0x55, 0xee, 0xfd, 0xa0, 0x9f, 0x92, 0xd4, 0xde, 0xd6, 0xd0, 0x3f, 0xdf, 0xb0, 0xab, 0x5f, 0x4e, 0xbd, 0xa4, 0x41, 0xa7, 0xa5}}
 	return a, nil
 }
@@ -2046,7 +2452,11 @@ func repoIssueMilestonesTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/issue/milestones.tmpl", size: 4626, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/issue/milestones.tmpl", size: 4626, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xde, 0x37, 0x4b, 0xbf, 0xa5, 0xbc, 0xd4, 0xe, 0xf4, 0x91, 0x36, 0x43, 0x6a, 0x6f, 0x2b, 0x34, 0x36, 0xcf, 0xe4, 0xca, 0xf0, 0xed, 0xed, 0xd6, 0x3a, 0xf5, 0xbb, 0x93, 0x52, 0x23, 0x44, 0x71}}
 	return a, nil
 }
@@ -2066,7 +2476,11 @@ func repoIssueNavbarTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/issue/navbar.tmpl", size: 275, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/issue/navbar.tmpl", size: 275, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x88, 0x33, 0xde, 0x9d, 0x83, 0x7b, 0xe2, 0xaf, 0xe8, 0xda, 0x6, 0x2f, 0xd0, 0x55, 0xb2, 0xf3, 0x36, 0x7c, 0xe1, 0xb, 0x22, 0x4e, 0xad, 0xc5, 0x72, 0x35, 0x4c, 0x11, 0x14, 0xf, 0xfd, 0x7e}}
 	return a, nil
 }
@@ -2086,7 +2500,11 @@ func repoIssueNewTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/issue/new.tmpl", size: 306, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/issue/new.tmpl", size: 306, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xc2, 0x14, 0x8f, 0x91, 0xeb, 0x41, 0x8d, 0xdb, 0x41, 0x72, 0x3c, 0xd3, 0xc7, 0x34, 0xb7, 0x2b, 0xbe, 0xa2, 0xe6, 0xa3, 0x71, 0x7, 0x79, 0xf0, 0x18, 0xcf, 0xa1, 0x5c, 0x9a, 0xbd, 0x83, 0x61}}
 	return a, nil
 }
@@ -2106,7 +2524,11 @@ func repoIssueNew_formTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/issue/new_form.tmpl", size: 4937, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/issue/new_form.tmpl", size: 4937, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x59, 0x6a, 0x8b, 0xc9, 0x12, 0x9c, 0x3f, 0x6e, 0x11, 0x55, 0x6, 0xd3, 0x83, 0x10, 0xc9, 0xac, 0xbe, 0xba, 0x22, 0xb3, 0xe0, 0x98, 0xf2, 0xc8, 0x5, 0xef, 0x9f, 0x93, 0x83, 0x2c, 0x85, 0xd1}}
 	return a, nil
 }
@@ -2126,7 +2548,11 @@ func repoIssueViewTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/issue/view.tmpl", size: 985, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/issue/view.tmpl", size: 985, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xe9, 0x78, 0xc0, 0x41, 0xa3, 0x92, 0x5e, 0xeb, 0x26, 0xf0, 0xa2, 0xba, 0x3a, 0x1d, 0x39, 0x2f, 0xd8, 0x7d, 0xf1, 0x94, 0x44, 0x4b, 0x47, 0x0, 0xb9, 0xc, 0x48, 0x9f, 0xbb, 0xd5, 0x7c, 0xdb}}
 	return a, nil
 }
@@ -2146,7 +2572,11 @@ func repoIssueView_contentTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/issue/view_content.tmpl", size: 17083, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/issue/view_content.tmpl", size: 17083, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x53, 0xd8, 0xf8, 0x2c, 0x9f, 0x23, 0xc8, 0x61, 0xf1, 0x32, 0xf7, 0x58, 0xd4, 0xd8, 0x55, 0xf5, 0x6b, 0x63, 0x65, 0x5b, 0x5d, 0x83, 0x4e, 0x9, 0x74, 0x3b, 0x35, 0xb1, 0x4c, 0xf1, 0x10, 0xa0}}
 	return a, nil
 }
@@ -2166,7 +2596,11 @@ func repoIssueView_titleTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/issue/view_title.tmpl", size: 2440, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/issue/view_title.tmpl", size: 2440, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x36, 0x88, 0x60, 0x11, 0x7b, 0x90, 0x67, 0xf6, 0x78, 0xc, 0xa1, 0xcb, 0x85, 0x98, 0xfb, 0x9c, 0xe1, 0x79, 0xbc, 0xb4, 0x49, 0x1c, 0x65, 0x27, 0x7a, 0x8f, 0xeb, 0xb9, 0xc1, 0x4b, 0x5b, 0xbd}}
 	return a, nil
 }
@@ -2186,7 +2620,11 @@ func repoMigrateTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/migrate.tmpl", size: 4435, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/migrate.tmpl", size: 4435, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xb2, 0x15, 0x78, 0xa, 0x6, 0x31, 0xbc, 0x99, 0xec, 0x67, 0xd3, 0x99, 0x8a, 0x8d, 0x7b, 0x27, 0x11, 0xde, 0x74, 0x10, 0xeb, 0xcb, 0x84, 0x65, 0xfd, 0xda, 0x3f, 0x3c, 0x51, 0x65, 0x8e, 0xf0}}
 	return a, nil
 }
@@ -2206,7 +2644,11 @@ func repoPullsCommitsTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/pulls/commits.tmpl", size: 695, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/pulls/commits.tmpl", size: 695, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x61, 0xf0, 0xcc, 0x8c, 0xe6, 0x3b, 0xb5, 0x7f, 0x5a, 0x75, 0xba, 0xed, 0x79, 0xe8, 0x3f, 0xbc, 0x60, 0x16, 0xd8, 0xa2, 0xea, 0xe7, 0xac, 0x3, 0xbb, 0xdc, 0xb, 0x30, 0xe5, 0xbe, 0x7c, 0xac}}
 	return a, nil
 }
@@ -2226,7 +2668,11 @@ func repoPullsCompareTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/pulls/compare.tmpl", size: 2636, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/pulls/compare.tmpl", size: 2636, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x90, 0xd8, 0xbb, 0xcf, 0x2e, 0xe0, 0xd7, 0x8c, 0x9e, 0x5f, 0x24, 0x21, 0x4, 0x41, 0x5a, 0x95, 0x87, 0x34, 0xfe, 0xdf, 0x55, 0xe7, 0x48, 0xef, 0xe6, 0xff, 0xfd, 0x47, 0x39, 0x5d, 0x5a, 0x24}}
 	return a, nil
 }
@@ -2246,7 +2692,11 @@ func repoPullsFilesTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/pulls/files.tmpl", size: 693, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/pulls/files.tmpl", size: 693, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x3e, 0x11, 0xe7, 0x25, 0xc, 0xa5, 0x24, 0x9b, 0xe2, 0xed, 0xea, 0x38, 0x4f, 0x41, 0x3b, 0xb2, 0x30, 0x9d, 0xc2, 0x5b, 0x95, 0x4c, 0xb2, 0x25, 0xa8, 0x73, 0x90, 0xc4, 0xb, 0xa1, 0x63, 0xd7}}
 	return a, nil
 }
@@ -2266,7 +2716,11 @@ func repoPullsForkTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/pulls/fork.tmpl", size: 2868, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/pulls/fork.tmpl", size: 2868, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xf2, 0x90, 0xd9, 0x47, 0xea, 0xcc, 0xee, 0xf6, 0x80, 0xf9, 0xa1, 0xdb, 0xe, 0x24, 0x59, 0xc6, 0x13, 0x96, 0x73, 0x2b, 0x7f, 0xef, 0x5, 0x60, 0xa1, 0x88, 0xad, 0xf8, 0x4a, 0xb5, 0x1f, 0xf5}}
 	return a, nil
 }
@@ -2286,7 +2740,11 @@ func repoPullsTab_menuTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/pulls/tab_menu.tmpl", size: 1102, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/pulls/tab_menu.tmpl", size: 1102, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x8a, 0x4d, 0xf4, 0xda, 0xa, 0x3f, 0xf0, 0x28, 0xee, 0x90, 0xca, 0x1a, 0x94, 0xa8, 0xa0, 0xfd, 0x98, 0x47, 0x2a, 0xd5, 0x7f, 0x78, 0xac, 0xef, 0xd2, 0xdb, 0x7b, 0xb2, 0xf8, 0x76, 0xfd, 0x7b}}
 	return a, nil
 }
@@ -2306,7 +2764,11 @@ func repoReleaseListTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/release/list.tmpl", size: 3758, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/release/list.tmpl", size: 3758, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xe3, 0xeb, 0x5f, 0xa3, 0xfb, 0x4f, 0x80, 0x46, 0xdf, 0x43, 0x5d, 0x51, 0x4b, 0x77, 0x3f, 0xff, 0xb5, 0xa5, 0x87, 0x6f, 0x8c, 0xfc, 0x4a, 0xe, 0x1, 0x3, 0x91, 0x37, 0xe2, 0x6b, 0xc7, 0xab}}
 	return a, nil
 }
@@ -2326,7 +2788,11 @@ func repoReleaseNewTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/release/new.tmpl", size: 5302, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/release/new.tmpl", size: 5302, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x7c, 0xb1, 0x83, 0xe4, 0x57, 0x63, 0x5d, 0xba, 0xe7, 0xf9, 0x45, 0x7a, 0x54, 0xce, 0x2b, 0xa2, 0x13, 0xa3, 0xc7, 0x7c, 0x92, 0xb3, 0xee, 0x9c, 0x49, 0x12, 0xa4, 0xed, 0xdd, 0xb4, 0x6, 0x15}}
 	return a, nil
 }
@@ -2346,7 +2812,11 @@ func repoSettingsBranchesTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/settings/branches.tmpl", size: 2175, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/settings/branches.tmpl", size: 2175, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x3b, 0x24, 0x5c, 0x2, 0x75, 0x3d, 0x4b, 0xbb, 0x3e, 0xef, 0x58, 0x77, 0x25, 0x5f, 0xc, 0x18, 0x8c, 0xb5, 0xab, 0x5c, 0xc8, 0x3c, 0x51, 0x11, 0x90, 0x26, 0x46, 0x90, 0xa5, 0xab, 0xb5, 0x17}}
 	return a, nil
 }
@@ -2366,7 +2836,11 @@ func repoSettingsCollaborationTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/settings/collaboration.tmpl", size: 3503, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/settings/collaboration.tmpl", size: 3503, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x3f, 0x7a, 0x6a, 0xbd, 0xc, 0x75, 0xaf, 0xe9, 0xb7, 0x37, 0x81, 0x67, 0x4a, 0x72, 0xd, 0xce, 0xcb, 0xd9, 0xef, 0xb9, 0x3a, 0xc0, 0x87, 0xa5, 0x38, 0x8d, 0xd0, 0xae, 0x32, 0xee, 0xed, 0x71}}
 	return a, nil
 }
@@ -2386,7 +2860,11 @@ func repoSettingsDeploy_keysTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/settings/deploy_keys.tmpl", size: 3661, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/settings/deploy_keys.tmpl", size: 3661, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xc, 0x67, 0x60, 0x99, 0xdb, 0x1d, 0x7a, 0x2, 0x3e, 0x61, 0x98, 0xbb, 0xe, 0x62, 0xe, 0x99, 0x8d, 0x8a, 0x65, 0x41, 0x48, 0x2a, 0xaf, 0x63, 0xcd, 0xcc, 0x8a, 0xfc, 0xb6, 0xc0, 0x26, 0xe6}}
 	return a, nil
 }
@@ -2406,7 +2884,11 @@ func repoSettingsGithook_editTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/settings/githook_edit.tmpl", size: 1329, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/settings/githook_edit.tmpl", size: 1329, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xf0, 0xeb, 0x95, 0x30, 0x68, 0x11, 0xd0, 0x90, 0xf0, 0xa9, 0x96, 0x9d, 0xe1, 0x87, 0x21, 0x81, 0xcc, 0x5a, 0x89, 0xbb, 0xb2, 0x20, 0xd3, 0x57, 0x40, 0x35, 0x19, 0x3d, 0x3b, 0x89, 0xf7, 0x10}}
 	return a, nil
 }
@@ -2426,7 +2908,11 @@ func repoSettingsGithooksTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/settings/githooks.tmpl", size: 928, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/settings/githooks.tmpl", size: 928, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x2b, 0x8c, 0xe3, 0x3f, 0xe3, 0x4b, 0xcc, 0x73, 0x4c, 0x9e, 0xc2, 0x69, 0x51, 0x5d, 0x74, 0x56, 0x49, 0xe3, 0x87, 0x9, 0x7e, 0x2c, 0xc4, 0x38, 0xf1, 0x68, 0x96, 0x99, 0xa7, 0x1e, 0xbf, 0x87}}
 	return a, nil
 }
@@ -2446,7 +2932,11 @@ func repoSettingsNavbarTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/settings/navbar.tmpl", size: 1124, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/settings/navbar.tmpl", size: 1124, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xfd, 0xbf, 0x8a, 0xa3, 0xbf, 0xf2, 0x89, 0x50, 0xd, 0x20, 0xd1, 0xae, 0xd1, 0xc9, 0xa6, 0xa6, 0x99, 0xf5, 0xe7, 0xe0, 0xb7, 0xa1, 0x12, 0x5e, 0xf1, 0x7c, 0x77, 0xea, 0xf3, 0x49, 0x32, 0x31}}
 	return a, nil
 }
@@ -2466,7 +2956,11 @@ func repoSettingsOptionsTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/settings/options.tmpl", size: 19174, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/settings/options.tmpl", size: 19174, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x9b, 0x9c, 0x6a, 0x6a, 0xba, 0xc1, 0xb6, 0x72, 0xed, 0xc3, 0xba, 0xfb, 0xaa, 0xdc, 0x17, 0x10, 0x76, 0xd2, 0xd0, 0x33, 0xe, 0xda, 0xa1, 0xfe, 0x8a, 0x27, 0x64, 0x86, 0x3d, 0x9c, 0x77, 0x6f}}
 	return a, nil
 }
@@ -2486,7 +2980,11 @@ func repoSettingsProtected_branchTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/settings/protected_branch.tmpl", size: 3640, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/settings/protected_branch.tmpl", size: 3640, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x49, 0xcc, 0x3c, 0x61, 0x8d, 0x4c, 0x86, 0xd1, 0x83, 0x2e, 0xd3, 0xa4, 0x7f, 0x80, 0xf8, 0x3a, 0x62, 0xf2, 0x6b, 0x3a, 0x2, 0xca, 0x1a, 0x89, 0xad, 0x15, 0xd8, 0xcc, 0xf4, 0x60, 0xeb, 0x88}}
 	return a, nil
 }
@@ -2506,7 +3004,11 @@ func repoSettingsWebhookBaseTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/settings/webhook/base.tmpl", size: 293, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/settings/webhook/base.tmpl", size: 293, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x5d, 0x77, 0xd5, 0xd5, 0x41, 0x2d, 0x33, 0xb8, 0xb4, 0x91, 0x1c, 0xe5, 0xb0, 0xb9, 0xf6, 0x6c, 0x1a, 0x1a, 0x62, 0x50, 0x41, 0x33, 0xae, 0x7e, 0x73, 0xac, 0x8b, 0xb0, 0xfb, 0x6, 0x2a, 0xc7}}
 	return a, nil
 }
@@ -2526,7 +3028,11 @@ func repoSettingsWebhookDelete_modalTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/settings/webhook/delete_modal.tmpl", size: 526, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/settings/webhook/delete_modal.tmpl", size: 526, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xed, 0xbd, 0xa7, 0xae, 0x11, 0x46, 0x29, 0x52, 0xf0, 0x4c, 0x66, 0x30, 0x13, 0x75, 0x9c, 0xf9, 0x49, 0x2, 0xd4, 0xd0, 0xe2, 0x99, 0x32, 0x3f, 0xb5, 0x2, 0x18, 0x2c, 0x4, 0x52, 0x9d, 0xd6}}
 	return a, nil
 }
@@ -2546,7 +3052,11 @@ func repoSettingsWebhookDingtalkTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/settings/webhook/dingtalk.tmpl", size: 665, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/settings/webhook/dingtalk.tmpl", size: 665, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xf9, 0x8d, 0xcf, 0x8d, 0x6b, 0xf9, 0x4, 0xe0, 0xcb, 0xdc, 0x54, 0x4d, 0x49, 0x8a, 0xf1, 0x61, 0xba, 0x5e, 0x76, 0x48, 0x2, 0x3, 0xa6, 0xb5, 0xc5, 0xd8, 0x20, 0x67, 0xc1, 0x98, 0x73, 0x37}}
 	return a, nil
 }
@@ -2566,7 +3076,11 @@ func repoSettingsWebhookDiscordTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/settings/webhook/discord.tmpl", size: 1217, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/settings/webhook/discord.tmpl", size: 1217, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x49, 0x5f, 0xec, 0x8, 0x7c, 0xb0, 0xcb, 0x7f, 0x47, 0xc9, 0xe8, 0x35, 0x65, 0xbe, 0x44, 0xd4, 0x36, 0x34, 0xd7, 0x47, 0x2, 0xcc, 0xf3, 0x7f, 0xdf, 0xa6, 0xe3, 0x30, 0x5a, 0x7a, 0xf2, 0xe6}}
 	return a, nil
 }
@@ -2586,7 +3100,11 @@ func repoSettingsWebhookGogsTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/settings/webhook/gogs.tmpl", size: 1478, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/settings/webhook/gogs.tmpl", size: 1478, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xbf, 0x26, 0xa8, 0x9, 0xef, 0xbe, 0x27, 0x7c, 0x4c, 0x80, 0x9f, 0x72, 0x94, 0xa7, 0x13, 0x74, 0xe9, 0x2, 0x4d, 0x5e, 0x6b, 0x67, 0x13, 0x91, 0x49, 0xdd, 0xb8, 0xea, 0x3e, 0x94, 0x2, 0x4c}}
 	return a, nil
 }
@@ -2606,7 +3124,11 @@ func repoSettingsWebhookHistoryTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/settings/webhook/history.tmpl", size: 3160, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/settings/webhook/history.tmpl", size: 3160, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xf9, 0xe0, 0xa1, 0x32, 0xda, 0x7f, 0x8e, 0x11, 0x75, 0x9c, 0x41, 0x86, 0x43, 0xdd, 0xff, 0xec, 0x50, 0xe1, 0x89, 0x3b, 0xca, 0x59, 0x63, 0xb5, 0xe5, 0x32, 0xaa, 0x7b, 0x14, 0x1b, 0x1, 0x96}}
 	return a, nil
 }
@@ -2626,7 +3148,11 @@ func repoSettingsWebhookListTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/settings/webhook/list.tmpl", size: 2048, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/settings/webhook/list.tmpl", size: 2048, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x27, 0xc4, 0xff, 0x53, 0xd3, 0x99, 0x7c, 0xfb, 0x28, 0x44, 0x9f, 0xb5, 0x7c, 0xe7, 0xb0, 0xad, 0xbe, 0xe4, 0x77, 0x7b, 0x25, 0xc4, 0x63, 0x9, 0xd2, 0x35, 0x28, 0x7a, 0xb4, 0x24, 0x19, 0x46}}
 	return a, nil
 }
@@ -2646,7 +3172,11 @@ func repoSettingsWebhookNewTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/settings/webhook/new.tmpl", size: 1060, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/settings/webhook/new.tmpl", size: 1060, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x7a, 0x78, 0x35, 0x8, 0x73, 0x75, 0x19, 0x27, 0xdb, 0x5d, 0xa, 0x1, 0x5c, 0x26, 0x67, 0xdc, 0xe0, 0x27, 0x56, 0x68, 0xdb, 0x48, 0xff, 0x2a, 0x5c, 0x68, 0xf8, 0x46, 0x6e, 0x1e, 0x78, 0xdd}}
 	return a, nil
 }
@@ -2666,7 +3196,11 @@ func repoSettingsWebhookSettingsTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/settings/webhook/settings.tmpl", size: 5012, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/settings/webhook/settings.tmpl", size: 5012, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x47, 0xca, 0xf8, 0xb1, 0x40, 0xb, 0x78, 0xcc, 0x74, 0x3e, 0x89, 0xde, 0xfa, 0xda, 0x23, 0x76, 0x81, 0xda, 0xb1, 0x3f, 0xef, 0xec, 0x3d, 0x98, 0xa7, 0xd0, 0xa8, 0x16, 0xea, 0x3d, 0x8d, 0x45}}
 	return a, nil
 }
@@ -2686,7 +3220,11 @@ func repoSettingsWebhookSlackTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/settings/webhook/slack.tmpl", size: 1480, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/settings/webhook/slack.tmpl", size: 1480, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xd0, 0x90, 0xae, 0xea, 0xe4, 0x8, 0x4, 0xfe, 0x98, 0xe6, 0xa3, 0x79, 0x5e, 0x79, 0x21, 0xdb, 0x16, 0xc8, 0xcd, 0x46, 0x18, 0x7a, 0xb2, 0xea, 0x2e, 0xd2, 0xa5, 0xe1, 0xf5, 0x99, 0xab, 0xf9}}
 	return a, nil
 }
@@ -2706,7 +3244,11 @@ func repoUser_cardsTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/user_cards.tmpl", size: 1927, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/user_cards.tmpl", size: 1927, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xa2, 0x6, 0x8d, 0x6f, 0xa0, 0xb5, 0x1a, 0x13, 0x9d, 0xd6, 0x7f, 0xad, 0xcc, 0x86, 0x30, 0x30, 0x6c, 0x8d, 0x53, 0xca, 0x7f, 0x5f, 0xac, 0x0, 0xef, 0x95, 0x8a, 0x1f, 0x21, 0x5f, 0xa2, 0x6c}}
 	return a, nil
 }
@@ -2726,7 +3268,11 @@ func repoView_fileTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/view_file.tmpl", size: 8360, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/view_file.tmpl", size: 8360, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x8f, 0xb5, 0x3d, 0x63, 0x9f, 0x21, 0x82, 0xe8, 0xba, 0xae, 0xda, 0x1b, 0xb2, 0x89, 0x8c, 0x41, 0x6a, 0x1b, 0xae, 0x8c, 0x2b, 0x7b, 0x0, 0x86, 0xa, 0x29, 0x8d, 0xb8, 0x1d, 0xf8, 0x87, 0x3e}}
 	return a, nil
 }
@@ -2746,8 +3292,13 @@ func repoView_listTmpl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "repo/view_list.tmpl", size: 2334, mode: os.FileMode(0664), modTime: time.Unix(1630980889, 0)}
+<<<<<<< HEAD
+	info := bindataFileInfo{name: "repo/view_list.tmpl", size: 2334, mode: os.FileMode(0664), modTime: time.Unix(1635227272, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x1e, 0x4b, 0xae, 0xfb, 0x9e, 0xf0, 0x14, 0x66, 0x84, 0x5b, 0x7c, 0xd8, 0xa9, 0x2f, 0x72, 0x80, 0x28, 0xb2, 0xc2, 0x3a, 0xb, 0xb2, 0x24, 0x71, 0xf2, 0x2d, 0x39, 0xb6, 0x7d, 0x76, 0xba, 0xe5}}
+=======
+	info := bindataFileInfo{name: "repo/view_list.tmpl", size: 2335, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x99, 0xeb, 0x16, 0x33, 0xee, 0x2c, 0xe3, 0xa8, 0x6, 0xe, 0x34, 0x58, 0xb8, 0x41, 0x3f, 0x1c, 0x79, 0xf8, 0x14, 0xf9, 0xd4, 0x29, 0x38, 0xfa, 0x4a, 0xaf, 0x3e, 0x48, 0x2a, 0xc0, 0x76, 0xfd}}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	return a, nil
 }
 
@@ -2766,7 +3317,11 @@ func repoWatchersTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/watchers.tmpl", size: 161, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/watchers.tmpl", size: 161, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x56, 0x48, 0x3d, 0x9d, 0xec, 0x70, 0xc6, 0x0, 0x36, 0x66, 0xe, 0xc2, 0x72, 0x94, 0xcb, 0xf6, 0x9b, 0xab, 0x3c, 0x9c, 0x36, 0x1d, 0x29, 0x17, 0xf6, 0x1d, 0xc3, 0xa5, 0x4a, 0xfd, 0xa5, 0x8d}}
 	return a, nil
 }
@@ -2786,7 +3341,11 @@ func repoWikiNewTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/wiki/new.tmpl", size: 1265, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/wiki/new.tmpl", size: 1265, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xe5, 0x70, 0xed, 0x51, 0xec, 0xd6, 0x83, 0x65, 0x76, 0xde, 0xce, 0xd7, 0x7d, 0xaf, 0x5c, 0x75, 0x26, 0xe2, 0xe4, 0x5d, 0x5d, 0x8d, 0xcf, 0x34, 0xcb, 0x2d, 0x7, 0xdd, 0xb8, 0xf, 0xcc, 0xad}}
 	return a, nil
 }
@@ -2806,7 +3365,11 @@ func repoWikiPagesTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/wiki/pages.tmpl", size: 776, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/wiki/pages.tmpl", size: 776, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x1b, 0x40, 0x10, 0xcd, 0x1c, 0x56, 0x49, 0xe6, 0xf7, 0x0, 0x58, 0xc7, 0x9b, 0x92, 0x61, 0xd9, 0x16, 0x88, 0x43, 0x5d, 0x55, 0xfa, 0xf6, 0x60, 0x3c, 0xb9, 0xe8, 0x71, 0x12, 0xd4, 0xc0, 0x18}}
 	return a, nil
 }
@@ -2826,7 +3389,11 @@ func repoWikiStartTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/wiki/start.tmpl", size: 533, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/wiki/start.tmpl", size: 533, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x7b, 0x16, 0x25, 0x1a, 0xa2, 0x79, 0xc9, 0xe9, 0x93, 0xc5, 0xef, 0x4c, 0xbb, 0x56, 0xf7, 0xba, 0xf5, 0x47, 0xc0, 0xa0, 0x91, 0xdd, 0x22, 0x36, 0xdf, 0x10, 0x5a, 0x73, 0x0, 0x31, 0x26, 0x76}}
 	return a, nil
 }
@@ -2846,7 +3413,11 @@ func repoWikiViewTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "repo/wiki/view.tmpl", size: 3376, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "repo/wiki/view.tmpl", size: 3376, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x33, 0x94, 0xdc, 0xc3, 0xa6, 0x74, 0x9e, 0xac, 0x2f, 0x9, 0x3b, 0x49, 0x56, 0xe, 0xea, 0xe, 0x9c, 0xa6, 0x19, 0x7e, 0x85, 0x7, 0xde, 0x3d, 0x27, 0xc, 0x31, 0x89, 0x42, 0xbc, 0xab, 0x81}}
 	return a, nil
 }
@@ -2866,7 +3437,11 @@ func status404Tmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "status/404.tmpl", size: 417, mode: os.FileMode(0664), modTime: time.Unix(1626317558, 0)}
+=======
+	info := bindataFileInfo{name: "status/404.tmpl", size: 417, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x27, 0x7d, 0xff, 0x8d, 0x77, 0xe3, 0xef, 0x9c, 0x93, 0xcf, 0x9c, 0x53, 0x9d, 0x2a, 0x3, 0xd9, 0x6e, 0x7b, 0xac, 0x4f, 0x35, 0xb, 0x76, 0x8b, 0x8a, 0xad, 0xfb, 0xcc, 0x64, 0xd, 0x4e, 0xc6}}
 	return a, nil
 }
@@ -2886,7 +3461,11 @@ func status500Tmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "status/500.tmpl", size: 349, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "status/500.tmpl", size: 349, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xfb, 0x82, 0xf3, 0xa4, 0xe, 0xfe, 0x45, 0x27, 0xdc, 0x60, 0xc3, 0xca, 0x25, 0x9e, 0x21, 0x86, 0xdb, 0xe1, 0xec, 0xd0, 0x73, 0x1b, 0xab, 0xcd, 0x83, 0x40, 0xf8, 0x56, 0xc7, 0x2f, 0x8c, 0xfb}}
 	return a, nil
 }
@@ -2906,7 +3485,11 @@ func userAuthActivateTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/auth/activate.tmpl", size: 1355, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/auth/activate.tmpl", size: 1355, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xc1, 0x51, 0xc6, 0x3d, 0x36, 0x7f, 0x95, 0x41, 0xac, 0xa0, 0xa3, 0x7f, 0xc8, 0xc8, 0xde, 0x2e, 0xa9, 0xcc, 0xd, 0xef, 0xbc, 0xc7, 0x4e, 0x6c, 0xae, 0x50, 0xba, 0xc1, 0x7e, 0x5e, 0x96, 0x64}}
 	return a, nil
 }
@@ -2926,7 +3509,11 @@ func userAuthForgot_passwdTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/auth/forgot_passwd.tmpl", size: 1234, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/auth/forgot_passwd.tmpl", size: 1234, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xd7, 0xba, 0x9, 0xb1, 0xf7, 0x1, 0x86, 0xa6, 0x6b, 0xdb, 0xa4, 0x95, 0x3d, 0x3d, 0xb8, 0xe8, 0x6e, 0x28, 0x4f, 0xb5, 0x42, 0x8f, 0xb9, 0x50, 0x29, 0x9e, 0x8c, 0xa9, 0x8e, 0xb0, 0x76, 0xf3}}
 	return a, nil
 }
@@ -2946,7 +3533,11 @@ func userAuthLoginTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/auth/login.tmpl", size: 2382, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/auth/login.tmpl", size: 2382, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x4b, 0x9e, 0x40, 0x83, 0xcc, 0xc0, 0xa1, 0x8f, 0x8, 0x35, 0xf5, 0xa0, 0x42, 0xd1, 0x21, 0x7e, 0x59, 0xdb, 0xec, 0xa0, 0xae, 0xad, 0x14, 0xd0, 0x7b, 0x40, 0xf5, 0x26, 0x12, 0xd3, 0x59, 0xbb}}
 	return a, nil
 }
@@ -2966,7 +3557,11 @@ func userAuthProhibit_loginTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/auth/prohibit_login.tmpl", size: 407, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/auth/prohibit_login.tmpl", size: 407, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x3e, 0xbe, 0x5, 0x65, 0xcb, 0x25, 0xb9, 0x1b, 0x2f, 0x8b, 0x36, 0x60, 0xd4, 0x1b, 0x17, 0x89, 0xe0, 0xb9, 0xee, 0x19, 0xca, 0x8e, 0xca, 0xcb, 0xc4, 0xeb, 0xd7, 0x70, 0x18, 0x56, 0x5f, 0x7a}}
 	return a, nil
 }
@@ -2986,7 +3581,11 @@ func userAuthReset_passwdTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/auth/reset_passwd.tmpl", size: 1066, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/auth/reset_passwd.tmpl", size: 1066, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xe, 0xfd, 0xf9, 0xed, 0x4e, 0xd6, 0xb2, 0xbf, 0x9c, 0x28, 0xb8, 0xdb, 0x26, 0xad, 0x94, 0xc5, 0x21, 0xd6, 0x7c, 0x2b, 0x34, 0xd2, 0xc0, 0x73, 0x97, 0x5, 0x85, 0x21, 0x74, 0x75, 0x48, 0x5f}}
 	return a, nil
 }
@@ -3006,7 +3605,11 @@ func userAuthSignupTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/auth/signup.tmpl", size: 3040, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/auth/signup.tmpl", size: 3040, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x83, 0xc4, 0x7f, 0xff, 0x79, 0x5e, 0x8e, 0x7f, 0x42, 0x6f, 0xc8, 0x22, 0xb8, 0x4e, 0x11, 0xe4, 0xff, 0x18, 0x41, 0xd7, 0x9f, 0xd7, 0x71, 0x26, 0xdf, 0x54, 0xae, 0x97, 0x2f, 0xd0, 0xae, 0x14}}
 	return a, nil
 }
@@ -3026,7 +3629,11 @@ func userAuthTwo_factorTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/auth/two_factor.tmpl", size: 940, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/auth/two_factor.tmpl", size: 940, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xc6, 0xb5, 0x81, 0xf8, 0x6a, 0x42, 0x16, 0x52, 0x40, 0xbd, 0x20, 0xe1, 0xf9, 0xe9, 0x42, 0x14, 0x46, 0x52, 0xc5, 0x18, 0x16, 0x77, 0xca, 0x42, 0x42, 0x9f, 0x3f, 0xa5, 0xce, 0xac, 0xe0, 0xf1}}
 	return a, nil
 }
@@ -3046,7 +3653,11 @@ func userAuthTwo_factor_recovery_codeTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/auth/two_factor_recovery_code.tmpl", size: 950, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/auth/two_factor_recovery_code.tmpl", size: 950, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xae, 0x6e, 0x93, 0xfe, 0xe4, 0x9b, 0xe4, 0xe2, 0x5b, 0xd0, 0x95, 0xea, 0x6a, 0x8, 0x26, 0x9f, 0x5f, 0x66, 0xe3, 0x78, 0x2, 0x4a, 0x6b, 0xf0, 0xf8, 0xab, 0xf2, 0xfd, 0xc2, 0x19, 0xda, 0x1e}}
 	return a, nil
 }
@@ -3066,7 +3677,11 @@ func userDashboardDashboardTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/dashboard/dashboard.tmpl", size: 5177, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/dashboard/dashboard.tmpl", size: 5177, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xb8, 0x3, 0x6c, 0xdb, 0x7, 0x2b, 0xd4, 0xe0, 0x47, 0x8, 0x20, 0xce, 0x8, 0x39, 0x74, 0xfb, 0xac, 0xd5, 0x1a, 0x5b, 0x53, 0xf0, 0xbc, 0xea, 0x1, 0x16, 0xf0, 0x98, 0x9b, 0xaf, 0xb0, 0x87}}
 	return a, nil
 }
@@ -3086,7 +3701,11 @@ func userDashboardFeedsTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/dashboard/feeds.tmpl", size: 5244, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/dashboard/feeds.tmpl", size: 5244, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x59, 0xea, 0xec, 0x34, 0x3b, 0xd7, 0x11, 0xbf, 0x1a, 0xd3, 0x56, 0x56, 0xb7, 0xbc, 0x4c, 0xbc, 0xa7, 0x1f, 0xad, 0x29, 0x3a, 0xcb, 0x6f, 0x6, 0x59, 0x14, 0x4b, 0x7f, 0xf8, 0xf6, 0x71, 0x5e}}
 	return a, nil
 }
@@ -3106,7 +3725,11 @@ func userDashboardIssuesTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/dashboard/issues.tmpl", size: 6762, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/dashboard/issues.tmpl", size: 6762, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xb8, 0x11, 0x32, 0x34, 0xf8, 0xaa, 0xaf, 0x1f, 0x1c, 0xf6, 0x54, 0x46, 0xd6, 0xa6, 0xff, 0x63, 0xe4, 0x65, 0x1e, 0x1, 0xaa, 0x9, 0x40, 0x0, 0x89, 0x44, 0x62, 0xac, 0x64, 0x3e, 0xc0, 0x96}}
 	return a, nil
 }
@@ -3126,7 +3749,11 @@ func userDashboardNavbarTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/dashboard/navbar.tmpl", size: 2151, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/dashboard/navbar.tmpl", size: 2151, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x7, 0xc0, 0xc8, 0xdc, 0x9b, 0x90, 0xdf, 0xb6, 0x7f, 0xa1, 0xae, 0x18, 0x35, 0x82, 0x6f, 0x4b, 0x74, 0x2e, 0xb6, 0xe9, 0x1e, 0xb1, 0x84, 0xac, 0x19, 0xa, 0xe9, 0xe3, 0x80, 0x3f, 0xf3, 0x14}}
 	return a, nil
 }
@@ -3146,7 +3773,11 @@ func userMetaFollowersTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/meta/followers.tmpl", size: 161, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/meta/followers.tmpl", size: 161, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x14, 0xc0, 0x13, 0x29, 0x29, 0x9d, 0x6b, 0x3a, 0xf6, 0x4a, 0xaa, 0x36, 0xfd, 0x3, 0x61, 0x12, 0xf0, 0x9a, 0x82, 0x58, 0xd1, 0xe0, 0x0, 0x36, 0x69, 0x58, 0x46, 0x4, 0xf4, 0x9c, 0x50, 0xf2}}
 	return a, nil
 }
@@ -3166,7 +3797,11 @@ func userMetaHeaderTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/meta/header.tmpl", size: 864, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/meta/header.tmpl", size: 864, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xe1, 0xe6, 0xa7, 0xee, 0x36, 0xbc, 0xfa, 0xa0, 0xa2, 0x4c, 0x34, 0x7b, 0xcb, 0x7e, 0x16, 0x33, 0xd4, 0x69, 0x23, 0xd8, 0x7c, 0xac, 0xa0, 0xdb, 0xb8, 0xee, 0x45, 0x9b, 0x6b, 0xc2, 0x4c, 0xb9}}
 	return a, nil
 }
@@ -3186,7 +3821,11 @@ func userMetaStarsTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/meta/stars.tmpl", size: 0, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/meta/stars.tmpl", size: 0, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xe3, 0xb0, 0xc4, 0x42, 0x98, 0xfc, 0x1c, 0x14, 0x9a, 0xfb, 0xf4, 0xc8, 0x99, 0x6f, 0xb9, 0x24, 0x27, 0xae, 0x41, 0xe4, 0x64, 0x9b, 0x93, 0x4c, 0xa4, 0x95, 0x99, 0x1b, 0x78, 0x52, 0xb8, 0x55}}
 	return a, nil
 }
@@ -3206,7 +3845,11 @@ func userProfileTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/profile.tmpl", size: 3861, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/profile.tmpl", size: 3861, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x18, 0xf7, 0x2e, 0x15, 0x57, 0x84, 0x54, 0xb2, 0xca, 0x8, 0xf, 0x7e, 0x54, 0xd7, 0xef, 0xc1, 0x5b, 0x32, 0x5, 0x3f, 0x7a, 0x14, 0x70, 0x96, 0x6c, 0x1f, 0xb7, 0x6d, 0x52, 0xdb, 0xcd, 0x2d}}
 	return a, nil
 }
@@ -3226,7 +3869,11 @@ func userSettingsApplicationsTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/settings/applications.tmpl", size: 3134, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/settings/applications.tmpl", size: 3134, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xf0, 0x47, 0xdd, 0xaa, 0x61, 0xff, 0x81, 0x46, 0xa6, 0x6c, 0xc3, 0x6a, 0x62, 0x4d, 0xc7, 0xde, 0x39, 0x1a, 0xe3, 0x34, 0xf1, 0x8d, 0xb2, 0x57, 0x50, 0x44, 0x45, 0x5a, 0xfe, 0x3e, 0xbc, 0x39}}
 	return a, nil
 }
@@ -3246,7 +3893,11 @@ func userSettingsAvatarTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/settings/avatar.tmpl", size: 1843, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/settings/avatar.tmpl", size: 1843, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x1f, 0x10, 0xcb, 0x6, 0xf8, 0x53, 0xfc, 0x59, 0x3, 0x98, 0x9a, 0x96, 0x2f, 0xe3, 0xe2, 0xf2, 0x3c, 0xcb, 0xe9, 0xb9, 0xeb, 0xb1, 0xa8, 0xbf, 0x3f, 0x73, 0xa8, 0x3e, 0xa2, 0x56, 0xe9, 0x64}}
 	return a, nil
 }
@@ -3266,7 +3917,11 @@ func userSettingsDeleteTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/settings/delete.tmpl", size: 1447, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/settings/delete.tmpl", size: 1447, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xce, 0x77, 0x48, 0x94, 0x54, 0x3b, 0xe9, 0x34, 0xb1, 0x99, 0x8a, 0x5d, 0xc5, 0xad, 0x83, 0x3f, 0xc9, 0xfd, 0x9f, 0xe8, 0xf9, 0x1a, 0xae, 0xda, 0x26, 0xed, 0x9d, 0x56, 0x98, 0xf5, 0xfa, 0x5c}}
 	return a, nil
 }
@@ -3286,7 +3941,11 @@ func userSettingsEmailTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/settings/email.tmpl", size: 2326, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/settings/email.tmpl", size: 2326, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xe7, 0x95, 0x7a, 0x56, 0x1, 0x2e, 0x2c, 0x90, 0xd, 0xd3, 0x40, 0xb8, 0xaf, 0xb0, 0x12, 0x1e, 0x2a, 0x4f, 0xa0, 0xae, 0x2c, 0x90, 0x75, 0xdd, 0xd6, 0xc1, 0xf9, 0x93, 0x89, 0xca, 0x20, 0x44}}
 	return a, nil
 }
@@ -3306,7 +3965,11 @@ func userSettingsNavbarTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/settings/navbar.tmpl", size: 1622, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/settings/navbar.tmpl", size: 1622, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xd8, 0x95, 0xdc, 0x4b, 0x19, 0x35, 0xbf, 0x3f, 0x5c, 0x24, 0x71, 0x8a, 0xea, 0xd1, 0xaf, 0xc7, 0xb2, 0xf6, 0x87, 0x5c, 0xe2, 0x3c, 0x1e, 0xd1, 0x60, 0xb7, 0xc7, 0x41, 0xda, 0xe3, 0x9f, 0xd5}}
 	return a, nil
 }
@@ -3326,7 +3989,11 @@ func userSettingsOrganizationsTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/settings/organizations.tmpl", size: 1500, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/settings/organizations.tmpl", size: 1500, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x8d, 0xda, 0x6b, 0x58, 0x51, 0xec, 0xe4, 0x9e, 0x2d, 0x1d, 0x11, 0x5c, 0xf2, 0x1a, 0xfa, 0xe0, 0x93, 0x29, 0x7d, 0xfe, 0x82, 0xa2, 0x6d, 0x17, 0xf7, 0x9d, 0xcd, 0x39, 0xab, 0x54, 0x27, 0x75}}
 	return a, nil
 }
@@ -3346,7 +4013,11 @@ func userSettingsPasswordTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/settings/password.tmpl", size: 1557, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/settings/password.tmpl", size: 1557, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xa4, 0x87, 0xd0, 0x2b, 0xe1, 0x4f, 0xa, 0xa6, 0xa0, 0x42, 0x51, 0x9d, 0xb4, 0x6f, 0x22, 0x7b, 0xbc, 0xf0, 0x79, 0xfa, 0x26, 0xbd, 0xe6, 0xa, 0x84, 0xdc, 0x9f, 0xd7, 0x89, 0xe5, 0x67, 0x46}}
 	return a, nil
 }
@@ -3366,7 +4037,11 @@ func userSettingsProfileTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/settings/profile.tmpl", size: 2072, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/settings/profile.tmpl", size: 2072, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xb, 0xa5, 0xb9, 0x41, 0x94, 0x4a, 0x36, 0xe0, 0x3d, 0xed, 0x67, 0x3, 0x55, 0x33, 0x1c, 0x2f, 0xbb, 0xd5, 0x54, 0xc8, 0x7c, 0x4, 0xe3, 0xcc, 0x2c, 0x5b, 0x86, 0xf5, 0xed, 0x9c, 0xd9, 0xfa}}
 	return a, nil
 }
@@ -3386,7 +4061,11 @@ func userSettingsRepositoriesTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/settings/repositories.tmpl", size: 1699, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/settings/repositories.tmpl", size: 1699, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x25, 0xc7, 0x4b, 0x4b, 0xbb, 0xd2, 0x33, 0x16, 0x76, 0x1d, 0x7c, 0xb1, 0xa9, 0xf8, 0xac, 0xdd, 0xa8, 0x46, 0xaf, 0x19, 0x59, 0x71, 0xeb, 0xb7, 0xc1, 0x0, 0xc4, 0x73, 0xac, 0xb0, 0x52, 0xb6}}
 	return a, nil
 }
@@ -3406,7 +4085,11 @@ func userSettingsSecurityTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/settings/security.tmpl", size: 1980, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/settings/security.tmpl", size: 1980, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xe4, 0xfe, 0x26, 0xd4, 0xea, 0x8b, 0xce, 0xe5, 0xc, 0x96, 0x8d, 0x7, 0xe2, 0x7, 0xb6, 0x6d, 0xca, 0x50, 0x42, 0x56, 0x3, 0x5d, 0x4b, 0xb5, 0x58, 0x5c, 0xe6, 0x62, 0x1a, 0x98, 0x4, 0xb7}}
 	return a, nil
 }
@@ -3426,7 +4109,11 @@ func userSettingsSshkeysTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/settings/sshkeys.tmpl", size: 3254, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/settings/sshkeys.tmpl", size: 3254, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x3e, 0xf7, 0xbb, 0x2, 0xf0, 0xa3, 0x81, 0xa4, 0x88, 0xe7, 0x61, 0x6, 0xe6, 0x9e, 0xf1, 0x29, 0x6, 0x77, 0x94, 0xd5, 0x12, 0x9e, 0x6e, 0xfa, 0x62, 0xa, 0xf, 0xfc, 0xfd, 0xf1, 0xf1, 0x26}}
 	return a, nil
 }
@@ -3446,7 +4133,11 @@ func userSettingsTwo_factor_enableTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/settings/two_factor_enable.tmpl", size: 1049, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/settings/two_factor_enable.tmpl", size: 1049, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x36, 0xf4, 0x1, 0x99, 0xee, 0x0, 0x40, 0x9f, 0xef, 0x3b, 0x4, 0xf6, 0xb1, 0x20, 0xf7, 0x50, 0xf7, 0x5e, 0x38, 0x59, 0x8c, 0xbc, 0x81, 0xe8, 0x34, 0x43, 0xf, 0x91, 0x93, 0xdd, 0x3a, 0x6}}
 	return a, nil
 }
@@ -3466,7 +4157,11 @@ func userSettingsTwo_factor_recovery_codesTmpl() (*asset, error) {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	info := bindataFileInfo{name: "user/settings/two_factor_recovery_codes.tmpl", size: 995, mode: os.FileMode(0664), modTime: time.Unix(1625536307, 0)}
+=======
+	info := bindataFileInfo{name: "user/settings/two_factor_recovery_codes.tmpl", size: 995, mode: os.FileMode(0664), modTime: time.Unix(1623850950, 0)}
+>>>>>>> 966e925cf320beff768b192276774d9265706df5
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x54, 0x6c, 0x9b, 0xef, 0xf, 0x8d, 0xe2, 0x91, 0x71, 0x16, 0x49, 0x9b, 0x5d, 0xba, 0x2a, 0xe7, 0x6f, 0x8d, 0xd6, 0x99, 0x7a, 0x19, 0xa8, 0x7f, 0x1, 0x1b, 0xe7, 0xb9, 0xc2, 0xb2, 0x8b, 0x6}}
 	return a, nil
 }
@@ -3580,7 +4275,10 @@ var _bindata = map[string]func() (*asset, error){
 	"base/alert.tmpl":                              baseAlertTmpl,
 	"base/delete_modal_actions.tmpl":               baseDelete_modal_actionsTmpl,
 	"base/footer.tmpl":                             baseFooterTmpl,
+	"base/footer_gin_brand.tmpl":                   baseFooter_gin_brandTmpl,
+	"base/footer_gin_text.tmpl":                    baseFooter_gin_textTmpl,
 	"base/head.tmpl":                               baseHeadTmpl,
+	"base/head_gin.tmpl":                           baseHead_ginTmpl,
 	"explore/blob_list.tmpl":                       exploreBlob_listTmpl,
 	"explore/commit_list.tmpl":                     exploreCommit_listTmpl,
 	"explore/commits.tmpl":                         exploreCommitsTmpl,
@@ -3801,7 +4499,10 @@ var _bintree = &bintree{nil, map[string]*bintree{
 		"alert.tmpl":                {baseAlertTmpl, map[string]*bintree{}},
 		"delete_modal_actions.tmpl": {baseDelete_modal_actionsTmpl, map[string]*bintree{}},
 		"footer.tmpl":               {baseFooterTmpl, map[string]*bintree{}},
+		"footer_gin_brand.tmpl":     {baseFooter_gin_brandTmpl, map[string]*bintree{}},
+		"footer_gin_text.tmpl":      {baseFooter_gin_textTmpl, map[string]*bintree{}},
 		"head.tmpl":                 {baseHeadTmpl, map[string]*bintree{}},
+		"head_gin.tmpl":             {baseHead_ginTmpl, map[string]*bintree{}},
 	}},
 	"explore": {nil, map[string]*bintree{
 		"blob_list.tmpl":       {exploreBlob_listTmpl, map[string]*bintree{}},

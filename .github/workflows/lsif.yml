@@ -2,19 +2,20 @@ name: LSIF
 on: [push]
 jobs:
   lsif-go:
-    if: github.repository == 'gogs/gogs'
+    if: github.repository == 'ivis-kuwata/gogs' # verify CI
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Generate LSIF data
-        uses: sourcegraph/lsif-go-action@master
+        # designate commit to avoid "Docker build failed"(11.08.'21)
+        uses: sourcegraph/lsif-go-action@b0788e86e374fce875bff160952489cca16604ec
       - name: Upload LSIF data to sourcegraph.com
         continue-on-error: true
         uses: docker://sourcegraph/src-cli:latest
         with:
-          args: lsif upload -github-token=${{ secrets.GITHUB_TOKEN }}
-      - name: Upload LSIF data to sourcegraph.unknwon.cn
-        continue-on-error: true
-        uses: docker://sourcegraph/src-cli:latest
-        with:
-          args: -endpoint=https://sourcegraph.unknwon.cn lsif upload -github-token=${{ secrets.GITHUB_TOKEN }}
+          args: lsif upload -github-token=${{ secrets.MY_TOKEN }}
+      # - name: Upload LSIF data to sourcegraph.unknwon.cn
+      #   continue-on-error: true
+      #   uses: docker://sourcegraph/src-cli:latest
+      #   with:
+      #     args: -endpoint=https://sourcegraph.unknwon.cn lsif upload -github-token=${{ secrets.GITHUB_TOKEN }}

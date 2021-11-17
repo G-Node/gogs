@@ -1,3 +1,5 @@
+#!/bin/bash
+
 outPlattform=linux
 outArch=amd64
 outPath=./output_${outPlattform}_$outArch
