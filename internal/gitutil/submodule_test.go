@@ -23,7 +23,7 @@ func TestInferSubmoduleURL(t *testing.T) {
 				URL:    "https://github.com/gogs/docs-api.git",
 				Commit: "6b08f76a5313fa3d26859515b30aa17a5faa2807",
 			},
-			expURL: "https://github.com/gogs/docs-api/commit/6b08f76a5313fa3d26859515b30aa17a5faa2807",
+			expURL: "https://github.com/gogs/docs-api",
 		},
 		{
 			name: "SSH URL with port",
@@ -31,7 +31,7 @@ func TestInferSubmoduleURL(t *testing.T) {
 				URL:    "ssh://user@github.com:22/gogs/docs-api.git",
 				Commit: "6b08f76a5313fa3d26859515b30aa17a5faa2807",
 			},
-			expURL: "http://github.com:22/gogs/docs-api/commit/6b08f76a5313fa3d26859515b30aa17a5faa2807",
+			expURL: "http://github.com:22/gogs/docs-api",
 		},
 		{
 			name: "SSH URL in SCP syntax",
@@ -39,7 +39,7 @@ func TestInferSubmoduleURL(t *testing.T) {
 				URL:    "git@github.com:gogs/docs-api.git",
 				Commit: "6b08f76a5313fa3d26859515b30aa17a5faa2807",
 			},
-			expURL: "http://github.com/gogs/docs-api/commit/6b08f76a5313fa3d26859515b30aa17a5faa2807",
+			expURL: "http://github.com/gogs/docs-api",
 		},
 		{
 			name: "relative path",
@@ -47,7 +47,7 @@ func TestInferSubmoduleURL(t *testing.T) {
 				URL:    "../repo2.git",
 				Commit: "6b08f76a5313fa3d26859515b30aa17a5faa2807",
 			},
-			expURL: "https://gogs.example.com/user/repo/../repo2/commit/6b08f76a5313fa3d26859515b30aa17a5faa2807",
+			expURL: "https://gogs.example.com/user/repo/../repo2",
 		},
 		{
 			name: "bad URL",
