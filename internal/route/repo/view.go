@@ -60,7 +60,9 @@ func renderDirectory(c *context.Context, treeLink string) {
 	log.Trace(fmt.Sprintf("Commit: %v", c.Repo.Commit))
 	log.Trace(fmt.Sprintf("Path: %v", c.Repo.TreePath))
 	log.Trace(fmt.Sprintf("MaxConcurrency: %v", conf.Repository.CommitsFetchConcurrency))
-	log.Trace(fmt.Sprintf("c.Data['Files']: %+v\n\n", c.Data["Files"]))
+	log.Trace(fmt.Sprintf("c.Data['Files']: %+v", c.Data["Files"]))
+	log.Trace(fmt.Sprintf("err: %+v\n\n", err))
+
 
 	if err != nil {
 		c.Error(err, "get commits info")
