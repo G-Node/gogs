@@ -56,17 +56,6 @@ func renderDirectory(c *context.Context, treeLink string) {
 		Timeout:        5 * time.Minute,
 	})
 
-	sm, smerr := c.Repo.Commit.Submodule("alea")
-	log.Trace(fmt.Sprintf("Render Repo: %v", c.Repo.Repository.Name))
-	log.Trace(fmt.Sprintf("tree.Entries: %v", entries))
-	log.Trace(fmt.Sprintf("tree.Entries: %v", entries[0].Name()))
-	log.Trace(fmt.Sprintf("Commit: %v", c.Repo.Commit))
-	log.Trace(fmt.Sprintf("Submodule: %v (%e)", sm, smerr))
-	log.Trace(fmt.Sprintf("Path: %v", c.Repo.TreePath))
-	log.Trace(fmt.Sprintf("MaxConcurrency: %v", conf.Repository.CommitsFetchConcurrency))
-	log.Trace(fmt.Sprintf("c.Data['Files']: %+v", c.Data["Files"]))
-	log.Trace(fmt.Sprintf("err: %+v\n\n", err))
-
 	if err != nil {
 		c.Error(err, "get commits info")
 		return
