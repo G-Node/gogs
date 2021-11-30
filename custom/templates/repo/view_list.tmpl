@@ -52,6 +52,8 @@
 {{if and .ReadmeExist .IsTextFile}}
 	{{template "repo/view_file" .}}
 {{end}}
-{{if and .HasDmpJson .IsTextFile}}
+<!-- dmp.jsonがリポジトリにあり、さらに今のページがリポジトリのトップレベルで
+		 ある場合に限ってDMP情報を表形式で描画 -->
+{{if and .HasDmpJson .PageIsRepoHome}}
 	{{template "repo/doifile" .}}
 {{end}}
