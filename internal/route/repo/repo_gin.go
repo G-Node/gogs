@@ -84,7 +84,6 @@ func readDmpJson(c *context.Context) {
 		return
 	}
 	c.Data["DOIInfo"] = string(buf)
-	c.Data["IsTextFile"] = true
 }
 
 // resolveAnnexedContent takes a buffer with the contents of a git-annex
