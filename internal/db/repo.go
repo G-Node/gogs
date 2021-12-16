@@ -950,6 +950,8 @@ func getRepoInitFile(tp, name string) ([]byte, error) {
 	return conf.Asset(relPath)
 }
 
+// prepareRepoCommit adds the files to the repository if the GIN user
+// has initialized the repository with the selected files and templates on browser.
 func prepareRepoCommit(repo *Repository, doer *User, tmpDir, repoPath string, opts CreateRepoOptions) error {
 	// Clone to temprory path and do the init commit.
 	_, stderr, err := process.Exec(
@@ -1010,21 +1012,26 @@ func prepareRepoCommit(repo *Repository, doer *User, tmpDir, repoPath string, op
 		}
 	}
 
-	// clone workflow-template ( RCOS specific code)
-	// NOTE: 試作段階
+	return nil
+}
+
+// initWorkflow is RCOS specific code.
+// This function clones a template prepared to provide workflow functionality
+// and also provides a link button in README.md to launch the Binder container for the repository.
+func initWorkflow(tmpDir string) error {
 	workflowUrl := "https://github.com/ivis-kuwata/workflow-template"
-	err = git.Clone(workflowUrl, filepath.Join(tmpDir, "WORKFLOW"), git.CloneOptions{Bare: false})
+	err := git.Clone(workflowUrl, filepath.Join(tmpDir, "WORKFLOW"), git.CloneOptions{Bare: false})
 	if err != nil {
-		return fmt.Errorf("fetch WORKFLOW: %v", err)
+		return err
 	}
 
 	gitmodulePath := ".gitmodules"
-	data, err = getRepoInitFile("workflow", gitmodulePath)
+	data, err := getRepoInitFile("workflow", gitmodulePath)
 	if err != nil {
-		return fmt.Errorf("getRepoInitFile[%s]: %v", gitmodulePath, err)
+		return err
 	}
 	if err = ioutil.WriteFile(filepath.Join(tmpDir, gitmodulePath), data, 0644); err != nil {
-		return fmt.Errorf("write .gitmodules: %v", err)
+		return err
 	}
 
 	return nil
@@ -1055,6 +1062,10 @@ func initRepository(e Engine, repoPath string, doer *User, repo *Repository, opt
 
 		if err = prepareRepoCommit(repo, doer, tmpDir, repoPath, opts); err != nil {
 			return fmt.Errorf("prepareRepoCommit: %v", err)
+		}
+
+		if err = initWorkflow(tmpDir); err != nil {
+			return fmt.Errorf("initWorkflow: %v", err)
 		}
 
 		// Apply changes and commit.
