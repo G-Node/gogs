@@ -1,3 +1,1 @@
-[submodule "WORKFLOW"]
-	path = WORKFLOW
-	url = https://github.com/ivis-kuwata/workflow-template.git
+; This file is overrided by custom/conf/workflow/.gitmodules
