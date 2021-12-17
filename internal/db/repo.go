@@ -1025,14 +1025,7 @@ func initWorkflow(tmpDir string) error {
 		return err
 	}
 
-	gitmodulePath := ".gitmodules"
-	data, err := getRepoInitFile("workflow", gitmodulePath)
-	if err != nil {
-		return err
-	}
-	if err = ioutil.WriteFile(filepath.Join(tmpDir, gitmodulePath), data, 0644); err != nil {
-		return err
-	}
+	os.RemoveAll(filepath.Join(tmpDir, "WORKFLOW", ".git"))
 
 	return nil
 }
