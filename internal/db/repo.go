@@ -1018,12 +1018,12 @@ func prepareRepoCommit(repo *Repository, doer *User, tmpDir, repoPath string, op
 // initWorkflow is RCOS specific code.
 // This function clones a template prepared to provide workflow functionality
 // and also provides a link button in README.md to launch the Binder container for the repository.
-func initWorkflow(tmpDir string) error {
-	workflowUrl := "https://github.com/ivis-kuwata/workflow-template"
+func initWorkflow(tmpDir, workflowUrl string) error {
 	err := git.Clone(workflowUrl, filepath.Join(tmpDir, "WORKFLOW"), git.CloneOptions{Bare: false})
 	if err != nil {
 		return err
 	}
+	defer RemoveAllWithNotice("Delete WORKFLOW for auto-initialization", filepath.Join(tmpDir, "WORKFLOW"))
 
 	os.RemoveAll(filepath.Join(tmpDir, "WORKFLOW", ".git"))
 
@@ -1057,7 +1057,8 @@ func initRepository(e Engine, repoPath string, doer *User, repo *Repository, opt
 			return fmt.Errorf("prepareRepoCommit: %v", err)
 		}
 
-		if err = initWorkflow(tmpDir); err != nil {
+		workflowUrl := "https://github.com/ivis-kuwata/workflow-template"
+		if err = initWorkflow(tmpDir, workflowUrl); err != nil {
 			return fmt.Errorf("initWorkflow: %v", err)
 		}
 
