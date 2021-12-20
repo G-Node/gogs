@@ -1,0 +1,18 @@
+name: Binder environment
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - datalad
+  - openpyxl
+  - openssl=1.1.1l
+  - pip=21.2.4
+  - python=3.8.12
+  - python_abi=3.8
+  - vi
+  - wheel=0.37.0
+  - pygraphviz=1.7
+  - pip:
+    - ploomber==0.12.8
+    - ploomber-scaffold==0.2.4
+    - datalad
