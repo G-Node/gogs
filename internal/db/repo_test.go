@@ -99,3 +99,43 @@ func Test_initWorkflow(t *testing.T) {
 		})
 	}
 }
+
+func Test_addBinderEnvironment(t *testing.T) {
+	repo := &Repository{
+		Name: "testrepo",
+		Owner: &User{
+			Name: "testuser",
+		},
+		ExternalTrackerFormat: "https://someurl.com/{user}/{repo}/{issue}",
+	}
+
+	testDir := filepath.Join(os.TempDir(), repo.Name+"-"+com.ToStr(time.Now().Nanosecond()))
+	if err := os.MkdirAll(testDir, os.ModePerm); err != nil {
+		return
+	}
+	defer RemoveAllWithNotice("Delete tmpDir for Test_addBinderEnvironment", testDir)
+
+	type args struct {
+		tmpDir string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "noError",
+			args: args{
+				tmpDir: testDir,
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := addBinderEnvironment(tt.args.tmpDir); (err != nil) != tt.wantErr {
+				t.Errorf("addBinderEnvironment() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}

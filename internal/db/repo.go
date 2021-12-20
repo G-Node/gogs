@@ -1021,12 +1021,37 @@ func prepareRepoCommit(repo *Repository, doer *User, tmpDir, repoPath string, op
 func initWorkflow(tmpDir, workflowUrl string) error {
 	err := git.Clone(workflowUrl, filepath.Join(tmpDir, "WORKFLOW"), git.CloneOptions{Bare: false})
 	if err != nil {
+		RemoveAllWithNotice("Delete WORKFLOW for auto-initialization", filepath.Join(tmpDir, "WORKFLOW"))
 		return err
 	}
-	defer RemoveAllWithNotice("Delete WORKFLOW for auto-initialization", filepath.Join(tmpDir, "WORKFLOW"))
 
 	os.RemoveAll(filepath.Join(tmpDir, "WORKFLOW", ".git"))
 
+	if err = addBinderEnvironment(tmpDir); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// addBinderEnvironment is RCOS specific code.
+// This function adds an enviroment.yml file to the repository
+// that defines the environment in which Notebooks will be run
+// in the code-appendix (based on Binderhub).
+func addBinderEnvironment(tmpDir string) error {
+	// 複数のテンプレートから選択する場合はCreateRepoOptionsに
+	// 新しく"EnvironmentYml string"というように定義し、それを
+	// 引数で`opts.Readme`のように参照する。
+	// これについてはprepareRepoCommitを参考にできる。
+	data, err := getRepoInitFile("workflow", "Default")
+	if err != nil {
+		return err
+	}
+
+	err = os.WriteFile(filepath.Join(tmpDir, "environment.yml"), data, 0644)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -1057,6 +1082,8 @@ func initRepository(e Engine, repoPath string, doer *User, repo *Repository, opt
 			return fmt.Errorf("prepareRepoCommit: %v", err)
 		}
 
+		// 以下にワークフローテンプレートのGitHub URLを定義しているが、
+		// これもCreateRepoOptionsに入れた方が良いかもしれない
 		workflowUrl := "https://github.com/ivis-kuwata/workflow-template"
 		if err = initWorkflow(tmpDir, workflowUrl); err != nil {
 			return fmt.Errorf("initWorkflow: %v", err)
