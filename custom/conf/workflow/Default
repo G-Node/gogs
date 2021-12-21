@@ -9,7 +9,6 @@ dependencies:
   - pip=21.2.4
   - python=3.8.12
   - python_abi=3.8
-  - vi
   - wheel=0.37.0
   - pygraphviz=1.7
   - pip:
