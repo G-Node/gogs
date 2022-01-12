@@ -1012,43 +1012,51 @@ func prepareRepoCommit(repo *Repository, doer *User, tmpDir, repoPath string, op
 		}
 	}
 
+	// RCOS specific code
+	if err = addBinderConfig(tmpDir, "environment.yml"); err != nil {
+		return fmt.Errorf("addBinderConfig(environment.yml): %v", err)
+	}
+	if err = addBinderConfig(tmpDir, "initial_notebook.ipynb"); err != nil {
+		return fmt.Errorf("addBinderConfig(initial_notebook.ipynb): %v", err)
+	}
+
 	return nil
 }
 
 // initWorkflow is RCOS specific code.
 // This function clones a template prepared to provide workflow functionality
 // and also provides a link button in README.md to launch the Binder container for the repository.
-func initWorkflow(tmpDir, workflowUrl string) error {
-	err := git.Clone(workflowUrl, filepath.Join(tmpDir, "WORKFLOW"), git.CloneOptions{Bare: false})
-	if err != nil {
-		RemoveAllWithNotice("Delete WORKFLOW for auto-initialization", filepath.Join(tmpDir, "WORKFLOW"))
-		return err
-	}
+// func initWorkflow(tmpDir, workflowUrl string) error {
+// 	err := git.Clone(workflowUrl, filepath.Join(tmpDir, "WORKFLOW"), git.CloneOptions{Bare: false})
+// 	if err != nil {
+// 		RemoveAllWithNotice("Delete WORKFLOW for auto-initialization", filepath.Join(tmpDir, "WORKFLOW"))
+// 		return err
+// 	}
 
-	os.RemoveAll(filepath.Join(tmpDir, "WORKFLOW", ".git"))
+// 	os.RemoveAll(filepath.Join(tmpDir, "WORKFLOW", ".git"))
 
-	if err = addBinderEnvironment(tmpDir); err != nil {
-		return err
-	}
+// 	if err = addBinderConfig(tmpDir); err != nil {
+// 		return err
+// 	}
 
-	return nil
-}
+// 	return nil
+// }
 
-// addBinderEnvironment is RCOS specific code.
+// addBinderConfig is RCOS specific code.
 // This function adds an enviroment.yml file to the repository
 // that defines the environment in which Notebooks will be run
 // in the code-appendix (based on Binderhub).
-func addBinderEnvironment(tmpDir string) error {
+func addBinderConfig(tmpDir, filename string) error {
 	// 複数のテンプレートから選択する場合はCreateRepoOptionsに
 	// 新しく"EnvironmentYml string"というように定義し、それを
 	// 引数で`opts.Readme`のように参照する。
 	// これについてはprepareRepoCommitを参考にできる。
-	data, err := getRepoInitFile("workflow", "Default")
+	data, err := getRepoInitFile("workflow", filename)
 	if err != nil {
 		return err
 	}
 
-	err = os.WriteFile(filepath.Join(tmpDir, "environment.yml"), data, 0644)
+	err = os.WriteFile(filepath.Join(tmpDir, filename), data, 0644)
 	if err != nil {
 		return err
 	}
@@ -1080,13 +1088,6 @@ func initRepository(e Engine, repoPath string, doer *User, repo *Repository, opt
 
 		if err = prepareRepoCommit(repo, doer, tmpDir, repoPath, opts); err != nil {
 			return fmt.Errorf("prepareRepoCommit: %v", err)
-		}
-
-		// 以下にワークフローテンプレートのGitHub URLを定義しているが、
-		// これもCreateRepoOptionsに入れた方が良いかもしれない
-		workflowUrl := "https://github.com/ivis-kuwata/workflow-template"
-		if err = initWorkflow(tmpDir, workflowUrl); err != nil {
-			return fmt.Errorf("initWorkflow: %v", err)
 		}
 
 		// Apply changes and commit.
