@@ -549,12 +549,6 @@ func runWeb(c *cli.Context) error {
 			m.Combo("/compare/*", repo.MustAllowPulls).Get(repo.CompareAndPullRequest).
 				Post(bindIgnErr(form.NewIssue{}), repo.CompareAndPullRequestPost)
 
-			// GIN specific code
-			// FIXME : add  all schema PATH
-			if _, err := conf.Asset("conf/dmp/dmp_meti.json"); err != nil {
-				log.Fatal("%v", err)
-			}
-
 			m.Group("", func() {
 				m.Combo("/_edit/*").Get(repo.EditFile).
 					Post(bindIgnErr(form.EditRepoFile{}), repo.EditFilePost)
