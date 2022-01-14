@@ -1,3 +1,6 @@
+// createTable is RCOS specific code.
+// This generates a table to check the information of the DMP
+// created by the user and displays it on the screen.
 function createTable(element, items) {
     for (const item in items) {
         let tr = document.createElement("tr");

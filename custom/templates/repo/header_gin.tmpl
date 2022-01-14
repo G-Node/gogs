@@ -9,6 +9,7 @@
 								<a class="ui basic button" href="{{$.RepoLink}}/_edit/{{EscapePound $.BranchName}}/dmp.json" data-position="bottom center"><i class="octicon octicon-file"></i>Edit DMP JSON</a>
 
 								{{ if $.HasMaDmp }}
+									<br>
 									<a class="ui basic button" href="{{$.RepoLink}}/src/{{EscapePound $.BranchName}}/maDMP.ipynb" data-position="bottom center"><i class="octicon octicon-file"></i>View maDMP</a>
 								{{ else }}
 									<form method="post" name="generate_maDMP" action="{{$.RepoLink}}/generate_madmp">
@@ -22,6 +23,7 @@
 
 									{{ range $v := $.SchemaList }}
 										<option value="{{$.RepoLink}}/_add/{{EscapePound $.BranchName}}/dmp.json/?schema={{$v}}">{{ $v }}</option>
+										<!-- <script src="{{AppSubURL}}/js/rcos_custom/dmp_listing.js?v={{BuildCommit}}"></script> -->
 									{{ end }}
 
 								</select>
