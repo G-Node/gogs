@@ -3,6 +3,7 @@ package repo
 import (
 	"bufio"
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -14,6 +15,7 @@ import (
 	"github.com/gogs/git-module"
 	"github.com/ivis-yoshida/gogs/internal/conf"
 	"github.com/ivis-yoshida/gogs/internal/context"
+	"github.com/ivis-yoshida/gogs/internal/db"
 	"github.com/ivis-yoshida/gogs/internal/tool"
 	log "gopkg.in/clog.v1"
 )
@@ -69,6 +71,7 @@ func serveAnnexedKey(ctx *context.Context, name string, contentPath string) erro
 	return err
 }
 
+// readDmpJson is RCOS specific code.
 func readDmpJson(c *context.Context) {
 	log.Trace("Reading dmp.json file")
 	entry, err := c.Repo.Commit.Blob("/dmp.json")
@@ -84,6 +87,72 @@ func readDmpJson(c *context.Context) {
 		return
 	}
 	c.Data["DOIInfo"] = string(buf)
+}
+
+// GenerateMaDmp is RCOS specific code.
+// This generates maDMP(machine actionable DMP) based on
+// DMP information created by the user in the repository.
+func GenerateMaDmp(c *context.Context) {
+	c.Data["HasMaDmp"] = false
+
+	// テンプレートNotebookを取得
+	// refs: internal/route/repo/view.go
+	contents, err := conf.Asset("conf/workflow/maDMP")
+	if err != nil {
+		log.Error(2, "fetching template notebook failed: %v", err)
+
+		// リダイレクト先要検討
+		c.Redirect(c.Repo.RepoLink + "/src/master")
+		return
+	}
+
+	// ユーザが作成したDMP情報取得
+	entry, err := c.Repo.Commit.Blob("/dmp.json")
+	if err != nil || entry == nil {
+		log.Error(2, "dmp.json blob could not be retrieved: %v", err)
+		return
+	}
+	buf, err := entry.Bytes()
+	if err != nil {
+		log.Error(2, "dmp.json data could not be read: %v", err)
+		return
+	}
+
+	var dmp interface{}
+	err = json.Unmarshal(buf, &dmp)
+	if err != nil {
+		log.Error(2, "Unmarshal DMP info: %v", err)
+		return
+	}
+
+	// dmp.jsonに"fields"プロパティがある想定
+	selectedField := dmp.(map[string]interface{})["field"]
+
+	pathToMaDmp := "maDMP.ipynb"
+	// fmt.Sprintf()でパラメタの値埋め込んでいるが、
+	// 拡張性が悪いかもしれない
+	err = c.Repo.Repository.UpdateRepoFile(c.User, db.UpdateRepoFileOptions{
+		LastCommitID: c.Repo.CommitID,
+		OldBranch:    c.Repo.BranchName,
+		NewBranch:    c.Repo.BranchName,
+		OldTreeName:  "",
+		NewTreeName:  pathToMaDmp,
+		Message:      "[GIN] Generate maDMP",
+		Content: fmt.Sprintf(
+			string(contents), selectedField,
+		),
+		IsNewFile: true,
+	})
+	if err != nil {
+		log.Error(2, "failed generating maDMP: %v", err)
+
+		// リダイレクト先要検討
+		c.Redirect(c.Repo.RepoLink + "/src/master")
+		return
+	}
+
+	c.Data["HasMaDmp"] = true
+	c.Redirect(filepath.Join(c.Repo.RepoLink, "/src/", c.Repo.BranchName, "/", pathToMaDmp))
 }
 
 // resolveAnnexedContent takes a buffer with the contents of a git-annex

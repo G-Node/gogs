@@ -11,6 +11,15 @@
                 "jst"
             ]
         },
+        "field": {
+            "type": "string",
+            "enum":[
+                "basic",
+                "bio",
+                "neuro"
+            ]
+
+        },
         "dmpType": {
             "type": "string",
             "enum": [
