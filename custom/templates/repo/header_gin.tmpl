@@ -23,7 +23,6 @@
 
 									{{ range $v := $.SchemaList }}
 										<option value="{{$.RepoLink}}/_add/{{EscapePound $.BranchName}}/dmp.json/?schema={{$v}}">{{ $v }}</option>
-										<!-- <script src="{{AppSubURL}}/js/rcos_custom/dmp_listing.js?v={{BuildCommit}}"></script> -->
 									{{ end }}
 
 								</select>
