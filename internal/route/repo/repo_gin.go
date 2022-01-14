@@ -93,16 +93,13 @@ func readDmpJson(c *context.Context) {
 // This generates maDMP(machine actionable DMP) based on
 // DMP information created by the user in the repository.
 func GenerateMaDmp(c *context.Context) {
-	c.Data["HasMaDmp"] = false
-
 	// テンプレートNotebookを取得
 	// refs: internal/route/repo/view.go
 	contents, err := conf.Asset("conf/workflow/maDMP")
 	if err != nil {
 		log.Error(2, "fetching template notebook failed: %v", err)
 
-		// リダイレクト先要検討
-		c.Redirect(c.Repo.RepoLink + "/src/master")
+		failedGenereteMaDmp(c, "Faild gerate maDMP: Server error, sorry")
 		return
 	}
 
@@ -110,11 +107,15 @@ func GenerateMaDmp(c *context.Context) {
 	entry, err := c.Repo.Commit.Blob("/dmp.json")
 	if err != nil || entry == nil {
 		log.Error(2, "dmp.json blob could not be retrieved: %v", err)
+
+		failedGenereteMaDmp(c, "Faild gerate maDMP: DMP could not read")
 		return
 	}
 	buf, err := entry.Bytes()
 	if err != nil {
 		log.Error(2, "dmp.json data could not be read: %v", err)
+
+		failedGenereteMaDmp(c, "Faild gerate maDMP: DMP could not read")
 		return
 	}
 
@@ -122,6 +123,8 @@ func GenerateMaDmp(c *context.Context) {
 	err = json.Unmarshal(buf, &dmp)
 	if err != nil {
 		log.Error(2, "Unmarshal DMP info: %v", err)
+
+		failedGenereteMaDmp(c, "Faild gerate maDMP: DMP could not read")
 		return
 	}
 
@@ -146,13 +149,21 @@ func GenerateMaDmp(c *context.Context) {
 	if err != nil {
 		log.Error(2, "failed generating maDMP: %v", err)
 
-		// リダイレクト先要検討
-		c.Redirect(c.Repo.RepoLink + "/src/master")
+		failedGenereteMaDmp(c, "Faild gerate maDMP: Already exist")
 		return
 	}
 
-	c.Data["HasMaDmp"] = true
-	c.Redirect(filepath.Join(c.Repo.RepoLink, "/src/", c.Repo.BranchName, "/", pathToMaDmp))
+	// c.Redirect(filepath.Join(c.Repo.RepoLink, "/src/", c.Repo.BranchName, "/", pathToMaDmp))
+	c.Flash.Success("maDMP generated!")
+	c.Redirect(c.Repo.RepoLink)
+}
+
+// failedGenerateMaDmp is RCOS specific code.
+// This is a function used by GenerateMaDmp to emit an error message
+// on UI when maDMP generation fails.
+func failedGenereteMaDmp(c *context.Context, msg string) {
+	c.Flash.Error(msg)
+	c.Redirect(c.Repo.RepoLink)
 }
 
 // resolveAnnexedContent takes a buffer with the contents of a git-annex

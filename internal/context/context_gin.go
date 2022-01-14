@@ -94,19 +94,18 @@ func getRepoDOI(c *Context) string {
 	return doiBase + uuid[:6]
 }
 
-// hasDmpJson returns 'true' if a repository includes a file called
-// 'dmp.json' in its root.  No checks are made to determine if the file is
-// valid.  If any error occurs, for example due to an uninitialised repository
-// or missing repository root, it returns 'false' without error.
-func hasDmpJson(c *Context) bool {
+// hasFileInRepo is RCOS specific code.
+// This returns 'true' if a repository includes a file with the name given as an argument.
+// Used by context.RepoAssignment.
+func hasFileInRepo(c *Context, filename string) bool {
 	commit, err := c.Repo.GitRepo.BranchCommit(c.Repo.Repository.DefaultBranch)
 	if err != nil {
 		log.Trace("Couldn't get commit: %v", err)
 		return false
 	}
-	_, err = commit.Blob("/dmp.json")
+	_, err = commit.Blob(filename)
 
-	log.Trace("Found datacite? %t", err == nil)
+	// log.Trace("Found datacite? %t", err == nil)
 	return err == nil
 }
 
