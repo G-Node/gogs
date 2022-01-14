@@ -11,9 +11,10 @@
 								{{ if $.HasMaDmp }}
 								<a class="ui basic button" href="{{$.RepoLink}}/src/{{EscapePound $.BranchName}}/maDMP.ipynb" data-position="bottom center"><i class="octicon octicon-file"></i>View maDMP</a>
 								{{ else }}
-								<!-- <form method="post" name="generate_maDMP" action="{{$.RepoLink}}/generate_madmp"><a class="ui basic button" href= "javascript:generate_maDMP.submit()" data-position="bottom center"><i class="octicon octicon-file"></i>Create maDMP</a></form> -->
-
-								<a class="ui basic button" href="{{$.RepoLink}}/generate_madmp" data-position="bottom center"><i class="octicon octicon-file"></i>Generate maDMP</a>
+									<form method="post" name="generate_maDMP" action="{{$.RepoLink}}/generate_madmp">
+										{{.CSRFTokenHTML}}
+										<a class="ui basic button" href= "javascript:generate_maDMP.submit()" data-position="bottom center"><i class="octicon octicon-file"></i>Generate maDMP</a>
+									</form>
 								{{ end }}
 							{{else}}
 								<select class="ui basic button" name="addDmp" onChange="location.href=value;">
