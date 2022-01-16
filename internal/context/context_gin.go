@@ -97,13 +97,13 @@ func getRepoDOI(c *Context) string {
 // hasFileInRepo is RCOS specific code.
 // This returns 'true' if a repository includes a file with the name given as an argument.
 // Used by context.RepoAssignment.
-func hasFileInRepo(c *Context, filename string) bool {
+func hasFileInRepo(c *Context, filePath string) bool {
 	commit, err := c.Repo.GitRepo.BranchCommit(c.Repo.Repository.DefaultBranch)
 	if err != nil {
 		log.Trace("Couldn't get commit: %v", err)
 		return false
 	}
-	_, err = commit.Blob(filename)
+	_, err = commit.Blob(filePath)
 
 	// log.Trace("Found datacite? %t", err == nil)
 	return err == nil
