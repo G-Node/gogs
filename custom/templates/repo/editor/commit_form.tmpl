@@ -38,9 +38,8 @@
 			</div>
 		</div>
 	</div>
-	<button type="submit" id="commit" class="ui green button" disabled>
+	<button type="submit" id="commit" class="ui green button">
 		{{.i18n.Tr "repo.editor.commit_changes"}}
 	</button>
 	<a class="ui button red" href="{{EscapePound $.BranchLink}}/{{EscapePound .TreePath}}">{{.i18n.Tr "repo.editor.cancel"}}</a>
 </div>
-<script src="{{AppSubURL}}/js/rcos_custom/commit.js?v={{BuildCommit}}"></script>
