@@ -95,7 +95,7 @@ func readDmpJson(c *context.Context) {
 func GenerateMaDmp(c *context.Context) {
 	// テンプレートNotebookを取得
 	// refs: internal/route/repo/view.go
-	contents, err := conf.Asset("conf/workflow/maDMP")
+	contents, err := conf.Asset("conf/workflow/maDMP.ipynb")
 	if err != nil {
 		log.Error(2, "fetching template notebook failed: %v", err)
 
@@ -130,6 +130,11 @@ func GenerateMaDmp(c *context.Context) {
 
 	// dmp.jsonに"fields"プロパティがある想定
 	selectedField := dmp.(map[string]interface{})["field"]
+	/* maDMPへ埋め込む情報を追加する際は
+	ここに追記のこと
+	e.g.
+	hasGrdm := dmp.(map[string]interface{})["hasGrdm"]
+	*/
 
 	pathToMaDmp := "maDMP.ipynb"
 	// fmt.Sprintf()でパラメタの値埋め込んでいるが、
@@ -142,7 +147,12 @@ func GenerateMaDmp(c *context.Context) {
 		NewTreeName:  pathToMaDmp,
 		Message:      "[GIN] Generate maDMP",
 		Content: fmt.Sprintf(
-			string(contents), selectedField,
+			string(contents), // 埋め込み先: maDMP
+			selectedField,    // 埋め込む値: DMP情報(現在は"field"の値のみ)
+			/* maDMPへ埋め込む情報を追加する際は
+			ここに追記のこと
+			e.g.
+			hasGrdm, */
 		),
 		IsNewFile: true,
 	})
@@ -153,7 +163,6 @@ func GenerateMaDmp(c *context.Context) {
 		return
 	}
 
-	// c.Redirect(filepath.Join(c.Repo.RepoLink, "/src/", c.Repo.BranchName, "/", pathToMaDmp))
 	c.Flash.Success("maDMP generated!")
 	c.Redirect(c.Repo.RepoLink)
 }
