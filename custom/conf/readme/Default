@@ -4,10 +4,16 @@
 
 # データガバナンス機能　研究支援ワークフロー利用ガイド
 
-データガバナンス機能では研究活動の効率を上げる、様々な機能をワークフローとして提供しています。以下の手順に沿って、ワークフロー機能を利用することができます。
+データガバナンス機能では研究活動をサポートする、様々な機能をワークフローとして提供しています。以下の手順に沿って、ワークフロー機能を利用することができます。
 
-1. ワークフロー機能は、入力いただいたDMP情報を利用します。まだDMP情報の入力がお済みでない場合は、右上の`Add DMP`ボタンをクリックしてDMPを作成してください。
+## 初期設定をする
 
-2. それぞれの処理はJupyter Notebookの形式で実装されており、コード付帯機能上に実行環境が用意されています。DMPの入力・作成が終わったら、以下のリンクボタンをクリックしてワークフロー実行環境へ移ることができます。
+1. ワークフロー機能は、入力いただいたDMP情報を利用します。まだDMP情報の入力がお済みでない場合は、右上の`Add DMP`ボタンからDMPを作成ください。<br>
+◆（仮置き）Add DMPボタンは、DMPの提出先を選ぶことができるプルダウンになっています。提出機関未定の場合は「meti」を選択してください。
 
-ワークフロー実行環境へ遷移：[![Binder](https://binder.cs.rcos.nii.ac.jp/badge_logo.svg)](https://binder.cs.rcos.nii.ac.jp/v2/git/http%3A%2F%2Fdg02.dg.rcos.nii.ac.jp%2F{Doer}%2F{Name}.git/master?filepath=initial_notebook.ipynb)
+2. DMPの作成が終わったら、画面右上に出てくる「Generate maDMP」ボタンをクリックしてください。これにより、maDMP（コンピュータが実行可能なDMP）が生成されます。
+
+3. 「Generate maDMP」ボタンをクリックしてmaDMPを生成したら、以下のボタンをクリックしてmaDMP実行環境へ移ることができます。<br>
+※maDMP作成前は、ボタンをクリックしても遷移できませんのでご注意ください。
+
+maDMP実行環境へ遷移：[![Binder](https://binder.cs.rcos.nii.ac.jp/badge_logo.svg)](https://binder.cs.rcos.nii.ac.jp/v2/git/http%3A%2F%2Fdg02.dg.rcos.nii.ac.jp%2F{Doer}%2F{Name}.git/master?filepath=maDMP.ipynb)
