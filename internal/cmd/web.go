@@ -423,7 +423,7 @@ func runWeb(c *cli.Context) error {
 		m.Group("/:username/:reponame", func() {
 			// RCOS specific code.
 			// Generate machine actionable DMP based on DMP information
-			m.Post("/generate_madmp", repo.GenerateMaDmp)
+			m.Post("/madmp", repo.GenerateMaDmp)
 
 			m.Group("/settings", func() {
 				m.Combo("").Get(repo.Settings).
