@@ -3,9 +3,11 @@ package repo
 import (
 	"bufio"
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"path"
@@ -93,13 +95,33 @@ func readDmpJson(c *context.Context) {
 // This generates maDMP(machine actionable DMP) based on
 // DMP information created by the user in the repository.
 func GenerateMaDmp(c *context.Context) {
-	// テンプレートNotebookを取得
-	// refs: internal/route/repo/view.go
-	contents, err := conf.Asset("conf/workflow/maDMP.ipynb")
+	// GitHubテンプレートNotebookを取得
+	// refs: 1. https://zenn.dev/snowcait/scraps/3d51d8f7841f0c
+	//       2. https://qiita.com/taizo/items/c397dbfed7215969b0a5
+	template_url := "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/maDMP.ipynb"
+	contents, err := fetchBlobOnGithub(template_url)
 	if err != nil {
-		log.Error(2, "fetching template notebook failed: %v", err)
+		log.Error(2, "maDMP blob could not be retrieved: %v", err)
 
-		failedGenereteMaDmp(c, "Faild gerate maDMP: Server error, sorry")
+		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: fetching template failed")
+		return
+	}
+
+	var blob interface{}
+	err = json.Unmarshal(contents, &blob)
+	if err != nil {
+		log.Error(2, "maDMP blob could not be retrieved: %v", err)
+
+		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: unmarshal template failed")
+		return
+	}
+
+	raw := blob.(map[string]interface{})["content"]
+	decodedMaDmp, err := base64.StdEncoding.DecodeString(raw.(string))
+	if err != nil {
+		log.Error(2, "maDMP blob could not be retrieved: %v", err)
+
+		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: decode template failed")
 		return
 	}
 
@@ -108,14 +130,14 @@ func GenerateMaDmp(c *context.Context) {
 	if err != nil || entry == nil {
 		log.Error(2, "dmp.json blob could not be retrieved: %v", err)
 
-		failedGenereteMaDmp(c, "Faild gerate maDMP: DMP could not read")
+		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: DMP could not read")
 		return
 	}
 	buf, err := entry.Bytes()
 	if err != nil {
 		log.Error(2, "dmp.json data could not be read: %v", err)
 
-		failedGenereteMaDmp(c, "Faild gerate maDMP: DMP could not read")
+		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: DMP could not read")
 		return
 	}
 
@@ -124,7 +146,7 @@ func GenerateMaDmp(c *context.Context) {
 	if err != nil {
 		log.Error(2, "Unmarshal DMP info: %v", err)
 
-		failedGenereteMaDmp(c, "Faild gerate maDMP: DMP could not read")
+		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: DMP could not read")
 		return
 	}
 
@@ -137,8 +159,6 @@ func GenerateMaDmp(c *context.Context) {
 	*/
 
 	pathToMaDmp := "maDMP.ipynb"
-	// fmt.Sprintf()でパラメタの値埋め込んでいるが、
-	// 拡張性が悪いかもしれない
 	err = c.Repo.Repository.UpdateRepoFile(c.User, db.UpdateRepoFileOptions{
 		LastCommitID: c.Repo.CommitID,
 		OldBranch:    c.Repo.BranchName,
@@ -147,8 +167,8 @@ func GenerateMaDmp(c *context.Context) {
 		NewTreeName:  pathToMaDmp,
 		Message:      "[GIN] Generate maDMP",
 		Content: fmt.Sprintf(
-			string(contents), // 埋め込み先: maDMP
-			selectedField,    // 埋め込む値: DMP情報(現在は"field"の値のみ)
+			string(decodedMaDmp), // 埋め込み先: maDMP
+			selectedField,        // 埋め込む値: DMP情報(現在は"field"の値のみ)
 			/* maDMPへ埋め込む情報を追加する際は
 			ここに追記のこと
 			e.g.
@@ -165,6 +185,33 @@ func GenerateMaDmp(c *context.Context) {
 
 	c.Flash.Success("maDMP generated!")
 	c.Redirect(c.Repo.RepoLink)
+}
+
+// fetchBlobOnGithub is RCOS specific code.
+// This uses the Github API to retrieve information about the file
+// specified in the argument, and returns it in the type of []byte.
+// If any processing fails, it will return error.
+func fetchBlobOnGithub(blobPath string) ([]byte, error) {
+	req, err := http.NewRequest("GET", blobPath, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Accept", "application/vnd.github.v3+json")
+
+	client := new(http.Client)
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	contents, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return contents, nil
 }
 
 // failedGenerateMaDmp is RCOS specific code.
