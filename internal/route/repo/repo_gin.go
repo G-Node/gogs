@@ -3,8 +3,11 @@ package repo
 import (
 	"bufio"
 	"bytes"
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"path"
@@ -14,6 +17,7 @@ import (
 	"github.com/gogs/git-module"
 	"github.com/ivis-yoshida/gogs/internal/conf"
 	"github.com/ivis-yoshida/gogs/internal/context"
+	"github.com/ivis-yoshida/gogs/internal/db"
 	"github.com/ivis-yoshida/gogs/internal/tool"
 	log "gopkg.in/clog.v1"
 )
@@ -69,6 +73,7 @@ func serveAnnexedKey(ctx *context.Context, name string, contentPath string) erro
 	return err
 }
 
+// readDmpJson is RCOS specific code.
 func readDmpJson(c *context.Context) {
 	log.Trace("Reading dmp.json file")
 	entry, err := c.Repo.Commit.Blob("/dmp.json")
@@ -84,6 +89,137 @@ func readDmpJson(c *context.Context) {
 		return
 	}
 	c.Data["DOIInfo"] = string(buf)
+}
+
+// GenerateMaDmp is RCOS specific code.
+// This generates maDMP(machine actionable DMP) based on
+// DMP information created by the user in the repository.
+func GenerateMaDmp(c *context.Context) {
+	// GitHubテンプレートNotebookを取得
+	// refs: 1. https://zenn.dev/snowcait/scraps/3d51d8f7841f0c
+	//       2. https://qiita.com/taizo/items/c397dbfed7215969b0a5
+	template_url := "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/maDMP.ipynb"
+	contents, err := fetchBlobOnGithub(template_url)
+	if err != nil {
+		log.Error(2, "maDMP blob could not be retrieved: %v", err)
+
+		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: fetching template failed")
+		return
+	}
+
+	var blob interface{}
+	err = json.Unmarshal(contents, &blob)
+	if err != nil {
+		log.Error(2, "maDMP blob could not be retrieved: %v", err)
+
+		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: unmarshal template failed")
+		return
+	}
+
+	raw := blob.(map[string]interface{})["content"]
+	decodedMaDmp, err := base64.StdEncoding.DecodeString(raw.(string))
+	if err != nil {
+		log.Error(2, "maDMP blob could not be retrieved: %v", err)
+
+		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: decode template failed")
+		return
+	}
+
+	// ユーザが作成したDMP情報取得
+	entry, err := c.Repo.Commit.Blob("/dmp.json")
+	if err != nil || entry == nil {
+		log.Error(2, "dmp.json blob could not be retrieved: %v", err)
+
+		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: DMP could not read")
+		return
+	}
+	buf, err := entry.Bytes()
+	if err != nil {
+		log.Error(2, "dmp.json data could not be read: %v", err)
+
+		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: DMP could not read")
+		return
+	}
+
+	var dmp interface{}
+	err = json.Unmarshal(buf, &dmp)
+	if err != nil {
+		log.Error(2, "Unmarshal DMP info: %v", err)
+
+		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: DMP could not read")
+		return
+	}
+
+	// dmp.jsonに"fields"プロパティがある想定
+	selectedField := dmp.(map[string]interface{})["field"]
+	/* maDMPへ埋め込む情報を追加する際は
+	ここに追記のこと
+	e.g.
+	hasGrdm := dmp.(map[string]interface{})["hasGrdm"]
+	*/
+
+	pathToMaDmp := "maDMP.ipynb"
+	err = c.Repo.Repository.UpdateRepoFile(c.User, db.UpdateRepoFileOptions{
+		LastCommitID: c.Repo.CommitID,
+		OldBranch:    c.Repo.BranchName,
+		NewBranch:    c.Repo.BranchName,
+		OldTreeName:  "",
+		NewTreeName:  pathToMaDmp,
+		Message:      "[GIN] Generate maDMP",
+		Content: fmt.Sprintf(
+			string(decodedMaDmp), // 埋め込み先: maDMP
+			selectedField,        // 埋め込む値: DMP情報(現在は"field"の値のみ)
+			/* maDMPへ埋め込む情報を追加する際は
+			ここに追記のこと
+			e.g.
+			hasGrdm, */
+		),
+		IsNewFile: true,
+	})
+	if err != nil {
+		log.Error(2, "failed generating maDMP: %v", err)
+
+		failedGenereteMaDmp(c, "Faild gerate maDMP: Already exist")
+		return
+	}
+
+	c.Flash.Success("maDMP generated!")
+	c.Redirect(c.Repo.RepoLink)
+}
+
+// fetchBlobOnGithub is RCOS specific code.
+// This uses the Github API to retrieve information about the file
+// specified in the argument, and returns it in the type of []byte.
+// If any processing fails, it will return error.
+func fetchBlobOnGithub(blobPath string) ([]byte, error) {
+	req, err := http.NewRequest("GET", blobPath, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Accept", "application/vnd.github.v3+json")
+
+	client := new(http.Client)
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	contents, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return contents, nil
+}
+
+// failedGenerateMaDmp is RCOS specific code.
+// This is a function used by GenerateMaDmp to emit an error message
+// on UI when maDMP generation fails.
+func failedGenereteMaDmp(c *context.Context, msg string) {
+	c.Flash.Error(msg)
+	c.Redirect(c.Repo.RepoLink)
 }
 
 // resolveAnnexedContent takes a buffer with the contents of a git-annex

@@ -421,6 +421,10 @@ func runWeb(c *cli.Context) error {
 		}, reqSignIn)
 
 		m.Group("/:username/:reponame", func() {
+			// RCOS specific code.
+			// Generate machine actionable DMP based on DMP information
+			m.Post("/madmp", repo.GenerateMaDmp)
+
 			m.Group("/settings", func() {
 				m.Combo("").Get(repo.Settings).
 					Post(bindIgnErr(form.RepoSetting{}), repo.SettingsPost)
@@ -545,12 +549,6 @@ func runWeb(c *cli.Context) error {
 			m.Combo("/compare/*", repo.MustAllowPulls).Get(repo.CompareAndPullRequest).
 				Post(bindIgnErr(form.NewIssue{}), repo.CompareAndPullRequestPost)
 
-			// GIN specific code
-			// FIXME : add  all schema PATH
-			if _, err := conf.Asset("conf/dmp/dmp_meti.json"); err != nil {
-				log.Fatal("%v", err)
-			}
-
 			m.Group("", func() {
 				m.Combo("/_edit/*").Get(repo.EditFile).
 					Post(bindIgnErr(form.EditRepoFile{}), repo.EditFilePost)
@@ -561,6 +559,8 @@ func runWeb(c *cli.Context) error {
 					Post(bindIgnErr(form.DeleteRepoFile{}), repo.DeleteFilePost)
 				// GIN specific code: Add dmp.json file through the repo web interface
 				m.Combo("/_add/*").Get(repo.CreateDmp).Post(bindIgnErr(form.EditRepoFile{}), repo.NewFilePost)
+				// RCOS specific code: generate maDMP from DMP info
+				// m.Get("_generate/*", repo.GenerateMaDmp)
 
 				m.Group("", func() {
 					m.Combo("/_upload/*").Get(repo.UploadFile).

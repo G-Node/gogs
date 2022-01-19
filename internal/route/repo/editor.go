@@ -619,13 +619,17 @@ func CreateDmp(c *context.Context) {
 	// data binding for "Add DMP" pulldown
 	bidingDmpSchemaList(c, "conf/dmp")
 
-	fetchDmpSchema(c, filepath.Join(conf.WorkDir(), "conf/dmp/json_schema/schema_"+schema))
+	fetchDmpSchema(c, filepath.Join(conf.WorkDir(), "conf", "dmp", "json_schema", "schema_dmp_"+schema+".json"))
+
+	data, err := conf.Asset(dcname)
+	if err != nil {
+		log.Fatal("%v", err)
+	}
 
 	c.Data["IsYAML"] = false
 	c.Data["IsJSON"] = true
 	c.Data["IsDmpJson"] = true
-	// safe to ignore error since we check for the asset at startup
-	data, _ := conf.Asset(dcname)
+
 	c.Data["FileContent"] = string(data)
 	c.Data["ParentTreePath"] = path.Dir(c.Repo.TreePath)
 	c.Data["TreeNames"] = treeNames
