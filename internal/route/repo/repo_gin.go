@@ -98,8 +98,8 @@ func GenerateMaDmp(c *context.Context) {
 	// GitHubテンプレートNotebookを取得
 	// refs: 1. https://zenn.dev/snowcait/scraps/3d51d8f7841f0c
 	//       2. https://qiita.com/taizo/items/c397dbfed7215969b0a5
-	template_url := "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/maDMP.ipynb"
-	contents, err := fetchBlobOnGithub(template_url)
+	templateUrl := "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/maDMP.ipynb"
+	contents, err := fetchBlobOnGithub(templateUrl)
 	if err != nil {
 		log.Error(2, "maDMP blob could not be retrieved: %v", err)
 
@@ -124,6 +124,9 @@ func GenerateMaDmp(c *context.Context) {
 		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: decode template failed")
 		return
 	}
+
+	// コード付帯機能の起動時間短縮のための暫定的な定義
+	fetchDockerfile(c)
 
 	// ユーザが作成したDMP情報取得
 	entry, err := c.Repo.Commit.Blob("/dmp.json")
@@ -220,6 +223,56 @@ func fetchBlobOnGithub(blobPath string) ([]byte, error) {
 func failedGenereteMaDmp(c *context.Context, msg string) {
 	c.Flash.Error(msg)
 	c.Redirect(c.Repo.RepoLink)
+}
+
+// fetchDockerfile is RCOS specific code.
+// This fetches the Dockerfile used when launching Binderhub.
+func fetchDockerfile(c *context.Context) {
+	// コード付帯機能の起動時間短縮のための暫定的な定義
+	dockerfileUrl := "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/Dockerfile"
+	contentsDocker, err := fetchBlobOnGithub(dockerfileUrl)
+	if err != nil {
+		log.Error(2, "Dockerfile could not be retrieved: %v", err)
+
+		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: fetching template failed(Dockerfile)")
+		return
+	}
+
+	var blob interface{}
+	err = json.Unmarshal(contentsDocker, &blob)
+	if err != nil {
+		log.Error(2, "maDMP blob could not be retrieved: %v", err)
+
+		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: unmarshal template failed")
+		return
+	}
+
+	raw := blob.(map[string]interface{})["content"]
+	decodedDockerfile, err := base64.StdEncoding.DecodeString(raw.(string))
+	if err != nil {
+		log.Error(2, "maDMP blob could not be retrieved: %v", err)
+
+		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: decode template failed")
+		return
+	}
+
+	pathToDockerfile := "Dockerfile"
+	err = c.Repo.Repository.UpdateRepoFile(c.User, db.UpdateRepoFileOptions{
+		LastCommitID: c.Repo.CommitID,
+		OldBranch:    c.Repo.BranchName,
+		NewBranch:    c.Repo.BranchName,
+		OldTreeName:  "",
+		NewTreeName:  pathToDockerfile,
+		Message:      "[GIN] fetch Dockerfile",
+		Content:      string(decodedDockerfile),
+		IsNewFile:    true,
+	})
+	if err != nil {
+		log.Error(2, "failed fetching Dockerfile: %v", err)
+
+		failedGenereteMaDmp(c, "Faild fetching Dockerfile: Already exist")
+		return
+	}
 }
 
 // resolveAnnexedContent takes a buffer with the contents of a git-annex
