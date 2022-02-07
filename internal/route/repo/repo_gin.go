@@ -195,6 +195,9 @@ func fetchContentsOnGithub(blobPath string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, fmt.Errorf("Error: blob not found.")
+	}
 	defer resp.Body.Close()
 
 	contents, err := ioutil.ReadAll(resp.Body)
