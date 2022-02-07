@@ -202,11 +202,6 @@ func fetchContentsOnGithub(blobPath string) ([]byte, error) {
 		return nil, err
 	}
 
-	// decodedContents, err := decodeBlobContent(contents)
-	// if err != nil {
-	// 	return nil, err
-	// }
-
 	return contents, nil
 }
 
