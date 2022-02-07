@@ -8,7 +8,6 @@ import (
 	"bytes"
 	"fmt"
 	gotemplate "html/template"
-	"io/ioutil"
 	"path"
 	"strings"
 	"time"
@@ -64,7 +63,8 @@ func renderDirectory(c *context.Context, treeLink string) {
 	if c.Data["HasDmpJson"].(bool) {
 		readDmpJson(c)
 	} else {
-		bidingDmpSchemaList(c, "conf/dmp")
+		schemaUrl := "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/orgs"
+		bidingDmpSchemaList(c, schemaUrl)
 	}
 
 	var readmeFile *git.Blob
@@ -133,38 +133,6 @@ func renderDirectory(c *context.Context, treeLink string) {
 		c.Data["CanAddFile"] = true
 		c.Data["CanUploadFile"] = conf.Repository.Upload.Enabled
 	}
-}
-
-// bidingDmpSchemaList is RCOS specific code.
-// This function bind DMP template file.
-func bidingDmpSchemaList(c *context.Context, dirPath string) {
-	files, err := ioutil.ReadDir(dirPath)
-	if err != nil {
-		panic(err)
-	}
-
-	var schemaList []string
-	for _, file := range files {
-		// ignore directory
-		if file.IsDir() {
-			continue
-		}
-		schemaList = append(schemaList, file.Name())
-	}
-
-	c.Data["SchemaList"] = schemaList
-}
-
-// fetchDmpSchema is RCOS specific code.
-// This function fetch&bind JSON Schema of DMP for validation.
-func fetchDmpSchema(c *context.Context, filePath string) {
-	scheme, err := ioutil.ReadFile(filePath)
-	if err != nil {
-		panic(err)
-	}
-
-	c.Data["IsDmpJson"] = true
-	c.Data["Schema"] = string(scheme)
 }
 
 func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink string) {

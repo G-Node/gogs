@@ -99,29 +99,11 @@ func GenerateMaDmp(c *context.Context) {
 	// refs: 1. https://zenn.dev/snowcait/scraps/3d51d8f7841f0c
 	//       2. https://qiita.com/taizo/items/c397dbfed7215969b0a5
 	templateUrl := "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/maDMP.ipynb"
-	contents, err := fetchBlobOnGithub(templateUrl)
+	decodedMaDmp, err := fetchBlobOnGithub(templateUrl)
 	if err != nil {
 		log.Error(2, "maDMP blob could not be retrieved: %v", err)
 
 		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: fetching template failed")
-		return
-	}
-
-	var blob interface{}
-	err = json.Unmarshal(contents, &blob)
-	if err != nil {
-		log.Error(2, "maDMP blob could not be retrieved: %v", err)
-
-		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: unmarshal template failed")
-		return
-	}
-
-	raw := blob.(map[string]interface{})["content"]
-	decodedMaDmp, err := base64.StdEncoding.DecodeString(raw.(string))
-	if err != nil {
-		log.Error(2, "maDMP blob could not be retrieved: %v", err)
-
-		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: decode template failed")
 		return
 	}
 
@@ -170,8 +152,8 @@ func GenerateMaDmp(c *context.Context) {
 		NewTreeName:  pathToMaDmp,
 		Message:      "[GIN] Generate maDMP",
 		Content: fmt.Sprintf(
-			string(decodedMaDmp), // 埋め込み先: maDMP
-			selectedField,        // 埋め込む値: DMP情報(現在は"field"の値のみ)
+			decodedMaDmp,  // 埋め込み先: maDMP
+			selectedField, // 埋め込む値: DMP情報(現在は"field"の値のみ)
 			/* maDMPへ埋め込む情報を追加する際は
 			ここに追記のこと
 			e.g.
@@ -194,10 +176,11 @@ func GenerateMaDmp(c *context.Context) {
 // This uses the Github API to retrieve information about the file
 // specified in the argument, and returns it in the type of []byte.
 // If any processing fails, it will return error.
-func fetchBlobOnGithub(blobPath string) ([]byte, error) {
+// refs: https://docs.github.com/en/rest/reference/repos#contents
+func fetchBlobOnGithub(blobPath string) (string, error) {
 	req, err := http.NewRequest("GET", blobPath, nil)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	req.Header.Set("Accept", "application/vnd.github.v3+json")
 
@@ -205,16 +188,41 @@ func fetchBlobOnGithub(blobPath string) ([]byte, error) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	defer resp.Body.Close()
 
 	contents, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	return contents, nil
+	decodedContents, err := decodeBlobContent(contents)
+	if err != nil {
+		return "", err
+	}
+
+	return decodedContents, nil
+}
+
+// decodeBlobContent is RCOS specific code.
+// This reads and decodes "content" value of the response byte slice
+// retrieved from the GitHub API.
+// refs: https://docs.github.com/en/rest/reference/repos#contents
+func decodeBlobContent(blobInfo []byte) (string, error) {
+	var blob interface{}
+	err := json.Unmarshal(blobInfo, &blob)
+	if err != nil {
+		return "", err
+	}
+
+	raw := blob.(map[string]interface{})["content"]
+	decodedBlobContent, err := base64.StdEncoding.DecodeString(raw.(string))
+	if err != nil {
+		return "", err
+	}
+
+	return string(decodedBlobContent), nil
 }
 
 // failedGenerateMaDmp is RCOS specific code.
@@ -230,7 +238,7 @@ func failedGenereteMaDmp(c *context.Context, msg string) {
 func fetchDockerfile(c *context.Context) {
 	// コード付帯機能の起動時間短縮のための暫定的な定義
 	dockerfileUrl := "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/Dockerfile"
-	contentsDocker, err := fetchBlobOnGithub(dockerfileUrl)
+	decodedDockerfile, err := fetchBlobOnGithub(dockerfileUrl)
 	if err != nil {
 		log.Error(2, "Dockerfile could not be retrieved: %v", err)
 
@@ -238,41 +246,17 @@ func fetchDockerfile(c *context.Context) {
 		return
 	}
 
-	var blob interface{}
-	err = json.Unmarshal(contentsDocker, &blob)
-	if err != nil {
-		log.Error(2, "maDMP blob could not be retrieved: %v", err)
-
-		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: unmarshal template failed")
-		return
-	}
-
-	raw := blob.(map[string]interface{})["content"]
-	decodedDockerfile, err := base64.StdEncoding.DecodeString(raw.(string))
-	if err != nil {
-		log.Error(2, "maDMP blob could not be retrieved: %v", err)
-
-		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: decode template failed")
-		return
-	}
-
 	pathToDockerfile := "Dockerfile"
-	err = c.Repo.Repository.UpdateRepoFile(c.User, db.UpdateRepoFileOptions{
+	_ = c.Repo.Repository.UpdateRepoFile(c.User, db.UpdateRepoFileOptions{
 		LastCommitID: c.Repo.CommitID,
 		OldBranch:    c.Repo.BranchName,
 		NewBranch:    c.Repo.BranchName,
 		OldTreeName:  "",
 		NewTreeName:  pathToDockerfile,
 		Message:      "[GIN] fetch Dockerfile",
-		Content:      string(decodedDockerfile),
+		Content:      decodedDockerfile,
 		IsNewFile:    true,
 	})
-	if err != nil {
-		log.Error(2, "failed fetching Dockerfile: %v", err)
-
-		failedGenereteMaDmp(c, "Faild fetching Dockerfile: Already exist")
-		return
-	}
 }
 
 // resolveAnnexedContent takes a buffer with the contents of a git-annex

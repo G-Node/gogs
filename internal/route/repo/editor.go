@@ -7,6 +7,7 @@ package repo
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"path"
 	"path/filepath"
@@ -608,29 +609,39 @@ func RemoveUploadFileFromServer(c *context.Context, f form.RemoveUploadFile) {
 // CreateDmp is GIN specific code
 func CreateDmp(c *context.Context) {
 	schema := c.QueryEscape("schema")
-	dcname := path.Join("conf/dmp", schema)
-
+	schemaUrl := "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/"
 	treeNames, treePaths := getParentTreeFields(c.Repo.TreePath)
 
 	c.PageIs("Edit")
 	c.RequireHighlightJS()
 	c.RequireSimpleMDE()
 
-	// data binding for "Add DMP" pulldown
-	bidingDmpSchemaList(c, "conf/dmp")
+	// data binding for "Add DMP" pulldown at DMP editing page
+	// (The pulldown on the repository top page is binded in repo.renderDirectory.)
+	err := bidingDmpSchemaList(c, schemaUrl+"orgs")
+	if err != nil {
+		log.Error("%v: ", err)
+	}
 
-	fetchDmpSchema(c, filepath.Join(conf.WorkDir(), "conf", "dmp", "json_schema", "schema_dmp_"+schema+".json"))
+	fetchDmpSchema(c, schemaUrl+"json_schema/schema_dmp_"+schema)
 
-	data, err := conf.Asset(dcname)
+	decodedBasicSchema, err := fetchBlobOnGithub(schemaUrl + "basic")
 	if err != nil {
 		log.Fatal("%v", err)
 	}
+
+	decodedOrgSchema, err := fetchBlobOnGithub(schemaUrl + "orgs/" + schema)
+	if err != nil {
+		log.Fatal("%v", err)
+	}
+
+	combinedDmp := decodedBasicSchema + decodedOrgSchema
 
 	c.Data["IsYAML"] = false
 	c.Data["IsJSON"] = true
 	c.Data["IsDmpJson"] = true
 
-	c.Data["FileContent"] = string(data)
+	c.Data["FileContent"] = combinedDmp
 	c.Data["ParentTreePath"] = path.Dir(c.Repo.TreePath)
 	c.Data["TreeNames"] = treeNames
 	c.Data["TreePaths"] = treePaths
@@ -646,4 +657,55 @@ func CreateDmp(c *context.Context) {
 	c.Data["EditorconfigURLPrefix"] = fmt.Sprintf("%s/api/v1/repos/%s/editorconfig/", conf.Server.Subpath, c.Repo.Repository.FullName())
 
 	c.Success(tmplEditorEdit)
+}
+
+// fetchDmpSchema is RCOS specific code.
+// This function fetch&bind JSON Schema of DMP for validation.
+func fetchDmpSchema(c *context.Context, blobPath string) {
+	decodedScheme, err := fetchBlobOnGithub(blobPath)
+	if err != nil {
+		panic(err)
+	}
+
+	c.Data["IsDmpJson"] = true
+	c.Data["Schema"] = decodedScheme
+}
+
+// bidingDmpSchemaList is RCOS specific code.
+// This function binds DMP organization list.
+func bidingDmpSchemaList(c *context.Context, treePath string) error {
+	req, err := http.NewRequest("GET", treePath, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Accept", "application/vnd.github.v3+json")
+
+	client := new(http.Client)
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	contents, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	var orgsInfo interface{}
+	err = json.Unmarshal(contents, &orgsInfo)
+	if err != nil {
+		return err
+	}
+
+	// create organization list
+	orgs := orgsInfo.([]interface{})
+	var schemaList []string
+	for i := range orgs {
+		org := orgs[i].(map[string]interface{})["name"]
+		schemaList = append(schemaList, org.(string))
+	}
+
+	c.Data["SchemaList"] = schemaList
+	return nil
 }
