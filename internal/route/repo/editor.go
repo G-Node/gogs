@@ -7,7 +7,6 @@ package repo
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"path"
 	"path/filepath"
@@ -78,12 +77,17 @@ func editFile(c *context.Context, isNewFile bool) {
 		}
 
 		if blob.Name() == "dmp.json" {
+			// DMPであればJSONスキーマの情報も取得する
 			dmpSchema := &struct{ Schema string }{}
 			if err := json.Unmarshal(buf, &dmpSchema); err != nil {
 				log.Error("DMP data can't be unmarshalled: %v", err)
 				c.Data["HasDmpJson"] = false
 			} else {
-				fetchDmpSchema(c, filepath.Join(conf.WorkDir(), "conf/dmp/json_schema/schema_dmp_"+dmpSchema.Schema+".json"))
+				schemaUrl := getTemplateUrl()
+				err = fetchDmpSchema(c, schemaUrl+"dmp/json_schema/schema_dmp_"+dmpSchema.Schema)
+				if err != nil {
+					log.Error("failed fetching DMP template: %v", err)
+				}
 			}
 		}
 
@@ -609,7 +613,7 @@ func RemoveUploadFileFromServer(c *context.Context, f form.RemoveUploadFile) {
 // CreateDmp is GIN specific code
 func CreateDmp(c *context.Context) {
 	schema := c.QueryEscape("schema")
-	schemaUrl := "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/"
+	schemaUrl := getTemplateUrl() + "dmp/"
 	treeNames, treePaths := getParentTreeFields(c.Repo.TreePath)
 
 	c.PageIs("Edit")
@@ -620,17 +624,28 @@ func CreateDmp(c *context.Context) {
 	// (The pulldown on the repository top page is binded in repo.renderDirectory.)
 	err := bidingDmpSchemaList(c, schemaUrl+"orgs")
 	if err != nil {
-		log.Error("%v: ", err)
+		log.Error("%v", err)
 	}
 
-	fetchDmpSchema(c, schemaUrl+"json_schema/schema_dmp_"+schema)
+	err = fetchDmpSchema(c, schemaUrl+"json_schema/schema_dmp_"+schema)
+	if err != nil {
+		log.Error("%v", err)
+	}
 
-	decodedBasicSchema, err := fetchBlobOnGithub(schemaUrl + "basic")
+	srcBasic, err := fetchContentsOnGithub(schemaUrl + "basic")
+	if err != nil {
+		log.Fatal("%v", err)
+	}
+	decodedBasicSchema, err := decodeBlobContent(srcBasic)
 	if err != nil {
 		log.Fatal("%v", err)
 	}
 
-	decodedOrgSchema, err := fetchBlobOnGithub(schemaUrl + "orgs/" + schema)
+	srcOrg, err := fetchContentsOnGithub(schemaUrl + "orgs/" + schema)
+	if err != nil {
+		log.Fatal("%v", err)
+	}
+	decodedOrgSchema, err := decodeBlobContent(srcOrg)
 	if err != nil {
 		log.Fatal("%v", err)
 	}
@@ -661,37 +676,30 @@ func CreateDmp(c *context.Context) {
 
 // fetchDmpSchema is RCOS specific code.
 // This function fetch&bind JSON Schema of DMP for validation.
-func fetchDmpSchema(c *context.Context, blobPath string) {
-	decodedScheme, err := fetchBlobOnGithub(blobPath)
+func fetchDmpSchema(c *context.Context, blobPath string) error {
+	src, err := fetchContentsOnGithub(blobPath)
 	if err != nil {
-		panic(err)
+		return err
+	}
+
+	decodedScheme, err := decodeBlobContent(src)
+	if err != nil {
+		return err
 	}
 
 	c.Data["IsDmpJson"] = true
 	c.Data["Schema"] = decodedScheme
+	return nil
 }
 
 // bidingDmpSchemaList is RCOS specific code.
 // This function binds DMP organization list.
 func bidingDmpSchemaList(c *context.Context, treePath string) error {
-	req, err := http.NewRequest("GET", treePath, nil)
+	contents, err := fetchContentsOnGithub(treePath)
 	if err != nil {
 		return err
 	}
-	req.Header.Set("Accept", "application/vnd.github.v3+json")
 
-	client := new(http.Client)
-
-	resp, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	contents, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return err
-	}
 	var orgsInfo interface{}
 	err = json.Unmarshal(contents, &orgsInfo)
 	if err != nil {
@@ -708,4 +716,11 @@ func bidingDmpSchemaList(c *context.Context, treePath string) error {
 
 	c.Data["SchemaList"] = schemaList
 	return nil
+}
+
+// getTemplateUrl is RCOS specific code.
+// This is a helper function that returns a base URL
+// for retrieving DMP templates, etc. from GitHub.
+func getTemplateUrl() string {
+	return "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/"
 }

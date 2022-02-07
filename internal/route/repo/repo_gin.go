@@ -98,10 +98,15 @@ func GenerateMaDmp(c *context.Context) {
 	// GitHubテンプレートNotebookを取得
 	// refs: 1. https://zenn.dev/snowcait/scraps/3d51d8f7841f0c
 	//       2. https://qiita.com/taizo/items/c397dbfed7215969b0a5
-	templateUrl := "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/maDMP.ipynb"
-	decodedMaDmp, err := fetchBlobOnGithub(templateUrl)
+	templateUrl := getTemplateUrl() + "maDMP.ipynb"
+	src, err := fetchContentsOnGithub(templateUrl)
 	if err != nil {
-		log.Error(2, "maDMP blob could not be retrieved: %v", err)
+		log.Error(2, "maDMP blob could not be fetched: %v", err)
+	}
+
+	decodedMaDmp, err := decodeBlobContent(src)
+	if err != nil {
+		log.Error(2, "maDMP blob could not be decorded: %v", err)
 
 		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: fetching template failed")
 		return
@@ -172,15 +177,15 @@ func GenerateMaDmp(c *context.Context) {
 	c.Redirect(c.Repo.RepoLink)
 }
 
-// fetchBlobOnGithub is RCOS specific code.
+// fetchContentsOnGithub is RCOS specific code.
 // This uses the Github API to retrieve information about the file
 // specified in the argument, and returns it in the type of []byte.
 // If any processing fails, it will return error.
 // refs: https://docs.github.com/en/rest/reference/repos#contents
-func fetchBlobOnGithub(blobPath string) (string, error) {
+func fetchContentsOnGithub(blobPath string) ([]byte, error) {
 	req, err := http.NewRequest("GET", blobPath, nil)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	req.Header.Set("Accept", "application/vnd.github.v3+json")
 
@@ -188,21 +193,21 @@ func fetchBlobOnGithub(blobPath string) (string, error) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	defer resp.Body.Close()
 
 	contents, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	decodedContents, err := decodeBlobContent(contents)
-	if err != nil {
-		return "", err
-	}
+	// decodedContents, err := decodeBlobContent(contents)
+	// if err != nil {
+	// 	return nil, err
+	// }
 
-	return decodedContents, nil
+	return contents, nil
 }
 
 // decodeBlobContent is RCOS specific code.
@@ -237,10 +242,15 @@ func failedGenereteMaDmp(c *context.Context, msg string) {
 // This fetches the Dockerfile used when launching Binderhub.
 func fetchDockerfile(c *context.Context) {
 	// コード付帯機能の起動時間短縮のための暫定的な定義
-	dockerfileUrl := "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/Dockerfile"
-	decodedDockerfile, err := fetchBlobOnGithub(dockerfileUrl)
+	dockerfileUrl := getTemplateUrl() + "Dockerfile"
+	src, err := fetchContentsOnGithub(dockerfileUrl)
 	if err != nil {
-		log.Error(2, "Dockerfile could not be retrieved: %v", err)
+		log.Error(2, "Dockerfile could not be fetched: %v", err)
+	}
+
+	decodedDockerfile, err := decodeBlobContent(src)
+	if err != nil {
+		log.Error(2, "Dockerfile could not be decorded: %v", err)
 
 		failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: fetching template failed(Dockerfile)")
 		return

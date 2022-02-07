@@ -63,7 +63,7 @@ func renderDirectory(c *context.Context, treeLink string) {
 	if c.Data["HasDmpJson"].(bool) {
 		readDmpJson(c)
 	} else {
-		schemaUrl := "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/orgs"
+		schemaUrl := getTemplateUrl() + "dmp/orgs"
 		bidingDmpSchemaList(c, schemaUrl)
 	}
 
