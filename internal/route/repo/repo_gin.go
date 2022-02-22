@@ -149,6 +149,7 @@ func generateMaDmp(c context.AbstructContext, f AbstructRepoUtil) {
 
 	// dmp.jsonに"fields"プロパティがある想定
 	selectedField := dmp.(map[string]interface{})["field"]
+	selectedDataSize := dmp.(map[string]interface{})["dataSize"]
 	/* maDMPへ埋め込む情報を追加する際は
 	ここに追記のこと
 	e.g.
@@ -164,8 +165,9 @@ func generateMaDmp(c context.AbstructContext, f AbstructRepoUtil) {
 		NewTreeName:  pathToMaDmp,
 		Message:      "[GIN] Generate maDMP",
 		Content: fmt.Sprintf(
-			decodedMaDmp,  // 埋め込み先: maDMP
-			selectedField, // 埋め込む値: DMP情報(現在は"field"の値のみ)
+			decodedMaDmp,  // この行が埋め込み先: maDMP
+			selectedField, // ここより以下は埋め込む値: DMP情報
+			selectedDataSize,
 			/* maDMPへ埋め込む情報を追加する際は
 			ここに追記のこと
 			e.g.
