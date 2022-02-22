@@ -74,37 +74,44 @@ func serveAnnexedKey(ctx *context.Context, name string, contentPath string) erro
 }
 
 // readDmpJson is RCOS specific code.
-func readDmpJson(c *context.Context) {
+func readDmpJson(c context.AbstructContext) {
 	log.Trace("Reading dmp.json file")
-	entry, err := c.Repo.Commit.Blob("/dmp.json")
+	entry, err := c.GetRepo().GetCommit().Blob("/dmp.json")
 	if err != nil || entry == nil {
 		log.Error(2, "dmp.json blob could not be retrieved: %v", err)
-		c.Data["HasDmpJson"] = false
+		c.CallData()["HasDmpJson"] = false
 		return
 	}
 	buf, err := entry.Bytes()
 	if err != nil {
 		log.Error(2, "dmp.json data could not be read: %v", err)
-		c.Data["HasDmpJson"] = false
+		c.CallData()["HasDmpJson"] = false
 		return
 	}
-	c.Data["DOIInfo"] = string(buf)
+	c.CallData()["DOIInfo"] = string(buf)
 }
 
 // GenerateMaDmp is RCOS specific code.
+func GenerateMaDmp(c context.AbstructContext) {
+	var f repoUtil
+	generateMaDmp(c, f)
+}
+
+// generateMaDmp is RCOS specific code.
 // This generates maDMP(machine actionable DMP) based on
 // DMP information created by the user in the repository.
-func GenerateMaDmp(c *context.Context) {
+func generateMaDmp(c context.AbstructContext, f AbstructRepoUtil) {
 	// GitHubテンプレートNotebookを取得
 	// refs: 1. https://zenn.dev/snowcait/scraps/3d51d8f7841f0c
 	//       2. https://qiita.com/taizo/items/c397dbfed7215969b0a5
 	templateUrl := getTemplateUrl() + "maDMP.ipynb"
-	src, err := fetchContentsOnGithub(templateUrl)
+
+	src, err := f.FetchContentsOnGithub(templateUrl)
 	if err != nil {
 		log.Error(2, "maDMP blob could not be fetched: %v", err)
 	}
 
-	decodedMaDmp, err := decodeBlobContent(src)
+	decodedMaDmp, err := f.DecodeBlobContent(src)
 	if err != nil {
 		log.Error(2, "maDMP blob could not be decorded: %v", err)
 
@@ -116,7 +123,7 @@ func GenerateMaDmp(c *context.Context) {
 	fetchDockerfile(c)
 
 	// ユーザが作成したDMP情報取得
-	entry, err := c.Repo.Commit.Blob("/dmp.json")
+	entry, err := c.GetRepo().GetCommit().Blob("/dmp.json")
 	if err != nil || entry == nil {
 		log.Error(2, "dmp.json blob could not be retrieved: %v", err)
 
@@ -149,10 +156,10 @@ func GenerateMaDmp(c *context.Context) {
 	*/
 
 	pathToMaDmp := "maDMP.ipynb"
-	err = c.Repo.Repository.UpdateRepoFile(c.User, db.UpdateRepoFileOptions{
-		LastCommitID: c.Repo.CommitID,
-		OldBranch:    c.Repo.BranchName,
-		NewBranch:    c.Repo.BranchName,
+	err = c.GetRepo().GetDbRepo().UpdateRepoFile(c.GetUser(), db.UpdateRepoFileOptions{
+		LastCommitID: c.GetRepo().GetLastCommitIdStr(),
+		OldBranch:    c.GetRepo().GetBranchName(),
+		NewBranch:    c.GetRepo().GetBranchName(),
 		OldTreeName:  "",
 		NewTreeName:  pathToMaDmp,
 		Message:      "[GIN] Generate maDMP",
@@ -173,16 +180,31 @@ func GenerateMaDmp(c *context.Context) {
 		return
 	}
 
-	c.Flash.Success("maDMP generated!")
-	c.Redirect(c.Repo.RepoLink)
+	c.GetFlash().Success("maDMP generated!")
+	c.Redirect(c.GetRepo().GetRepoLink())
 }
 
-// fetchContentsOnGithub is RCOS specific code.
+type AbstructRepoUtil interface {
+	FetchContentsOnGithub(blobPath string) ([]byte, error)
+	DecodeBlobContent(blobInfo []byte) (string, error)
+}
+
+type repoUtil func()
+
+func (f repoUtil) FetchContentsOnGithub(blobPath string) ([]byte, error) {
+	return f.fetchContentsOnGithub(blobPath)
+}
+
+func (f repoUtil) DecodeBlobContent(blobInfo []byte) (string, error) {
+	return f.decodeBlobContent(blobInfo)
+}
+
+// FetchContentsOnGithub is RCOS specific code.
 // This uses the Github API to retrieve information about the file
 // specified in the argument, and returns it in the type of []byte.
 // If any processing fails, it will return error.
 // refs: https://docs.github.com/en/rest/reference/repos#contents
-func fetchContentsOnGithub(blobPath string) ([]byte, error) {
+func (f repoUtil) fetchContentsOnGithub(blobPath string) ([]byte, error) {
 	req, err := http.NewRequest("GET", blobPath, nil)
 	if err != nil {
 		return nil, err
@@ -208,11 +230,11 @@ func fetchContentsOnGithub(blobPath string) ([]byte, error) {
 	return contents, nil
 }
 
-// decodeBlobContent is RCOS specific code.
+// DecodeBlobContent is RCOS specific code.
 // This reads and decodes "content" value of the response byte slice
 // retrieved from the GitHub API.
 // refs: https://docs.github.com/en/rest/reference/repos#contents
-func decodeBlobContent(blobInfo []byte) (string, error) {
+func (f repoUtil) decodeBlobContent(blobInfo []byte) (string, error) {
 	var blob interface{}
 	err := json.Unmarshal(blobInfo, &blob)
 	if err != nil {
@@ -231,22 +253,24 @@ func decodeBlobContent(blobInfo []byte) (string, error) {
 // failedGenerateMaDmp is RCOS specific code.
 // This is a function used by GenerateMaDmp to emit an error message
 // on UI when maDMP generation fails.
-func failedGenereteMaDmp(c *context.Context, msg string) {
-	c.Flash.Error(msg)
-	c.Redirect(c.Repo.RepoLink)
+func failedGenereteMaDmp(c context.AbstructContext, msg string) {
+	c.GetFlash().Error(msg)
+	c.Redirect(c.GetRepo().GetRepoLink())
 }
 
 // fetchDockerfile is RCOS specific code.
 // This fetches the Dockerfile used when launching Binderhub.
-func fetchDockerfile(c *context.Context) {
+func fetchDockerfile(c context.AbstructContext) {
 	// コード付帯機能の起動時間短縮のための暫定的な定義
 	dockerfileUrl := getTemplateUrl() + "Dockerfile"
-	src, err := fetchContentsOnGithub(dockerfileUrl)
+
+	var f repoUtil
+	src, err := f.FetchContentsOnGithub(dockerfileUrl)
 	if err != nil {
 		log.Error(2, "Dockerfile could not be fetched: %v", err)
 	}
 
-	decodedDockerfile, err := decodeBlobContent(src)
+	decodedDockerfile, err := f.DecodeBlobContent(src)
 	if err != nil {
 		log.Error(2, "Dockerfile could not be decorded: %v", err)
 
@@ -255,10 +279,10 @@ func fetchDockerfile(c *context.Context) {
 	}
 
 	pathToDockerfile := "Dockerfile"
-	_ = c.Repo.Repository.UpdateRepoFile(c.User, db.UpdateRepoFileOptions{
-		LastCommitID: c.Repo.CommitID,
-		OldBranch:    c.Repo.BranchName,
-		NewBranch:    c.Repo.BranchName,
+	_ = c.GetRepo().GetDbRepo().UpdateRepoFile(c.GetUser(), db.UpdateRepoFileOptions{
+		LastCommitID: c.GetRepo().GetLastCommitIdStr(),
+		OldBranch:    c.GetRepo().GetBranchName(),
+		NewBranch:    c.GetRepo().GetBranchName(),
 		OldTreeName:  "",
 		NewTreeName:  pathToDockerfile,
 		Message:      "[GIN] fetch Dockerfile",

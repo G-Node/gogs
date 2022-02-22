@@ -559,8 +559,6 @@ func runWeb(c *cli.Context) error {
 					Post(bindIgnErr(form.DeleteRepoFile{}), repo.DeleteFilePost)
 				// GIN specific code: Add dmp.json file through the repo web interface
 				m.Combo("/_add/*").Get(repo.CreateDmp).Post(bindIgnErr(form.EditRepoFile{}), repo.NewFilePost)
-				// RCOS specific code: generate maDMP from DMP info
-				// m.Get("_generate/*", repo.GenerateMaDmp)
 
 				m.Group("", func() {
 					m.Combo("/_upload/*").Get(repo.UploadFile).

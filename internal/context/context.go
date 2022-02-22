@@ -26,6 +26,29 @@ import (
 	"github.com/ivis-yoshida/gogs/internal/template"
 )
 
+type AbstructContext interface {
+	// RCOS specific method
+	GetRepo() AbstructCtxRepository
+	GetFlash() *session.Flash
+	GetUser() *db.User
+	CallData() map[string]interface{}
+
+	// macaron.Context method
+	Query(name string) string
+	QueryEscape(name string) string
+	QueryInt(name string) int
+	Tr(string, ...interface{}) string
+
+	// context.Context method
+	PageIs(name string)
+	RequireHighlightJS()
+	RequireSimpleMDE()
+	Redirect(location string, status ...int)
+	UserID() int64
+	Success(name string)
+	Error(err error, msg string)
+}
+
 // Context represents context of a request.
 type Context struct {
 	*macaron.Context
@@ -42,6 +65,30 @@ type Context struct {
 
 	Repo *Repository
 	Org  *Organization
+}
+
+// GetRepo is RCOS specific code.
+// This gets the "Repo" field (Repository struct).
+func (c *Context) GetRepo() AbstructCtxRepository {
+	return c.Repo
+}
+
+// GetFlash is RCOS specific code.
+// This gets the "Flash" field.
+func (c *Context) GetFlash() *session.Flash {
+	return c.Flash
+}
+
+// GetUser is RCOS specific code.
+// This gets the "User" field.
+func (c *Context) GetUser() *db.User {
+	return c.User
+}
+
+// CallData is RCOS specific code.
+// This calls the "Data" field in *macaron.Context
+func (c *Context) CallData() map[string]interface{} {
+	return c.Data
 }
 
 // RawTitle sets the "Title" field in template data.

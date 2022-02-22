@@ -64,7 +64,9 @@ func renderDirectory(c *context.Context, treeLink string) {
 		readDmpJson(c)
 	} else {
 		schemaUrl := getTemplateUrl() + "dmp/orgs"
-		bidingDmpSchemaList(c, schemaUrl)
+
+		var d dmpUtil
+		d.BidingDmpSchemaList(c, schemaUrl)
 	}
 
 	var readmeFile *git.Blob

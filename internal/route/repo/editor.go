@@ -84,7 +84,10 @@ func editFile(c *context.Context, isNewFile bool) {
 				c.Data["HasDmpJson"] = false
 			} else {
 				schemaUrl := getTemplateUrl()
-				err = fetchDmpSchema(c, schemaUrl+"dmp/json_schema/schema_dmp_"+dmpSchema.Schema)
+
+				var d dmpUtil
+
+				err = d.FetchDmpSchema(c, schemaUrl+"dmp/json_schema/schema_dmp_"+dmpSchema.Schema)
 				if err != nil {
 					log.Error("failed fetching DMP template: %v", err)
 				}
@@ -610,11 +613,17 @@ func RemoveUploadFileFromServer(c *context.Context, f form.RemoveUploadFile) {
 	c.Status(http.StatusNoContent)
 }
 
-// CreateDmp is GIN specific code
-func CreateDmp(c *context.Context) {
+func CreateDmp(c context.AbstructContext) {
+	var f repoUtil
+	var d dmpUtil
+	createDmp(c, f, d)
+}
+
+// CreateDmp is RCOS specific code
+func createDmp(c context.AbstructContext, f AbstructRepoUtil, d AbstructDmpUtil) {
 	schema := c.QueryEscape("schema")
 	schemaUrl := getTemplateUrl() + "dmp/"
-	treeNames, treePaths := getParentTreeFields(c.Repo.TreePath)
+	treeNames, treePaths := getParentTreeFields(c.GetRepo().GetTreePath())
 
 	c.PageIs("Edit")
 	c.RequireHighlightJS()
@@ -622,80 +631,104 @@ func CreateDmp(c *context.Context) {
 
 	// data binding for "Add DMP" pulldown at DMP editing page
 	// (The pulldown on the repository top page is binded in repo.renderDirectory.)
-	err := bidingDmpSchemaList(c, schemaUrl+"orgs")
+	err := d.BidingDmpSchemaList(c, schemaUrl+"orgs")
 	if err != nil {
 		log.Error("%v", err)
+		return
 	}
-
-	err = fetchDmpSchema(c, schemaUrl+"json_schema/schema_dmp_"+schema)
+	err = d.FetchDmpSchema(c, schemaUrl+"json_schema/schema_dmp_"+schema)
 	if err != nil {
 		log.Error("%v", err)
+		return
 	}
 
-	srcBasic, err := fetchContentsOnGithub(schemaUrl + "basic")
+	srcBasic, err := f.FetchContentsOnGithub(schemaUrl + "basic")
 	if err != nil {
-		log.Fatal("%v", err)
+		log.Error("%v", err)
+		return
 	}
-	decodedBasicSchema, err := decodeBlobContent(srcBasic)
+	decodedBasicSchema, err := f.DecodeBlobContent(srcBasic)
 	if err != nil {
-		log.Fatal("%v", err)
+		log.Error("%v", err)
+		return
 	}
 
-	srcOrg, err := fetchContentsOnGithub(schemaUrl + "orgs/" + schema)
+	srcOrg, err := f.FetchContentsOnGithub(schemaUrl + "orgs/" + schema)
 	if err != nil {
-		log.Fatal("%v", err)
+		log.Error("%v", err)
+		return
 	}
-	decodedOrgSchema, err := decodeBlobContent(srcOrg)
+	decodedOrgSchema, err := f.DecodeBlobContent(srcOrg)
 	if err != nil {
-		log.Fatal("%v", err)
+		log.Error("%v", err)
+		return
 	}
 
 	combinedDmp := decodedBasicSchema + decodedOrgSchema
 
-	c.Data["IsYAML"] = false
-	c.Data["IsJSON"] = true
-	c.Data["IsDmpJson"] = true
+	c.CallData()["IsYAML"] = false
+	c.CallData()["IsJSON"] = true
+	c.CallData()["IsDmpJson"] = true
 
-	c.Data["FileContent"] = combinedDmp
-	c.Data["ParentTreePath"] = path.Dir(c.Repo.TreePath)
-	c.Data["TreeNames"] = treeNames
-	c.Data["TreePaths"] = treePaths
-	c.Data["BranchLink"] = c.Repo.RepoLink + "/src/" + c.Repo.BranchName
-	c.Data["commit_summary"] = "実施事項: dmp.jsonを新規作成"
-	c.Data["commit_message"] = ""
-	c.Data["commit_choice"] = "direct"
-	c.Data["new_branch_name"] = ""
-	c.Data["last_commit"] = c.Repo.Commit.ID
-	c.Data["MarkdownFileExts"] = strings.Join(conf.Markdown.FileExtensions, ",")
-	c.Data["LineWrapExtensions"] = strings.Join(conf.Repository.Editor.LineWrapExtensions, ",")
-	c.Data["PreviewableFileModes"] = strings.Join(conf.Repository.Editor.PreviewableFileModes, ",")
-	c.Data["EditorconfigURLPrefix"] = fmt.Sprintf("%s/api/v1/repos/%s/editorconfig/", conf.Server.Subpath, c.Repo.Repository.FullName())
+	c.CallData()["FileContent"] = combinedDmp
+	c.CallData()["ParentTreePath"] = path.Dir(c.GetRepo().GetTreePath())
+	c.CallData()["TreeNames"] = treeNames
+	c.CallData()["TreePaths"] = treePaths
+	c.CallData()["BranchLink"] = c.GetRepo().GetRepoLink() + "/src/" + c.GetRepo().GetBranchName()
+	c.CallData()["commit_summary"] = "実施事項: dmp.jsonを新規作成"
+	c.CallData()["commit_message"] = ""
+	c.CallData()["commit_choice"] = "direct"
+	c.CallData()["new_branch_name"] = ""
+	c.CallData()["last_commit"] = c.GetRepo().GetCommitId()
+	c.CallData()["MarkdownFileExts"] = strings.Join(conf.Markdown.FileExtensions, ",")
+	c.CallData()["LineWrapExtensions"] = strings.Join(conf.Repository.Editor.LineWrapExtensions, ",")
+	c.CallData()["PreviewableFileModes"] = strings.Join(conf.Repository.Editor.PreviewableFileModes, ",")
+	c.CallData()["EditorconfigURLPrefix"] = fmt.Sprintf("%s/api/v1/repos/%s/editorconfig/", conf.Server.Subpath, c.GetRepo().GetDbRepo().FullName())
 
 	c.Success(tmplEditorEdit)
 }
 
+type AbstructDmpUtil interface {
+	FetchDmpSchema(c context.AbstructContext, blobPath string) error
+	BidingDmpSchemaList(c context.AbstructContext, treePath string) error
+}
+
+// dmpUtil is an alias for utility functions related to the manipulation of DMP information.
+// For effective unit test execution, the above DmpUtil interface must be satisfied.
+type dmpUtil func()
+
+func (d dmpUtil) FetchDmpSchema(c context.AbstructContext, blobPath string) error {
+	var f repoUtil
+	return d.fetchDmpSchema(c, f, blobPath)
+}
+
+func (d dmpUtil) BidingDmpSchemaList(c context.AbstructContext, treePath string) error {
+	var f repoUtil
+	return d.bidingDmpSchemaList(c, f, treePath)
+}
+
 // fetchDmpSchema is RCOS specific code.
 // This function fetch&bind JSON Schema of DMP for validation.
-func fetchDmpSchema(c *context.Context, blobPath string) error {
-	src, err := fetchContentsOnGithub(blobPath)
+func (d dmpUtil) fetchDmpSchema(c context.AbstructContext, f AbstructRepoUtil, blobPath string) error {
+	src, err := f.FetchContentsOnGithub(blobPath)
 	if err != nil {
 		return err
 	}
 
-	decodedScheme, err := decodeBlobContent(src)
+	decodedScheme, err := f.DecodeBlobContent(src)
 	if err != nil {
 		return err
 	}
 
-	c.Data["IsDmpJson"] = true
-	c.Data["Schema"] = decodedScheme
+	c.CallData()["IsDmpJson"] = true
+	c.CallData()["Schema"] = decodedScheme
 	return nil
 }
 
 // bidingDmpSchemaList is RCOS specific code.
 // This function binds DMP organization list.
-func bidingDmpSchemaList(c *context.Context, treePath string) error {
-	contents, err := fetchContentsOnGithub(treePath)
+func (d dmpUtil) bidingDmpSchemaList(c context.AbstructContext, f AbstructRepoUtil, treePath string) error {
+	contents, err := f.FetchContentsOnGithub(treePath)
 	if err != nil {
 		return err
 	}
@@ -714,7 +747,7 @@ func bidingDmpSchemaList(c *context.Context, treePath string) error {
 		schemaList = append(schemaList, org.(string))
 	}
 
-	c.Data["SchemaList"] = schemaList
+	c.CallData()["SchemaList"] = schemaList
 	return nil
 }
 
