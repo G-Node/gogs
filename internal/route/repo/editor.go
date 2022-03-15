@@ -755,5 +755,5 @@ func (d dmpUtil) bidingDmpSchemaList(c context.AbstructContext, f AbstructRepoUt
 // This is a helper function that returns a base URL
 // for retrieving DMP templates, etc. from GitHub.
 func getTemplateUrl() string {
-	return "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/"
+	return "https://api.github.com/repos/NII-DG/maDMP-template/contents/"
 }
