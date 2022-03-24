@@ -2,7 +2,7 @@
 *.db
 *.log
 log/
-# custom/
+custom/conf/app.ini
 data/
 .idea/
 *.iml
