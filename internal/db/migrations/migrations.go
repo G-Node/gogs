@@ -13,7 +13,7 @@ import (
 	log "unknwon.dev/clog/v2"
 	"xorm.io/xorm"
 
-	"github.com/ivis-yoshida/gogs/internal/strutil"
+	"github.com/NII-DG/gogs/internal/strutil"
 )
 
 const _MIN_DB_VER = 10

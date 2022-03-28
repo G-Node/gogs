@@ -10,8 +10,8 @@ import (
 
 	"xorm.io/xorm"
 
-	"github.com/ivis-yoshida/gogs/internal/db/errors"
-	"github.com/ivis-yoshida/gogs/internal/errutil"
+	"github.com/NII-DG/gogs/internal/db/errors"
+	"github.com/NII-DG/gogs/internal/errutil"
 )
 
 const OWNER_TEAM = "Owners"

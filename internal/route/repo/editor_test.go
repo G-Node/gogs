@@ -9,12 +9,12 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/NII-DG/gogs/internal/context"
+	mock_context "github.com/NII-DG/gogs/internal/mocks/context"
+	mock_db "github.com/NII-DG/gogs/internal/mocks/db"
+	mock_repo "github.com/NII-DG/gogs/internal/mocks/repo"
 	"github.com/gogs/git-module"
 	"github.com/golang/mock/gomock"
-	"github.com/ivis-yoshida/gogs/internal/context"
-	mock_context "github.com/ivis-yoshida/gogs/internal/mocks/context"
-	mock_db "github.com/ivis-yoshida/gogs/internal/mocks/db"
-	mock_repo "github.com/ivis-yoshida/gogs/internal/mocks/repo"
 )
 
 func Test_createDmp(t *testing.T) {

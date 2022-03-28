@@ -22,7 +22,7 @@ import (
 
 	"github.com/gogs/chardet"
 
-	"github.com/ivis-yoshida/gogs/internal/conf"
+	"github.com/NII-DG/gogs/internal/conf"
 )
 
 // ShortSHA1 truncates SHA1 string length to at most 10.

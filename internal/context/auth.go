@@ -11,8 +11,8 @@ import (
 	"github.com/go-macaron/csrf"
 	"gopkg.in/macaron.v1"
 
-	"github.com/ivis-yoshida/gogs/internal/auth"
-	"github.com/ivis-yoshida/gogs/internal/conf"
+	"github.com/NII-DG/gogs/internal/auth"
+	"github.com/NII-DG/gogs/internal/conf"
 )
 
 type ToggleOptions struct {

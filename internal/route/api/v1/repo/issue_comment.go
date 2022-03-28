@@ -9,8 +9,8 @@ import (
 
 	api "github.com/gogs/go-gogs-client"
 
-	"github.com/ivis-yoshida/gogs/internal/context"
-	"github.com/ivis-yoshida/gogs/internal/db"
+	"github.com/NII-DG/gogs/internal/context"
+	"github.com/NII-DG/gogs/internal/db"
 )
 
 func ListIssueComments(c *context.APIContext) {

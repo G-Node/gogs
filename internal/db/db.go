@@ -20,8 +20,8 @@ import (
 	"github.com/pkg/errors"
 	log "unknwon.dev/clog/v2"
 
-	"github.com/ivis-yoshida/gogs/internal/conf"
-	"github.com/ivis-yoshida/gogs/internal/dbutil"
+	"github.com/NII-DG/gogs/internal/conf"
+	"github.com/NII-DG/gogs/internal/dbutil"
 )
 
 // parsePostgreSQLHostPort parses given input in various forms defined in

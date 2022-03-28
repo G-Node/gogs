@@ -18,17 +18,17 @@ import (
 	"gopkg.in/macaron.v1"
 	log "unknwon.dev/clog/v2"
 
-	"github.com/ivis-yoshida/gogs/internal/conf"
-	"github.com/ivis-yoshida/gogs/internal/context"
-	"github.com/ivis-yoshida/gogs/internal/cron"
-	"github.com/ivis-yoshida/gogs/internal/db"
-	"github.com/ivis-yoshida/gogs/internal/email"
-	"github.com/ivis-yoshida/gogs/internal/form"
-	"github.com/ivis-yoshida/gogs/internal/markup"
-	"github.com/ivis-yoshida/gogs/internal/osutil"
-	"github.com/ivis-yoshida/gogs/internal/ssh"
-	"github.com/ivis-yoshida/gogs/internal/strutil"
-	"github.com/ivis-yoshida/gogs/internal/template/highlight"
+	"github.com/NII-DG/gogs/internal/conf"
+	"github.com/NII-DG/gogs/internal/context"
+	"github.com/NII-DG/gogs/internal/cron"
+	"github.com/NII-DG/gogs/internal/db"
+	"github.com/NII-DG/gogs/internal/email"
+	"github.com/NII-DG/gogs/internal/form"
+	"github.com/NII-DG/gogs/internal/markup"
+	"github.com/NII-DG/gogs/internal/osutil"
+	"github.com/NII-DG/gogs/internal/ssh"
+	"github.com/NII-DG/gogs/internal/strutil"
+	"github.com/NII-DG/gogs/internal/template/highlight"
 )
 
 const (

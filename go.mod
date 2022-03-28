@@ -1,4 +1,4 @@
-module github.com/ivis-yoshida/gogs
+module github.com/NII-DG/gogs
 
 go 1.16
 

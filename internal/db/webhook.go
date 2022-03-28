@@ -21,10 +21,10 @@ import (
 
 	api "github.com/gogs/go-gogs-client"
 
-	"github.com/ivis-yoshida/gogs/internal/conf"
-	"github.com/ivis-yoshida/gogs/internal/errutil"
-	"github.com/ivis-yoshida/gogs/internal/httplib"
-	"github.com/ivis-yoshida/gogs/internal/sync"
+	"github.com/NII-DG/gogs/internal/conf"
+	"github.com/NII-DG/gogs/internal/errutil"
+	"github.com/NII-DG/gogs/internal/httplib"
+	"github.com/NII-DG/gogs/internal/sync"
 )
 
 var HookQueue = sync.NewUniqueQueue(1000)

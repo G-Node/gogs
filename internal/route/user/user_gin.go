@@ -3,7 +3,7 @@ package user
 import (
 	"strings"
 
-	"github.com/ivis-yoshida/gogs/internal/db"
+	"github.com/NII-DG/gogs/internal/db"
 )
 
 // excludeFromFeed returns 'true' if the given action should be excluded from the user feed.

@@ -7,8 +7,8 @@ package mock_db
 import (
 	reflect "reflect"
 
+	db "github.com/NII-DG/gogs/internal/db"
 	gomock "github.com/golang/mock/gomock"
-	db "github.com/ivis-yoshida/gogs/internal/db"
 )
 
 // MockAbstructDbRepository is a mock of AbstructDbRepository interface.

@@ -6,8 +6,8 @@ import (
 	"net/url"
 
 	"github.com/G-Node/libgin/libgin"
-	"github.com/ivis-yoshida/gogs/internal/conf"
-	"github.com/ivis-yoshida/gogs/internal/context"
+	"github.com/NII-DG/gogs/internal/conf"
+	"github.com/NII-DG/gogs/internal/context"
 	log "gopkg.in/clog.v1"
 )
 

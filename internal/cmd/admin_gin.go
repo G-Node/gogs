@@ -7,7 +7,7 @@ package cmd
 import (
 	"github.com/urfave/cli"
 
-	"github.com/ivis-yoshida/gogs/internal/db"
+	"github.com/NII-DG/gogs/internal/db"
 )
 
 var (

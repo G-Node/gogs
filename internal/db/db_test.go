@@ -10,7 +10,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/ivis-yoshida/gogs/internal/conf"
+	"github.com/NII-DG/gogs/internal/conf"
 )
 
 func Test_parsePostgreSQLHostPort(t *testing.T) {

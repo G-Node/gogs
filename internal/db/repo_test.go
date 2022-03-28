@@ -4,7 +4,7 @@ import (
 	_ "image/jpeg"
 	"testing"
 
-	"github.com/ivis-yoshida/gogs/internal/markup"
+	"github.com/NII-DG/gogs/internal/markup"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -9,10 +9,10 @@ import (
 
 	api "github.com/gogs/go-gogs-client"
 
-	"github.com/ivis-yoshida/gogs/internal/context"
-	"github.com/ivis-yoshida/gogs/internal/db"
-	"github.com/ivis-yoshida/gogs/internal/route/api/v1/convert"
-	"github.com/ivis-yoshida/gogs/internal/route/api/v1/user"
+	"github.com/NII-DG/gogs/internal/context"
+	"github.com/NII-DG/gogs/internal/db"
+	"github.com/NII-DG/gogs/internal/route/api/v1/convert"
+	"github.com/NII-DG/gogs/internal/route/api/v1/user"
 )
 
 func CreateTeam(c *context.APIContext, form api.CreateTeamOption) {

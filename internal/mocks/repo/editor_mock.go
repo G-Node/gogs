@@ -7,8 +7,8 @@ package mock_repo
 import (
 	reflect "reflect"
 
+	context "github.com/NII-DG/gogs/internal/context"
 	gomock "github.com/golang/mock/gomock"
-	context "github.com/ivis-yoshida/gogs/internal/context"
 )
 
 // MockAbstructDmpUtil is a mock of AbstructDmpUtil interface.

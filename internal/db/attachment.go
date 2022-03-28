@@ -15,8 +15,8 @@ import (
 	gouuid "github.com/satori/go.uuid"
 	"xorm.io/xorm"
 
-	"github.com/ivis-yoshida/gogs/internal/conf"
-	"github.com/ivis-yoshida/gogs/internal/errutil"
+	"github.com/NII-DG/gogs/internal/conf"
+	"github.com/NII-DG/gogs/internal/errutil"
 )
 
 // Attachment represent a attachment of issue/comment/release.

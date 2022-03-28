@@ -7,10 +7,10 @@ package mock_context
 import (
 	reflect "reflect"
 
+	context "github.com/NII-DG/gogs/internal/context"
+	db "github.com/NII-DG/gogs/internal/db"
 	session "github.com/go-macaron/session"
 	gomock "github.com/golang/mock/gomock"
-	context "github.com/ivis-yoshida/gogs/internal/context"
-	db "github.com/ivis-yoshida/gogs/internal/db"
 )
 
 // MockAbstructContext is a mock of AbstructContext interface.

@@ -7,9 +7,9 @@ package mock_context
 import (
 	reflect "reflect"
 
+	db "github.com/NII-DG/gogs/internal/db"
 	git "github.com/gogs/git-module"
 	gomock "github.com/golang/mock/gomock"
-	db "github.com/ivis-yoshida/gogs/internal/db"
 )
 
 // MockAbstructCtxRepository is a mock of AbstructCtxRepository interface.

@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/ivis-yoshida/gogs/internal/context"
+	"github.com/NII-DG/gogs/internal/context"
 )
 
 func Test_generateMaDmp(t *testing.T) {

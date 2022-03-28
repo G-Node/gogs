@@ -10,8 +10,8 @@ import (
 
 	"github.com/jinzhu/gorm"
 
-	"github.com/ivis-yoshida/gogs/internal/errutil"
-	"github.com/ivis-yoshida/gogs/internal/lfsutil"
+	"github.com/NII-DG/gogs/internal/errutil"
+	"github.com/NII-DG/gogs/internal/lfsutil"
 )
 
 // LFSStore is the persistent interface for LFS objects.
