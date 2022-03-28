@@ -42,17 +42,17 @@ func Test_createDmp(t *testing.T) {
 		{
 			name: "処理が正常に進み\"repo/editor/edit\"が描画のために呼び出される事を確認する",
 			PrepateMockDmpUtil: func() AbstructDmpUtil {
-				mockDmpUtil.EXPECT().BidingDmpSchemaList(mockCtx, "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/orgs").Return(nil)
-				mockDmpUtil.EXPECT().FetchDmpSchema(mockCtx, "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/json_schema/schema_dmp_meti").Return(nil)
+				mockDmpUtil.EXPECT().BidingDmpSchemaList(mockCtx, "https://api.github.com/repos/NII-DG/maDMP-template/contents/dmp/orgs").Return(nil)
+				mockDmpUtil.EXPECT().FetchDmpSchema(mockCtx, "https://api.github.com/repos/NII-DG/maDMP-template/contents/dmp/json_schema/schema_dmp_meti").Return(nil)
 
 				return mockDmpUtil
 			},
 			PrepareMockRepoUtil: func() AbstructRepoUtil {
-				mockRepoUtil.EXPECT().FetchContentsOnGithub("https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/basic").Return([]byte(`[{"name":`), nil)
+				mockRepoUtil.EXPECT().FetchContentsOnGithub("https://api.github.com/repos/NII-DG/maDMP-template/contents/dmp/basic").Return([]byte(`[{"name":`), nil)
 
 				mockRepoUtil.EXPECT().DecodeBlobContent([]byte(`[{"name":`)).Return(`[{"name":`, nil)
 
-				mockRepoUtil.EXPECT().FetchContentsOnGithub("https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/orgs/meti").Return([]byte(`"dummySchema"}]`), nil)
+				mockRepoUtil.EXPECT().FetchContentsOnGithub("https://api.github.com/repos/NII-DG/maDMP-template/contents/dmp/orgs/meti").Return([]byte(`"dummySchema"}]`), nil)
 
 				mockRepoUtil.EXPECT().DecodeBlobContent([]byte(`"dummySchema"}]`)).Return(`"dummySchema"}]`, nil)
 
@@ -83,7 +83,7 @@ func Test_createDmp(t *testing.T) {
 		{
 			name: "BindingDmpSchemaListの呼び出しで失敗することを確認する",
 			PrepateMockDmpUtil: func() AbstructDmpUtil {
-				mockDmpUtil.EXPECT().BidingDmpSchemaList(mockCtx, "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/orgs").Return(fmt.Errorf("これは想定されたエラーです"))
+				mockDmpUtil.EXPECT().BidingDmpSchemaList(mockCtx, "https://api.github.com/repos/NII-DG/maDMP-template/contents/dmp/orgs").Return(fmt.Errorf("これは想定されたエラーです"))
 				return mockDmpUtil
 			},
 			PrepareMockRepoUtil: func() AbstructRepoUtil {
@@ -104,9 +104,9 @@ func Test_createDmp(t *testing.T) {
 		{
 			name: "FetchDmpSchemaで失敗することを確認する",
 			PrepateMockDmpUtil: func() AbstructDmpUtil {
-				mockDmpUtil.EXPECT().BidingDmpSchemaList(mockCtx, "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/orgs").Return(nil)
+				mockDmpUtil.EXPECT().BidingDmpSchemaList(mockCtx, "https://api.github.com/repos/NII-DG/maDMP-template/contents/dmp/orgs").Return(nil)
 
-				mockDmpUtil.EXPECT().FetchDmpSchema(mockCtx, "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/json_schema/schema_dmp_error").Return(fmt.Errorf("これは想定されたエラーです"))
+				mockDmpUtil.EXPECT().FetchDmpSchema(mockCtx, "https://api.github.com/repos/NII-DG/maDMP-template/contents/dmp/json_schema/schema_dmp_error").Return(fmt.Errorf("これは想定されたエラーです"))
 
 				return mockDmpUtil
 			},
@@ -128,14 +128,14 @@ func Test_createDmp(t *testing.T) {
 		{
 			name: "１度目のFetchContentOnGithubで失敗することを確認する",
 			PrepateMockDmpUtil: func() AbstructDmpUtil {
-				mockDmpUtil.EXPECT().BidingDmpSchemaList(mockCtx, "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/orgs").Return(nil)
+				mockDmpUtil.EXPECT().BidingDmpSchemaList(mockCtx, "https://api.github.com/repos/NII-DG/maDMP-template/contents/dmp/orgs").Return(nil)
 
-				mockDmpUtil.EXPECT().FetchDmpSchema(mockCtx, "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/json_schema/schema_dmp_meti").Return(nil)
+				mockDmpUtil.EXPECT().FetchDmpSchema(mockCtx, "https://api.github.com/repos/NII-DG/maDMP-template/contents/dmp/json_schema/schema_dmp_meti").Return(nil)
 
 				return mockDmpUtil
 			},
 			PrepareMockRepoUtil: func() AbstructRepoUtil {
-				mockRepoUtil.EXPECT().FetchContentsOnGithub("https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/basic").Return(nil, fmt.Errorf("これは想定されたエラーです"))
+				mockRepoUtil.EXPECT().FetchContentsOnGithub("https://api.github.com/repos/NII-DG/maDMP-template/contents/dmp/basic").Return(nil, fmt.Errorf("これは想定されたエラーです"))
 				return mockRepoUtil
 			},
 			PrepareMockContexts: func() context.AbstructContext {
@@ -152,14 +152,14 @@ func Test_createDmp(t *testing.T) {
 		{
 			name: "１度目のDecodeBlobContentで失敗することを確認する",
 			PrepateMockDmpUtil: func() AbstructDmpUtil {
-				mockDmpUtil.EXPECT().BidingDmpSchemaList(mockCtx, "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/orgs").Return(nil)
+				mockDmpUtil.EXPECT().BidingDmpSchemaList(mockCtx, "https://api.github.com/repos/NII-DG/maDMP-template/contents/dmp/orgs").Return(nil)
 
-				mockDmpUtil.EXPECT().FetchDmpSchema(mockCtx, "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/json_schema/schema_dmp_meti").Return(nil)
+				mockDmpUtil.EXPECT().FetchDmpSchema(mockCtx, "https://api.github.com/repos/NII-DG/maDMP-template/contents/dmp/json_schema/schema_dmp_meti").Return(nil)
 
 				return mockDmpUtil
 			},
 			PrepareMockRepoUtil: func() AbstructRepoUtil {
-				mockRepoUtil.EXPECT().FetchContentsOnGithub("https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/basic").Return([]byte(`[{"name":`), nil)
+				mockRepoUtil.EXPECT().FetchContentsOnGithub("https://api.github.com/repos/NII-DG/maDMP-template/contents/dmp/basic").Return([]byte(`[{"name":`), nil)
 
 				mockRepoUtil.EXPECT().DecodeBlobContent([]byte(`[{"name":`)).Return("", fmt.Errorf("これは想定されたエラーです"))
 				return mockRepoUtil
@@ -178,17 +178,17 @@ func Test_createDmp(t *testing.T) {
 		{
 			name: "2度目のFetchContentsOnGithubで失敗することを確認する",
 			PrepateMockDmpUtil: func() AbstructDmpUtil {
-				mockDmpUtil.EXPECT().BidingDmpSchemaList(mockCtx, "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/orgs").Return(nil)
+				mockDmpUtil.EXPECT().BidingDmpSchemaList(mockCtx, "https://api.github.com/repos/NII-DG/maDMP-template/contents/dmp/orgs").Return(nil)
 
-				mockDmpUtil.EXPECT().FetchDmpSchema(mockCtx, "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/json_schema/schema_dmp_meti").Return(nil)
+				mockDmpUtil.EXPECT().FetchDmpSchema(mockCtx, "https://api.github.com/repos/NII-DG/maDMP-template/contents/dmp/json_schema/schema_dmp_meti").Return(nil)
 
 				return mockDmpUtil
 			},
 			PrepareMockRepoUtil: func() AbstructRepoUtil {
-				mockRepoUtil.EXPECT().FetchContentsOnGithub("https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/basic").Return([]byte(`[{"name":`), nil)
+				mockRepoUtil.EXPECT().FetchContentsOnGithub("https://api.github.com/repos/NII-DG/maDMP-template/contents/dmp/basic").Return([]byte(`[{"name":`), nil)
 				mockRepoUtil.EXPECT().DecodeBlobContent([]byte(`[{"name":`)).Return(`[{"name":`, nil)
 
-				mockRepoUtil.EXPECT().FetchContentsOnGithub("https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/orgs/meti").Return(nil, fmt.Errorf("これは想定されたエラーです"))
+				mockRepoUtil.EXPECT().FetchContentsOnGithub("https://api.github.com/repos/NII-DG/maDMP-template/contents/dmp/orgs/meti").Return(nil, fmt.Errorf("これは想定されたエラーです"))
 
 				return mockRepoUtil
 			},
@@ -206,17 +206,17 @@ func Test_createDmp(t *testing.T) {
 		{
 			name: "2度目のDecodeBlobContentで失敗することを確認する",
 			PrepateMockDmpUtil: func() AbstructDmpUtil {
-				mockDmpUtil.EXPECT().BidingDmpSchemaList(mockCtx, "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/orgs").Return(nil)
+				mockDmpUtil.EXPECT().BidingDmpSchemaList(mockCtx, "https://api.github.com/repos/NII-DG/maDMP-template/contents/dmp/orgs").Return(nil)
 
-				mockDmpUtil.EXPECT().FetchDmpSchema(mockCtx, "https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/json_schema/schema_dmp_meti").Return(nil)
+				mockDmpUtil.EXPECT().FetchDmpSchema(mockCtx, "https://api.github.com/repos/NII-DG/maDMP-template/contents/dmp/json_schema/schema_dmp_meti").Return(nil)
 
 				return mockDmpUtil
 			},
 			PrepareMockRepoUtil: func() AbstructRepoUtil {
-				mockRepoUtil.EXPECT().FetchContentsOnGithub("https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/basic").Return([]byte(`[{"name":`), nil)
+				mockRepoUtil.EXPECT().FetchContentsOnGithub("https://api.github.com/repos/NII-DG/maDMP-template/contents/dmp/basic").Return([]byte(`[{"name":`), nil)
 				mockRepoUtil.EXPECT().DecodeBlobContent([]byte(`[{"name":`)).Return(`[{"name":`, nil)
 
-				mockRepoUtil.EXPECT().FetchContentsOnGithub("https://api.github.com/repos/ivis-kuwata/maDMP-template/contents/dmp/orgs/meti").Return([]byte(`"dummySchema"}]`), nil)
+				mockRepoUtil.EXPECT().FetchContentsOnGithub("https://api.github.com/repos/NII-DG/maDMP-template/contents/dmp/orgs/meti").Return([]byte(`"dummySchema"}]`), nil)
 				mockRepoUtil.EXPECT().DecodeBlobContent([]byte(`"dummySchema"}]`)).Return("", fmt.Errorf("これは想定されたエラーです"))
 
 				return mockRepoUtil
