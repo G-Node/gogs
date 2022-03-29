@@ -147,7 +147,7 @@ func ExploreData(c *context.Context) {
 	c.Data["PageIsExploreData"] = true
 
 	// for "Metadata" link on navbar
-	c.Data["UserRightErr"] = (c.User.Type >= db.UserFA)
+	c.Data["IsUserFA"] = (c.User.Type >= db.UserFA)
 
 	// send query data back even if the search fails or is aborted to fill in
 	// the form on refresh
@@ -193,7 +193,7 @@ func ExploreCommits(c *context.Context) {
 	c.Data["PageIsExploreCommits"] = true
 
 	// for "Metadata" link on navbar
-	c.Data["UserRightErr"] = (c.User.Type >= db.UserFA)
+	c.Data["IsUserFA"] = (c.User.Type >= db.UserFA)
 
 	// send query data back even if the search fails or is aborted to fill in
 	// the form on refresh

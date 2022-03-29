@@ -58,7 +58,7 @@ func ExploreRepos(c *context.Context) {
 	c.Data["PageIsExploreRepositories"] = true
 
 	// for "Metadata" link on navbar
-	c.Data["UserRightErr"] = (c.User.Type >= db.UserFA)
+	c.Data["IsUserFA"] = (c.User.Type >= db.UserFA)
 
 	page := c.QueryInt("page")
 	if page <= 0 {
@@ -100,7 +100,7 @@ func exploreMetadata(c context.AbstructContext) {
 	c.CallData()["Title"] = c.Tr("explore")
 	c.CallData()["PageIsExplore"] = true
 	c.CallData()["PageIsExploreMetadata"] = true
-	c.CallData()["UserRightErr"] = (c.GetUser().Type >= db.UserFA)
+	c.CallData()["IsUserFA"] = (c.GetUser().Type >= db.UserFA)
 
 	selectedKey := c.Query("selectKey")
 	keyword := c.Query("q")
@@ -297,7 +297,7 @@ func ExploreUsers(c *context.Context) {
 	c.Data["PageIsExploreUsers"] = true
 
 	// for "Metadata" link on navbar
-	c.Data["UserRightErr"] = (c.User.Type >= db.UserFA)
+	c.Data["IsUserFA"] = (c.User.Type >= db.UserFA)
 
 	RenderUserSearch(c, &UserSearchOptions{
 		Type:     db.UserIndividual,
@@ -315,7 +315,7 @@ func ExploreOrganizations(c *context.Context) {
 	c.Data["PageIsExploreOrganizations"] = true
 
 	// for "Metadata" link on navbar
-	c.Data["UserRightErr"] = (c.User.Type >= db.UserFA)
+	c.Data["IsUserFA"] = (c.User.Type >= db.UserFA)
 
 	RenderUserSearch(c, &UserSearchOptions{
 		Type:     db.UserOrganization,
