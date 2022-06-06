@@ -67,7 +67,17 @@ func SingleDownload(c *context.Context) {
 		logv2.Info("tree.Type() : %v", tree.Type())
 		logv2.Info("tree.Size() : %v", tree.Size())
 		logv2.Info("tree.Size() : %v", tree.Size())
+
 	}
+	entries, ierr := c.Repo.Commit.Tree.Entries()
+	if ierr != nil {
+		logv2.Error("ierr : %v", ierr)
+	} else {
+		for _, v := range entries {
+			logv2.Info("v : %v", v)
+		}
+	}
+
 	if err != nil {
 		logv2.Error("Repo.Commit.Blob() ERR : %v", err)
 		c.NotFoundOrError(gitutil.NewError(err), "get blob")
