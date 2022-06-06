@@ -67,8 +67,13 @@ func SingleDownload(c *context.Context) {
 		logv2.Info("tree.Type() : %v", tree.Type())
 		logv2.Info("tree.Size() : %v", tree.Size())
 		logv2.Info("tree.Size() : %v", tree.Size())
-
+		b, e := tree.Blob().Bytes()
+		if e != nil {
+			logv2.Error("tree.Blob().Bytes() : ERR %v", e)
+		}
+		logv2.Info("tree.Blob().Bytes() : %v", b)
 	}
+
 	entries, ierr := c.Repo.Commit.Tree.Entries()
 	if ierr != nil {
 		logv2.Error("ierr : %v", ierr)
@@ -81,6 +86,7 @@ func SingleDownload(c *context.Context) {
 	if ierr != nil {
 		logv2.Error("ierr : %v", ierr)
 	} else {
+
 		entries, ierr = t.Entries()
 		if ierr != nil {
 			logv2.Error("ierr : %v", ierr)
