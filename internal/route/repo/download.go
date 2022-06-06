@@ -62,6 +62,7 @@ func SingleDownload(c *context.Context) {
 	} else {
 		logv2.Info("tree.IsBlob() : %v", tree.IsBlob())
 		logv2.Info("tree.IsExec() : %v", tree.IsExec())
+		logv2.Info("tree.Mode() : %v", tree.Mode())
 	}
 	if err != nil {
 		logv2.Error("Repo.Commit.Blob() ERR : %v", err)
