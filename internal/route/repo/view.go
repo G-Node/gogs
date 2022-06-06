@@ -172,6 +172,7 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 	canEnableEditor := c.Repo.CanEnableEditor()
 	switch {
 	case isTextFile:
+		log.Info("CASE : Text")
 		// GIN mod: Use c.Data["FileSize"] which is replaced by annexed content
 		// size in resolveAnnexedContent() when necessary
 		if c.Data["FileSize"].(int64) >= conf.UI.MaxDisplayFileSize {
@@ -183,32 +184,40 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 
 		switch markup.Detect(blob.Name()) {
 		case markup.MARKDOWN:
+			log.Info("CASE : Text_Markdown")
 			c.Data["IsMarkdown"] = true
 			c.Data["FileContent"] = string(markup.Markdown(p, path.Dir(treeLink), c.Repo.Repository.ComposeMetas()))
 		case markup.ORG_MODE:
+			log.Info("CASE : Text_ORG_MODE")
 			c.Data["IsMarkdown"] = true
 			c.Data["FileContent"] = string(markup.OrgMode(p, path.Dir(treeLink), c.Repo.Repository.ComposeMetas()))
 		case markup.IPYTHON_NOTEBOOK:
+			log.Info("CASE : IPYTHON_NOTEBOOK")
 			c.Data["IsIPythonNotebook"] = true
 			// GIN mod: JSON, YAML, and odML render support with jsTree
 		case markup.JSON:
+			log.Info("CASE : JSON")
 			c.Data["IsJSON"] = true
 			c.Data["RawFileContent"] = string(p)
 			fallthrough
 		case markup.YAML:
+			log.Info("CASE : YAML")
 			c.Data["IsYAML"] = true
 			c.Data["RawFileContent"] = string(p)
 			fallthrough
 		case markup.XML:
+			log.Info("CASE : XML")
 			// pass XML down to ODML checker
 			fallthrough
 		case markup.ODML:
+			log.Info("CASE : ODML")
 			if tool.IsODMLFile(p) {
 				c.Data["IsODML"] = true
 				c.Data["ODML"] = string(markup.MarshalODML(p))
 			}
 			fallthrough
 		default:
+			log.Info("CASE : default")
 			// Building code view blocks with line number on server side.
 			var fileContent string
 			if err, content := template.ToUTF8WithErr(p); err != nil {
@@ -255,15 +264,19 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 
 	case tool.IsPDFFile(p) && (c.Data["FileSize"].(int64) < conf.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
 		c.IsLogged):
+		log.Info("CASE : IsPDFFile")
 		c.Data["IsPDFFile"] = true
 	case tool.IsVideoFile(p) && (c.Data["FileSize"].(int64) < conf.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
 		c.IsLogged):
+		log.Info("CASE : IsVideoFile")
 		c.Data["IsVideoFile"] = true
 	case tool.IsImageFile(p) && (c.Data["FileSize"].(int64) < conf.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
 		c.IsLogged):
+		log.Info("CASE : IsImageFile")
 		c.Data["IsImageFile"] = true
 	case tool.IsAnnexedFile(p) && (c.Data["FileSize"].(int64) < conf.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
 		c.IsLogged):
+		log.Info("CASE : IsAnnexedFile")
 		c.Data["IsAnnexedFile"] = true
 	}
 
