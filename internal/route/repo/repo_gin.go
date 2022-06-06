@@ -322,6 +322,7 @@ func resolveAnnexedContent(c *context.Context, buf []byte) ([]byte, error) {
 	}
 	// always trim space from output for git command
 	contentPath = bytes.TrimSpace(contentPath)
+	logv2.Trace("afp, err := os.Open(filepath.Join(c.R.... : %v ", filepath.Join(c.Repo.Repository.RepoPath(), string(contentPath)))
 	afp, err := os.Open(filepath.Join(c.Repo.Repository.RepoPath(), string(contentPath)))
 	if err != nil {
 		log.Trace("Could not open annex file: %v", err)

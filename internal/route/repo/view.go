@@ -151,6 +151,7 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 	c.Data["FileName"] = blob.Name()
 	c.Data["HighlightClass"] = highlight.FileNameToHighlightClass(blob.Name())
 	c.Data["RawFileLink"] = rawLink + "/" + c.Repo.TreePath
+	log.Trace("rawLink + / + c.Repo.TreePath: %v / %v", rawLink, c.Repo.TreePath)
 
 	// GIN mod: Replace existing buffer p with annexed content buffer (only if
 	// it's an annexed ptr file)
