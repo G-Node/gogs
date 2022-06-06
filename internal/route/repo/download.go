@@ -56,6 +56,13 @@ func ServeBlob(c *context.Context, blob *git.Blob) error {
 func SingleDownload(c *context.Context) {
 	logv2.Info("c.Repo.TreePath", c.Repo.TreePath)
 	blob, err := c.Repo.Commit.Blob(c.Repo.TreePath)
+	tree, terr := c.Repo.Commit.TreeEntry(c.Repo.TreePath)
+	if terr != nil {
+		logv2.Error("terr : %v", terr)
+	} else {
+		logv2.Info("tree.IsBlob() : %v", tree.IsBlob())
+		logv2.Info("tree.IsExec() : %v", tree.IsExec())
+	}
 	if err != nil {
 		logv2.Error("Repo.Commit.Blob() ERR : %v", err)
 		c.NotFoundOrError(gitutil.NewError(err), "get blob")
