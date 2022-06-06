@@ -74,7 +74,7 @@ func SingleDownload(c *context.Context) {
 		logv2.Error("ierr : %v", ierr)
 	} else {
 		for _, v := range entries {
-			logv2.Info("v : %v", v)
+			logv2.Info("v : %v", v.Name())
 		}
 	}
 
