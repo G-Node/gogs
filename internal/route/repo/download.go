@@ -57,7 +57,7 @@ func SingleDownload(c *context.Context) {
 	logv2.Info("c.Repo.TreePath", c.Repo.TreePath)
 	blob, err := c.Repo.Commit.Blob(c.Repo.TreePath)
 	if err != nil {
-
+		logv2.Error("Repo.Commit.Blob() ERR : %v", err)
 		c.NotFoundOrError(gitutil.NewError(err), "get blob")
 		return
 	}
