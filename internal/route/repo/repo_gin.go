@@ -20,6 +20,7 @@ import (
 	"github.com/NII-DG/gogs/internal/tool"
 	"github.com/gogs/git-module"
 	log "gopkg.in/clog.v1"
+	logv2 "unknwon.dev/clog/v2"
 )
 
 func serveAnnexedData(ctx *context.Context, name string, buf []byte) error {
@@ -37,6 +38,7 @@ func serveAnnexedData(ctx *context.Context, name string, buf []byte) error {
 
 func serveAnnexedKey(ctx *context.Context, name string, contentPath string) error {
 	fullContentPath := filepath.Join(ctx.Repo.Repository.RepoPath(), contentPath)
+	logv2.Trace("fullContentPath : %v", fullContentPath)
 	annexfp, err := os.Open(fullContentPath)
 	if err != nil {
 		log.Error(2, "Failed to open annex file at %q: %s", fullContentPath, err.Error())
