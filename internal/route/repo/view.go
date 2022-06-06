@@ -156,6 +156,8 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 	// GIN mod: Replace existing buffer p with annexed content buffer (only if
 	// it's an annexed ptr file)
 	p, err = resolveAnnexedContent(c, p)
+	log.Error("byte -> strings")
+	log.Error("%v", string(p))
 	if err != nil {
 		return
 	}
@@ -285,6 +287,7 @@ func setEditorconfigIfExists(c *context.Context) {
 }
 
 func Home(c *context.Context) {
+	log.Error("Home()")
 	c.Data["PageIsViewFiles"] = true
 
 	if c.Repo.Repository.IsBare {
