@@ -77,6 +77,19 @@ func SingleDownload(c *context.Context) {
 			logv2.Info("v : %v", v.Name())
 		}
 	}
+	t, terr := c.Repo.Commit.Subtree("test_data")
+	if ierr != nil {
+		logv2.Error("ierr : %v", ierr)
+	} else {
+		entries, ierr = t.Entries()
+		if ierr != nil {
+			logv2.Error("ierr : %v", ierr)
+		} else {
+			for _, v := range entries {
+				logv2.Info("v2 : %v", v.Name())
+			}
+		}
+	}
 
 	if err != nil {
 		logv2.Error("Repo.Commit.Blob() ERR : %v", err)
