@@ -15,7 +15,6 @@ import (
 	"github.com/NII-DG/gogs/internal/context"
 	"github.com/NII-DG/gogs/internal/gitutil"
 	"github.com/NII-DG/gogs/internal/tool"
-	log "gopkg.in/clog.v1"
 	logv2 "unknwon.dev/clog/v2"
 )
 
@@ -55,7 +54,7 @@ func ServeBlob(c *context.Context, blob *git.Blob) error {
 }
 
 func SingleDownload(c *context.Context) {
-	log.Info("ddddddddddd")
+	logv2.Info("c.Repo.TreePath", c.Repo.TreePath)
 	logv2.Error("c.Repo.TreePath", c.Repo.TreePath)
 	blob, err := c.Repo.Commit.Blob(c.Repo.TreePath)
 	if err != nil {
