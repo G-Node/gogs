@@ -310,7 +310,7 @@ func resolveAnnexedContent(c *context.Context, buf []byte) ([]byte, error) {
 		// not an annex pointer file; return as is
 		return buf, nil
 	}
-	log.Trace("Annexed file requested: Resolving content for %q", bytes.TrimSpace(buf))
+	log.Info("Annexed file requested: Resolving content for %q", bytes.TrimSpace(buf))
 
 	keyparts := strings.Split(strings.TrimSpace(string(buf)), "/")
 	key := keyparts[len(keyparts)-1]
@@ -322,7 +322,7 @@ func resolveAnnexedContent(c *context.Context, buf []byte) ([]byte, error) {
 	}
 	// always trim space from output for git command
 	contentPath = bytes.TrimSpace(contentPath)
-	logv2.Trace("afp, err := os.Open(filepath.Join(c.R.... : %v ", filepath.Join(c.Repo.Repository.RepoPath(), string(contentPath)))
+	logv2.Info("afp, err := os.Open(filepath.Join(c.R.... : %v ", filepath.Join(c.Repo.Repository.RepoPath(), string(contentPath)))
 	afp, err := os.Open(filepath.Join(c.Repo.Repository.RepoPath(), string(contentPath)))
 	if err != nil {
 		log.Trace("Could not open annex file: %v", err)

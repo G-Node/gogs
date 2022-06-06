@@ -55,7 +55,6 @@ func ServeBlob(c *context.Context, blob *git.Blob) error {
 
 func SingleDownload(c *context.Context) {
 	logv2.Info("c.Repo.TreePath", c.Repo.TreePath)
-	logv2.Error("c.Repo.TreePath", c.Repo.TreePath)
 	blob, err := c.Repo.Commit.Blob(c.Repo.TreePath)
 	if err != nil {
 
