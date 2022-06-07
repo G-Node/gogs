@@ -13,7 +13,6 @@ import (
 
 	"github.com/NII-DG/gogs/internal/conf"
 	"github.com/NII-DG/gogs/internal/context"
-	"github.com/NII-DG/gogs/internal/gitutil"
 	"github.com/NII-DG/gogs/internal/tool"
 	logv2 "unknwon.dev/clog/v2"
 )
@@ -97,11 +96,11 @@ func SingleDownload(c *context.Context) {
 		}
 	}
 
-	if err != nil {
-		logv2.Error("Repo.Commit.Blob() ERR : %v", err)
-		c.NotFoundOrError(gitutil.NewError(err), "get blob")
-		return
-	}
+	// if err != nil {
+	// 	logv2.Error("Repo.Commit.Blob() ERR : %v", err)
+	// 	c.NotFoundOrError(gitutil.NewError(err), "get blob")
+	// 	return
+	// }
 
 	if err = ServeBlob(c, blob); err != nil {
 		c.Error(err, "serve blob")
