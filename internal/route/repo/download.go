@@ -15,6 +15,7 @@ import (
 	"github.com/NII-DG/gogs/internal/context"
 	"github.com/NII-DG/gogs/internal/gitutil"
 	"github.com/NII-DG/gogs/internal/tool"
+	logv2 "unknwon.dev/clog/v2"
 )
 
 func serveData(c *context.Context, name string, data []byte) error {
@@ -48,6 +49,7 @@ func ServeBlob(c *context.Context, blob *git.Blob) error {
 	if err != nil {
 		return err
 	}
+	logv2.Info("blob.Bytes() : %v", string(p))
 
 	return serveData(c, path.Base(c.Repo.TreePath), p)
 }
