@@ -71,7 +71,7 @@ func SingleDownload(c *context.Context) {
 		if e != nil {
 			logv2.Error("tree.Blob().Bytes() : ERR %v", e)
 		}
-		logv2.Info("tree.Blob().Bytes() : %v", b)
+		logv2.Info("tree.Blob().Bytes() : %v", string(b))
 	}
 
 	entries, ierr := c.Repo.Commit.Tree.Entries()
