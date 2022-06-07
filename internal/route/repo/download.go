@@ -5,16 +5,15 @@
 package repo
 
 import (
-	"bufio"
 	"fmt"
 	"net/http"
-	"os"
 	"path"
 
 	"github.com/gogs/git-module"
 
 	"github.com/NII-DG/gogs/internal/conf"
 	"github.com/NII-DG/gogs/internal/context"
+	"github.com/NII-DG/gogs/internal/gitutil"
 	"github.com/NII-DG/gogs/internal/tool"
 	logv2 "unknwon.dev/clog/v2"
 )
@@ -56,7 +55,7 @@ func ServeBlob(c *context.Context, blob *git.Blob) error {
 
 func SingleDownload(c *context.Context) {
 	logv2.Info("c.Repo.TreePath", c.Repo.TreePath)
-	// blob, err := c.Repo.Commit.Blob(c.Repo.TreePath)
+	blob, err := c.Repo.Commit.Blob(c.Repo.TreePath)
 	tree, terr := c.Repo.Commit.TreeEntry(c.Repo.TreePath)
 	if terr != nil {
 		logv2.Error("terr : %v", terr)
@@ -98,25 +97,14 @@ func SingleDownload(c *context.Context) {
 		}
 	}
 
-	// if err != nil {
-	// 	logv2.Error("Repo.Commit.Blob() ERR : %v", err)
-	// 	c.NotFoundOrError(gitutil.NewError(err), "get blob")
-	// 	return
-	// }
-
-	afp, err := os.Open("/home/ivis/gogs-repositories/ivis-tsukioka/test3.git/annex/objects/8d2/7f3/MD5E-s653--9a97da79ad0345e22add518dcd09548f/MD5E-s653--9a97da79ad0345e22add518dcd09548f")
 	if err != nil {
-		logv2.Error("F Open File : %v", err)
+		logv2.Error("Repo.Commit.Blob() ERR : %v", err)
+		c.NotFoundOrError(gitutil.NewError(err), "get blob")
+		return
 	}
-	annexDataReader := bufio.NewReader(afp)
-	annexBuf := make([]byte, 1024)
-	n, _ := annexDataReader.Read(annexBuf)
-	annexBuf = annexBuf[:n]
 
-	serveData(c, path.Base(c.Repo.TreePath), annexBuf)
-	return
-	// if err = ServeBlob(c, blob); err != nil {
-	// 	c.Error(err, "serve blob")
-	// 	return
-	// }
+	if err = ServeBlob(c, blob); err != nil {
+		c.Error(err, "serve blob")
+		return
+	}
 }

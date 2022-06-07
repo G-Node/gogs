@@ -306,6 +306,7 @@ func fetchDockerfile(c context.AbstructContext) {
 // Any errors that occur during processing are stored in the provided context.
 // The FileSize of the annexed content is also saved in the context (c.Data["FileSize"]).
 func resolveAnnexedContent(c *context.Context, buf []byte) ([]byte, error) {
+	logv2.Info("buf : %v", string(buf))
 	if !tool.IsAnnexedFile(buf) {
 		// not an annex pointer file; return as is
 		return buf, nil
