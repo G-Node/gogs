@@ -310,7 +310,7 @@ func resolveAnnexedContent(c *context.Context, buf []byte) ([]byte, error) {
 		// not an annex pointer file; return as is
 		return buf, nil
 	}
-	log.Info("Annexed file requested: Resolving content for %q", bytes.TrimSpace(buf))
+	log.Trace("Annexed file requested: Resolving content for %q", bytes.TrimSpace(buf))
 
 	keyparts := strings.Split(strings.TrimSpace(string(buf)), "/")
 	key := keyparts[len(keyparts)-1]
