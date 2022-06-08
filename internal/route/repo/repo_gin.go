@@ -306,7 +306,6 @@ func fetchDockerfile(c context.AbstructContext) {
 // Any errors that occur during processing are stored in the provided context.
 // The FileSize of the annexed content is also saved in the context (c.Data["FileSize"]).
 func resolveAnnexedContent(c *context.Context, buf []byte) ([]byte, error) {
-	logv2.Info("buf : %v", string(buf))
 	if !tool.IsAnnexedFile(buf) {
 		// not an annex pointer file; return as is
 		return buf, nil
@@ -323,7 +322,6 @@ func resolveAnnexedContent(c *context.Context, buf []byte) ([]byte, error) {
 	}
 	// always trim space from output for git command
 	contentPath = bytes.TrimSpace(contentPath)
-	logv2.Info("afp, err := os.Open(filepath.Join(c.R.... : %v ", filepath.Join(c.Repo.Repository.RepoPath(), string(contentPath)))
 	afp, err := os.Open(filepath.Join(c.Repo.Repository.RepoPath(), string(contentPath)))
 	if err != nil {
 		log.Trace("Could not open annex file: %v", err)
