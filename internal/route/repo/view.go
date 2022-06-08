@@ -155,8 +155,6 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 	// GIN mod: Replace existing buffer p with annexed content buffer (only if
 	// it's an annexed ptr file)
 	p, err = resolveAnnexedContent(c, p)
-	// log.Info("byte -> strings")
-	// log.Info("%v", string(p))
 	if err != nil {
 		return
 	}
