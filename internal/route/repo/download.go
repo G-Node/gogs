@@ -48,12 +48,11 @@ func ServeBlob(c *context.Context, blob *git.Blob) error {
 	if err != nil {
 		return err
 	}
-
 	return serveData(c, path.Base(c.Repo.TreePath), p)
 }
 
 func SingleDownload(c *context.Context) {
-	blob, err := c.Repo.Commit.Blob(c.Repo.TreePath)
+	blob, err := getBlobByPath(c.Repo)
 	if err != nil {
 		c.NotFoundOrError(gitutil.NewError(err), "get blob")
 		return
@@ -63,4 +62,15 @@ func SingleDownload(c *context.Context) {
 		c.Error(err, "serve blob")
 		return
 	}
+}
+
+func getBlobByPath(repo *context.Repository) (*git.Blob, error) {
+	entry, err := repo.Commit.TreeEntry(repo.TreePath)
+	if err != nil {
+		return nil, err
+	}
+	if !entry.IsTree() {
+		return entry.Blob(), nil
+	}
+	return nil, git.ErrNotBlob
 }
