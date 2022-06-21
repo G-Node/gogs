@@ -9,7 +9,7 @@
 					<img class="ui avatar image img-12" src="{{AvatarLink .LatestCommit.Author.Email}}" />
 					<strong>{{.LatestCommit.Author.Name}}</strong>
 				{{end}}
-				<a rel="nofollow" class="ui sha label" href="{{.RepoLink}}/commit/{{.LatestCommit.ID}}" rel="nofollow">{{ShortSHA1 .LatestCommit.ID.String}}</a>
+				<a rel="nofollow" class="ui sha label" href="{{.RepoLink}}/tree/{{.LatestCommit.ID}}" rel="nofollow">{{ShortSHA1 .LatestCommit.ID.String}}</a>
 				<span class="grey has-emoji">{{RenderCommitMessage false .LatestCommit.Summary .RepoLink $.Repository.ComposeMetas | Str2HTML}}</span>
 			</th>
 			<th class="nine wide">
