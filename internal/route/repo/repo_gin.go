@@ -321,24 +321,25 @@ func fetchEmviromentfile(c context.AbstructContext) {
 		path := Emviromentfilepath + Emviromentfile[i]
 		src, err := f.FetchContentsOnGithub(path)
 		if err != nil {
-			log.Error(2, "Dockerfile could not be fetched: %v", err)
+			log.Error(2, "%s could not be fetched: %v", Emviromentfile[i], err)
 		}
 
 		decodefile, err := f.DecodeBlobContent(src)
 		if err != nil {
-			log.Error(2, "Dockerfile could not be decorded: %v", err)
+			log.Error(2, "%s could not be decorded: %v", Emviromentfile[i], err)
 
-			failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: fetching template failed(Dockerfile)")
+			failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: fetching template failed(Emviromentfile)")
 			return
 		}
 
+		treeName := "binder/" + Emviromentfile[i]
 		message := "[GIN] fetch " + Emviromentfile[i]
 		_ = c.GetRepo().GetDbRepo().UpdateRepoFile(c.GetUser(), db.UpdateRepoFileOptions{
 			LastCommitID: c.GetRepo().GetLastCommitIdStr(),
 			OldBranch:    c.GetRepo().GetBranchName(),
 			NewBranch:    c.GetRepo().GetBranchName(),
 			OldTreeName:  "",
-			NewTreeName:  path,
+			NewTreeName:  treeName,
 			Message:      message,
 			Content:      decodefile,
 			IsNewFile:    true,
