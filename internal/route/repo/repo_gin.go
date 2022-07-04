@@ -119,8 +119,10 @@ func generateMaDmp(c context.AbstructContext, f AbstructRepoUtil) {
 		return
 	}
 
+	/* DMPの内容によって、DockerFileを利用しないケースがあったため、
+	　 DMPの内容を取得した後に、DockerFileを取得するように修正 */
 	// コード付帯機能の起動時間短縮のための暫定的な定義
-	fetchDockerfile(c)
+	// fetchDockerfile(c)
 
 	// ユーザが作成したDMP情報取得
 	entry, err := c.GetRepo().GetCommit().Blob("/dmp.json")
@@ -151,6 +153,7 @@ func generateMaDmp(c context.AbstructContext, f AbstructRepoUtil) {
 	selectedField := dmp.(map[string]interface{})["field"]
 	selectedDataSize := dmp.(map[string]interface{})["dataSize"]
 	selectedDatasetStructure := dmp.(map[string]interface{})["datasetStructure"]
+	selectedUseDocker := dmp.(map[string]interface{})["useDocker"]
 	/* maDMPへ埋め込む情報を追加する際は
 	ここに追記のこと
 	e.g.
@@ -170,6 +173,7 @@ func generateMaDmp(c context.AbstructContext, f AbstructRepoUtil) {
 			selectedField, // ここより以下は埋め込む値: DMP情報
 			selectedDataSize,
 			selectedDatasetStructure,
+			selectedUseDocker,
 			/* maDMPへ埋め込む情報を追加する際は
 			ここに追記のこと
 			e.g.
@@ -184,6 +188,14 @@ func generateMaDmp(c context.AbstructContext, f AbstructRepoUtil) {
 		return
 	}
 
+	/* Dockerfileか、binderフォルダを取得する。 */
+	if selectedUseDocker == "YES" {
+		/* dockerファイルを取得する */
+		fetchDockerfile(c)
+	} else {
+		/* binderフォルダ配下の環境構成ファイルを取得する */
+		fetchEmviromentfile(c)
+	}
 	c.GetFlash().Success("maDMP generated!")
 	c.Redirect(c.GetRepo().GetRepoLink())
 }
@@ -293,6 +305,47 @@ func fetchDockerfile(c context.AbstructContext) {
 		Content:      decodedDockerfile,
 		IsNewFile:    true,
 	})
+}
+
+// fetchEmviromentfile is RCOS specific code.
+// This fetches the Dockerfile used when launching Binderhub.
+func fetchEmviromentfile(c context.AbstructContext) {
+	// コード付帯機能の起動時間短縮のための暫定的な定義
+	Emviromentfilepath := getTemplateUrl() + "binder/"
+
+	var f repoUtil
+
+	Emviromentfile := []string{"apt.txt", "postBuild"}
+
+	for i := 0; i < len(Emviromentfile); i++ {
+		path := Emviromentfilepath + Emviromentfile[i]
+		src, err := f.FetchContentsOnGithub(path)
+		if err != nil {
+			log.Error(2, "%s could not be fetched: %v", Emviromentfile[i], err)
+		}
+
+		decodefile, err := f.DecodeBlobContent(src)
+		if err != nil {
+			log.Error(2, "%s could not be decorded: %v", Emviromentfile[i], err)
+
+			failedGenereteMaDmp(c, "Sorry, faild gerate maDMP: fetching template failed(Emviromentfile)")
+			return
+		}
+
+		treeName := "binder/" + Emviromentfile[i]
+		message := "[GIN] fetch " + Emviromentfile[i]
+		_ = c.GetRepo().GetDbRepo().UpdateRepoFile(c.GetUser(), db.UpdateRepoFileOptions{
+			LastCommitID: c.GetRepo().GetLastCommitIdStr(),
+			OldBranch:    c.GetRepo().GetBranchName(),
+			NewBranch:    c.GetRepo().GetBranchName(),
+			OldTreeName:  "",
+			NewTreeName:  treeName,
+			Message:      message,
+			Content:      decodefile,
+			IsNewFile:    true,
+		})
+	}
+
 }
 
 // resolveAnnexedContent takes a buffer with the contents of a git-annex
