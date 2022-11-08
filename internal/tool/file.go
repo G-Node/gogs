@@ -28,9 +28,14 @@ func IsTextFile(data []byte) bool {
 	return strings.Contains(http.DetectContentType(data), "text/")
 }
 
-var RE_ANNEXPOINTERFILE = regexp.MustCompile(`^(/annex/objects/([A-Z][\-_0-9A-Za-z]+)(?:\n|\r|\z))`)
+/*
+*  An annex object can be checked into git in 2 ways:
+*    1. As a "pointer file" (structure described here: https://git-annex.branchable.com/internals/pointer_file/ )
+*    2. As a symbolic link pointing to a file in the .git/annex/objects/ directory.
+ */
+var RE_ANNEXPOINTERFILE = regexp.MustCompile(`^(/annex/objects/([A-Z][\-\._0-9A-Za-z]+)(?:\n|\r|\z))`)
+var RE_SYMLINKPOINTATANNEX = regexp.MustCompile(`^.git/annex/objects/.+`)
 
-//reference: https://git-annex.branchable.com/internals/pointer_file/
 func IsAnnexedFile(data []byte) bool {
 
 	const ANNEXPOINTERFILE_MAXSIZE = 32 * 1024
@@ -39,6 +44,7 @@ func IsAnnexedFile(data []byte) bool {
 	var dataLen = len(data)
 
 	//The maximum size of a pointer file is 32 kb. If it is any longer, it is not considered to be a valid pointer file.
+	//The maximum size of a symlink target is SYMLINK_MAX (which is filesystem dependent) but typically way smaller than 32kb.
 	if dataLen > ANNEXPOINTERFILE_MAXSIZE {
 		return false
 	}
@@ -50,34 +56,44 @@ func IsAnnexedFile(data []byte) bool {
 		sniffData = data
 	}
 
-	//annex pointer file is a text file
+	//Annex pointer file/symlink target content is text type
 	if strings.Contains(http.DetectContentType(sniffData), "text/") {
 
-		//A pointer file starts with "/annex/objects/", which is followed by the key
-		matchAnnexPointer := RE_ANNEXPOINTERFILE.FindStringSubmatch(string(sniffData))
+		sniffStr := string(sniffData)
+		//Check if it's a symbolic link pointing to git-annex subdir
+		matchSymlinkTarget := RE_SYMLINKPOINTATANNEX.FindStringSubmatch(sniffStr)
 
-		if len(matchAnnexPointer) > 0 {
-			//var annexKey = matchAnnexPointer[2]
+		if len(matchSymlinkTarget) > 0 {
+			return true
+		} else {
+			//Check if it's a valid pointer file
 
-			//git-annex does support pointer files with additional text on subsequent lines.
-			var hasAdditionalText = len(sniffData) > len(matchAnnexPointer[1]) || dataLen > ANNEXSNIFFSIZE
+			//A pointer file starts with "/annex/objects/", which is followed by the key
+			matchAnnexPointer := RE_ANNEXPOINTERFILE.FindStringSubmatch(sniffStr)
 
-			if hasAdditionalText {
-				//every such subsequent line must contain "/annex/" somewhere in it, and end with a newline.
-				var extraLines = strings.SplitAfter(string(data), "\n")[1:]
+			if len(matchAnnexPointer) > 0 {
+				//var annexKey = matchAnnexPointer[2]
 
-				if extraLines[len(extraLines)-1] != "" {
-					//if last line isn't empty, it means it was missing required newline character
-					return false
-				} else {
-					for _, line := range extraLines[0 : len(extraLines)-1] {
-						if !strings.Contains(line, "/annex/") {
-							return false
+				//git-annex does support pointer files with additional text on subsequent lines.
+				var hasAdditionalText = len(sniffData) > len(matchAnnexPointer[1]) || dataLen > ANNEXSNIFFSIZE
+
+				if hasAdditionalText {
+					//every such subsequent line must contain "/annex/" somewhere in it, and end with a newline.
+					var extraLines = strings.SplitAfter(string(data), "\n")[1:]
+
+					if extraLines[len(extraLines)-1] != "" {
+						//if last line isn't empty, it means it was missing required newline character
+						return false
+					} else {
+						for _, line := range extraLines[0 : len(extraLines)-1] {
+							if !strings.Contains(line, "/annex/") {
+								return false
+							}
 						}
 					}
 				}
+				return true
 			}
-			return true
 		}
 	}
 	return false
