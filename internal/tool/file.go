@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"math"
 	"net/http"
+	"regexp"
 	"strings"
 )
 
@@ -27,16 +28,61 @@ func IsTextFile(data []byte) bool {
 	return strings.Contains(http.DetectContentType(data), "text/")
 }
 
+var RE_ANNEXPOINTERFILE = regexp.MustCompile(`^(/annex/objects/([A-Z][\-_0-9A-Za-z]+)(?:\n|\r|\z))`)
+
+//reference: https://git-annex.branchable.com/internals/pointer_file/
 func IsAnnexedFile(data []byte) bool {
-	const ANNEXSNIFFSIZE = 5000
-	if !(len(data) < ANNEXSNIFFSIZE) {
-		data = data[:ANNEXSNIFFSIZE]
+
+	const ANNEXPOINTERFILE_MAXSIZE = 32 * 1024
+	const ANNEXSNIFFSIZE = 512
+
+	var dataLen = len(data)
+
+	//The maximum size of a pointer file is 32 kb. If it is any longer, it is not considered to be a valid pointer file.
+	if dataLen > ANNEXPOINTERFILE_MAXSIZE {
+		return false
 	}
-	if strings.Contains(http.DetectContentType(data), "text/") {
-		return strings.Contains(string(data), "/annex/objects")
+
+	var sniffData []byte
+	if !(dataLen < ANNEXSNIFFSIZE) {
+		sniffData = data[:ANNEXSNIFFSIZE]
+	} else {
+		sniffData = data
+	}
+
+	//annex pointer file is a text file
+	if strings.Contains(http.DetectContentType(sniffData), "text/") {
+
+		//A pointer file starts with "/annex/objects/", which is followed by the key
+		matchAnnexPointer := RE_ANNEXPOINTERFILE.FindStringSubmatch(string(sniffData))
+
+		if len(matchAnnexPointer) > 0 {
+			//var annexKey = matchAnnexPointer[2]
+
+			//git-annex does support pointer files with additional text on subsequent lines.
+			var hasAdditionalText = len(sniffData) > len(matchAnnexPointer[1]) || dataLen > ANNEXSNIFFSIZE
+
+			if hasAdditionalText {
+				//every such subsequent line must contain "/annex/" somewhere in it, and end with a newline.
+				var extraLines = strings.SplitAfter(string(data), "\n")[1:]
+
+				if extraLines[len(extraLines)-1] != "" {
+					//if last line isn't empty, it means it was missing required newline character
+					return false
+				} else {
+					for _, line := range extraLines[0 : len(extraLines)-1] {
+						if !strings.Contains(line, "/annex/") {
+							return false
+						}
+					}
+				}
+			}
+			return true
+		}
 	}
 	return false
 }
+
 func IsImageFile(data []byte) bool {
 	return strings.Contains(http.DetectContentType(data), "image/")
 }
