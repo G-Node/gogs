@@ -31,10 +31,14 @@ func IsTextFile(data []byte) bool {
 /*
 *  An annex object can be checked into git in 2 ways:
 *    1. As a "pointer file" (structure described here: https://git-annex.branchable.com/internals/pointer_file/ )
-*    2. As a symbolic link pointing to a file in the .git/annex/objects/ directory.
+*    2. As a symbolic link pointing to a file in the git-annex directory (located in the .git dir at the base of the repository).
  */
+
+//A pointer file starts with "/annex/objects/", which is followed by the key
 var RE_ANNEXPOINTERFILE = regexp.MustCompile(`^(/annex/objects/([A-Z][\-\._0-9A-Za-z]+)(?:\n|\r|\z))`)
-var RE_SYMLINKPOINTATANNEX = regexp.MustCompile(`^.git/annex/objects/.+`)
+
+//The symbolic target is a relative path pointing to a file under the .git/annex/objects/ dir
+var RE_SYMLINKPOINTATANNEX = regexp.MustCompile(`^(?:\.\./)*.git/annex/objects/.+`)
 
 func IsAnnexedFile(data []byte) bool {
 
@@ -68,7 +72,6 @@ func IsAnnexedFile(data []byte) bool {
 		} else {
 			//Check if it's a valid pointer file
 
-			//A pointer file starts with "/annex/objects/", which is followed by the key
 			matchAnnexPointer := RE_ANNEXPOINTERFILE.FindStringSubmatch(sniffStr)
 
 			if len(matchAnnexPointer) > 0 {

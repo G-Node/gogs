@@ -52,6 +52,9 @@ func Test_IsValidAnnexPointerFile(t *testing.T) {
 			// invalid symlink target
 			{false, "git/annex/objects/Z9/qQ/MD5E-s886791--49e415b10841cacff2d8fb8456ca1e67.png/MD5E-s886791--49e415b10841cacff2d8fb8456ca1e67.png"},
 			{false, ".git/annex/objects/"},
+			// valid symlink target for files in sub-directory
+			{true, "../.git/annex/objects/Z9/qQ/MD5E-s886791--49e415b10841cacff2d8fb8456ca1e67.png/MD5E-s886791--49e415b10841cacff2d8fb8456ca1e67.png"},
+			{true, "../../.git/annex/objects/Z9/qQ/MD5E-s886791--49e415b10841cacff2d8fb8456ca1e67.png/MD5E-s886791--49e415b10841cacff2d8fb8456ca1e67.png"},
 		}
 
 		for _, tc := range testCases {
