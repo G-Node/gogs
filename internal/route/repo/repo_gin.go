@@ -102,12 +102,14 @@ func readDataciteFile(c *context.Context) {
 // and io.Reader sent in through the caller so that any existing code can use
 // the two variables without modifications.
 // Any errors that occur during processing are stored in the provided context.
-// The FileSize of the annexed content is also saved in the context (c.Data["FileSize"]).
+// The FileSize of the annexed content is also saved in the context (c.Data["FileSize"]),
+// along with a flag indicating that the file is annexed (c.Data["IsAnnexedFile"]).
 func resolveAnnexedContent(c *context.Context, buf []byte) ([]byte, error) {
 	if !tool.IsAnnexedFile(buf) {
 		// not an annex pointer file; return as is
 		return buf, nil
 	}
+	c.Data["IsAnnexedFile"] = true
 	log.Trace("Annexed file requested: Resolving content for %q", bytes.TrimSpace(buf))
 
 	keyparts := strings.Split(strings.TrimSpace(string(buf)), "/")
