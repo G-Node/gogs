@@ -150,6 +150,7 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 	if err != nil {
 		return
 	}
+	isannex := c.Data["IsAnnexedFile"] == true
 	isTextFile := tool.IsTextFile(p)
 	c.Data["IsTextFile"] = isTextFile
 
@@ -232,7 +233,6 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 			c.Data["LineNums"] = gotemplate.HTML(output.String())
 		}
 
-		isannex := tool.IsAnnexedFile(p)
 		if canEnableEditor && !isannex {
 			c.Data["CanEditFile"] = true
 			c.Data["EditFileTooltip"] = c.Tr("repo.editor.edit_this_file")
@@ -251,9 +251,9 @@ func renderFile(c *context.Context, entry *git.TreeEntry, treeLink, rawLink stri
 	case tool.IsImageFile(p) && (c.Data["FileSize"].(int64) < conf.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
 		c.IsLogged):
 		c.Data["IsImageFile"] = true
-	case tool.IsAnnexedFile(p) && (c.Data["FileSize"].(int64) < conf.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
+	case isannex && (c.Data["FileSize"].(int64) < conf.Repository.RawCaptchaMinFileSize*annex.MEGABYTE ||
 		c.IsLogged):
-		c.Data["IsAnnexedFile"] = true
+		//
 	}
 
 	if canEnableEditor {

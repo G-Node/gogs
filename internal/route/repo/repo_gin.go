@@ -102,34 +102,38 @@ func readDataciteFile(c *context.Context) {
 // and io.Reader sent in through the caller so that any existing code can use
 // the two variables without modifications.
 // Any errors that occur during processing are stored in the provided context.
-// The FileSize of the annexed content is also saved in the context (c.Data["FileSize"]).
+// The FileSize of the annexed content is also saved in the context (c.Data["FileSize"]),
+// along with flags indicating that the file is annexed (c.Data["IsAnnexedFile"]),
+// and that the annexed content is not locally available (c.Data["IsAnnexedContentUnavailable"]).
 func resolveAnnexedContent(c *context.Context, buf []byte) ([]byte, error) {
 	if !tool.IsAnnexedFile(buf) {
 		// not an annex pointer file; return as is
 		return buf, nil
 	}
+	c.Data["IsAnnexedFile"] = true
 	log.Trace("Annexed file requested: Resolving content for %q", bytes.TrimSpace(buf))
 
 	keyparts := strings.Split(strings.TrimSpace(string(buf)), "/")
 	key := keyparts[len(keyparts)-1]
 	contentPath, err := git.NewCommand("annex", "contentlocation", key).RunInDir(c.Repo.Repository.RepoPath())
 	if err != nil {
-		log.Error(2, "Failed to find content location for key %q", key)
-		c.Data["IsAnnexedFile"] = true
-		return buf, err
+		log.Warn("Failed to find content location for key %q", key)
+		//key's content is not present in the local repository, meaning that annexed content hasn't been pushed yet
+		c.Data["IsAnnexedContentUnavailable"] = true
+		return buf, nil
 	}
 	// always trim space from output for git command
 	contentPath = bytes.TrimSpace(contentPath)
 	afp, err := os.Open(filepath.Join(c.Repo.Repository.RepoPath(), string(contentPath)))
 	if err != nil {
 		log.Trace("Could not open annex file: %v", err)
-		c.Data["IsAnnexedFile"] = true
+		c.Data["IsAnnexedContentUnavailable"] = true
 		return buf, err
 	}
 	info, err := afp.Stat()
 	if err != nil {
 		log.Trace("Could not stat annex file: %v", err)
-		c.Data["IsAnnexedFile"] = true
+		c.Data["IsAnnexedContentUnavailable"] = true
 		return buf, err
 	}
 	annexDataReader := bufio.NewReader(afp)

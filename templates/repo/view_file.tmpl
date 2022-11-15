@@ -142,7 +142,7 @@
 					{{if .IsImageFile}}
 						<img src="{{EscapePound $.RawFileLink}}">
 
-					{{else if .IsAnnexedFile}}
+					{{else if .IsAnnexedContentUnavailable}}
 						<div class="ui yellow segment">
 							<strong>File content is not available</strong>
 							<p>
